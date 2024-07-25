@@ -26,24 +26,35 @@ interface MenuItemProps {
   onClick: () => void;
 }
 
-interface DividerItem {
+interface DividerProps {
   label: string;
-  isDivider: true;
 }
 
-type MenuItem = MenuItemProps | DividerItem;
-
 const MenuItem: React.FC<MenuItemProps> = ({
-                                             icon: Icon, label, href, isActive, onClick,
+                                             icon: Icon,
+                                             label,
+                                             href,
+                                             isActive,
+                                             onClick,
                                            }) => (
     <Link
         href={href}
-        className={`flex items-center px-4 py-2 text-[13px] ${isActive ? 'bg-[#eff1f4]' : 'hover:bg-[#eff1f4]'}`}
+        className={`
+      flex items-center px-2 py-2 text-[13px]
+      ${isActive ? 'bg-[#eff1f4]' : 'hover:bg-[#eff1f4]'}
+      rounded-[5px]
+    `}
         onClick={onClick}
     >
       <Icon className="mr-3 text-[#212b36]" size={16} />
       <span className="text-[#212b36]">{label}</span>
     </Link>
+);
+
+const Divider: React.FC<DividerProps> = ({ label }) => (
+    <div className="px-2 py-2 text-xs font-semibold text-gray-500 border-t border-[#eff1f4] mt-2">
+      {label}
+    </div>
 );
 
 interface SidebarProps {
@@ -70,20 +81,20 @@ const Sidebar: React.FC<SidebarProps> = ({ onPortalClick }) => {
     if (isMobile) setIsMenuOpen(false);
   };
 
-  const menuItems: MenuItem[] = [
-    { icon: Home, label: 'Home', href: '/', isActive: router.pathname === '/', onClick: () => handleItemClick('/') },
-    { icon: Users, label: 'Clients', href: '/clients', isActive: router.pathname === '/clients', onClick: () => handleItemClick('/clients') },
-    { icon: Bell, label: 'Notifications', href: '/notifications', isActive: router.pathname === '/notifications', onClick: () => handleItemClick('/notifications') },
-    { label: 'Apps', isDivider: true },
-    { icon: MessageSquare, label: 'Messages', href: '/messages', isActive: router.pathname === '/messages', onClick: () => handleItemClick('/messages') },
-    { icon: File, label: 'Files', href: '/FilesPage', isActive: router.pathname === '/FilesPage', onClick: () => handleItemClick('/FilesPage') },
-    { icon: FileText, label: 'Contracts', href: '/contracts', isActive: router.pathname === '/contracts', onClick: () => handleItemClick('/contracts') },
-    { icon: Grid, label: 'Forms', href: '/forms', isActive: router.pathname === '/forms', onClick: () => handleItemClick('/forms') },
-    { icon: CreditCard, label: 'Billing', href: '/billing', isActive: router.pathname === '/billing', onClick: () => handleItemClick('/billing') },
-    { icon: HelpCircle, label: 'Helpdesk', href: '/helpdesk', isActive: router.pathname === '/helpdesk', onClick: () => handleItemClick('/helpdesk') },
-    { label: 'Preferences', isDivider: true },
-    { icon: Settings, label: 'App Setup', href: '/app-setup', isActive: router.pathname === '/app-setup', onClick: () => handleItemClick('/app-setup') },
-    { icon: Sliders, label: 'Customization', href: '/customization', isActive: router.pathname === '/customization', onClick: () => handleItemClick('/customization') },
+  const menuItems = [
+    { icon: Home, label: 'Home', href: '/' },
+    { icon: Users, label: 'Clients', href: '/Clients' },
+    { icon: Bell, label: 'Notifications', href: '/notifications' },
+    { type: 'divider', label: 'Apps' },
+    { icon: MessageSquare, label: 'Messages', href: '/messages' },
+    { icon: File, label: 'Files', href: '/FilesPage' },
+    { icon: FileText, label: 'Contracts', href: '/contracts' },
+    { icon: Grid, label: 'Forms', href: '/forms' },
+    { icon: CreditCard, label: 'Billing', href: '/billing' },
+    { icon: HelpCircle, label: 'Helpdesk', href: '/helpdesk' },
+    { type: 'divider', label: 'Preferences' },
+    { icon: Settings, label: 'App Setup', href: '/app-setup' },
+    { icon: Sliders, label: 'Customization', href: '/customization' },
   ];
 
   return (
@@ -116,41 +127,27 @@ const Sidebar: React.FC<SidebarProps> = ({ onPortalClick }) => {
               </h1>
             </div>
           </div>
-          <nav className="flex-grow">
+          <nav className="flex-grow px-2">
             {menuItems.map((item, index) => (
-                'isDivider' in item ? (
-                    <div key={index} className="px-4 py-2 text-xs font-semibold text-gray-500 border-t border-[#eff1f4] mt-2">{item.label}</div>
+                'type' in item ? (
+                    <Divider key={index} label={item.label} />
                 ) : (
                     <MenuItem
                         key={item.label}
                         icon={item.icon}
                         label={item.label}
                         href={item.href}
-                        isActive={item.isActive}
-                        onClick={item.onClick}
+                        isActive={router.pathname === item.href}
+                        onClick={() => handleItemClick(item.href)}
                     />
                 )
             ))}
           </nav>
-          <div className="mt-auto mb-4">
-            <MenuItem
-                icon={HelpCircle}
-                label="Help Center"
-                href="/help"
-                isActive={router.pathname === '/help'}
-                onClick={() => handleItemClick('/help')}
-            />
-            <MenuItem
-                icon={Settings}
-                label="Settings"
-                href="/settings"
-                isActive={router.pathname === '/settings'}
-                onClick={() => handleItemClick('/settings')}
-            />
+          <div className="mt-auto mb-4 px-2">
             <div className="border-t border-[#eff1f4] mt-2 pt-2">
               <button
                   onClick={onPortalClick}
-                  className="flex items-center px-4 py-2 w-full text-left text-[13px] hover:bg-[#eff1f4]"
+                  className="flex items-center px-2 py-2 w-full text-left text-[13px] hover:bg-[#eff1f4] rounded-[5px]"
               >
                 <div className="w-3 h-3 rounded-full bg-green-500 mr-3" />
                 <span className="text-[#212b36]">Portal</span>

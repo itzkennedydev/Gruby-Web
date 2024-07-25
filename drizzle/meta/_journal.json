@@ -8,6 +8,34 @@
       "when": 1721784725683,
       "tag": "0000_lean_nebula",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1721832898989,
+      "tag": "0001_safe_komodo",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1721837263926,
+      "tag": "0002_naive_mad_thinker",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1721840314392,
+      "tag": "0003_bright_zuras",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1721880875637,
+      "tag": "0004_illegal_moondragon",
+      "breakpoints": true
     }
   ]
 }
