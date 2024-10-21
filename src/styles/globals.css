@@ -67,3 +67,50 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Ensure type safety for custom properties */
+:root {
+  --radius: 0.5rem;
+}
+
+/* Type-safe utility classes */
+.rounded-custom {
+  border-radius: var(--radius);
+}
+
+/* Responsive design utilities */
+@screen sm {
+  :root {
+    --radius: 0.75rem;
+  }
+}
+
+@screen lg {
+  :root {
+    --radius: 1rem;
+  }
+}
+
+/* Improved accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible utility */
+.focus-visible:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+}

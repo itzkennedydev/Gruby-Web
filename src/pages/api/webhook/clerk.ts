@@ -2,11 +2,12 @@ import { IncomingHttpHeaders } from 'http';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
+import { eq } from 'drizzle-orm';
 
 import { users } from '~/server/db/schema';
-import {db} from "~/server/db";
+import { db } from "~/server/db";
 
-const webhookSecret: string = process.env.CLERK_WEBHOOK_SECRET || '';
+const webhookSecret = process.env.CLERK_WEBHOOK_SECRET ?? '';
 
 export const config = {
     api: {
@@ -14,34 +15,48 @@ export const config = {
     },
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+interface UserAttributes {
+    email_addresses: { email_address: string }[];
+    first_name?: string;
+    last_name?: string;
+}
+
+interface WebhookEvent {
+    data: { id: string } & UserAttributes;
+    type: 'user.created' | 'user.updated' | 'user.deleted';
+}
+
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     console.log('Webhook handler triggered');
 
     if (req.method !== 'POST') {
         console.log('Invalid method:', req.method);
-        return res.status(405).json({ message: 'Method not allowed' });
+        res.status(405).json({ message: 'Method not allowed' });
+        return;
     }
 
-    let payload;
+    let payload: string;
     try {
         payload = (await buffer(req)).toString();
         console.log('Received payload:', payload);
     } catch (error) {
         console.error('Error reading payload:', error);
-        return res.status(400).json({ message: 'Error reading payload' });
+        res.status(400).json({ message: 'Error reading payload' });
+        return;
     }
 
     const headers = req.headers as IncomingHttpHeaders & WebhookRequiredHeaders;
 
     const wh = new Webhook(webhookSecret);
-    let evt: any;
+    let evt: WebhookEvent;
 
     try {
-        evt = wh.verify(payload, headers);
+        evt = wh.verify(payload, headers) as WebhookEvent;
         console.log('Verified webhook event:', evt);
     } catch (err) {
         console.error('Error verifying webhook:', err);
-        return res.status(400).json({ message: 'Invalid signature' });
+        res.status(400).json({ message: 'Invalid signature' });
+        return;
     }
 
     const { id, ...attributes } = evt.data;
@@ -54,25 +69,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             case 'user.updated':
                 const result = await db.insert(users).values({
                     id,
-                    email: attributes.email_addresses[0].email_address,
-                    firstName: attributes.first_name,
-                    lastName: attributes.last_name,
+                    email: attributes.email_addresses[0]?.email_address ?? '',
+                    firstName: attributes.first_name ?? '',
+                    lastName: attributes.last_name ?? '',
                 }).onConflictDoUpdate({
                     target: users.id,
                     set: {
-                        email: attributes.email_addresses[0].email_address,
-                        firstName: attributes.first_name,
-                        lastName: attributes.last_name,
+                        email: attributes.email_addresses[0]?.email_address ?? '',
+                        firstName: attributes.first_name ?? '',
+                        lastName: attributes.last_name ?? '',
                     },
                 });
                 console.log('User upsert result:', result);
                 break;
             case 'user.deleted':
-                const deleteResult = await db.delete(users).where({ id });
+                const deleteResult = await db.delete(users).where(eq(users.id, id));
                 console.log('User delete result:', deleteResult);
                 break;
             default:
-                console.log(`Unhandled event type: ${evt.type}`);
+                const _exhaustiveCheck: never = evt.type;
+                console.log(`Unhandled event type: ${_exhaustiveCheck}`);
         }
 
         res.status(200).json({ message: 'Webhook processed successfully' });

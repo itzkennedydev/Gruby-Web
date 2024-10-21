@@ -1,7 +1,5 @@
 {
-  "id": "c7fbfc93-90b4-4648-9aee-60e6f94af56d",
-  "prevId": "22d0eddd-f047-4aca-a6cc-baacd6a9967b",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.synapse_clients": {
@@ -58,15 +56,15 @@
         "synapse_clients_organization_id_synapse_organizations_id_fk": {
           "name": "synapse_clients_organization_id_synapse_organizations_id_fk",
           "tableFrom": "synapse_clients",
-          "tableTo": "synapse_organizations",
           "columnsFrom": [
             "organization_id"
           ],
+          "tableTo": "synapse_organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -132,15 +130,15 @@
         "synapse_contracts_client_id_synapse_clients_id_fk": {
           "name": "synapse_contracts_client_id_synapse_clients_id_fk",
           "tableFrom": "synapse_contracts",
-          "tableTo": "synapse_clients",
           "columnsFrom": [
             "client_id"
           ],
+          "tableTo": "synapse_clients",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -194,28 +192,28 @@
         "synapse_file_channels_client_id_synapse_clients_id_fk": {
           "name": "synapse_file_channels_client_id_synapse_clients_id_fk",
           "tableFrom": "synapse_file_channels",
-          "tableTo": "synapse_clients",
           "columnsFrom": [
             "client_id"
           ],
+          "tableTo": "synapse_clients",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "synapse_file_channels_project_id_synapse_projects_id_fk": {
           "name": "synapse_file_channels_project_id_synapse_projects_id_fk",
           "tableFrom": "synapse_file_channels",
-          "tableTo": "synapse_projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "synapse_projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -287,28 +285,28 @@
         "synapse_files_channel_id_synapse_file_channels_id_fk": {
           "name": "synapse_files_channel_id_synapse_file_channels_id_fk",
           "tableFrom": "synapse_files",
-          "tableTo": "synapse_file_channels",
           "columnsFrom": [
             "channel_id"
           ],
+          "tableTo": "synapse_file_channels",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "synapse_files_uploaded_by_synapse_users_id_fk": {
           "name": "synapse_files_uploaded_by_synapse_users_id_fk",
           "tableFrom": "synapse_files",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "uploaded_by"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -355,28 +353,28 @@
         "synapse_form_submissions_form_id_synapse_forms_id_fk": {
           "name": "synapse_form_submissions_form_id_synapse_forms_id_fk",
           "tableFrom": "synapse_form_submissions",
-          "tableTo": "synapse_forms",
           "columnsFrom": [
             "form_id"
           ],
+          "tableTo": "synapse_forms",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "synapse_form_submissions_submitted_by_synapse_users_id_fk": {
           "name": "synapse_form_submissions_submitted_by_synapse_users_id_fk",
           "tableFrom": "synapse_form_submissions",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "submitted_by"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -430,15 +428,15 @@
         "synapse_forms_created_by_synapse_users_id_fk": {
           "name": "synapse_forms_created_by_synapse_users_id_fk",
           "tableFrom": "synapse_forms",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "created_by"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -498,15 +496,15 @@
         "synapse_invoices_client_id_synapse_clients_id_fk": {
           "name": "synapse_invoices_client_id_synapse_clients_id_fk",
           "tableFrom": "synapse_invoices",
-          "tableTo": "synapse_clients",
           "columnsFrom": [
             "client_id"
           ],
+          "tableTo": "synapse_clients",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -560,28 +558,28 @@
         "synapse_messages_sender_id_synapse_users_id_fk": {
           "name": "synapse_messages_sender_id_synapse_users_id_fk",
           "tableFrom": "synapse_messages",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "sender_id"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "synapse_messages_recipient_id_synapse_users_id_fk": {
           "name": "synapse_messages_recipient_id_synapse_users_id_fk",
           "tableFrom": "synapse_messages",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "recipient_id"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -629,15 +627,15 @@
         "synapse_notifications_user_id_synapse_users_id_fk": {
           "name": "synapse_notifications_user_id_synapse_users_id_fk",
           "tableFrom": "synapse_notifications",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -686,10 +684,10 @@
       "uniqueConstraints": {
         "synapse_organizations_slug_unique": {
           "name": "synapse_organizations_slug_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "slug"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -747,15 +745,15 @@
         "synapse_projects_client_id_synapse_clients_id_fk": {
           "name": "synapse_projects_client_id_synapse_clients_id_fk",
           "tableFrom": "synapse_projects",
-          "tableTo": "synapse_clients",
           "columnsFrom": [
             "client_id"
           ],
+          "tableTo": "synapse_clients",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -796,15 +794,15 @@
         "synapse_user_permissions_user_id_synapse_users_id_fk": {
           "name": "synapse_user_permissions_user_id_synapse_users_id_fk",
           "tableFrom": "synapse_user_permissions",
-          "tableTo": "synapse_users",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "synapse_users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -870,25 +868,25 @@
         "synapse_users_organization_id_synapse_organizations_id_fk": {
           "name": "synapse_users_organization_id_synapse_organizations_id_fk",
           "tableFrom": "synapse_users",
-          "tableTo": "synapse_organizations",
           "columnsFrom": [
             "organization_id"
           ],
+          "tableTo": "synapse_organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "synapse_users_email_unique": {
           "name": "synapse_users_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     }
@@ -896,8 +894,11 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "c7fbfc93-90b4-4648-9aee-60e6f94af56d",
+  "prevId": "22d0eddd-f047-4aca-a6cc-baacd6a9967b",
+  "sequences": {}
 }

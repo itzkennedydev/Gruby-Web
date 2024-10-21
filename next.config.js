@@ -17,7 +17,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  transpilePackages: ["geist"],
+  images: {
+    domains: ['images.unsplash.com', "di8mcd92ly4ww.cloudfront.net"],
+  },
+  transpilePackages: ["geist", '@mui/x-date-pickers', '@mui/material', '@mui/system', '@emotion/react', '@emotion/styled'],
 };
 
 export default config;
