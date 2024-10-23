@@ -1,12 +1,13 @@
 import type { AppProps } from 'next/app';
 import { ClerkProvider } from '@clerk/nextjs';
-import Layout from '~/components/Layout';
-import { CartProvider } from '~/contexts/CartContext';
-import '~/styles/globals.css';
+import { CartProvider } from '@/contexts/CartContext';
+import '@/styles/globals.css';
 import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from '~/lib/stripe';
+import { loadStripe } from '@stripe/stripe-js';
+import { stripePromise } from '@/lib/stripe';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
+import Layout from '@/components/Layout';
 
 const queryClient = new QueryClient();
 

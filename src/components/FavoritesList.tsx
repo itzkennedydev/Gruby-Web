@@ -1,24 +1,42 @@
-import React from 'react';
+// favorites-list.tsx
 
-const FavoritesList: React.FC = () => {
-  // Mock data for demonstration purposes
-  const favorites = [
-    { id: 1, name: 'Pasta Carbonara', chef: 'Chef Mario' },
-    { id: 2, name: 'Vegan Burger', chef: 'Chef Lisa' },
-    // Add more favorites as needed
-  ];
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+
+interface FavoriteItem {
+  id: number;
+  name: string;
+  chef: string;
+}
+
+const mockFavorites: FavoriteItem[] = [
+  { id: 1, name: 'Pasta Carbonara', chef: 'Chef Mario' },
+  { id: 2, name: 'Vegan Burger', chef: 'Chef Lisa' },
+];
+
+function FavoriteItemComponent({ favorite }: { favorite: FavoriteItem }) {
+  return (
+    <li>
+      <Card className="mb-4 hover:shadow-lg transition-shadow">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold">{favorite.name}</CardTitle>
+          <CardDescription className="text-sm text-gray-500">
+            by {favorite.chef}
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </li>
+  );
+}
+
+export function FavoritesList() {
+  const favorites = mockFavorites;
 
   return (
-    <div>
+    <div className="p-4">
       {favorites.length > 0 ? (
-        <ul>
-          {favorites.map(favorite => (
-            <li key={favorite.id} className="mb-4">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">{favorite.name}</span>
-                <span className="text-sm text-gray-500">by {favorite.chef}</span>
-              </div>
-            </li>
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {favorites.map((favorite) => (
+            <FavoriteItemComponent key={favorite.id} favorite={favorite} />
           ))}
         </ul>
       ) : (
@@ -26,6 +44,4 @@ const FavoritesList: React.FC = () => {
       )}
     </div>
   );
-};
-
-export default FavoritesList;
+}

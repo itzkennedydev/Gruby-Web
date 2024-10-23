@@ -1,0 +1,1 @@
+ALTER TABLE "products" ALTER COLUMN "chef_id" SET NOT NULL;

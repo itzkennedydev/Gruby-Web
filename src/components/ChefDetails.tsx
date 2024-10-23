@@ -1,16 +1,23 @@
-import Image from 'next/image';
 import { MealItem } from '../data/mockChefs';
+import Image from 'next/image';
 
 interface ChefDetailsProps {
   chef: MealItem;
 }
 
-export default function ChefDetails({ chef }: ChefDetailsProps) {
+export function ChefDetails({ chef }: ChefDetailsProps) {
   return (
-    <div>
-      <h1>{chef.name}</h1>
-      <Image src={chef.image} alt={chef.name} width={300} height={200} />
-      {/* Add more chef details here */}
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">{chef.name}</h1>
+      <Image
+        src={chef.image || '/default-chef-image.webp'}
+        alt={chef.name}
+        width={300}
+        height={200}
+        className="rounded-lg"
+        loading="lazy"
+        priority={false}
+      />
     </div>
   );
 }

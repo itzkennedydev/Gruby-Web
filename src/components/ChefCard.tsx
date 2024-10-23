@@ -6,21 +6,12 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled } from '@mui/system';
 import Link from 'next/link';
-
-interface Chef {
-  id: string;
-  name: string;
-  category: string;
-  rating: number;
-  image: string;
-  type: 'chef' | 'product';
-  chefImage?: string;
-}
+import { Chef } from '@/server/db/schema';
 
 interface ChefCardProps {
-  item: Chef;
+  chef: Chef;
   isFavorite: boolean;
-  onToggleFavorite: (id: string) => void;
+  onToggleFavorite: () => void;
 }
 
 const StyledCard = styled(Card)({
@@ -71,21 +62,21 @@ const ChefAvatar = styled(Avatar)({
   border: '2px solid #fff',
 });
 
-const ChefCard: React.FC<ChefCardProps> = ({ item, isFavorite, onToggleFavorite }) => {
+const ChefCard: React.FC<ChefCardProps> = ({ chef, isFavorite, onToggleFavorite }) => {
   return (
-    <Link href={item.type === 'chef' ? `/chef/${item.id}` : `/product/${item.id}`} passHref>
+    <Link href={`/chef/${chef.id}`} passHref>
       <StyledCard>
         <Box sx={{ position: 'relative' }}>
           <StyledCardMedia
-            image={item.image}
-            title={item.name}
+            image={chef.coverImageUrl ?? '/default-chef-cover.jpg'}
+            title={chef.name}
           />
           <FavoriteIconWrapper>
             <IconButton 
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onToggleFavorite(item.id);
+                onToggleFavorite();
               }}
             >
               {isFavorite ? (
@@ -95,17 +86,17 @@ const ChefCard: React.FC<ChefCardProps> = ({ item, isFavorite, onToggleFavorite 
               )}
             </IconButton>
           </FavoriteIconWrapper>
-          <RatingBadge>{item.rating}</RatingBadge>
-          {item.type === 'chef' && item.chefImage && (
-            <ChefAvatar src={item.chefImage} alt="Chef" />
-          )}
+          <ChefAvatar src={chef.avatarUrl ?? '/default-avatar.jpg'} alt={chef.name} />
         </Box>
         <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '24px' }}>
           <Typography variant="h6" gutterBottom fontWeight="bold">
-            {item.name}
+            {chef.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {item.category}
+            Rating: {chef.rating ?? 'Not rated yet'}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Specialty: {chef.specialty}
           </Typography>
         </CardContent>
       </StyledCard>

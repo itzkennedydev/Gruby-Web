@@ -5,6 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { RoleSelectionModal } from '~/components/RoleSelectionModal';
 import { handleAuthError } from '~/utils/auth-error-handling';
+import { toast } from 'react-hot-toast';
 
 interface AuthFormState {
   email: string;
@@ -25,8 +26,8 @@ export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [pendingVerification, setPendingVerification] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
-  const { isLoaded: signInLoaded, signIn, setActive } = useSignIn();
-  const { isLoaded: signUpLoaded, signUp } = useSignUp();
+  const { isLoaded: signInLoaded, signIn, setActive: setActiveSignIn } = useSignIn();
+  const { isLoaded: signUpLoaded, signUp, setActive: setActiveSignUp } = useSignUp();
   const router = useRouter();
 
   if (!signInLoaded || !signUpLoaded) return null;
@@ -57,11 +58,17 @@ export default function Auth() {
         password: formState.password,
       });
 
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        setShowRoleModal(true);
-      } else {
+      if (result.status === "needs_verification") {
         setPendingVerification(true);
+        toast.info("A verification code has been sent to your email. Please check your inbox (and spam folder) and enter the code to complete your registration.");
+      } else if (result.status === "complete") {
+        if (setActiveSignUp) {
+          await setActiveSignUp({ session: result.createdSessionId });
+          toast.success("Your account has been created successfully! You're being redirected to the main page. Welcome aboard!");
+          router.push('/MainPage');
+        }
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
       }
     } catch (err) {
       handleAuthError(err);
@@ -76,8 +83,8 @@ export default function Auth() {
       });
 
       if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        router.push("/");
+        await setActiveSignIn({ session: result.createdSessionId });
+        router.push("/MainPage");
       } else {
         setPendingVerification(true);
       }
@@ -93,8 +100,8 @@ export default function Auth() {
       });
 
       if (completeSignUp.status === "complete") {
-        await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/");
+        await setActiveSignUp({ session: completeSignUp.createdSessionId });
+        router.push("/MainPage");
       }
     } catch (err) {
       handleAuthError(err);

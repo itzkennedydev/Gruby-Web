@@ -3,11 +3,15 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not defined in the environment variables.");
+}
+
 export default {
-  schema: './src/server/db/schema.ts',
-  out: './drizzle',
-  driver: 'pg',
+  schema: "./src/server/db/schema.ts",
+  out: "./drizzle",
+  dialect: 'postgresql',
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL!,
+    url: process.env.DATABASE_URL,
   },
 } satisfies Config;

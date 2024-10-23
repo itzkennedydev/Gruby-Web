@@ -1,81 +1,66 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Product } from '@/server/db/schema';
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
+interface CartItem extends Product {
   quantity: number;
-  image: string;
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (item: CartItem) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  addToCart: (item: Product) => void;
+  removeFromCart: (itemId: string) => void;
+  updateQuantity: (itemId: string, quantity: number) => void;
+  clearCart: () => void;
 }
 
-export const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
-};
-
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await axios.get('/api/cart');
-        setCartItems(response.data);
-      } catch (error) {
-        console.error('Error fetching cart:', error);
+  const addToCart = (item: Product) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(i => i.id === item.id);
+      if (existingItem) {
+        return prevItems.map(i => 
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
       }
-    };
-    void fetchCart();
-  }, []);
-
-  const updateCart = async (newCart: CartItem[]) => {
-    try {
-      await axios.put('/api/cart', newCart);
-      setCartItems(newCart);
-    } catch (error) {
-      console.error('Error updating cart:', error);
-    }
+      return [...prevItems, { ...item, quantity: 1 }];
+    });
   };
 
-  const addToCart = async (item: Omit<CartItem, 'quantity'>) => {
-    const newCart = [...cartItems];
-    const existingItem = newCart.find((i) => i.id === item.id);
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      newCart.push({ ...item, quantity: 1 });
-    }
-    await updateCart(newCart);
+  const removeFromCart = (itemId: string) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
   };
 
-  const removeFromCart = async (id: string) => {
-    const newCart = cartItems.filter((item) => item.id !== id);
-    await updateCart(newCart);
+  const updateQuantity = (itemId: string, quantity: number) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(i => i.id === itemId);
+      if (existingItem) {
+        return prevItems.map(i => 
+          i.id === itemId ? { ...i, quantity } : i
+        );
+      }
+      return prevItems;
+    });
   };
 
-  const updateQuantity = async (id: string, quantity: number) => {
-    const newCart = cartItems.map((item) =>
-      item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item
-    ).filter((item) => item.quantity > 0);
-    await updateCart(newCart);
+  const clearCart = () => {
+    setCartItems([]);
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );
+};
+
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
 };

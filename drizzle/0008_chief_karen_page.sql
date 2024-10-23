@@ -1,0 +1,1 @@
+ALTER TABLE "chefs" ADD COLUMN "cover_image_url" text;

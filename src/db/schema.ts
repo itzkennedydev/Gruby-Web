@@ -9,6 +9,16 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
+export const chefs = pgTable('chefs', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+  bio: text('bio'),
+  avatarUrl: text('avatar_url'),
+  bannerUrl: text('banner_url'), // Added bannerUrl field
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
 export const products = pgTable('products', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
@@ -16,15 +26,6 @@ export const products = pgTable('products', {
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   imageUrl: text('image_url'),
   chefId: uuid('chef_id').references(() => chefs.id),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
-
-export const chefs = pgTable('chefs', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  name: text('name').notNull(),
-  bio: text('bio'),
-  avatarUrl: text('avatar_url'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });

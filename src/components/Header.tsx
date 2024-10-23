@@ -1,12 +1,14 @@
+"use client";
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserButton, useUser, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { ShoppingCart, Search, MapPin } from 'lucide-react';
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "~/components/ui/dialog";
-import { useCart } from '~/contexts/CartContext';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/router';
 import { useDebounce } from 'use-debounce';
 
@@ -217,10 +219,10 @@ const Header: React.FC = () => {
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/">
           <Image
-            src="https://di8mcd92ly4ww.cloudfront.net/BetaLogo.png"
+            src="https://di8mcd92ly4ww.cloudfront.net/GrubyLogo.png"
             alt="Gruby Logo"
-            width={140}
-            height={47}
+            width={120}
+            height={23}
             className="cursor-pointer"
           />
         </Link>

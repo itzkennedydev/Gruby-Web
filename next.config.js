@@ -18,7 +18,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ['images.unsplash.com', "di8mcd92ly4ww.cloudfront.net"],
+    domains: ['images.unsplash.com', "di8mcd92ly4ww.cloudfront.net", "www.google.com", 'scontent-ord5-1.xx.fbcdn.net'],
   },
   transpilePackages: ["geist", '@mui/x-date-pickers', '@mui/material', '@mui/system', '@emotion/react', '@emotion/styled'],
 };

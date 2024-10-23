@@ -1,0 +1,1 @@
+ALTER TABLE "chefs" ADD COLUMN "specialty" text NOT NULL;

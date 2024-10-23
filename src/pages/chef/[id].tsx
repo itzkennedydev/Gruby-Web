@@ -1,189 +1,228 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { LocationMarkerIcon, HeartIcon } from '@heroicons/react/outline';
-import { useCart } from '~/contexts/CartContext';
-import { db } from '~/server/db';
-import { chefs, dishes } from '~/server/db/schema';
+import { MapPin, Heart, Clock, Award, ChefHat, Users, ShoppingBag } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { db } from '@/server/db';
+import { chefs, products, type Chef, type Product } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-interface Chef {
-  id: string;
-  name: string;
-  image: string;
-  chefImage: string;
-  location: string;
-  description: string;
-  category: string;
-  specialties: string[];
+interface ChefWithProducts extends Chef {
+  products: Product[];
 }
 
-interface Dish {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-}
-
-export async function getServerSideProps(context: { params: { id: string } }) {
-  const { id } = context.params;
-
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params as { id: string };
   const chef = await db.query.chefs.findFirst({
     where: eq(chefs.id, id),
-    with: {
-      dishes: true,
-    },
+    with: { products: true },
   });
 
   if (!chef) {
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 
   return {
-    props: {
-      chef: JSON.parse(JSON.stringify(chef)),
-    },
+    props: { chef: JSON.parse(JSON.stringify(chef)) },
   };
-}
+};
 
-interface DetailPageProps {
-  chef: Chef & { dishes: Dish[] };
-}
-
-const DetailPage: React.FC<DetailPageProps> = ({ chef }) => {
+const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
   const { addToCart } = useCart();
+  const [activeTab, setActiveTab] = useState('about');
+  const [likedProducts, setLikedProducts] = useState<Set<string>>(new Set());
 
-  const handleAddToCart = (dish: Dish) => {
-    addToCart({
-      id: dish.id,
-      name: dish.name,
-      price: dish.price,
-      quantity: 1,
-      image: dish.image,
+  const toggleLike = (productId: string) => {
+    setLikedProducts(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(productId)) {
+        newSet.delete(productId);
+      } else {
+        newSet.add(productId);
+      }
+      return newSet;
     });
   };
 
   if (!chef) {
     return (
-      <div className="container mx-auto py-12">
-        <p className="text-center text-gray-600">Chef not found</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg text-gray-600">Chef not found</p>
       </div>
     );
   }
 
+  const stats = [
+    { icon: Users, label: 'Customers Served', value: '500+' },
+    { icon: Award, label: 'Years Experience', value: '12+' },
+    { icon: ChefHat, label: 'Signature Dishes', value: chef.products?.length || '0' }
+  ];
+
   return (
-    <div className="container mx-auto py-12 px-4">
-      {/* Banner and Profile Section */}
-      <div className="relative mb-20">
-        <div className="rounded-lg overflow-hidden">
-          <div className="relative h-72 w-full">
-            <Image
-              src={chef.image}
-              alt={chef.name}
-              layout="fill"
-              objectFit="cover"
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
-        </div>
-        <div className="absolute -bottom-16 left-4">
-          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
-            <Image
-              src={chef.chefImage}
-              alt={chef.name}
-              width={128}
-              height={128}
-              className="object-cover"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Chef and Location Info */}
-      <div className="mb-8 mt-20">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">{chef.name}</h1>
-        <div className="flex items-center text-gray-500 mb-2">
-          <LocationMarkerIcon className="w-5 h-5 mr-1" />
-          <p>{chef.location || 'Location not specified'}</p>
-        </div>
-        <p className="text-lg text-gray-700">{chef.description}</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          {/* About Chef Section */}
-          <div className="bg-gray-50 p-6 rounded-lg mb-6">
-            <h2 className="text-2xl font-semibold mb-4">About the Chef</h2>
-            <p className="text-gray-700 mb-4">
-              {chef.name} is a renowned chef specializing in {chef.category} cuisine. With years of experience and a passion for creating delicious meals, {chef.name.split(' ')[0]} brings authentic flavors and innovative techniques to every dish.
-            </p>
-            <div className="mt-4">
-              <h3 className="text-xl font-semibold mb-2">Specialties</h3>
-              <div className="flex flex-wrap gap-2">
-                {chef.specialties?.map((specialty, index) => (
-                  <span key={index} className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-sm">
-                    {specialty}
-                  </span>
-                ))}
-              </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="relative h-[60vh] w-full">
+        <Image
+          src={chef.coverImageUrl ?? '/default-cover.jpg'}
+          alt={chef.name}
+          layout="fill"
+          objectFit="cover"
+          className="brightness-75"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+          <div className="container mx-auto flex items-end gap-6">
+            <div className="w-40 h-40 rounded-full border-4 border-white shadow-xl overflow-hidden flex-shrink-0">
+              <Image
+                src={chef.avatarUrl ?? '/default-avatar.jpg'}
+                alt={chef.name}
+                width={160}
+                height={160}
+                className="w-full h-full object-cover"
+              />
             </div>
-          </div>
-        </div>
-
-        <div>
-          {/* Book Chef Section */}
-          <div className="bg-white p-6 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">Book this Chef</h2>
-            <button className="bg-black text-white w-full py-3 rounded-lg hover:bg-gray-900">
-              Check Availability
+            <div className="flex-1 mb-4">
+              <h1 className="text-4xl font-bold mb-2">{chef.name}</h1>
+              <div className="flex items-center gap-2 mb-2">
+                <MapPin className="w-5 h-5" />
+                <span className="text-gray-200">Location not specified</span>
+              </div>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white">
+                {chef.specialty}
+              </span>
+            </div>
+            <button className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors mb-4">
+              Book Now
             </button>
           </div>
         </div>
       </div>
 
-      {/* Featured Dishes Section */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-4">Featured Dishes</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {chef.dishes && chef.dishes.length > 0 ? (
-            chef.dishes.map((dish) => (
-              <div key={dish.id} className="bg-white rounded-lg overflow-hidden">
-                <div className="relative h-48">
-                  <Image
-                    src={dish.image}
-                    alt={dish.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 right-4">
-                    <button className="bg-white rounded-full p-2">
-                      <HeartIcon className="w-6 h-6 text-gray-500" />
-                    </button>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{dish.name}</h3>
-                  <p className="text-gray-600 text-sm mb-2">{dish.description}</p>
-                  <div className="flex justify-between items-center">
-                    <p className="text-lg font-semibold">${dish.price.toFixed(2)}</p>
-                    <button
-                      className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-900"
-                      onClick={() => handleAddToCart(dish)}
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
+      {/* Main Content */}
+      <div className="container mx-auto py-8 px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column */}
+          <div className="lg:col-span-2">
+            {/* Tabs */}
+            <div className="border-b border-gray-200 mb-6">
+              <div className="flex space-x-8">
+                {['about', 'products', 'reviews'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`py-4 px-1 border-b-2 font-medium ${
+                      activeTab === tab
+                        ? 'border-black text-black'
+                        : 'border-transparent text-gray-500 hover:text-black'
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'about' && (
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <h2 className="text-2xl font-semibold mb-4">About {chef.name}</h2>
+                <p className="text-gray-700 mb-8">{chef.bio ?? 'No bio available'}</p>
+                
+                <div className="grid grid-cols-3 gap-6">
+                  {stats.map(({ icon: Icon, label, value }) => (
+                    <div key={label} className="text-center p-4 rounded-lg bg-gray-50">
+                      <Icon className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+                      <div className="font-semibold text-xl">{value}</div>
+                      <div className="text-sm text-gray-600">{label}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))
-          ) : (
-            <p className="text-gray-600">No dishes available for this chef.</p>
-          )}
+            )}
+
+            {activeTab === 'products' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {chef.products && chef.products.length > 0 ? (
+                  chef.products.map((product) => (
+                    <div key={product.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+                      <div className="relative h-48">
+                        <Image
+                          src={product.imageUrl ?? '/default-product.jpg'}
+                          alt={product.name}
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                        <button
+                          onClick={() => toggleLike(product.id)}
+                          className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
+                        >
+                          <Heart
+                            className={`w-5 h-5 ${
+                              likedProducts.has(product.id)
+                                ? 'fill-red-500 text-red-500'
+                                : 'text-gray-600'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <div className="p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="text-lg font-semibold">{product.name}</h3>
+                          <span className="text-lg font-semibold">
+                            ${Number(product.price).toFixed(2)}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-4">{product.description}</p>
+                        <button
+                          onClick={() => addToCart(product)}
+                          className="w-full py-2 px-4 bg-gray-100 text-gray-900 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center"
+                        >
+                          <ShoppingBag className="w-4 h-4 mr-2" />
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-600 col-span-2 text-center py-8">
+                    No products available yet.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {activeTab === 'reviews' && (
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <p className="text-center text-gray-600 py-8">
+                  No reviews available yet.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h2 className="text-xl font-semibold mb-4">Book {chef.name}</h2>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Clock className="w-5 h-5" />
+                  <span>Response time: within 24 hours</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <ChefHat className="w-5 h-5" />
+                  <span>Specializes in {chef.specialty}</span>
+                </div>
+                <button className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-900 transition-colors">
+                  Check Availability
+                </button>
+                <button className="w-full py-3 px-4 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                  Message Chef
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Box, Typography, Button, Tabs, Tab, Card, CardMedia, Avatar } from '@mui/material';
+import { Grid, Box, Typography, Button, Tabs, Tab, Card, CardMedia, Avatar } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { styled } from '@mui/system';
 import dynamic from 'next/dynamic';
-import { mockChefs, MealItem } from '../data/mockChefs';
 import { Chef } from '@/server/db/schema';
 
 const ChefCard = dynamic(() => import('../components/ChefCard'), {
@@ -84,28 +83,6 @@ const ScrollButton = styled(Button)({
   },
 });
 
-const Banner = styled(Box)({
-  width: '100%',
-  height: '300px',
-  backgroundImage: 'url(https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '2rem',
-  position: 'relative',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-});
-
 const StyledTabs = styled(Tabs)({
   '& .MuiTabs-indicator': {
     backgroundColor: '#FF4D00',
@@ -130,6 +107,7 @@ const MainPage: React.FC = () => {
   const [chefs, setChefs] = useState<Chef[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     async function fetchChefs() {
@@ -138,8 +116,10 @@ const MainPage: React.FC = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch chefs');
         }
-        const data = await response.json();
+        const data = await response.json() as Chef[];
         setChefs(data);
+        const uniqueCategories = Array.from(new Set(data.map(chef => chef.specialty)));
+        setCategories(uniqueCategories);
       } catch (err) {
         setError('Error fetching chefs. Please try again later.');
       } finally {
@@ -147,7 +127,7 @@ const MainPage: React.FC = () => {
       }
     }
 
-    fetchChefs();
+    void fetchChefs();
   }, []);
 
   if (isLoading) {
@@ -160,17 +140,36 @@ const MainPage: React.FC = () => {
 
   return (
     <>
-      <Banner>
-        <Typography variant="h2" color="white" fontWeight="bold" sx={{ position: 'relative', zIndex: 1 }}>
-          Discover Amazing Chefs
-        </Typography>
-      </Banner>
+      <div className="relative h-[500px] overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://images.pexels.com/photos/7613560/pexels-photo-7613560.jpeg)',
+            filter: 'brightness(0.7)'
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
+        <div className="relative h-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start">
+          <h1 className="text-5xl font-bold text-white mb-6">
+            Discover Amazing
+            <br />
+            Local Chefs
+          </h1>
+          <p className="text-xl text-gray-200 mb-8 max-w-xl">
+            Connect with talented culinary artists in your area and experience 
+            unforgettable dining experiences.
+          </p>
+          <button className="px-6 py-3 bg-[#FF4D00] hover:bg-[#FF4D00]/80 text-white rounded-lg transition-colors">
+            Find Your Chef
+          </button>
+        </div>
+      </div>
 
-      <Container maxWidth="lg" sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-8">
         <CategoryTabs categories={categories} />
 
         {categories.map((category, index) => {
-          const categoryChefs = mockChefs.filter(item => item.category === category);
+          const categoryChefs = chefs.filter(chef => chef.specialty === category);
           return (
             <Box key={category} sx={{ marginBottom: index < categories.length - 1 ? '18px' : 0, position: 'relative' }}>
               <Typography variant="h5" gutterBottom fontWeight="bold" marginBottom="1rem">
@@ -184,7 +183,7 @@ const MainPage: React.FC = () => {
             </Box>
           );
         })}
-      </Container>
+      </div>
     </>
   );
 };
@@ -217,7 +216,7 @@ const EmptyState: React.FC<{ category: string }> = ({ category }) => (
   </EmptyStateWrapper>
 );
 
-const ChefRow: React.FC<{ category: string, chefs: MealItem[] }> = ({ category, chefs }) => {
+const ChefRow: React.FC<{ category: string, chefs: Chef[] }> = ({ category, chefs }) => {
   const scrollRow = (direction: 'left' | 'right', rowId: string) => {
     const row = document.getElementById(rowId);
     if (row) {
@@ -235,9 +234,9 @@ const ChefRow: React.FC<{ category: string, chefs: MealItem[] }> = ({ category, 
         <ArrowBackIosIcon />
       </ScrollButton>
       <ScrollableGrid container spacing={2} id={`row-${category}`}>
-        {chefs.map((item) => (
-          <Grid item key={item.id}>
-            <ChefCard item={item} isFavorite={false} onToggleFavorite={() => {}} />
+        {chefs.map((chef) => (
+          <Grid item key={chef.id}>
+            <ChefCard chef={chef} isFavorite={false} onToggleFavorite={() => {/* Implement toggle favorite logic */}} />
           </Grid>
         ))}
       </ScrollableGrid>
