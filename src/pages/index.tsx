@@ -3,35 +3,21 @@ import type { NextPage } from 'next';
 import MainPage from './MainPage';
 import { useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useSyncUser } from '@/hooks/useSyncUser';
 
 const HomePage: NextPage = () => {
   const { isLoaded, user } = useUser();
+  const syncUser = useSyncUser();
 
   useEffect(() => {
-    if (!isLoaded || !user) return;
-
-    const syncUser = async () => {
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: user.primaryEmailAddress?.emailAddress,
-          name: user.fullName,
-          avatar_url: user.profileImageUrl,
-        }),
+    if (isLoaded && user) {
+      syncUser({
+        email: user.primaryEmailAddress?.emailAddress,
+        name: user.fullName ?? '',
+        avatar_url: user.imageUrl ?? '',
       });
-
-      if (!response.ok) {
-        console.error('Failed to insert user:', await response.text());
-      } else {
-        console.log('User inserted or already exists');
-      }
-    };
-
-    syncUser();
-  }, [isLoaded, user]);
+    }
+  }, [isLoaded, user, syncUser]);
 
   return <MainPage />;
 };
