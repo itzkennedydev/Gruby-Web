@@ -20,7 +20,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 import type { GeocodingResult } from '@/types';
-import type { NextRouter } from 'next/router'; // Add this import
+import type { NextRouter } from 'next/router';
 
 // Types and Interfaces
 interface ReverseGeocodingResult {
@@ -49,7 +49,7 @@ interface NavLinkProps {
 const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }) => (
   <Link 
     href={href}
-    className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
+    className="flex items-center gap-2.5 text-gray-700 hover:text-gray-900"
     onClick={onClick}
   >
     <Icon size={20} />
@@ -60,7 +60,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }
 const Header = () => {
   const { isSignedIn, isLoaded } = useUser();
   const { cartItems } = useCart();
-  const router = useRouter() as unknown as NextRouter; 
+  const router = useRouter() as unknown as NextRouter;
 
   // State management
   const [address, setAddress] = useState('');
@@ -153,7 +153,6 @@ const Header = () => {
     }
   };
 
-  // Handle custom address submission
   const handleCustomAddressSubmit = useCallback(async () => {
     if (customAddress.trim()) {
       try {
@@ -192,7 +191,6 @@ const Header = () => {
     }
   }, [customAddress, liveLocation, calculateDistance]);
 
-  // Handle search submit
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchTerm) {
@@ -202,7 +200,6 @@ const Header = () => {
     }
   };
 
-  // Fetch search results
   const fetchSearchResults = async (term: string) => {
     try {
       // Mock API call - replace with actual API endpoint
@@ -218,7 +215,6 @@ const Header = () => {
     }
   };
 
-  // Effects
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       handleGeolocation();
@@ -238,13 +234,12 @@ const Header = () => {
 
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [router.asPath]); 
+  }, [router.asPath]);
 
-  // Loading state
   if (!isLoaded) {
     return (
       <div className="h-16 bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
           <div className="h-8 w-24 bg-[#f5f5f5] rounded animate-pulse" />
           <div className="h-10 w-96 bg-[#f5f5f5] rounded animate-pulse" />
           <div className="h-10 w-32 bg-[#f5f5f5] rounded animate-pulse" />
@@ -255,8 +250,8 @@ const Header = () => {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-6 py-5 md:py-4">
+        <div className="flex items-center justify-between gap-6">
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMenuOpen(true)}
@@ -275,18 +270,19 @@ const Header = () => {
               className="w-auto h-6 md:h-8"
             />
           </Link>
+
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center flex-1 gap-4">
+          <div className="hidden md:flex items-center flex-1 gap-6">
             {/* Location Button */}
             <button
               onClick={() => setShowAddressModal(true)}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
             >
               <MapPin className="text-gray-700" size={18} />
               <span className="truncate max-w-[200px]">
                 {isLocating ? 'Locating...' : (address || 'Set location')}
               </span>
-              <ChevronDown className="text-gray-400" size={16} />
+              <ChevronDown className="text-gray-400 ml-1" size={16} />
             </button>
 
             {/* Search Bar */}
@@ -294,17 +290,17 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Search for dishes, cuisines, or chefs..."
-                className="w-full px-10 py-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
+                className="w-full px-12 py-2.5 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() => setShowMegaMenu(true)}
               />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
                   <X size={16} />
                 </button>
@@ -312,15 +308,15 @@ const Header = () => {
 
               {/* Mega Menu */}
               {showMegaMenu && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-100">
-                  <div className="p-6 grid grid-cols-3 gap-6">
+                <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-lg shadow-lg border border-gray-100">
+                  <div className="p-8 grid grid-cols-3 gap-8">
                     {/* Popular Cuisines */}
                     <div>
-                      <h3 className="text-lg font-semibold mb-3 flex items-center text-gray-700">
-                        <Utensils className="mr-2 text-gray-700" size={20} />
+                      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
+                        <Utensils className="mr-3 text-gray-700" size={20} />
                         Popular Cuisines
                       </h3>
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {['Italian', 'Japanese', 'Mexican', 'Indian', 'Thai'].map((cuisine) => (
                           <Link
                             key={cuisine}
@@ -336,11 +332,11 @@ const Header = () => {
 
                     {/* Popular Chefs */}
                     <div>
-                      <h3 className="text-lg font-semibold mb-3 flex items-center text-gray-700">
-                        <ChefHat className="mr-2 text-gray-700" size={20} />
+                      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
+                        <ChefHat className="mr-3 text-gray-700" size={20} />
                         Popular Chefs
                       </h3>
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {['Gordon Ramsay', 'Jamie Oliver', 'Wolfgang Puck'].map((chef) => (
                           <Link
                             key={chef}
@@ -356,11 +352,11 @@ const Header = () => {
 
                     {/* Trending */}
                     <div>
-                      <h3 className="text-lg font-semibold mb-3 flex items-center text-gray-700">
-                        <Coffee className="mr-2 text-gray-700" size={20} />
+                      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
+                        <Coffee className="mr-3 text-gray-700" size={20} />
                         Trending
                       </h3>
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         {['New Arrivals', 'Best Rated', 'Most Popular'].map((item) => (
                           <Link
                             key={item}
@@ -380,243 +376,243 @@ const Header = () => {
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             {isSignedIn && (
               <Link 
                 href="/orders" 
                 className="hidden md:flex items-center text-gray-700 hover:text-gray-900"
-              >
-                <ScrollText size={24} />
-              </Link>
-            )}
-            
-            <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
-              <ShoppingCart size={24} />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-gray-700 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartItemCount}
-                </span>
+                >
+                  <ScrollText size={24} />
+                </Link>
               )}
-            </Link>
-
-            {isSignedIn ? (
-              <UserButton afterSignOutUrl="/" />
-            ) : (
-              <div className="hidden md:flex items-center gap-2">
-                <SignInButton mode="modal">
-                  <button className="px-4 py-2 text-sm text-gray-700 hover:bg-[#f5f5f5] rounded-lg">
-                    Sign In
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="px-4 py-2 text-sm bg-gray-700 text-white rounded-lg hover:bg-gray-800">
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </div>
-            )}
+              
+              <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
+                <ShoppingCart size={24} />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-gray-700 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Link>
+  
+              {isSignedIn ? (
+                <UserButton afterSignOutUrl="/" />
+              ) : (
+                <div className="hidden md:flex items-center gap-3">
+                  <SignInButton mode="modal">
+                    <button className="px-5 py-2 text-sm text-gray-700 hover:bg-[#f5f5f5] rounded-lg">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="px-5 py-2 text-sm bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </div>
+              )}
+            </div>
+          </div>
+  
+          {/* Mobile Search */}
+          <div className="md:hidden mt-4">
+            <form onSubmit={handleSearchSubmit} className="relative">
+              <input
+                type="text"
+                placeholder="Search dishes, cuisines, or chefs..."
+                className="w-full px-10 py-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </form>
           </div>
         </div>
-
-        {/* Mobile Search */}
-        <div className="md:hidden mt-4">
-          <form onSubmit={handleSearchSubmit} className="relative">
-            <input
-              type="text"
-              placeholder="Search dishes, cuisines, or chefs..."
-              className="w-full px-10 py-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-            {searchTerm && (
-              <button
-                type="button"
-                onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X size={16} />
-              </button>
-            )}
-          </form>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div 
-        className={`fixed inset-0 bg-black/50 z-50 md:hidden transition-opacity ${
-          isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setIsMenuOpen(false)}
-      >
+  
+        {/* Mobile Menu */}
         <div 
-          className={`fixed inset-y-0 left-0 w-[280px] bg-white shadow-xl transform transition-transform ${
-            isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`fixed inset-0 bg-black/50 z-50 md:hidden transition-opacity ${
+            isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
-          onClick={e => e.stopPropagation()}
+          onClick={() => setIsMenuOpen(false)}
         >
-          <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-700">Menu</h2>
-            <button 
-              onClick={() => setIsMenuOpen(false)}
-              className="p-2 text-gray-500 hover:text-gray-700"
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          <div className="p-4 space-y-6">
-            <button
-              onClick={() => {
-                setShowAddressModal(true);
-                setIsMenuOpen(false);
-              }}
-              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 w-full"
-            >
-              <MapPin size={20} className="text-gray-700" />
-              <span className="truncate">
-                {isLocating ? 'Locating...' : (address || 'Set location')}
-              </span>
-            </button>
-
-            <nav className="space-y-4 border-t border-gray-200 pt-4">
-              <NavLink 
-                href="/browse" 
-                icon={Utensils}
+          <div 
+            className={`fixed inset-y-0 left-0 w-[280px] bg-white shadow-xl transform transition-transform ${
+              isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              <h2 className="font-semibold text-gray-700">Menu</h2>
+              <button 
                 onClick={() => setIsMenuOpen(false)}
+                className="p-2 text-gray-500 hover:text-gray-700"
               >
-                Browse Cuisines
-              </NavLink>
-              <NavLink 
-                href="/chefs" 
-                icon={ChefHat}
-                onClick={() => setIsMenuOpen(false)}
+                <X size={20} />
+              </button>
+            </div>
+  
+            <div className="p-4 space-y-6">
+              <button
+                onClick={() => {
+                  setShowAddressModal(true);
+                  setIsMenuOpen(false);
+                }}
+                className="flex items-center gap-2 text-gray-700 hover:text-gray-900 w-full"
               >
-                Find Chefs
-              </NavLink>
-              {isSignedIn && (
+                <MapPin size={20} className="text-gray-700" />
+                <span className="truncate">
+                  {isLocating ? 'Locating...' : (address || 'Set location')}
+                </span>
+              </button>
+  
+              <nav className="space-y-4 border-t border-gray-200 pt-4">
                 <NavLink 
-                  href="/orders" 
-                  icon={ScrollText}
+                  href="/browse" 
+                  icon={Utensils}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  My Orders
+                  Browse Cuisines
                 </NavLink>
-              )}
-            </nav>
-
-            {!isSignedIn && (
-              <div className="border-t border-gray-200 pt-4 space-y-2">
-                <SignInButton mode="modal">
-                  <button 
-                    className="w-full py-2 px-4 border border-gray-200 rounded-lg text-gray-700 hover:bg-[#f5f5f5]"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Sign In
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button 
-                    className="w-full py-2 px-4 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Location Modal */}
-      {showAddressModal && (
-        <div className="fixed inset-0 bg-black/50 z-50">
-          <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-700">Enter delivery address</h2>
-                <button 
-                  onClick={() => setShowAddressModal(false)}
-                  className="p-2 text-gray-500 hover:text-gray-700"
+                <NavLink 
+                  href="/chefs" 
+                  icon={ChefHat}
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={customAddress}
-                    onChange={(e) => setCustomAddress(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
-                    placeholder="Enter street address or zip code"
-                  />
-                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                </div>
-
-                {showWarning && (
-                  <div className="p-3 bg-red-50 border border-red-100 rounded-lg">
-                    <p className="text-red-600 text-sm">
-                      This address is far from your current location. Are you sure it's correct?
-                    </p>
-                  </div>
+                  Find Chefs
+                </NavLink>
+                {isSignedIn && (
+                  <NavLink 
+                    href="/orders" 
+                    icon={ScrollText}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Orders
+                  </NavLink>
                 )}
-
-                <div className="space-y-2">
+              </nav>
+  
+              {!isSignedIn && (
+                <div className="border-t border-gray-200 pt-4 space-y-2">
+                  <SignInButton mode="modal">
+                    <button 
+                      className="w-full py-2 px-4 border border-gray-200 rounded-lg text-gray-700 hover:bg-[#f5f5f5]"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button 
+                      className="w-full py-2 px-4 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+  
+        {/* Location Modal */}
+        {showAddressModal && (
+          <div className="fixed inset-0 bg-black/50 z-50">
+            <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-700">Enter delivery address</h2>
                   <button 
-                    onClick={handleCustomAddressSubmit}
-                    className="w-full py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+                    onClick={() => setShowAddressModal(false)}
+                    className="p-2 text-gray-500 hover:text-gray-700"
                   >
-                    Confirm Address
+                    <X size={20} />
+                  </button>
+                </div>
+  
+                <div className="space-y-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={customAddress}
+                      onChange={(e) => setCustomAddress(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
+                      placeholder="Enter street address or zip code"
+                    />
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                  </div>
+  
+                  {showWarning && (
+                    <div className="p-3 bg-red-50 border border-red-100 rounded-lg">
+                      <p className="text-red-600 text-sm">
+                        This address is far from your current location. Are you sure it's correct?
+                      </p>
+                    </div>
+                  )}
+  
+                  <div className="space-y-2">
+                    <button 
+                      onClick={handleCustomAddressSubmit}
+                      className="w-full py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+                    >
+                      Confirm Address
+                    </button>
+                    <button 
+                      onClick={() => {
+                        getCurrentPosition();
+                        setShowAddressModal(false);
+                        setShowWarning(false);
+                      }}
+                      className="w-full py-2 border border-gray-200 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+                    >
+                      Use current location
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+  
+        {/* Location Permission Modal */}
+        {showLocationPrompt && (
+          <div className="fixed inset-0 bg-black/50 z-50">
+            <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-700">Allow Location Access?</h2>
+                <p className="text-gray-600 mb-6">
+                  Gruby would like to access your location to show nearby chefs and meals.
+                </p>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => handleLocationPermission(false)}
+                    className="flex-1 py-2 border border-gray-200 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+                  >
+                    Not Now
                   </button>
                   <button 
-                    onClick={() => {
-                      getCurrentPosition();
-                      setShowAddressModal(false);
-                      setShowWarning(false);
-                    }}
-                    className="w-full py-2 border border-gray-200 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+                    onClick={() => handleLocationPermission(true)}
+                    className="flex-1 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
                   >
-                    Use current location
+                    Allow Access
                   </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Location Permission Modal */}
-      {showLocationPrompt && (
-        <div className="fixed inset-0 bg-black/50 z-50">
-          <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-gray-700">Allow Location Access?</h2>
-              <p className="text-gray-600 mb-6">
-                Gruby would like to access your location to show nearby chefs and meals.
-              </p>
-              <div className="flex gap-3">
-                <button 
-                  onClick={() => handleLocationPermission(false)}
-                  className="flex-1 py-2 border border-gray-200 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
-                >
-                  Not Now
-                </button>
-                <button 
-                  onClick={() => handleLocationPermission(true)}
-                  className="flex-1 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
-                >
-                  Allow Access
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </header>
-  );
-};
-
-export default Header;
+        )}
+      </header>
+    );
+  };
+  
+  export default Header;

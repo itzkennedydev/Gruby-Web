@@ -32,12 +32,14 @@ const Cart: React.FC = () => {
           <ShoppingBag className="mx-auto h-12 w-12 sm:h-16 sm:w-16 text-gray-400 mb-4" />
           <h1 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-4">Your Cart is Empty</h1>
           <p className="text-gray-600 mb-6 sm:mb-8 px-4">Looks like you haven&apos;t added anything to your cart yet.</p>
-          <Link href="/">
-            <Button className="flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Continue Shopping
-            </Button>
-          </Link>
+          <div className="flex justify-center">
+            <Link href="/">
+              <Button className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Continue Shopping
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
