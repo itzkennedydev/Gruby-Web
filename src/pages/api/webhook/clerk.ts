@@ -85,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
                 console.log('User delete result:', deleteResult);
                 break;
             default:
-                console.log(`Unhandled event type: ${evt.type}`);
+                console.log(`Unhandled event type: ${evt.type as string}`);
         }
 
         res.status(200).json({ message: 'Webhook processed successfully' });

@@ -4,7 +4,11 @@
  */
 await import("./src/env.js");
 
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -29,7 +33,9 @@ const config = {
   },
   transpilePackages: ["geist", '@mui/x-date-pickers', '@mui/material', '@mui/system', '@emotion/react', '@emotion/styled'],
   webpack: (config) => {
-    config.resolve.alias['~'] = path.join(__dirname, 'src');
+    if (config.resolve && config.resolve.alias) {
+      config.resolve.alias['~'] = path.join(__dirname, 'src');
+    }
     return config;
   },
 };
