@@ -46,13 +46,13 @@ const Cart: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl min-h-[60vh]">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold">Shopping Cart ({cartItems.length})</h1>
-        <Link href="/">
+      <Link href="/">
           <Button variant="ghost" className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
             Continue Shopping
           </Button>
         </Link>
+        <h1 className="text-2xl sm:text-3xl font-bold">Shopping Cart ({cartItems.length})</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
