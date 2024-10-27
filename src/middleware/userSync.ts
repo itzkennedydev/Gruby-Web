@@ -48,9 +48,9 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
         const clerkUser = (await clerkResponse.json()) as ClerkUser;
 
         // Prepare user data for insertion into the database
-        const email = clerkUser.email_addresses[0]?.email_address || '';
-        const firstName = clerkUser.first_name || '';
-        const lastName = clerkUser.last_name || '';
+        const email = clerkUser.email_addresses[0]?.email_address ?? '';
+        const firstName = clerkUser.first_name ?? '';
+        const lastName = clerkUser.last_name ?? '';
         const fullName = `${firstName} ${lastName}`.trim();
 
         // Insert the user into the database, ensuring user_id is not null
@@ -58,7 +58,7 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
           id: clerkUser.id,
           email,
           name: fullName,
-          avatarUrl: clerkUser.profile_image_url || '',
+          avatarUrl: clerkUser.profile_image_url ?? '',
         });
 
         console.log(`New user ${fullName} synced from Clerk`);

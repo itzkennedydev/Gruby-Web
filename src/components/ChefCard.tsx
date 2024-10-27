@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled } from '@mui/system';
 import Link from 'next/link';
-import { Chef } from '@/types'; // Make sure to import the updated Chef interface
+import type { Chef } from '@/types'; // Changed to type import
 
 interface ChefCardProps {
   chef: Chef;
@@ -33,17 +33,6 @@ const StyledCardMedia = styled(CardMedia)({
   width: '288px',
   height: '130px',
   borderRadius: '12px',
-});
-
-const RatingBadge = styled(Box)({
-  position: 'absolute',
-  bottom: 8,
-  right: 8,
-  backgroundColor: '#fff',
-  padding: '4px 8px',
-  borderRadius: '8px',
-  fontSize: '14px',
-  fontWeight: 'bold',
 });
 
 const FavoriteIconWrapper = styled(Box)({

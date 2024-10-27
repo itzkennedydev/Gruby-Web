@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserProfile, useUser } from '@clerk/nextjs';
+import { UserProfile } from '@clerk/nextjs';
 import Layout from '../components/Layout';
 import OrderList from '../components/OrderList';
 import { FavoritesList } from '../components/FavoritesList';
@@ -9,7 +9,6 @@ import type { FavoriteItem } from '../types/FavoriteItem';
 type TabType = 'profile' | 'orders' | 'favorites';
 
 const Profile: React.FC = () => {
-  const { isLoaded } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isChef, setIsChef] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<Product[]>([]);

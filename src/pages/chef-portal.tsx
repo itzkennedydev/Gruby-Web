@@ -89,7 +89,7 @@ const ChefPortal: React.FC = () => {
         fetchChefProfile()
       ]);
     }
-  }, [user]);
+  }, [user, fetchMenuItems, fetchChefProfile]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

@@ -1,5 +1,5 @@
 // pages/order-confirmation.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,7 +38,39 @@ export default function OrderConfirmation() {
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
 
-  const verifyPayment = async () => {
+  const sendEmailConfirmation = async (orderData: OrderDetails, email: string) => {
+    console.log('Attempting to send email confirmation to:', email);
+    console.log('Order Data:', orderData);
+
+    try {
+      const response = await fetch('/api/send-order-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, orderDetails: orderData }),
+      });
+
+      const data = (await response.json()) as ApiError;
+      console.log('Response from send-order-confirmation:', data);
+
+      if (!response.ok) {
+        throw new Error(data?.message || 'Failed to send email confirmation');
+      }
+
+      toast({
+        title: "Order Confirmation Email Sent",
+        description: "Check your inbox for order details.",
+      });
+    } catch (error) {
+      console.error('Error sending email confirmation:', error instanceof Error ? error.message : 'Unknown error');
+      toast({
+        title: "Email Confirmation Failed",
+        description: `We couldn't send the confirmation email. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const verifyPayment = useCallback(async () => {
     try {
       const stripe = await stripePromise;
       if (!stripe) throw new Error('Failed to load Stripe');
@@ -77,45 +109,13 @@ export default function OrderConfirmation() {
         variant: "destructive",
       });
     }
-  };
+  }, [payment_intent_client_secret, user, setOrderDetails, setStatus]);
 
   useEffect(() => {
     if (payment_intent && payment_intent_client_secret) {
       void verifyPayment();
     }
   }, [payment_intent, payment_intent_client_secret, verifyPayment]);
-
-  const sendEmailConfirmation = async (orderData: OrderDetails, email: string) => {
-    console.log('Attempting to send email confirmation to:', email);
-    console.log('Order Data:', orderData);
-
-    try {
-      const response = await fetch('/api/send-order-confirmation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, orderDetails: orderData }),
-      });
-
-      const data = (await response.json()) as ApiError;
-      console.log('Response from send-order-confirmation:', data);
-
-      if (!response.ok) {
-        throw new Error(data?.message || 'Failed to send email confirmation');
-      }
-
-      toast({
-        title: "Order Confirmation Email Sent",
-        description: "Check your inbox for order details.",
-      });
-    } catch (error) {
-      console.error('Error sending email confirmation:', error instanceof Error ? error.message : 'Unknown error');
-      toast({
-        title: "Email Confirmation Failed",
-        description: `We couldn't send the confirmation email. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        variant: "destructive",
-      });
-    }
-  };
 
   const handleGuestEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();

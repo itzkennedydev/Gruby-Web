@@ -1,5 +1,5 @@
 // pages/order-confirmation.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,50 +37,6 @@ export default function OrderConfirmation() {
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
 
-  const verifyPayment = async (paymentIntent: string, clientSecret: string) => {
-    try {
-      const stripe = await stripePromise;
-      if (!stripe) throw new Error('Failed to load Stripe');
-
-      const { paymentIntent: retrievedIntent } = await stripe.retrievePaymentIntent(clientSecret);
-
-      if (retrievedIntent?.status === 'succeeded') {
-        const response = await fetch(`/api/order-details?payment_intent=${paymentIntent}`);
-        if (!response.ok) {
-          const errorData = (await response.json()) as ErrorResponse;
-          throw new Error(errorData.message ?? 'Failed to fetch order details');
-        }
-
-        const orderData = (await response.json()) as OrderDetails;
-        setOrderDetails(orderData);
-        setStatus('success');
-
-        if (user?.primaryEmailAddress?.emailAddress) {
-          console.log('User is signed in, sending email to:', user.primaryEmailAddress.emailAddress);
-          await sendEmailConfirmation(orderData, user.primaryEmailAddress.emailAddress);
-        }
-      } else {
-        throw new Error('Payment was not successful');
-      }
-    } catch (error) {
-      setStatus('error');
-      toast({
-        title: "Order Confirmation Failed",
-        description: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        variant: "destructive",
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const { payment_intent, payment_intent_client_secret } = router.query;
-    if (payment_intent && payment_intent_client_secret) {
-      void verifyPayment(payment_intent as string, payment_intent_client_secret as string);
-    }
-  }, [router.isReady, router.query, verifyPayment]);
-
   const sendEmailConfirmation = async (orderData: OrderDetails, email: string) => {
     console.log('Attempting to send email confirmation to:', email);
     console.log('Order Data:', orderData);
@@ -113,6 +69,50 @@ export default function OrderConfirmation() {
       });
     }
   };
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const { payment_intent, payment_intent_client_secret } = router.query;
+    if (payment_intent && payment_intent_client_secret) {
+      const verifyPayment = async () => {
+        try {
+          const stripe = await stripePromise;
+          if (!stripe) throw new Error('Failed to load Stripe');
+
+          const { paymentIntent: retrievedIntent } = await stripe.retrievePaymentIntent(payment_intent_client_secret as string);
+
+          if (retrievedIntent?.status === 'succeeded') {
+            const response = await fetch(`/api/order-details?payment_intent=${payment_intent}`);
+            if (!response.ok) {
+              const errorData = (await response.json()) as ErrorResponse;
+              throw new Error(errorData.message ?? 'Failed to fetch order details');
+            }
+
+            const orderData = (await response.json()) as OrderDetails;
+            setOrderDetails(orderData);
+            setStatus('success');
+
+            if (user?.primaryEmailAddress?.emailAddress) {
+              console.log('User is signed in, sending email to:', user.primaryEmailAddress.emailAddress);
+              await sendEmailConfirmation(orderData, user.primaryEmailAddress.emailAddress);
+            }
+          } else {
+            throw new Error('Payment was not successful');
+          }
+        } catch (error) {
+          setStatus('error');
+          toast({
+            title: "Order Confirmation Failed",
+            description: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            variant: "destructive",
+          });
+        }
+      };
+
+      void verifyPayment();
+    }
+  }, [router.isReady, router.query, user]);
 
   const handleGuestEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();

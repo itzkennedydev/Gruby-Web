@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, Typography, Button, Tabs, Tab, Card, Avatar } from '@mui/material';
+import { Grid, Box, Typography, Button, Tabs, Tab } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { styled } from '@mui/system';
