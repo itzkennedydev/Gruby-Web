@@ -1,5 +1,4 @@
 import { GeocodingResult } from '@/types';
-import type { SomeType } from 'some-module';
 
 interface LatLng {
   lat: number;
@@ -86,7 +85,7 @@ function deg2rad(deg: number): number {
   return deg * (Math.PI / 180);
 }
 
-export function calculateDistance(coord1: LatLng, coord2: LatLng): number {
+function calculateDistance(coord1: LatLng, coord2: LatLng): number {
   const R = 6371; // Earth's radius in km
   const dLat = deg2rad(coord2.lat - coord1.lat);
   const dLon = deg2rad(coord2.lng - coord1.lng);
@@ -102,9 +101,8 @@ export function calculateDistance(coord1: LatLng, coord2: LatLng): number {
 export {
   getCoordinates,
   getAddressFromCoordinates,
+  calculateDistance,
+  type LatLng,
   type GeocodingResult,
   type ReverseGeocodingResult
 };
-
-// Fix nullish coalescing
-const geocodingValue = someGeocodingExpression ?? defaultValue;
