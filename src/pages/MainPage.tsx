@@ -26,22 +26,27 @@ interface ScrollButtonProps {
   direction: 'left' | 'right';
   onClick: () => void;
   className: string;
+  show: boolean;
 }
 
 // Responsive scroll button
-const ScrollButton = ({ direction, onClick, className }: ScrollButtonProps) => (
-  <button
-    onClick={onClick}
-    className={`
-      hidden md:flex items-center justify-center w-10 h-10 rounded-full 
-      bg-white/80 hover:bg-white shadow-md transition-colors
-      absolute top-1/2 -translate-y-1/2 z-10
-      ${className}
-    `}
-  >
-    {direction === 'left' ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-  </button>
-);
+const ScrollButton = ({ direction, onClick, className, show }: ScrollButtonProps) => {
+  if (!show) return null;
+  
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        hidden md:flex items-center justify-center w-10 h-10 rounded-full 
+        bg-white/80 hover:bg-white shadow-md transition-colors
+        absolute top-1/2 -translate-y-1/2 z-10
+        ${className}
+      `}
+    >
+      {direction === 'left' ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+    </button>
+  );
+};
 
 interface TabButtonProps {
   isActive: boolean;
@@ -164,6 +169,7 @@ const MainPage = () => {
                     if (row) row.scrollBy({ left: -300, behavior: 'smooth' });
                   }}
                   className="-left-5"
+                  show={categoryChefs.length > 1}
                 />
 
                 <ScrollableGrid id={`row-${category}`}>
@@ -185,6 +191,7 @@ const MainPage = () => {
                     if (row) row.scrollBy({ left: 300, behavior: 'smooth' });
                   }}
                   className="-right-5"
+                  show={categoryChefs.length > 1}
                 />
               </div>
             </div>
