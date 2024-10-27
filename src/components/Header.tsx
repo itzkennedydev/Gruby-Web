@@ -511,13 +511,13 @@ const Header = () => {
             ) : (
               <div className="hidden md:flex items-center gap-3">
                 <SignInButton mode="modal">
-                  <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
+                  <button className="px-6 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                     Sign In
                   </button>
                 </SignInButton>
                 <SignUpButton mode="modal">
-                  <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
-                    Sign Up
+                  <button className="px-6 py-2.5 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-lg transition-colors">
+                    Get Started
                   </button>
                 </SignUpButton>
               </div>
@@ -613,10 +613,10 @@ const Header = () => {
             </nav>
 
             {!isSignedIn && (
-              <div className="border-t border-gray-200 pt-4 space-y-2">
+              <div className="border-t border-gray-200 pt-4 space-y-3">
                 <SignInButton mode="modal">
                   <button 
-                    className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
+                    className="w-full py-2.5 px-4 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In
@@ -624,10 +624,10 @@ const Header = () => {
                 </SignInButton>
                 <SignUpButton mode="modal">
                   <button 
-                    className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
+                    className="w-full py-2.5 px-4 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-lg transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Sign Up
+                    Get Started
                   </button>
                 </SignUpButton>
               </div>
