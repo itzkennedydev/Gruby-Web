@@ -41,6 +41,7 @@ const ChefPortal: React.FC = () => {
   const [chefProfile, setChefProfile] = useState<ChefProfile | null>(null);
   const [bannerUrl, setBannerUrl] = useState('');
   const [isAddingItem, setIsAddingItem] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const categories = ['Mexican', 'American', 'Italian', 'Chinese', 'Indian', 'Japanese', 'Thai', 'Mediterranean', 'French', 'Greek'];
 
@@ -52,6 +53,7 @@ const ChefPortal: React.FC = () => {
   }, [user]);
 
   const fetchMenuItems = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`/api/menu-items?chef_id=${user?.id}`);
       if (response.ok) {
@@ -65,6 +67,8 @@ const ChefPortal: React.FC = () => {
         description: 'Failed to fetch menu items',
         variant: 'destructive',
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,11 +94,7 @@ const ChefPortal: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    if (name === 'price') {
-      setNewItem((prev) => ({ ...prev, [name]: Number(value) }));
-    } else {
-      setNewItem((prev) => ({ ...prev, [name]: value }));
-    }
+    setNewItem((prev) => ({ ...prev, [name]: name === 'price' ? Number(value) : value }));
   };
 
   const handleCategoryChange = (value: string) => {
@@ -102,6 +102,11 @@ const ChefPortal: React.FC = () => {
   };
 
   const handleAddItem = async () => {
+    if (!newItem.name || !newItem.price || !newItem.category) {
+      toast({ title: 'All fields must be filled', variant: 'destructive' });
+      return;
+    }
+
     try {
       const response = await fetch('/api/menu-items', {
         method: 'POST',
@@ -121,10 +126,6 @@ const ChefPortal: React.FC = () => {
       console.error('Error adding menu item:', error);
       toast({ title: 'Failed to add menu item', variant: 'destructive' });
     }
-  };
-
-  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBannerUrl(e.target.value);
   };
 
   const handleBannerUpdate = async () => {
@@ -202,21 +203,16 @@ const ChefPortal: React.FC = () => {
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="bannerUrl">Banner Image URL</Label>
-                  <div className="mt-1 space-y-2">
-                    <Input
-                      id="bannerUrl"
-                      value={bannerUrl}
-                      onChange={handleBannerChange}
-                      placeholder="Enter banner image URL"
-                      className="w-full"
-                    />
-                    <Button 
-                      onClick={handleBannerUpdate}
-                      className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      Update Banner
-                    </Button>
-                  </div>
+                  <Input
+                    id="bannerUrl"
+                    value={bannerUrl}
+                    onChange={handleInputChange}
+                    placeholder="Enter banner image URL"
+                    className="w-full"
+                  />
+                  <Button onClick={handleBannerUpdate} className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white">
+                    Update Banner
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -225,19 +221,17 @@ const ChefPortal: React.FC = () => {
           {/* Menu Items Section */}
           <div className="lg:col-span-2 space-y-6">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
+              <CardHeader className="flex justify-between">
                 <CardTitle>Menu Items</CardTitle>
-                <Button 
-                  onClick={() => setIsAddingItem(!isAddingItem)}
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
-                >
+                <Button onClick={() => setIsAddingItem(!isAddingItem)} className="bg-orange-500 hover:bg-orange-600 text-white">
                   <PlusCircle className="w-4 h-4 mr-2" />
                   Add New Item
                 </Button>
               </CardHeader>
               <CardContent>
                 {isAddingItem && (
-                  <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 mb-4">
+                    {/* Add Menu Item Form */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="itemName">Item Name</Label>
@@ -296,17 +290,16 @@ const ChefPortal: React.FC = () => {
                         </Select>
                       </div>
                     </div>
-                    <Button 
-                      onClick={handleAddItem}
-                      className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white"
-                    >
+                    <Button onClick={handleAddItem} className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white">
                       Add to Menu
                     </Button>
                   </div>
                 )}
 
                 <div className="space-y-4">
-                  {menuItems.length > 0 ? (
+                  {loading ? (
+                    <p>Loading menu items...</p>
+                  ) : menuItems.length > 0 ? (
                     menuItems.map((item) => (
                       <div
                         key={item.id}
@@ -336,9 +329,9 @@ const ChefPortal: React.FC = () => {
                             <Button variant="outline" size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
                               <Pencil className="w-4 h-4" />
                             </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               className="bg-red-500 hover:bg-red-600 text-white"
                               onClick={() => handleDeleteItem(item.id)}
                             >

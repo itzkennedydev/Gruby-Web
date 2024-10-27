@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 interface Order {
   id: number;
@@ -15,7 +15,7 @@ const OrderList: React.FC = () => {
     // Add more orders as needed
   ];
 
-  const getStatusColor = (status: Order['status']): string => {
+  const getStatusColor = useMemo(() => (status: Order['status']): string => {
     switch (status) {
       case 'Delivered':
         return 'text-green-500';
@@ -26,17 +26,19 @@ const OrderList: React.FC = () => {
       default:
         return 'text-gray-500';
     }
-  };
+  }, []);
 
   return (
     <div className="space-y-4">
       {orders.length > 0 ? (
-        <ul className="space-y-4">
+        <ul className="space-y-4" aria-label="Order list">
           {orders.map((order) => (
             <li key={order.id} className="bg-white shadow rounded-lg p-4">
               <div className="flex justify-between items-center">
-                <span className="font-semibold">{order.name}</span>
-                <span className="text-sm text-gray-500">{order.date}</span>
+                <div>
+                  <span className="font-semibold">{order.name}</span>
+                  <div className="text-sm text-gray-500">{order.date}</div>
+                </div>
                 <span className={`text-sm ${getStatusColor(order.status)}`}>
                   {order.status}
                 </span>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Heart, HeartFill } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -11,11 +11,24 @@ interface FavoriteButtonProps {
 export function FavoriteButton({ chefId }: FavoriteButtonProps) {
   const [isFavorite, setIsFavorite] = useState(false);
 
-  function handleToggleFavorite(event: React.MouseEvent) {
+  // Load favorite status from localStorage when the component mounts
+  useEffect(() => {
+    const storedFavorite = localStorage.getItem(`favorite-${chefId}`);
+    if (storedFavorite) {
+      setIsFavorite(JSON.parse(storedFavorite) as boolean);
+    }
+  }, [chefId]);
+
+  function handleToggleFavorite(event: React.MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    setIsFavorite(!isFavorite);
-    // Optionally, send a request to update the server
+    setIsFavorite((prevState) => {
+      const newFavoriteState = !prevState;
+      localStorage.setItem(`favorite-${chefId}`, JSON.stringify(newFavoriteState));
+      return newFavoriteState;
+    });
+
+    // Optionally, send a request to update the server here
   }
 
   return (

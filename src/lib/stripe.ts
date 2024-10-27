@@ -1,16 +1,22 @@
 import { loadStripe } from '@stripe/stripe-js';
 
+// Load Stripe with the publishable key from the environment variables
 export const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
+// CartItem interface representing items in the cart
 export interface CartItem {
   id: string;
   name: string;
-  price: number;
+  price: number; // Price in dollars (must be converted to cents for Stripe)
   quantity: number;
 }
 
-export async function createPaymentIntent(cartItems: CartItem[]): Promise<{ clientSecret: string }> {
-  const response = await fetch('/api/create-payment-intent', {
+// Create a Stripe Checkout session
+export async function createCheckoutSession(cartItems: CartItem[]) {
+  const stripe = await stripePromise;
+
+  // Call your server to create a Stripe Checkout session
+  const response = await fetch('/api/createCheckoutSession', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -18,10 +24,22 @@ export async function createPaymentIntent(cartItems: CartItem[]): Promise<{ clie
     body: JSON.stringify({ cartItems }),
   });
 
+  // Handle errors from the server response
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to create payment intent');
+    throw new Error(errorData.error || 'Failed to create checkout session');
   }
 
-  return await response.json();
+  const { sessionId } = await response.json();
+
+  // Redirect to Stripe Checkout using the session ID
+  if (stripe) {
+    const { error } = await stripe.redirectToCheckout({ sessionId });
+
+    // Handle any error from the Stripe redirection
+    if (error) {
+      console.error('Stripe checkout error:', error);
+      throw error;
+    }
+  }
 }

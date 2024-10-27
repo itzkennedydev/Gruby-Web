@@ -2,23 +2,35 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from '@clerk/nextjs/server';
 import { db } from '@/server/db';
 import { orders, orderItems, products } from '@/server/db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, SQL } from 'drizzle-orm';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2022-11-15',
+  apiVersion: '2024-09-30.acacia',
 });
+
+interface ProcessedOrderItem {
+  name: string;
+  quantity: number;
+  price: string;
+}
 
 interface ProcessedOrder {
   id: string;
   createdAt: string;
   totalAmount: string;
   status: string;
-  items: {
-    name: string;
-    quantity: number;
-    price: string;
-  }[];
+  items: ProcessedOrderItem[];
+}
+
+interface UserOrderRow {
+  orderId: string;
+  createdAt: Date;
+  total: string;
+  status: string;
+  productName: string | null;
+  quantity: string | null;
+  price: string | null;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -30,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
-      const userOrders = await db
+      const userOrders: UserOrderRow[] = await db
         .select({
           orderId: orders.id,
           createdAt: orders.createdAt,
@@ -41,34 +53,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           price: orderItems.price,
         })
         .from(orders)
-        .where(eq(orders.userId, userId))
+        .where(eq(orders.user_id, userId))
         .leftJoin(orderItems, eq(orders.id, orderItems.orderId))
         .leftJoin(products, eq(orderItems.productId, products.id))
         .orderBy(desc(orders.createdAt));
 
-      const processedOrders = userOrders.reduce((acc: ProcessedOrder[], order) => {
+      const processedOrders: ProcessedOrder[] = userOrders.reduce((acc, order) => {
         const existingOrder = acc.find(o => o.id === order.orderId);
+        const orderItem: ProcessedOrderItem = {
+          name: order.productName ?? 'Unknown Product',
+          quantity: parseInt(order.quantity ?? '0', 10),
+          price: order.price ?? '0',
+        };
+
         if (existingOrder) {
-          existingOrder.items.push({
-            name: order.productName ?? 'Unknown Product',
-            quantity: order.quantity ?? 0,
-            price: order.price?.toString() ?? '0',
-          });
+          existingOrder.items.push(orderItem);
         } else {
           acc.push({
             id: order.orderId,
             createdAt: order.createdAt.toISOString(),
-            totalAmount: order.total.toString(),
+            totalAmount: order.total,
             status: order.status,
-            items: [{
-              name: order.productName ?? 'Unknown Product',
-              quantity: order.quantity ?? 0,
-              price: order.price?.toString() ?? '0',
-            }],
+            items: [orderItem],
           });
         }
         return acc;
-      }, []);
+      }, [] as ProcessedOrder[]);
 
       if (processedOrders.length === 0) {
         console.log('No orders found for user:', userId);
@@ -81,23 +91,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === 'POST') {
     try {
-      const { sessionId } = req.body;
+      const { sessionId } = req.body as { sessionId: string };
+
+      if (!sessionId || typeof sessionId !== 'string') {
+        return res.status(400).json({ message: 'Session ID is required and must be a string' });
+      }
 
       const session = await stripe.checkout.sessions.retrieve(sessionId);
 
+      if (!session.amount_total) {
+        throw new Error('Stripe session missing amount_total');
+      }
+
       const [order] = await db.insert(orders).values({
-        userId: userId,
+        user_id: userId,
         status: 'completed',
-        total: session.amount_total! / 100, // Convert from cents to dollars
+        total: (session.amount_total / 100).toFixed(2),
       }).returning();
 
+      if (!order) {
+        throw new Error('Failed to create order');
+      }
+
       const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
+
       for (const item of lineItems.data) {
+        const productId = item.price?.product as string | undefined;
+        const quantity = item.quantity ?? 1;
+        const price = item.price?.unit_amount;
+
+        if (!productId || typeof price === 'undefined') {
+          console.warn('Missing productId or price for line item:', item);
+          continue;
+        }
+
         await db.insert(orderItems).values({
           orderId: order.id,
-          productId: item.price!.product as string,
-          quantity: item.quantity!,
-          price: item.price!.unit_amount! / 100, // Convert from cents to dollars
+          productId: productId,
+          quantity: quantity.toString(),
+          price: (price / 100).toFixed(2),
         });
       }
 

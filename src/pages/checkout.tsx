@@ -1,195 +1,276 @@
-'use client' // Added 'use client' directive at the top
+'use client'
 
-import React, { useState, useEffect } from 'react'
-import { useCart } from '@/contexts/CartContext'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import { useUser } from '@clerk/nextjs'
+import React, { useState, useEffect } from 'react';
+import { useCart } from '@/hooks/useCart';
+import { loadStripe, StripeElementsOptions } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useRouter } from 'next/router';
+import { CartItem } from '@/contexts/CartContext';
+import { ArrowLeft, ShoppingCart, CreditCard, LockIcon } from 'lucide-react';
+import Link from 'next/link';
 
-// Load Stripe outside of component render to avoid recreating Stripe object on every render
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-function CheckoutForm() {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [isLoading, setIsLoading] = useState(false)
-  const { cartItems, clearCart } = useCart()
+function CheckoutForm({ totalPrice, orderSummary }: { totalPrice: number; orderSummary: ReturnType<typeof calculateTotalPrice> }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const { clearCart } = useCart();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (!stripe || !elements) return;
 
-    if (!stripe || !elements) {
-      return
-    }
-
-    setIsLoading(true)
+    setIsLoading(true);
+    setPaymentError(null);
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: `${window.location.origin}/order-confirmation`,
       },
-    })
-
-    if (error) {
-      console.error(error)
-      // Show error to your customer
-    } else {
-      // Payment succeeded, clear the cart
-      clearCart()
-    }
-
-    setIsLoading(false)
-  }
-
-  // Calculate the subtotal
-  const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  // Calculate fees and taxes
-  const serviceFee = subtotal * 0.15;
-  const paymentHandlingFee = subtotal * 0.029 + 0.30;
-  const taxRate = 0.08; // Assuming 8% tax rate, adjust as needed
-  const taxes = subtotal * taxRate;
-
-  // Calculate the total price
-  const totalPrice = subtotal + serviceFee + paymentHandlingFee + taxes;
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-        {cartItems.map((item) => (
-          <div key={item.id} className="flex items-center mb-4 border-b pb-4">
-            <div className="w-16 h-16 relative mr-4">
-              <Image
-                src={item.imageUrl || '/placeholder-image.jpg'} // Provide a fallback image
-                alt={item.name}
-                layout="fill"
-                objectFit="cover"
-                className="rounded"
-              />
-            </div>
-            <div className="flex-grow">
-              <h3 className="font-semibold">{item.name}</h3>
-              <p className="text-gray-600">Quantity: {item.quantity}</p>
-            </div>
-            <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
-          </div>
-        ))}
-        <div className="mt-4 space-y-2">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg">Subtotal:</h3>
-            <p className="font-semibold">${subtotal.toFixed(2)}</p>
-          </div>
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg">Service Fee:</h3>
-            <p className="font-semibold">${serviceFee.toFixed(2)}</p>
-          </div>
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg">Payment Handling Fee:</h3>
-            <p className="font-semibold">${paymentHandlingFee.toFixed(2)}</p>
-          </div>
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg">Taxes:</h3>
-            <p className="font-semibold">${taxes.toFixed(2)}</p>
-          </div>
-          <div className="flex justify-between items-center pt-2 border-t">
-            <h3 className="text-xl font-semibold">Total:</h3>
-            <p className="text-xl font-semibold">${totalPrice.toFixed(2)}</p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Payment Details</h2>
-        <form onSubmit={handleSubmit}>
-          <PaymentElement />
-          <Button
-            type="submit"
-            disabled={!stripe || isLoading}
-            className="w-full mt-4"
-          >
-            {isLoading ? 'Processing...' : `Pay $${totalPrice.toFixed(2)}`}
-          </Button>
-        </form>
-      </div>
-    </div>
-  )
-}
-
-export default function CheckoutPage() {
-  const { user } = useUser();
-  const [clientSecret, setClientSecret] = useState('')
-  const { cartItems } = useCart()
-
-  useEffect(() => {
-    // Calculate all fees and total price
-    const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    const serviceFee = subtotal * 0.15;
-    const paymentHandlingFee = subtotal * 0.029 + 0.30;
-    const taxRate = 0.08;
-    const taxes = subtotal * taxRate;
-    const totalPrice = subtotal + serviceFee + paymentHandlingFee + taxes;
-
-    // Create PaymentIntent with the total price including all fees
-    fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        items: cartItems,
-        totalAmount: Math.round(totalPrice * 100), // Convert to cents for Stripe
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.clientSecret) {
-          setClientSecret(data.clientSecret)
-        } else {
-          console.error("Failed to create PaymentIntent")
-        }
-      })
-      .catch((err) => console.error("Error in PaymentIntent:", err))
-  }, [cartItems])
-
-  const appearance = {
-    theme: 'stripe',
-  }
-  const options = {
-    clientSecret,
-    appearance,
-  }
-
-  const handleCheckout = async () => {
-    if (!user) {
-      // Handle the case where the user is not logged in
-      return;
-    }
-
-    const response = await fetch('/api/checkout-sessions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        items: cartItems,
-        userId: user.id, // Pass the user ID to the checkout session
-      }),
     });
 
-    // ... rest of the checkout logic
+    if (error) {
+      setPaymentError(error.message || 'An unknown error occurred');
+      setIsLoading(false);
+    } else {
+      clearCart();
+      router.push('/order-confirmation');
+    }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
-      {clientSecret ? (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <Card className="order-2 lg:order-1">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CreditCard className="h-5 w-5" />
+            Payment Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="bg-gray-50 rounded-lg p-4">
+              <PaymentElement />
+            </div>
+            
+            {paymentError && (
+              <Alert variant="destructive">
+                <AlertDescription>{paymentError}</AlertDescription>
+              </Alert>
+            )}
+
+            <div className="border-t pt-4">
+              <Button
+                type="submit"
+                disabled={!stripe || isLoading}
+                className="w-full h-12 text-lg"
+              >
+                {isLoading ? 'Processing...' : `Pay $${totalPrice.toFixed(2)}`}
+              </Button>
+              
+              <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-600">
+                <LockIcon className="h-4 w-4" />
+                Secured by Stripe
+              </div>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Card className="order-1 lg:order-2">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ShoppingCart className="h-5 w-5" />
+            Order Summary
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {orderSummary.items.map((item) => (
+              <div key={item.id} className="flex justify-between items-start py-2">
+                <div className="flex-1">
+                  <p className="font-medium">{item.name}</p>
+                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                  {item.selectedOptions && (
+                    <p className="text-sm text-gray-500">
+                      {Object.entries(item.selectedOptions)
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join(', ')}
+                    </p>
+                  )}
+                </div>
+                <p className="font-medium">${(Number(item.price) * Number(item.quantity)).toFixed(2)}</p>
+              </div>
+            ))}
+
+            <div className="border-t pt-4 space-y-2">
+              <div className="flex justify-between text-gray-600">
+                <span>Subtotal</span>
+                <span>${orderSummary.subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-gray-600">
+                <span>Service Fee</span>
+                <span>${orderSummary.serviceFee.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-gray-600">
+                <span>Payment Processing</span>
+                <span>${orderSummary.paymentHandlingFee.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-gray-600">
+                <span>Tax (8%)</span>
+                <span>${orderSummary.taxes.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div className="border-t pt-4">
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold">Total</span>
+                <span className="text-2xl font-bold">${orderSummary.total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function CheckoutPage() {
+  const [clientSecret, setClientSecret] = useState('');
+  const { cartItems } = useCart();
+  const [orderSummary, setOrderSummary] = useState<ReturnType<typeof calculateTotalPrice> | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!cartItems || cartItems.length === 0) {
+      setError('Your cart is empty. Please add items before checking out.');
+      return;
+    }
+
+    const summary = calculateTotalPrice(cartItems);
+    setOrderSummary(summary);
+
+    if (summary.total > 0) {
+      fetch('/api/createPaymentIntent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          totalAmount: summary.total,
+        }),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
+        .then((data) => {
+          if (data.clientSecret) {
+            setClientSecret(data.clientSecret);
+          } else {
+            setError('Failed to initialize payment. Please try again.');
+          }
+        })
+        .catch((err) => {
+          setError('An error occurred while setting up the payment. Please try again.');
+        });
+    } else {
+      setError('Invalid total price. Please try again.');
+    }
+  }, [cartItems]);
+
+  const options: StripeElementsOptions = {
+    clientSecret,
+    appearance: {
+      theme: 'stripe',
+      variables: {
+        colorPrimary: '#0F172A',
+      },
+    },
+  };
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <Card>
+          <CardContent className="p-8 text-center">
+            <ShoppingCart className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            <h1 className="text-2xl font-bold mb-4">Checkout Error</h1>
+            <p className="text-red-500 mb-6">{error}</p>
+            <Link href="/cart">
+              <Button className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Return to Cart
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="mb-8">
+        <Link href="/cart">
+          <Button variant="ghost" className="flex items-center gap-2 mb-4">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Cart
+          </Button>
+        </Link>
+        <h1 className="text-3xl font-bold">Secure Checkout</h1>
+      </div>
+
+      {clientSecret && orderSummary ? (
         <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
+          <CheckoutForm totalPrice={orderSummary.total} orderSummary={orderSummary} />
         </Elements>
       ) : (
-        <p>Loading payment details...</p>
+        <Card>
+          <CardContent className="p-8 text-center">
+            <div className="animate-pulse space-y-4">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
-  )
+  );
+}
+
+function calculateTotalPrice(cartItems: CartItem[]) {
+  if (!cartItems || cartItems.length === 0) return {
+    items: [],
+    subtotal: 0,
+    serviceFee: 0,
+    paymentHandlingFee: 0,
+    taxes: 0,
+    total: 0
+  };
+
+  const subtotal = cartItems.reduce((total, item) => {
+    const price = Number(item.price);
+    const quantity = Number(item.quantity);
+    return isNaN(price) || isNaN(quantity) ? total : total + (price * quantity);
+  }, 0);
+
+  const serviceFee = subtotal * 0.15;
+  const paymentHandlingFee = subtotal * 0.029 + 0.30;
+  const taxes = subtotal * 0.08;
+  const total = Math.round((subtotal + serviceFee + paymentHandlingFee + taxes) * 100) / 100;
+
+  return {
+    items: cartItems,
+    subtotal,
+    serviceFee,
+    paymentHandlingFee,
+    taxes,
+    total
+  };
 }

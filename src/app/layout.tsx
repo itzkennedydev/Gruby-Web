@@ -1,19 +1,24 @@
-import { Footer } from '@/components/Footer';
-import { Header } from '@/components/Header';
-import React from 'react';
+import React, { ReactNode } from 'react';
+import Header from '@/components/Header';
+import {Footer} from '@/components/Footer';
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export function RootLayout({ children }: RootLayoutProps) {
+export const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
+      <head>
+        {/* Add any global meta tags or links here if necessary */}
+      </head>
+      <body className="min-h-screen bg-gray-50">
         <Header />
-            <body className="min-h-screen bg-gray-50">
-                {children}
-            </body>
+        <main className="flex-grow">
+          {children}
+        </main>
         <Footer />
+      </body>
     </html>
   );
-}
+};

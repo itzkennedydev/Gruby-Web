@@ -1,18 +1,16 @@
-import { pgTable, uuid, text, timestamp, integer, decimal, bigint } from 'drizzle-orm/pg-core';
-import { relations, sql } from 'drizzle-orm';
-import { InferModel } from 'drizzle-orm';
+import { pgTable, uuid, text, timestamp, unique } from 'drizzle-orm/pg-core';
+import { relations, InferModel } from 'drizzle-orm';
 
 // Users table
-// Users table
 export const users = pgTable('users', {
-    id: uuid('id').defaultRandom().primaryKey(),
-    user_id: text('user_id').notNull().unique(),
-    email: text('email').notNull().unique(),
-    name: text('name'),
-    avatar_url: text('avatar_url'),
-    created_at: timestamp('created_at').defaultNow().notNull(),
-    updated_at: timestamp('updated_at').defaultNow().notNull(),
-  });  
+  id: uuid('id').defaultRandom().primaryKey(), // Optional unique internal ID
+  user_id: text('user_id').notNull().unique(), // Clerk user ID must be unique and not null
+  email: text('email').notNull().unique(),     // User email must be unique
+  name: text('name'),                          // Optional user name
+  avatarUrl: text('avatar_url'),               // Optional user avatar
+  createdAt: timestamp('created_at').defaultNow().notNull(), // Timestamps
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
 
 // Chefs table
 export const chefs = pgTable('chefs', {
@@ -32,7 +30,7 @@ export const products = pgTable('products', {
   chefId: uuid('chef_id').references(() => chefs.id).notNull(),
   name: text('name').notNull(),
   description: text('description'),
-  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
+  price: text('price').notNull(),
   imageUrl: text('image_url'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -41,11 +39,15 @@ export const products = pgTable('products', {
 // Orders table
 export const orders = pgTable('orders', {
   id: uuid('id').defaultRandom().primaryKey(),
-  user_id: text('user_id').references(() => users.user_id).notNull(),
+  user_id: text('user_id').references(() => users.user_id).notNull(), // Properly reference user_id from users table
   status: text('status').notNull(),
-  total: decimal('total', { precision: 10, scale: 2 }).notNull(),
+  total: text('total').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => {
+  return {
+    userStatusUnique: unique().on(table.user_id, table.status),
+  };
 });
 
 // Order Items table
@@ -53,8 +55,8 @@ export const orderItems = pgTable('order_items', {
   id: uuid('id').defaultRandom().primaryKey(),
   orderId: uuid('order_id').references(() => orders.id).notNull(),
   productId: uuid('product_id').references(() => products.id).notNull(),
-  quantity: integer('quantity').notNull(),
-  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
+  quantity: text('quantity').notNull(),
+  price: text('price').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });

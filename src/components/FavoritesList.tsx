@@ -1,5 +1,3 @@
-// favorites-list.tsx
-
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 interface FavoriteItem {
@@ -8,11 +6,17 @@ interface FavoriteItem {
   chef: string;
 }
 
+interface FavoritesListProps {
+  favorites: FavoriteItem[];
+}
+
+// Mock data (can be replaced with dynamic data later)
 const mockFavorites: FavoriteItem[] = [
   { id: 1, name: 'Pasta Carbonara', chef: 'Chef Mario' },
   { id: 2, name: 'Vegan Burger', chef: 'Chef Lisa' },
 ];
 
+// Reusable Favorite Item component
 function FavoriteItemComponent({ favorite }: { favorite: FavoriteItem }) {
   return (
     <li>
@@ -28,9 +32,8 @@ function FavoriteItemComponent({ favorite }: { favorite: FavoriteItem }) {
   );
 }
 
-export function FavoritesList() {
-  const favorites = mockFavorites;
-
+// Main Favorites List component
+export function FavoritesList({ favorites = mockFavorites }: FavoritesListProps) {
   return (
     <div className="p-4">
       {favorites.length > 0 ? (

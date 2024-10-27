@@ -1,31 +1,54 @@
-// pages/api/products.ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '@/server/db'; // Adjust the import based on your setup
-import { products } from '../../db/schema';
+import { db } from '@/server/db'; 
+import { products } from '@/db/schema'; 
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+interface ProductRequestBody {
+  name: string;
+  description?: string;
+  price: number;
+  imageUrl?: string;
+  chefId: string;
+}
+
+// Define the handler
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { name, description, price, imageUrl, chefId } = req.body;
+    const { name, description, price, imageUrl, chefId } = req.body as ProductRequestBody;
+
+    // Validate required fields
+    if (!name || typeof price !== 'number' || !chefId) {
+      return res.status(400).json({ error: 'Name, price, and chefId are required' });
+    }
 
     try {
+      // Insert the product into the database
       await db.insert(products).values({
         name,
-        description,
-        price,
-        imageUrl,
+        description: description ?? null,
+        price: price.toFixed(2),
+        imageUrl: imageUrl ?? null,
         chefId,
       });
 
-      res.status(200).json({ message: 'Product added successfully' });
+      res.status(201).json({ message: 'Product added successfully' });
     } catch (error) {
       console.error('Error adding product:', error);
       res.status(500).json({ error: 'Failed to add product' });
     }
+
   } else if (req.method === 'GET') {
-    // We'll handle GET requests next
+    try {
+      // Fetch all products from the database
+      const allProducts = await db.select().from(products);
+
+      res.status(200).json(allProducts);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      res.status(500).json({ error: 'Failed to fetch products' });
+    }
   } else {
+    // Handle unsupported methods
     res.setHeader('Allow', ['POST', 'GET']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-};
+}

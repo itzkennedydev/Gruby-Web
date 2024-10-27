@@ -7,12 +7,26 @@ import { db } from '@/server/db';
 import { chefs, products, type Chef, type Product } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-interface ChefWithProducts extends Chef {
-  products: Product[];
+interface SerializedProduct extends Omit<Product, 'createdAt' | 'updatedAt'> {
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface ChefWithProducts extends Omit<Chef, 'createdAt' | 'updatedAt'> {
+  products: SerializedProduct[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params as { id: string };
+  
+  // Validate that id is a valid UUID
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (!uuidRegex.test(id)) {
+    return { notFound: true };
+  }
+
   const chef = await db.query.chefs.findFirst({
     where: eq(chefs.id, id),
     with: { products: true },
@@ -22,8 +36,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
+  const serializedChef: ChefWithProducts = {
+    ...chef,
+    createdAt: chef.createdAt.toISOString(),
+    updatedAt: chef.updatedAt.toISOString(),
+    products: chef.products.map(product => ({
+      ...product,
+      createdAt: product.createdAt.toISOString(),
+      updatedAt: product.updatedAt.toISOString(),
+    })),
+  };
+
   return {
-    props: { chef: JSON.parse(JSON.stringify(chef)) },
+    props: { chef: serializedChef },
   };
 };
 
@@ -31,6 +56,7 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
   const { addToCart } = useCart();
   const [activeTab, setActiveTab] = useState('about');
   const [likedProducts, setLikedProducts] = useState<Set<string>>(new Set());
+  const [isAddingToCart, setIsAddingToCart] = useState<Record<string, boolean>>({});
 
   const toggleLike = (productId: string) => {
     setLikedProducts(prev => {
@@ -44,6 +70,26 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
     });
   };
 
+  const handleAddToCart = async (product: SerializedProduct) => {
+    try {
+      setIsAddingToCart(prev => ({ ...prev, [product.id]: true }));
+      // Convert createdAt and updatedAt back to Date
+      const productToAdd = {
+        ...product,
+        createdAt: new Date(product.createdAt),
+        updatedAt: new Date(product.updatedAt),
+        quantity: 1,
+        price: Number(product.price), // Convert price to number
+      };
+      await addToCart(productToAdd);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add product to cart.');
+    } finally {
+      setIsAddingToCart(prev => ({ ...prev, [product.id]: false }));
+    }
+  };
+
   if (!chef) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -55,7 +101,7 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
   const stats = [
     { icon: Users, label: 'Customers Served', value: '500+' },
     { icon: Award, label: 'Years Experience', value: '12+' },
-    { icon: ChefHat, label: 'Signature Dishes', value: chef.products?.length || '0' }
+    { icon: ChefHat, label: 'Signature Dishes', value: chef.products?.length.toString() || '0' }
   ];
 
   return (
@@ -175,11 +221,12 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
                         </div>
                         <p className="text-sm text-gray-600 mb-4">{product.description}</p>
                         <button
-                          onClick={() => addToCart(product)}
+                          onClick={() => handleAddToCart(product)}
+                          disabled={isAddingToCart[product.id]}
                           className="w-full py-2 px-4 bg-gray-100 text-gray-900 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center"
                         >
                           <ShoppingBag className="w-4 h-4 mr-2" />
-                          Add to Cart
+                          {isAddingToCart[product.id] ? 'Adding...' : 'Add to Cart'}
                         </button>
                       </div>
                     </div>

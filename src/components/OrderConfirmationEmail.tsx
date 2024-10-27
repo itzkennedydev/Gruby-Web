@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { CheckCircle2, HomeIcon, ListIcon, Mail, Package, User, XCircle } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useUser } from '@clerk/nextjs';
@@ -29,40 +29,43 @@ interface OrderDetails {
 export default function OrderConfirmation() {
   const router = useRouter();
   const { user } = useUser();
+  const { payment_intent, payment_intent_client_secret } = router.query;
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
 
   useEffect(() => {
-    if (!router.isReady) return;
-
-    const { payment_intent, payment_intent_client_secret } = router.query;
     if (payment_intent && payment_intent_client_secret) {
-      void verifyPayment(payment_intent as string, payment_intent_client_secret as string);
+      void verifyPayment();
     }
-  }, [router.isReady, router.query]);
+  }, [payment_intent, payment_intent_client_secret]);
 
-  const verifyPayment = async (paymentIntent: string, clientSecret: string) => {
+  const verifyPayment = async () => {
     try {
       const stripe = await stripePromise;
       if (!stripe) throw new Error('Failed to load Stripe');
 
-      const { paymentIntent: retrievedIntent } = await stripe.retrievePaymentIntent(clientSecret);
+      const { paymentIntent } = await stripe.retrievePaymentIntent(
+        payment_intent_client_secret as string
+      );
 
-      if (retrievedIntent?.status === 'succeeded') {
-        const response = await fetch(`/api/order-details?payment_intent=${paymentIntent}`);
+      if (paymentIntent?.status === 'succeeded') {
+        const response = await fetch(`/api/order-details?payment_intent=${payment_intent}`);
         if (!response.ok) {
-          const errorData = await response.json() as { message?: string };
-          throw new Error(errorData.message ?? 'Failed to fetch order details');
+          throw new Error((await response.json()).message || 'Failed to fetch order details');
         }
 
         const orderData = await response.json() as OrderDetails;
         setOrderDetails(orderData);
-        setStatus('success');
 
-        if (user?.primaryEmailAddress?.emailAddress) {
+        if (user && user.primaryEmailAddress?.emailAddress) {
           console.log('User is signed in, sending email to:', user.primaryEmailAddress.emailAddress);
+          console.log('Order Data for Email:', orderData);
+          
           await sendEmailConfirmation(orderData, user.primaryEmailAddress.emailAddress);
+        } else {
+          console.log('No signed-in user, status set to success');
+          setStatus('success');
         }
       } else {
         throw new Error('Payment was not successful');
@@ -71,7 +74,7 @@ export default function OrderConfirmation() {
       setStatus('error');
       toast({
         title: "Order Confirmation Failed",
-        description: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        description: `Error: ${(error as Error).message}`,
         variant: "destructive",
       });
     }
@@ -88,23 +91,22 @@ export default function OrderConfirmation() {
         body: JSON.stringify({ email, orderDetails: orderData }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to send email confirmation');
-      }
-
       const data = await response.json();
       console.log('Response from send-order-confirmation:', data);
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send email confirmation');
+      }
 
       toast({
         title: "Order Confirmation Email Sent",
         description: "Check your inbox for order details.",
       });
     } catch (error) {
-      console.error('Error sending email confirmation:', error);
+      console.error('Error sending email confirmation:', (error as Error).message);
       toast({
         title: "Email Confirmation Failed",
-        description: `We couldn't send the confirmation email. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        description: `We couldn't send the confirmation email. Error: ${(error as Error).message}`,
         variant: "destructive",
       });
     }
@@ -200,11 +202,11 @@ export default function OrderConfirmation() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground" />
-                      <span>{user?.fullName ?? 'Guest'}</span>
+                      <span>{orderDetails.customer_details?.name ?? 'N/A'}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
-                      <span>{user?.primaryEmailAddress?.emailAddress ?? 'Email not provided'}</span>
+                      <span>{orderDetails.customer_details?.email ?? 'N/A'}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -228,18 +230,18 @@ export default function OrderConfirmation() {
                             </span>
                             <span>{item.name}</span>
                           </span>
-                          <span className="font-medium">${item.price}</span>
+                          <span className="font-medium">{item.price}</span>
                         </div>
                       ))}
                       <div className="pt-2 mt-2 border-t border-border">
                         <div className="flex justify-between items-center font-bold">
                           <span>Total</span>
-                          <span>${orderDetails.total_amount}</span>
+                          <span>{orderDetails.total_amount}</span>
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <p className="text-muted-foreground">Order details are being processed. Please check back later.</p>
+                    <p className="text-muted-foreground">No items found</p>
                   )}
                 </CardContent>
               </Card>
@@ -247,7 +249,7 @@ export default function OrderConfirmation() {
 
             <Alert className="mb-8">
               <AlertDescription>
-                A confirmation email has been sent to {orderDetails.customer_details?.email ?? 'your provided email address'}
+                A confirmation email has been sent to {orderDetails.customer_details?.email}
               </AlertDescription>
             </Alert>
 
