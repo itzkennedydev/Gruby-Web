@@ -34,7 +34,7 @@ export function FavoriteButton({ chefId }: FavoriteButtonProps) {
   return (
     <Button variant="ghost" size="icon" onClick={handleToggleFavorite}>
       {isFavorite ? (
-        <HeartFill className="w-6 h-6 text-red-500" />
+        <Heart className="w-6 h-6 text-red-500" fill="currentColor" />
       ) : (
         <Heart className="w-6 h-6 text-white" />
       )}
