@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Image from 'next/image';
-import { Product } from '@/types/product';
+import { Product } from '@/types'; // Update this line
 
 interface ProductDetailsProps {
   product: Product | undefined;
@@ -15,15 +15,15 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const productName = product.name ?? 'Unknown Product';
   const productImageAlt = product.name ?? 'Product image';
   const productDescription = product.description ?? 'No description available';
-  const productChef = product.chef ?? 'Unknown Chef';
+  const productChef = product.chef.name ?? 'Unknown Chef';
 
   return (
     <div className="container mx-auto my-8 px-4">
       <h1 className="text-3xl font-bold mb-4">{productName}</h1>
       <div className="relative w-full h-96 mb-4">
-        {product.image ? (
+        {product.images && product.images.length > 0 ? (
           <Image
-            src={product.image}
+            src={product.images[0]}
             alt={productImageAlt}
             fill
             style={{ objectFit: 'cover' }}
