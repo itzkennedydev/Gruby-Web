@@ -4,8 +4,8 @@ import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
 import { eq } from 'drizzle-orm';
 
-import { users } from '~/server/db/schema';
-import { db } from "~/server/db";
+import { users } from '../../../server/db/schema';
+import { db } from "../../../server/db";
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET ?? '';
 
@@ -68,27 +68,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
             case 'user.created':
             case 'user.updated':
                 const result = await db.insert(users).values({
-                    id,
+                    user_id: id,
                     email: attributes.email_addresses[0]?.email_address ?? '',
-                    firstName: attributes.first_name ?? '',
-                    lastName: attributes.last_name ?? '',
+                    name: `${attributes.first_name ?? ''} ${attributes.last_name ?? ''}`.trim() || null,
                 }).onConflictDoUpdate({
-                    target: users.id,
+                    target: users.user_id,
                     set: {
                         email: attributes.email_addresses[0]?.email_address ?? '',
-                        firstName: attributes.first_name ?? '',
-                        lastName: attributes.last_name ?? '',
+                        name: `${attributes.first_name ?? ''} ${attributes.last_name ?? ''}`.trim() || null,
                     },
                 });
                 console.log('User upsert result:', result);
                 break;
             case 'user.deleted':
-                const deleteResult = await db.delete(users).where(eq(users.id, id));
+                const deleteResult = await db.delete(users).where(eq(users.user_id, id));
                 console.log('User delete result:', deleteResult);
                 break;
             default:
-                const _exhaustiveCheck: never = evt.type;
-                console.log(`Unhandled event type: ${_exhaustiveCheck}`);
+                console.log(`Unhandled event type: ${evt.type}`);
         }
 
         res.status(200).json({ message: 'Webhook processed successfully' });

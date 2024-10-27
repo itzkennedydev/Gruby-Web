@@ -4,6 +4,8 @@
  */
 await import("./src/env.js");
 
+const path = require('path');
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -26,6 +28,10 @@ const config = {
     ],
   },
   transpilePackages: ["geist", '@mui/x-date-pickers', '@mui/material', '@mui/system', '@emotion/react', '@emotion/styled'],
+  webpack: (config) => {
+    config.resolve.alias['~'] = path.join(__dirname, 'src');
+    return config;
+  },
 };
 
 export default config;
