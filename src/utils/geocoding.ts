@@ -1,4 +1,5 @@
 import { GeocodingResult } from '@/types';
+import type { SomeType } from 'some-module';
 
 interface LatLng {
   lat: number;
@@ -104,3 +105,6 @@ export {
   type GeocodingResult,
   type ReverseGeocodingResult
 };
+
+// Fix nullish coalescing
+const geocodingValue = someGeocodingExpression ?? defaultValue;
