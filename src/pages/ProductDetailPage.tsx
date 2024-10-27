@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { Container, Box, Typography } from '@mui/material';
@@ -6,23 +8,24 @@ import { Footer } from '../components/Footer';
 import Map from '../components/Map';
 import { FavoritesList } from '../components/FavoritesList';
 
-interface Coordinates {
+// Move types to separate file: @/types/product.ts
+export interface Coordinates {
   lat: number;
   lng: number;
 }
 
-interface Location {
+export interface Location {
   address: string;
   coordinates: Coordinates;
 }
 
-interface Chef {
+export interface Chef {
   id: string;
   name: string;
   avatar: string;
 }
 
-interface Meal {
+export interface Meal {
   id: string;
   name: string;
   image: string;
@@ -30,7 +33,7 @@ interface Meal {
   rating: number;
 }
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   description: string;
