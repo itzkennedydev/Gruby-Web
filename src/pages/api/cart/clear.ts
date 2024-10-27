@@ -7,7 +7,7 @@ import Stripe from 'stripe';
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-08-16',
+  apiVersion: '2024-09-30.acacia',
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -43,7 +43,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('Found cart order:', cartOrder.id);
 
       // Process the payment using Stripe
-      const orderProcessingSuccess = await processPaymentWithStripe(cartOrder);
+      const orderProcessingSuccess = await processPaymentWithStripe({
+        id: cartOrder.id,
+        user_id: cartOrder.user_id,
+        total: parseFloat(cartOrder.total),
+        status: cartOrder.status,
+      });
 
       if (!orderProcessingSuccess) {
         console.log('Order processing failed');
@@ -75,11 +80,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 // Function to process payment with Stripe
-async function processPaymentWithStripe(cartOrder: any): Promise<boolean> {
+async function processPaymentWithStripe(cartOrder: Order): Promise<boolean> {
   try {
     // Create a PaymentIntent with Stripe
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: cartOrder.total * 100, // Stripe accepts amounts in cents, so multiply by 100
+      amount: Math.round(cartOrder.total * 100), // Stripe accepts amounts in cents, so multiply by 100 and round
       currency: 'usd', // Set your desired currency
       payment_method_types: ['card'], // Adjust payment methods based on your needs
       metadata: {
@@ -100,4 +105,12 @@ async function processPaymentWithStripe(cartOrder: any): Promise<boolean> {
     console.error('Error processing payment with Stripe:', error);
     return false;
   }
+}
+
+// Define the Order interface
+interface Order {
+  id: string;
+  user_id: string;
+  total: number;
+  status: string;
 }
