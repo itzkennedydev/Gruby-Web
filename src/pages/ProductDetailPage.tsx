@@ -2,49 +2,27 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Container, Box, Typography } from '@mui/material';
-import Header from '../components/Header';
-import { Footer } from '../components/Footer';
-import Map from '../components/Map';
-
-// Define the Product type inline (we'll move this to a separate file later)
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  images: string[];
-  location: {
-    address: string;
-    coordinates: { lat: number; lng: number };
-  };
-  chef: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
-  otherMeals: {
-    id: string;
-    name: string;
-    image: string;
-    price: number;
-    rating: number;
-  }[];
-}
+import Header from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import Map from '@/components/Map';
+import type { Product } from '@/types/Product';
 
 interface ProductDetailPageProps {
   product?: Product;
 }
 
-const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
-  const params = useParams();
-  const productId = params?.id as string;
+export default function ProductDetailPage({ product }: ProductDetailPageProps) {
+  const pathname = usePathname();
+  // We'll keep productId for potential future use, but mark it as unused for now
+  const _productId = pathname?.split('/').pop() ?? '';
 
   if (!product) {
     return (
       <>
         <Header />
-        <Container maxWidth="lg" sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
+        <Container className="my-8">
           <Typography variant="h4">Product not found</Typography>
         </Container>
         <Footer />
@@ -55,39 +33,31 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
   return (
     <>
       <Header />
-      <Container maxWidth="lg" sx={{ marginTop: '2rem', marginBottom: '2rem' }}>
-        <Box
-          sx={{
-            position: 'relative',
-            height: { xs: '250px', sm: '400px', md: '500px' },
-            borderRadius: '20px',
-            marginBottom: '2rem',
-            overflow: 'hidden',
-          }}
-        >
+      <Container className="my-8">
+        <Box className="relative h-64 sm:h-96 md:h-[500px] rounded-lg mb-8 overflow-hidden">
           <Image
-            src={typeof product.images?.[0] === 'string' ? product.images[0] : '/placeholder-image.jpg'}
+            src={product.images[0] || '/placeholder-image.jpg'}
             alt={product.name}
             fill
-            style={{ objectFit: 'cover' }}
+            className="object-cover"
             priority
           />
         </Box>
 
-        <Box sx={{ borderRadius: '20px', marginBottom: '2rem', padding: '2rem', backgroundColor: '#f9f9f9' }}>
-          <Typography variant="h4" gutterBottom fontWeight="bold">
+        <Box className="rounded-lg mb-8 p-8 bg-gray-100">
+          <Typography variant="h4" className="font-bold mb-4">
             {product.name}
           </Typography>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body1" className="mb-4">
             {product.description}
           </Typography>
-          <Typography variant="h5" color="primary" fontWeight="bold">
+          <Typography variant="h5" className="text-primary font-bold">
             ${product.price.toFixed(2)}
           </Typography>
         </Box>
 
-        <Box sx={{ borderRadius: '20px', marginBottom: '2rem' }}>
-          <Typography variant="h5" component="h2" gutterBottom>
+        <Box className="rounded-lg mb-8">
+          <Typography variant="h5" component="h2" className="mb-4">
             Location
           </Typography>
           <Map lat={product.location.coordinates.lat} lng={product.location.coordinates.lng} />
@@ -96,6 +66,4 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
       <Footer />
     </>
   );
-};
-
-export default ProductDetailPage;
+}
