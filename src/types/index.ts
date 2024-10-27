@@ -8,4 +8,5 @@ export interface Chef {
   coverImageUrl: string | null;
   specialty: string;
   rating?: number;
+  image?: string; // Add this line to include the image property
 }

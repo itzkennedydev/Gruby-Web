@@ -13,9 +13,9 @@ interface ChefCardProps {
 }
 
 const ChefCard: React.FC<ChefCardProps> = ({ chef }) => {
-  const chefImage = chef.coverImageUrl ?? DEFAULT_IMAGE;
-  const chefName = chef.name ?? 'Unknown Chef';
-  const chefBio = chef.bio ?? NO_DESCRIPTION;
+  const chefImage = chef.image ?? DEFAULT_IMAGE; 
+  const chefName = chef.name ?? 'Unknown Chef'; 
+  const chefDescription = chef.bio ?? NO_DESCRIPTION; 
 
   return (
     <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
@@ -31,7 +31,7 @@ const ChefCard: React.FC<ChefCardProps> = ({ chef }) => {
         </div>
         <div className="p-4">
           <h3 className="text-xl font-semibold mb-2">{chefName}</h3>
-          <p className="text-gray-600 text-sm">{chefBio}</p>
+          <p className="text-gray-600 text-sm">{chefDescription}</p>
         </div>
       </Link>
     </div>
