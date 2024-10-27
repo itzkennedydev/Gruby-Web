@@ -1,61 +1,22 @@
-/** @type {import("eslint").Linter.Config} */
-const config = {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": true
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: ['./tsconfig.json', './tsconfig.contexts.json'], 
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    },
+    tsconfigRootDir: __dirname, 
   },
-  "plugins": [
-    "@typescript-eslint",
-    "drizzle"
+  plugins: ['@typescript-eslint', 'react'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
   ],
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked"
-  ],
-  "rules": {
-    "@typescript-eslint/array-type": "off",
-    "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      {
-        "prefer": "type-imports",
-        "fixStyle": "inline-type-imports"
-      }
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_"
-      }
-    ],
-    "@typescript-eslint/require-await": "off",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      {
-        "checksVoidReturn": {
-          "attributes": false
-        }
-      }
-    ],
-    "drizzle/enforce-delete-with-where": [
-      "error",
-      {
-        "drizzleObjectName": [
-          "db",
-          "ctx.db"
-        ]
-      }
-    ],
-    "drizzle/enforce-update-with-where": [
-      "error",
-      {
-        "drizzleObjectName": [
-          "db",
-          "ctx.db"
-        ]
-      }
-    ]
+  rules: {
+    // Add any specific rules here
   }
 }
-module.exports = config;
