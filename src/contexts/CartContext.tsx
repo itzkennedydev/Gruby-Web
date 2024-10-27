@@ -5,7 +5,7 @@ export interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  imageUrl: string;
+  imageUrl: string | null;
   selectedOptions?: Record<string, string>;
 }
 
@@ -30,10 +30,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const storedItems = localStorage.getItem('cartItems');
         if (storedItems) {
-          setCartItems(JSON.parse(storedItems)); // Load items from localStorage
+          const parsedItems = JSON.parse(storedItems);
+          if (Array.isArray(parsedItems)) {
+            setCartItems(parsedItems as CartItem[]);
+          } else {
+            console.error('Stored cart items are not in the expected format');
+            setCartItems([]);
+          }
         }
       } catch (error) {
         console.error('Error loading cart items:', error);
+        setCartItems([]);
       } finally {
         setIsLoading(false);
       }

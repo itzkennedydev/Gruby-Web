@@ -70,7 +70,7 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
     });
   };
 
-  const handleAddToCart = async (product: SerializedProduct) => {
+  const handleAddToCart = (product: SerializedProduct) => {
     try {
       setIsAddingToCart(prev => ({ ...prev, [product.id]: true }));
       // Convert createdAt and updatedAt back to Date
@@ -80,8 +80,9 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
         updatedAt: new Date(product.updatedAt),
         quantity: 1,
         price: Number(product.price), // Convert price to number
+        imageUrl: product.imageUrl ?? '/default-product.jpg', // Provide a default image URL
       };
-      await addToCart(productToAdd);
+      addToCart(productToAdd);
     } catch (error) {
       console.error('Error adding to cart:', error);
       alert('Failed to add product to cart.');
