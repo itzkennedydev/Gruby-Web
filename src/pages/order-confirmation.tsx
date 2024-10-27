@@ -80,10 +80,15 @@ export default function OrderConfirmation() {
           const stripe = await stripePromise;
           if (!stripe) throw new Error('Failed to load Stripe');
 
-          const { paymentIntent: retrievedIntent } = await stripe.retrievePaymentIntent(payment_intent_client_secret as string);
+          const clientSecret = Array.isArray(payment_intent_client_secret) 
+            ? payment_intent_client_secret[0] 
+            : payment_intent_client_secret;
+
+          const { paymentIntent: retrievedIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
           if (retrievedIntent?.status === 'succeeded') {
-            const response = await fetch(`/api/order-details?payment_intent=${payment_intent}`);
+            const paymentIntentId = Array.isArray(payment_intent) ? payment_intent[0] : payment_intent;
+            const response = await fetch(`/api/order-details?payment_intent=${paymentIntentId}`);
             if (!response.ok) {
               const errorData = (await response.json()) as ErrorResponse;
               throw new Error(errorData.message ?? 'Failed to fetch order details');
