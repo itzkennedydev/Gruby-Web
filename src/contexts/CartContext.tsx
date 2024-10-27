@@ -1,97 +1,99 @@
-'use client';
+'use client'
 
-import React, { 
-  createContext,
-  useContext,
-  useState,
-  type ReactNode,
-  type Context
-} from "react";
+import React, { createContext, useContext, useState, type ReactNode, type Context } from 'react'
 
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
-
-type CartContextType = {
-  cart: CartItem[];
-  addToCart: (item: Omit<CartItem, "quantity">) => void;
-  removeFromCart: (id: string) => void;
-  clearCart: () => void;
-};
-
-const CartContext: Context<CartContextType | null> = createContext<CartContextType | null>(null);
-
-export function useCart(): CartContextType {
-  const context = useContext(CartContext);
-  
-  if (context === null) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  
-  return context;
+interface CartItem {
+  id: string
+  name: string
+  price: number
+  quantity: number
 }
 
-type CartProviderProps = {
-  children: ReactNode;
-};
+interface CartContextType {
+  cart: CartItem[]
+  addToCart: (item: Omit<CartItem, 'quantity'>) => void
+  removeFromCart: (id: string) => void
+  clearCart: () => void
+}
 
-export function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+interface CartProviderProps {
+  children: ReactNode
+}
 
-  const addToCart = (item: Omit<CartItem, "quantity">) => {
+const initialContext: CartContextType = {
+  cart: [],
+  addToCart: () => {
+    throw new Error('CartContext not initialized')
+  },
+  removeFromCart: () => {
+    throw new Error('CartContext not initialized')
+  },
+  clearCart: () => {
+    throw new Error('CartContext not initialized')
+  }
+}
+
+const CartContext = createContext<CartContextType>(initialContext)
+
+export function useCart(): CartContextType {
+  const context = useContext(CartContext)
+
+  if (!context) {
+    throw new Error('useCart must be used within a CartProvider')
+  }
+
+  return context
+}
+
+export function CartProvider({ children }: CartProviderProps): JSX.Element {
+  const [cart, setCart] = useState<CartItem[]>([])
+
+  const addToCart = (item: Omit<CartItem, 'quantity'>): void => {
     setCart((prevCart) => {
-      const existingItemIndex = prevCart.findIndex((cartItem) => cartItem.id === item.id);
-      
-      if (existingItemIndex !== -1) {
-        const newCart = [...prevCart];
-        const existingItem = newCart[existingItemIndex];
-        
-        if (existingItem) {
-          newCart[existingItemIndex] = {
-            ...existingItem,
-            quantity: existingItem.quantity + 1
-          };
-        }
-        
-        return newCart;
+      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id)
+
+      if (existingItem) {
+        return prevCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        )
       }
-      
-      return [...prevCart, { ...item, quantity: 1 }];
-    });
-  };
 
-  const removeFromCart = (id: string) => {
+      return [...prevCart, { ...item, quantity: 1 }]
+    })
+  }
+
+  const removeFromCart = (id: string): void => {
     setCart((prevCart) => {
-      return prevCart.reduce<CartItem[]>((acc, item) => {
-        if (item.id === id) {
-          if (item.quantity > 1) {
-            acc.push({ ...item, quantity: item.quantity - 1 });
-          }
-        } else {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
-    });
-  };
+      const itemToUpdate = prevCart.find((item) => item.id === id)
 
-  const clearCart = () => {
-    setCart([]);
-  };
+      if (!itemToUpdate) {
+        return prevCart
+      }
 
-  const value: CartContextType = {
+      if (itemToUpdate.quantity > 1) {
+        return prevCart.map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+      }
+
+      return prevCart.filter((item) => item.id !== id)
+    })
+  }
+
+  const clearCart = (): void => {
+    setCart([])
+  }
+
+  const value = {
     cart,
     addToCart,
     removeFromCart,
-    clearCart,
-  };
+    clearCart
+  }
 
-  return (
-    <CartContext.Provider value={value}>
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
+
+export { CartContext }
