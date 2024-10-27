@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import { Footer } from '../components/Footer';
 import Map from '../components/Map';
 import type { FavoritesList } from '../components/FavoritesList'; 
-import { Product } from '@/types/Product'; 
+import type { Product } from '@/types/Product';
 
 const mockProduct: Product = {
   id: '1',
