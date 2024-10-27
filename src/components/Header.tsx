@@ -14,12 +14,6 @@ import { useDebounce } from 'use-debounce';
 import { GeocodingResult } from '@/types';
 
 // Types and Interfaces
-interface GeocodingResult {
-  lat: string;
-  lon: string;
-  display_name?: string;
-}
-
 interface ReverseGeocodingResult {
   address: {
     road?: string;
@@ -233,7 +227,7 @@ const Header: React.FC = () => {
         const data = await response.json() as GeocodingResult[];
         if (data.length > 0) {
           const result = data[0];
-          if ('lat' in result && 'lon' in result) {
+          if (result && typeof result.lat === 'number' && typeof result.lon === 'number') {
             const { lat, lon } = result;
             if (liveLocation) {
               const distance = calculateDistance(
@@ -245,7 +239,7 @@ const Header: React.FC = () => {
               // ... rest of the code
             }
           } else {
-            console.error('Geocoding result does not contain lat and lon properties');
+            console.error('Geocoding result does not contain valid lat and lon properties');
           }
         } else {
           console.error('No geocoding results found');
