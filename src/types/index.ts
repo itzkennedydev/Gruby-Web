@@ -10,3 +10,12 @@ export interface Chef {
   rating?: number;
   image?: string; // Add this line to include the image property
 }
+
+export interface GeocodingResult {
+  lat: number;
+  lon: number;
+  // Add other properties that might be returned by your geocoding service
+  display_name?: string;
+  type?: string;
+  // ... other properties
+}
