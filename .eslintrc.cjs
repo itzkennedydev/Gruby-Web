@@ -7,7 +7,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true
     },
-    tsconfigRootDir: __dirname, 
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'react'],
   extends: [
@@ -17,6 +17,6 @@ module.exports = {
     'plugin:react-hooks/recommended'
   ],
   rules: {
-    // Add any specific rules here
+    'react/react-in-jsx-scope': 'off' 
   }
 }
