@@ -10,8 +10,6 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowLeft, Bug } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import type { Product } from '@/types';
-import { useCart } from '@/contexts/CartContext';
-import { useState, useEffect } from 'react';
 
 interface ProductPageProps {
   product: Product | null;
@@ -128,11 +126,11 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
       .then((results) => results[0] ?? null);
 
     const formattedProduct: Product | null = product ? {
-      id: product.id,
+      id: String(product.id), // Convert number to string
       name: product.name,
       description: product.description ?? 'No description available',
       price: Number(product.price),
-      chef: { name: product.chefId }, // Update this line
+      chef: { name: product.chefId }, 
       images: product.imageUrl ? [product.imageUrl] : ['/placeholder-image.jpg'],
     } : null;
 
@@ -142,7 +140,7 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
 
     const debugInfo = {
       requestedId: id,
-      availableIds: availableProducts.map((p) => p.id),
+      availableIds: availableProducts.map((p) => String(p.id)), // Convert numbers to strings
     };
 
     return {
