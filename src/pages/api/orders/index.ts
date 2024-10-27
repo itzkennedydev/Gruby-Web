@@ -129,7 +129,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           orderId: order.id,
           productId: productId,
           quantity: quantity.toString(),
-          price: (price / 100).toFixed(2),
+          price: price !== null ? (price / 100).toFixed(2) : '0.00',
         });
       }
 
