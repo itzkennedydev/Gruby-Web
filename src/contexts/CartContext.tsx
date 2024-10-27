@@ -30,10 +30,10 @@ interface CartProviderProps {
   children: ReactNode;
 }
 
-export function CartProvider({ children }: CartProviderProps) {
+export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = (item: CartItem): void => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
       if (existingItem) {
@@ -47,7 +47,7 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   };
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = (id: string): void => {
     setCart((prevCart) =>
       prevCart.reduce<CartItem[]>((acc, item) => {
         if (item.id === id) {
@@ -62,7 +62,7 @@ export function CartProvider({ children }: CartProviderProps) {
     );
   };
 
-  const clearCart = () => {
+  const clearCart = (): void => {
     setCart([]);
   };
 
