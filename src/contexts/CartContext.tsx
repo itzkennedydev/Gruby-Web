@@ -1,55 +1,71 @@
 'use client';
 
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { 
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+  type Context
+} from "react";
 
-interface CartItem {
+type CartItem = {
   id: string;
   name: string;
   price: number;
   quantity: number;
-}
+};
 
-interface CartContextType {
+type CartContextType = {
   cart: CartItem[];
-  addToCart: (item: CartItem) => void;
+  addToCart: (item: Omit<CartItem, "quantity">) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
-}
+};
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext: Context<CartContextType | null> = createContext<CartContextType | null>(null);
 
 export function useCart(): CartContextType {
   const context = useContext(CartContext);
-  if (!context) {
+  
+  if (context === null) {
     throw new Error('useCart must be used within a CartProvider');
   }
+  
   return context;
 }
 
-interface CartProviderProps {
+type CartProviderProps = {
   children: ReactNode;
-}
+};
 
-export function CartProvider({ children }: CartProviderProps): JSX.Element {
+export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (item: CartItem): void => {
+  const addToCart = (item: Omit<CartItem, "quantity">) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
-      if (existingItem) {
-        return prevCart.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
+      const existingItemIndex = prevCart.findIndex((cartItem) => cartItem.id === item.id);
+      
+      if (existingItemIndex !== -1) {
+        const newCart = [...prevCart];
+        const existingItem = newCart[existingItemIndex];
+        
+        if (existingItem) {
+          newCart[existingItemIndex] = {
+            ...existingItem,
+            quantity: existingItem.quantity + 1
+          };
+        }
+        
+        return newCart;
       }
+      
       return [...prevCart, { ...item, quantity: 1 }];
     });
   };
 
-  const removeFromCart = (id: string): void => {
-    setCart((prevCart) =>
-      prevCart.reduce<CartItem[]>((acc, item) => {
+  const removeFromCart = (id: string) => {
+    setCart((prevCart) => {
+      return prevCart.reduce<CartItem[]>((acc, item) => {
         if (item.id === id) {
           if (item.quantity > 1) {
             acc.push({ ...item, quantity: item.quantity - 1 });
@@ -58,23 +74,23 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           acc.push(item);
         }
         return acc;
-      }, [])
-    );
+      }, []);
+    });
   };
 
-  const clearCart = (): void => {
+  const clearCart = () => {
     setCart([]);
   };
 
+  const value: CartContextType = {
+    cart,
+    addToCart,
+    removeFromCart,
+    clearCart,
+  };
+
   return (
-    <CartContext.Provider 
-      value={{
-        cart,
-        addToCart,
-        removeFromCart,
-        clearCart,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
