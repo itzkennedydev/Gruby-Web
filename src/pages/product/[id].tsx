@@ -9,15 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowLeft, Bug } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  chef: string;
-  imageUrl: string;
-}
+import { Product } from '@/types'; // Import the Product type from your types file
 
 interface ProductPageProps {
   product: Product | null;
@@ -117,12 +109,7 @@ function ProductPage({ product, debugInfo }: ProductPageProps) {
           </Button>
         </div>
         
-        <ProductDetails 
-          product={{
-            ...product,
-            image: product.imageUrl,
-          }} 
-        />
+        {product && <ProductDetails product={product} />}
       </div>
     </main>
   );
@@ -138,13 +125,13 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
       .where(eq(products.id, id))
       .then((results) => results[0] || null);
 
-    const formattedProduct = product ? {
+    const formattedProduct: Product | null = product ? {
       id: product.id,
       name: product.name,
       description: product.description || 'No description available',
       price: Number(product.price),
-      chef: product.chefId,
-      imageUrl: product.imageUrl || '/placeholder-image.jpg',
+      chef: { name: product.chefId }, // Update this line
+      images: product.imageUrl ? [product.imageUrl] : ['/placeholder-image.jpg'],
     } : null;
 
     const availableProducts = await db
