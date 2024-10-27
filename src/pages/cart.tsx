@@ -13,9 +13,7 @@ const Cart: React.FC = () => {
   const router = useRouter();
 
   const subtotal = cartItems.reduce((total: number, item: CartItem) => {
-    const price = Number(item.price) || 0;
-    const quantity = Number(item.quantity) || 0;
-    return price > 0 && quantity > 0 ? total + price * quantity : total;
+    return total + item.price * item.quantity;
   }, 0);
 
   const serviceFee = subtotal * 0.15;
@@ -35,7 +33,7 @@ const Cart: React.FC = () => {
         <div className="text-center py-16">
           <ShoppingBag className="mx-auto h-16 w-16 text-gray-400 mb-4" />
           <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
-          <p className="text-gray-600 mb-8">Looks like you haven't added anything to your cart yet.</p>
+          <p className="text-gray-600 mb-8">Looks like you haven&apos;t added anything to your cart yet.</p>
           <Link href="/">
             <Button className="flex items-center gap-2">
               <ArrowLeft className="h-4 w-4" />
@@ -71,10 +69,10 @@ const Cart: React.FC = () => {
                   <Link href={`/product/${item.id}`} className="flex-shrink-0">
                     <div className="relative w-24 h-24 rounded-lg overflow-hidden hover:opacity-80 transition-opacity">
                       <Image
-                        src={item.imageUrl}
+                        src={item.imageUrl || '/images/placeholder.jpg'}
                         alt={item.name}
-                        layout="fill"
-                        objectFit="cover"
+                        fill
+                        style={{ objectFit: 'cover' }}
                         className="rounded-lg"
                       />
                     </div>
