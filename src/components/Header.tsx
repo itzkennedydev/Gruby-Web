@@ -167,22 +167,26 @@ const Header: React.FC = () => {
         );
         const data = await response.json() as GeocodingResult[];
         if (data.length > 0) {
-          const { lat, lon } = data[0];
-          if (liveLocation) {
-            const distance = calculateDistance(
-              liveLocation.lat,
-              liveLocation.lon,
-              parseFloat(lat),
-              parseFloat(lon)
-            );
-            if (distance > 50) {
-              setShowWarning(true);
-              return;
+          const result = data[0];
+          if (result && typeof result.lat === 'string' && typeof result.lon === 'string') {
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
+            if (liveLocation) {
+              const distance = calculateDistance(
+                liveLocation.lat,
+                liveLocation.lon,
+                lat,
+                lon
+              );
+              if (distance > 50) {
+                setShowWarning(true);
+                return;
+              }
             }
+            setAddress(customAddress);
+            setShowAddressModal(false);
+            setShowWarning(false);
           }
-          setAddress(customAddress);
-          setShowAddressModal(false);
-          setShowWarning(false);
         } else {
           alert('Invalid address. Please try again.');
         }
@@ -227,8 +231,9 @@ const Header: React.FC = () => {
         const data = await response.json() as GeocodingResult[];
         if (data.length > 0) {
           const result = data[0];
-          if (result && typeof result.lat === 'number' && typeof result.lon === 'number') {
-            const { lat, lon } = result;
+          if (result && typeof result.lat === 'string' && typeof result.lon === 'string') {
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
             if (liveLocation) {
               const distance = calculateDistance(
                 liveLocation.lat,
