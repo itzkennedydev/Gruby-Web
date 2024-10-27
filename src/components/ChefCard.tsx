@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled } from '@mui/system';
 import Link from 'next/link';
-import { Chef } from '@/server/db/schema';
+import { Chef } from '@/types'; // Make sure to import the updated Chef interface
 
 interface ChefCardProps {
   chef: Chef;
