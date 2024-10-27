@@ -1,50 +1,56 @@
-import Image from 'next/image';
+import React from 'react';
 import Link from 'next/link';
-import { MealItem, mockChefs } from '../data/mockChefs';
+import Image from 'next/image';
+import { Chef } from '@/types';
 
 // Constants for repeated values
-const DEFAULT_IMAGE = '/default-chef-image.webp';
-const IMAGE_WIDTH = 300;
-const IMAGE_HEIGHT = 200;
-const NO_DESCRIPTION = 'No description available';
+const DEFAULT_IMAGE = '/default-chef-image.jpg';
+const NO_DESCRIPTION = 'No description available.';
 
 // Reusable ChefCard component
 interface ChefCardProps {
-  chef: MealItem;
+  chef: Chef;
 }
 
-function ChefCard({ chef }: ChefCardProps) {
-  const chefImage = chef.image ?? DEFAULT_IMAGE;
+const ChefCard: React.FC<ChefCardProps> = ({ chef }) => {
+  const chefImage = chef.coverImageUrl ?? DEFAULT_IMAGE;
   const chefName = chef.name ?? 'Unknown Chef';
-  const chefDescription = chef.description ?? NO_DESCRIPTION;
+  const chefBio = chef.bio ?? NO_DESCRIPTION;
 
   return (
     <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
-      <Image
-        src={chefImage}
-        alt={chefName}
-        width={IMAGE_WIDTH}
-        height={IMAGE_HEIGHT}
-        className="rounded-t-lg"
-        loading="lazy"
-      />
-      <div className="p-4">
-        <h2 className="text-xl font-bold mb-2">{chefName}</h2>
-        <p className="text-gray-600">{chefDescription}</p>
-      </div>
+      <Link href={`/chef/${chef.id}`}>
+        <div className="relative h-48 w-full">
+          <Image
+            src={chefImage}
+            alt={chefName}
+            layout="fill"
+            objectFit="cover"
+            className="rounded-t-lg"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="text-xl font-semibold mb-2">{chefName}</h3>
+          <p className="text-gray-600 text-sm">{chefBio}</p>
+        </div>
+      </Link>
     </div>
   );
-}
+};
 
 // Main ChefList component
-export function ChefList() {
+interface ChefListProps {
+  chefs: Chef[];
+}
+
+const ChefList: React.FC<ChefListProps> = ({ chefs }) => {
   return (
-    <div className="p-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-      {mockChefs.map((chef: MealItem) => (
-        <Link key={chef.id} href={`/chef/${chef.id}`}>
-          <ChefCard chef={chef} />
-        </Link>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {chefs.map((chef) => (
+        <ChefCard key={chef.id} chef={chef} />
       ))}
     </div>
   );
-}
+};
+
+export default ChefList;
