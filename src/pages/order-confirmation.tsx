@@ -84,6 +84,10 @@ export default function OrderConfirmation() {
             ? payment_intent_client_secret[0] 
             : payment_intent_client_secret;
 
+          if (!clientSecret) {
+            throw new Error('Missing payment intent client secret');
+          }
+
           const { paymentIntent: retrievedIntent } = await stripe.retrievePaymentIntent(clientSecret);
 
           if (retrievedIntent?.status === 'succeeded') {
