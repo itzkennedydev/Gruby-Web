@@ -76,11 +76,12 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
       // Convert createdAt and updatedAt back to Date
       const productToAdd = {
         ...product,
+        id: product.id.toString(), // Convert id to string
         createdAt: new Date(product.createdAt),
         updatedAt: new Date(product.updatedAt),
         quantity: 1,
-        price: Number(product.price), // Convert price to number
-        imageUrl: product.imageUrl ?? '/default-product.jpg', // Provide a default image URL
+        price: Number(product.price),
+        imageUrl: product.imageUrl ?? '/default-product.jpg',
       };
       addToCart(productToAdd);
     } catch (error) {
@@ -201,12 +202,12 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
                           objectFit="cover"
                         />
                         <button
-                          onClick={() => toggleLike(product.id)}
+                          onClick={() => toggleLike(product.id.toString())}
                           className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
                         >
                           <Heart
                             className={`w-5 h-5 ${
-                              likedProducts.has(product.id)
+                              likedProducts.has(product.id.toString())
                                 ? 'fill-red-500 text-red-500'
                                 : 'text-gray-600'
                             }`}
