@@ -16,6 +16,7 @@ import { useDebounce } from 'use-debounce';
 interface GeocodingResult {
   lat: string;
   lon: string;
+  display_name?: string;
 }
 
 interface ReverseGeocodingResult {
@@ -71,7 +72,7 @@ const Header: React.FC = () => {
   // Effect for search results
   useEffect(() => {
     if (debouncedSearchTerm) {
-      fetchSearchResults(debouncedSearchTerm);
+      void fetchSearchResults(debouncedSearchTerm); // Use void to ignore the promise
     } else {
       setSearchResults([]);
     }
@@ -95,7 +96,8 @@ const Header: React.FC = () => {
 
   const handleGeolocation = useCallback(() => {
     if (navigator.geolocation) {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      // Await the permissions query to handle the promise correctly
+      void navigator.permissions.query({ name: 'geolocation' }).then((result) => {
         if (result.state === 'granted') {
           getCurrentPosition();
         } else if (result.state === 'prompt') {
@@ -128,7 +130,9 @@ const Header: React.FC = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         setLiveLocation({ lat: latitude, lon: longitude });
-        fetchAddress(latitude, longitude);
+        void fetchAddress(latitude, longitude).catch((error) => {
+          console.error("Error fetching address:", error);
+        });
       },
       (error) => {
         console.error("Error getting location:", error);
