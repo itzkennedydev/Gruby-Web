@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import type { Chef } from '@/server/db/schema';
@@ -7,8 +7,13 @@ const ChefCard = dynamic(() => import('../components/ChefCard'), {
   ssr: false,
 });
 
+interface ScrollableGridProps {
+  children: ReactNode;
+  id: string;
+}
+
 // Scrollable grid with responsive adjustments
-const ScrollableGrid = ({ children, id }) => (
+const ScrollableGrid = ({ children, id }: ScrollableGridProps) => (
   <div 
     id={id}
     className="flex overflow-x-auto hide-scrollbar gap-4 pb-4 px-2 -mx-2 md:gap-6 md:pb-6"
@@ -17,8 +22,14 @@ const ScrollableGrid = ({ children, id }) => (
   </div>
 );
 
+interface ScrollButtonProps {
+  direction: 'left' | 'right';
+  onClick: () => void;
+  className: string;
+}
+
 // Responsive scroll button
-const ScrollButton = ({ direction, onClick, className }) => (
+const ScrollButton = ({ direction, onClick, className }: ScrollButtonProps) => (
   <button
     onClick={onClick}
     className={`
@@ -32,7 +43,13 @@ const ScrollButton = ({ direction, onClick, className }) => (
   </button>
 );
 
-const TabButton = ({ isActive, onClick, children }) => (
+interface TabButtonProps {
+  isActive: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}
+
+const TabButton = ({ isActive, onClick, children }: TabButtonProps) => (
   <button
     onClick={onClick}
     className={`
