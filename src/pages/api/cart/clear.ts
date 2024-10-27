@@ -44,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Process the payment using Stripe
       const orderProcessingSuccess = await processPaymentWithStripe({
-        id: cartOrder.id,
+        id: String(cartOrder.id),
         user_id: cartOrder.user_id,
         total: parseFloat(cartOrder.total),
         status: cartOrder.status,
