@@ -1,4 +1,5 @@
 import { GeocodingResult } from '@/types';
+import type { SomeType, AnotherType } from 'some-module';
 
 interface LatLng {
   lat: number;
