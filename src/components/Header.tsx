@@ -20,6 +20,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 import type { GeocodingResult } from '@/types';
+import type { NextRouter } from 'next/router'; // Add this import
 
 // Types and Interfaces
 interface ReverseGeocodingResult {
@@ -40,7 +41,7 @@ interface SearchResult {
 
 interface NavLinkProps {
   href: string;
-  icon: React.ComponentType<{ size: number }>;
+  icon: React.ComponentType<{ size?: number | string }>;
   children: React.ReactNode;
   onClick?: () => void;
 }
@@ -59,7 +60,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }
 const Header = () => {
   const { isSignedIn, isLoaded } = useUser();
   const { cartItems } = useCart();
-  const router = useRouter();
+  const router = useRouter() as unknown as NextRouter; 
 
   // State management
   const [address, setAddress] = useState('');
@@ -237,7 +238,7 @@ const Header = () => {
 
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [router.asPath]);
+  }, [router.asPath]); 
 
   // Loading state
   if (!isLoaded) {
