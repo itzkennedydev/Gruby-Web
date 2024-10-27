@@ -54,6 +54,9 @@ const Header: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const router = useRouter();
 
+  // Add this helper function at the top of your component
+  const cartItemCount = useMemo(() => cartItems?.length ?? 0, [cartItems]);
+
   // Effect for geolocation on load
   useEffect(() => {
     if (isLoaded && isSignedIn) {
@@ -416,9 +419,9 @@ const Header: React.FC = () => {
             className="text-gray-700 hover:text-primary transition-colors duration-300 relative p-2 rounded-full hover:bg-gray-100"
           >
             <ShoppingCart size={24} />
-            {cartItems.length > 0 && (
+            {cartItemCount > 0 && (
               <span className={`absolute -top-1 -right-1 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium ${styles.fadeAnimation}`}>
-                {cartItems.length}
+                {cartItemCount}
               </span>
             )}
           </Link>
@@ -555,9 +558,9 @@ const Header: React.FC = () => {
           >
             <ShoppingCart size={24} />
             <span className="text-xs mt-1">Cart</span>
-            {cartItems.length > 0 && (
+            {cartItemCount > 0 && (
               <span className={`absolute -top-1 right-1 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-medium ${styles.fadeAnimation}`}>
-                {cartItems.length}
+                {cartItemCount}
               </span>
             )}
           </Link>
