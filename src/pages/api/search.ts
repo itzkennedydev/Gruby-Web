@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/server/db';
 import { chefs, products } from '@/db/schema';
-import { eq, like, or } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
 
 interface Chef {
@@ -22,6 +21,44 @@ interface Product {
 interface SearchResults {
   chefs: Chef[];
   dishes: Product[];
+}
+
+interface ChefRow {
+  id: string;
+  name: string;
+  avatarUrl: string;
+  rating: string;
+}
+
+interface ProductRow {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl: string;
+}
+
+function isChefRow(row: unknown): row is ChefRow {
+  return (
+    typeof row === 'object' &&
+    row !== null &&
+    'id' in row &&
+    'name' in row &&
+    'avatarUrl' in row &&
+    'rating' in row
+  );
+}
+
+function isProductRow(row: unknown): row is ProductRow {
+  return (
+    typeof row === 'object' &&
+    row !== null &&
+    'id' in row &&
+    'name' in row &&
+    'description' in row &&
+    'price' in row &&
+    'imageUrl' in row
+  );
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -52,18 +89,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     `);
 
     const results: SearchResults = {
-      chefs: chefResults.rows.map(row => ({
-        id: row.id,
-        name: row.name,
-        avatarUrl: row.avatarUrl,
+      chefs: chefResults.rows.filter(isChefRow).map(row => ({
+        id: row.id as string, // Cast to string
+        name: row.name as string, // Cast to string
+        avatarUrl: row.avatarUrl as string, // Cast to string
         rating: Number(row.rating),
       })),
-      dishes: dishResults.rows.map(row => ({
-        id: row.id,
-        name: row.name,
-        description: row.description,
+      dishes: dishResults.rows.filter(isProductRow).map(row => ({
+        id: row.id as string, // Cast to string
+        name: row.name as string, // Cast to string
+        description: row.description as string, // Cast to string
         price: Number(row.price),
-        imageUrl: row.imageUrl,
+        imageUrl: row.imageUrl as string, // Cast to string
       })),
     };
 
