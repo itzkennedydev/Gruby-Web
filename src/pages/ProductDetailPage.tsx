@@ -6,7 +6,7 @@ import { Container, Box, Typography } from '@mui/material';
 import Header from '../components/Header';
 import { Footer } from '../components/Footer';
 import Map from '../components/Map';
-import type { FavoritesList } from '../components/FavoritesList';
+import type { FavoritesList } from '../components/FavoritesList'; 
 import type { Product } from '@/types/Product'; 
 
 const mockProduct: Product = {
@@ -69,7 +69,7 @@ const ProductDetailPage: React.FC = () => {
           }}
         >
           <Image
-            src={mockProduct.images[0]}
+            src={mockProduct.images[0] || '/placeholder-image.jpg'} // Provide a fallback image
             alt={mockProduct.name}
             layout="fill"
             objectFit="cover"
@@ -93,7 +93,7 @@ const ProductDetailPage: React.FC = () => {
           <Typography variant="h5" component="h2" gutterBottom>
             Location
           </Typography>
-          <Map coordinates={mockProduct.location.coordinates} />
+          <Map lat={mockProduct.location.coordinates.lat} lng={mockProduct.location.coordinates.lng} />
         </Box>
       </Container>
       <Footer />
