@@ -30,10 +30,7 @@ export interface Product {
   images: string[];
   location: {
     address: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
+    coordinates: { lat: number; lng: number };
   };
   chef: {
     id: string;
