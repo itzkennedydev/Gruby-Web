@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSignIn } from '@clerk/nextjs';
 
-interface SsoCallbackProps {}
+interface SSOCallbackProps extends Record<string, never> {
+  // Add properties if needed
+}
 
-const SsoCallback: React.FC<SsoCallbackProps> = () => {
+const SsoCallback: React.FC<SSOCallbackProps> = () => {
     const router = useRouter();
     const { isLoaded, setActive } = useSignIn();
 

@@ -14,6 +14,7 @@ import { db } from '@/db/db';
 import { sql } from 'drizzle-orm';
 import { chefs, products } from '@/db/schema';
 import debounce from 'lodash.debounce';  // Debouncing mechanism
+import Image from 'next/image';
 
 interface Chef {
   id: string;
@@ -109,7 +110,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
     if (router.query.q !== query) {
       fetchSearchResults(router.query.q as string);
     }
-  }, [router.query.q, query]);
+  }, [router.query.q, query, fetchSearchResults]); // Add fetchSearchResults to the dependency array
 
   const handleAddToCart = (product: Product) => {
     addToCart({ ...product, quantity: 1 });
@@ -163,7 +164,13 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
                 <Card>
                   <CardHeader className="relative p-0">
                     <div className="relative h-48 w-full">
-                      <img src={chef.avatarUrl} alt={chef.name} className="object-cover w-full h-full rounded-t-lg" />
+                      <Image 
+                        src={chef.avatarUrl} 
+                        alt={chef.name} 
+                        width={500} 
+                        height={300} 
+                        layout="responsive"
+                      />
                     </div>
                   </CardHeader>
                   <CardContent className="p-4">
@@ -186,7 +193,13 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
               <Card key={product.id} className="flex flex-col">
                 <CardHeader className="p-0">
                   <div className="relative h-48">
-                    <img src={product.imageUrl} alt={product.name} className="object-cover w-full h-full rounded-t-lg" />
+                    <Image 
+                      src={product.imageUrl} 
+                      alt={product.name} 
+                      width={500} 
+                      height={300} 
+                      layout="responsive"
+                    />
                     <Badge className="absolute top-2 right-2" variant="secondary">
                       ${product.price.toFixed(2)}
                     </Badge>
