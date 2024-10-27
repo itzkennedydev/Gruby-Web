@@ -2,7 +2,7 @@
   "name": "gruby",
   "version": "0.1.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "build": "next build",
     "db:generate": "drizzle-kit generate",
