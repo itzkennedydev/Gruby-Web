@@ -14,7 +14,8 @@ import {
   Utensils, 
   ChefHat, 
   Coffee, 
-  ScrollText 
+  ScrollText,
+  Navigation 
 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
@@ -46,6 +47,11 @@ interface NavLinkProps {
   onClick?: () => void;
 }
 
+interface RecentAddress {
+  address: string;
+  type: 'Home' | 'Work' | 'Other';
+}
+
 const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }) => (
   <Link 
     href={href}
@@ -63,18 +69,23 @@ const Header = () => {
   const router = useRouter() as unknown as NextRouter;
 
   // State management
-  const [address, setAddress] = useState('');
-  const [showMegaMenu, setShowMegaMenu] = useState(false);
-  const [showAddressModal, setShowAddressModal] = useState(false);
-  const [showLocationPrompt, setShowLocationPrompt] = useState(false);
-  const [customAddress, setCustomAddress] = useState('');
-  const [showWarning, setShowWarning] = useState(false);
-  const [isLocating, setIsLocating] = useState(true);
+  const [address, setAddress] = useState<string>('');
+  const [showMegaMenu, setShowMegaMenu] = useState<boolean>(false);
+  const [showAddressModal, setShowAddressModal] = useState<boolean>(false);
+  const [showLocationPrompt, setShowLocationPrompt] = useState<boolean>(false);
+  const [customAddress, setCustomAddress] = useState<string>('');
+  const [showWarning, setShowWarning] = useState<boolean>(false);
+  const [isLocating, setIsLocating] = useState<boolean>(true);
   const [liveLocation, setLiveLocation] = useState<{ lat: number; lon: number } | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [recentAddresses] = useState<RecentAddress[]>([
+    { address: "123 Home Street, Apartment 4B", type: "Home" },
+    { address: "456 Work Avenue, Floor 2", type: "Work" }
+  ]);
+
   const [debouncedSearchTerm] = useDebounce(searchTerm, 300);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const cartItemCount = useMemo(() => cartItems?.length ?? 0, [cartItems]);
 
@@ -160,11 +171,13 @@ const Header = () => {
           `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(customAddress)}`
         );
         const data = await response.json() as GeocodingResult[];
+        
         if (data.length > 0) {
           const result = data[0];
           if (result && typeof result.lat === 'string' && typeof result.lon === 'string') {
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
+            
             if (liveLocation) {
               const distance = calculateDistance(
                 liveLocation.lat,
@@ -177,6 +190,7 @@ const Header = () => {
                 return;
               }
             }
+            
             setAddress(customAddress);
             setShowAddressModal(false);
             setShowWarning(false);
@@ -235,6 +249,103 @@ const Header = () => {
   useEffect(() => {
     setIsMenuOpen(false);
   }, [router.asPath]);
+
+  const renderLocationModal = () => {
+    if (!showAddressModal) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-8 md:pt-20">
+        <div className="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-xl">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-100">
+            <h2 className="text-xl font-semibold text-gray-900">Delivery Address</h2>
+            <button 
+              onClick={() => setShowAddressModal(false)}
+              className="p-2 -mr-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="p-6 space-y-6">
+            {/* Search Section */}
+            <div className="space-y-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  value={customAddress}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomAddress(e.target.value)}
+                  className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black text-gray-900 placeholder:text-gray-400"
+                  placeholder="Search for area, street name..."
+                />
+              </div>
+
+              {/* Warning Message */}
+              {showWarning && (
+                <div className="p-4 bg-amber-50 border border-amber-100 rounded-xl">
+                  <p className="text-amber-700 text-sm flex items-start">
+                    <MapPin className="h-5 w-5 mr-2 flex-shrink-0 text-amber-500" />
+                    This address seems to be outside our delivery range. Please verify the location or try a different address.
+                  </p>
+                </div>
+              )}
+
+              {/* Quick Actions */}
+              <div className="pt-2">
+                <button
+                  onClick={() => {
+                    getCurrentPosition();
+                    setShowAddressModal(false);
+                    setShowWarning(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-xl text-gray-700 font-medium transition-colors"
+                >
+                  <Navigation className="h-5 w-5" />
+                  Use current location
+                </button>
+              </div>
+            </div>
+
+            {/* Recent Addresses Section */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium text-gray-500">RECENT ADDRESSES</h3>
+              <div className="space-y-2">
+                {recentAddresses.map((item, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setCustomAddress(item.address);
+                      void handleCustomAddressSubmit();
+                    }}
+                    className="w-full flex items-start gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors text-left"
+                  >
+                    <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
+                    <div>
+                      <p className="text-gray-700 font-medium">{item.address}</p>
+                      <p className="text-sm text-gray-500">{item.type}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="p-6 border-t border-gray-100">
+            <button 
+              onClick={() => void handleCustomAddressSubmit()}
+              className="w-full py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-colors"
+            >
+              Confirm Address
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   if (!isLoaded) {
     return (
@@ -381,238 +492,182 @@ const Header = () => {
               <Link 
                 href="/orders" 
                 className="hidden md:flex items-center text-gray-700 hover:text-gray-900"
-                >
-                  <ScrollText size={24} />
-                </Link>
-              )}
-              
-              <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
-                <ShoppingCart size={24} />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                    {cartItemCount}
-                  </span>
-                )}
+              >
+                <ScrollText size={24} />
               </Link>
-  
-              {isSignedIn ? (
-                <UserButton afterSignOutUrl="/" />
-              ) : (
-                <div className="hidden md:flex items-center gap-3">
-                  <SignInButton mode="modal">
-                    <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
-                      Sign In
-                    </button>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
-                      Sign Up
-                    </button>
-                  </SignUpButton>
-                </div>
+            )}
+            
+            <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
+              <ShoppingCart size={24} />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  {cartItemCount}
+                </span>
               )}
-            </div>
-          </div>
-  
-          {/* Mobile Search */}
-          <div className="md:hidden mt-4">
-            <form onSubmit={handleSearchSubmit} className="relative">
-              <input
-                type="text"
-                placeholder="Search dishes, cuisines, or chefs..."
-                className="w-full px-10 py-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              {searchTerm && (
-                <button
-                  type="button"
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </form>
+            </Link>
+
+            {isSignedIn ? (
+              <UserButton afterSignOutUrl="/" />
+            ) : (
+              <div className="hidden md:flex items-center gap-3">
+                <SignInButton mode="modal">
+                  <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </div>
+            )}
           </div>
         </div>
-  
-        {/* Mobile Menu */}
-        <div 
-          className={`fixed inset-0 bg-black/50 z-50 md:hidden transition-opacity ${
-            isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-          onClick={() => setIsMenuOpen(false)}
-        >
-          <div 
-            className={`fixed inset-y-0 left-0 w-[280px] bg-white shadow-xl transform transition-transform ${
-              isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="font-semibold text-gray-700">Menu</h2>
-              <button 
-                onClick={() => setIsMenuOpen(false)}
-                className="p-2 text-gray-500 hover:text-gray-700"
-              >
-                <X size={20} />
-              </button>
-            </div>
-  
-            <div className="p-4 space-y-6">
+
+        {/* Mobile Search */}
+        <div className="md:hidden mt-4">
+          <form onSubmit={handleSearchSubmit} className="relative">
+            <input
+              type="text"
+              placeholder="Search dishes, cuisines, or chefs..."
+              className="w-full px-10 py-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            {searchTerm && (
               <button
-                onClick={() => {
-                  setShowAddressModal(true);
-                  setIsMenuOpen(false);
-                }}
-                className="flex items-center gap-2 text-gray-700 hover:text-gray-900 w-full"
+                type="button"
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                <MapPin size={20} className="text-gray-700" />
-                <span className="truncate">
-                  {isLocating ? 'Locating...' : (address || 'Set location')}
-                </span>
+                <X size={16} />
               </button>
-  
-              <nav className="space-y-4 border-t border-gray-200 pt-4">
+            )}
+          </form>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div 
+        className={`fixed inset-0 bg-black/50 z-50 md:hidden transition-opacity ${
+          isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <div 
+          className={`fixed inset-y-0 left-0 w-[280px] bg-white shadow-xl transform transition-transform ${
+            isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+            <h2 className="font-semibold text-gray-700">Menu</h2>
+            <button 
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 text-gray-500 hover:text-gray-700"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="p-4 space-y-6">
+            <button
+              onClick={() => {
+                setShowAddressModal(true);
+                setIsMenuOpen(false);
+              }}
+              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 w-full"
+            >
+              <MapPin size={20} className="text-gray-700" />
+              <span className="truncate">
+                {isLocating ? 'Locating...' : (address || 'Set location')}
+              </span>
+            </button>
+
+            <nav className="space-y-4 border-t border-gray-200 pt-4">
+              <NavLink 
+                href="/browse" 
+                icon={Utensils}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Browse Cuisines
+              </NavLink>
+              <NavLink 
+                href="/chefs" 
+                icon={ChefHat}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Find Chefs
+              </NavLink>
+              {isSignedIn && (
                 <NavLink 
-                  href="/browse" 
-                  icon={Utensils}
+                  href="/orders" 
+                  icon={ScrollText}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Browse Cuisines
+                  My Orders
                 </NavLink>
-                <NavLink 
-                  href="/chefs" 
-                  icon={ChefHat}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Find Chefs
-                </NavLink>
-                {isSignedIn && (
-                  <NavLink 
-                    href="/orders" 
-                    icon={ScrollText}
+              )}
+            </nav>
+
+            {!isSignedIn && (
+              <div className="border-t border-gray-200 pt-4 space-y-2">
+                <SignInButton mode="modal">
+                  <button 
+                    className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    My Orders
-                  </NavLink>
-                )}
-              </nav>
-  
-              {!isSignedIn && (
-                <div className="border-t border-gray-200 pt-4 space-y-2">
-                  <SignInButton mode="modal">
-                    <button 
-                      className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Sign In
-                    </button>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <button 
-                      className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Sign Up
-                    </button>
-                  </SignUpButton>
-                </div>
-              )}
+                    Sign In
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button 
+                    className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Location Modal */}
+      {renderLocationModal()}
+
+      {/* Location Permission Modal */}
+      {showLocationPrompt && (
+        <div className="fixed inset-0 bg-black/50 z-50">
+          <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 text-gray-700">Allow Location Access?</h2>
+              <p className="text-gray-600 mb-6">
+                Gruby would like to access your location to show nearby chefs and meals.
+              </p>
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => void handleLocationPermission(false)}
+                  className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
+                >
+                  Not Now
+                </button>
+                <button 
+                  onClick={() => void handleLocationPermission(true)}
+                  className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
+                >
+                  Allow Access
+                </button>
+              </div>
             </div>
           </div>
         </div>
-  
-        {/* Location Modal */}
-        {showAddressModal && (
-          <div className="fixed inset-0 bg-black/50 z-50">
-            <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-700">Enter delivery address</h2>
-                  <button 
-                    onClick={() => setShowAddressModal(false)}
-                    className="p-2 text-gray-500 hover:text-gray-700"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-  
-                <div className="space-y-4">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={customAddress}
-                      onChange={(e) => setCustomAddress(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
-                      placeholder="Enter street address or zip code"
-                    />
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  </div>
-  
-                  {showWarning && (
-                    <div className="p-3 bg-red-50 border border-red-100 rounded-lg">
-                      <p className="text-red-600 text-sm">
-                        This address is far from your current location. Are you sure it's correct?
-                      </p>
-                    </div>
-                  )}
-  
-                  <div className="space-y-2">
-                    <button 
-                      onClick={handleCustomAddressSubmit}
-                      className="w-full py-2 bg-black text-white rounded hover:bg-gray-800"
-                    >
-                      Confirm Address
-                    </button>
-                    <button 
-                      onClick={() => {
-                        getCurrentPosition();
-                        setShowAddressModal(false);
-                        setShowWarning(false);
-                      }}
-                      className="w-full py-2 bg-black text-white rounded hover:bg-gray-800"
-                    >
-                      Use current location
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-  
-        {/* Location Permission Modal */}
-        {showLocationPrompt && (
-          <div className="fixed inset-0 bg-black/50 z-50">
-            <div className="fixed inset-x-0 bottom-0 md:relative md:inset-auto md:max-w-md md:mx-auto md:mt-20 bg-white rounded-t-2xl md:rounded-lg">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">Allow Location Access?</h2>
-                <p className="text-gray-600 mb-6">
-                  Gruby would like to access your location to show nearby chefs and meals.
-                </p>
-                <div className="flex gap-3">
-                  <button 
-                    onClick={() => handleLocationPermission(false)}
-                    className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
-                  >
-                    Not Now
-                  </button>
-                  <button 
-                    onClick={() => handleLocationPermission(true)}
-                    className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
-                  >
-                    Allow Access
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
-    );
-  };
-  
-  export default Header;
+      )}
+    </header>
+  );
+};
+
+export default Header;
