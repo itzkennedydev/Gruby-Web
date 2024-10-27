@@ -7,42 +7,7 @@ import Header from '../components/Header';
 import { Footer } from '../components/Footer';
 import Map from '../components/Map';
 import { FavoritesList } from '../components/FavoritesList';
-
-// Move types to separate file: @/types/product.ts
-export interface Coordinates {
-  lat: number;
-  lng: number;
-}
-
-export interface Location {
-  address: string;
-  coordinates: Coordinates;
-}
-
-export interface Chef {
-  id: string;
-  name: string;
-  avatar: string;
-}
-
-export interface Meal {
-  id: string;
-  name: string;
-  image: string;
-  price: number;
-  rating: number;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  images: string[];
-  location: Location;
-  chef: Chef;
-  otherMeals: Meal[];
-}
+import { Product } from '@/types/product';
 
 const mockProduct: Product = {
   id: '1',
