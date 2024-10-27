@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, Typography, Button, Tabs, Tab } from '@mui/material';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { styled } from '@mui/system';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import type { Chef } from '@/server/db/schema';
 
@@ -10,64 +7,58 @@ const ChefCard = dynamic(() => import('../components/ChefCard'), {
   ssr: false,
 });
 
-const ScrollableGrid = styled(Grid)({
-  display: 'flex',
-  flexWrap: 'nowrap',
-  overflowX: 'auto',
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
-  scrollbarWidth: 'none',
-});
+// Scrollable grid with responsive adjustments
+const ScrollableGrid = ({ children, id }) => (
+  <div 
+    id={id}
+    className="flex overflow-x-auto hide-scrollbar gap-4 pb-4 px-2 -mx-2 md:gap-6 md:pb-6"
+  >
+    {children}
+  </div>
+);
 
-const ScrollButton = styled(Button)({
-  minWidth: '40px',
-  height: '40px',
-  borderRadius: '50%',
-  padding: 0,
-  position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  zIndex: 2,
-  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-  '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-  },
-});
+// Responsive scroll button
+const ScrollButton = ({ direction, onClick, className }) => (
+  <button
+    onClick={onClick}
+    className={`
+      hidden md:flex items-center justify-center w-10 h-10 rounded-full 
+      bg-white/80 hover:bg-white shadow-md transition-colors
+      absolute top-1/2 -translate-y-1/2 z-10
+      ${className}
+    `}
+  >
+    {direction === 'left' ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+  </button>
+);
 
-const StyledTabs = styled(Tabs)({
-  '& .MuiTabs-indicator': {
-    backgroundColor: '#FF4D00',
-  },
-  '& .MuiTab-root.Mui-selected': {
-    color: '#FF4D00',
-  },
-});
+const TabButton = ({ isActive, onClick, children }) => (
+  <button
+    onClick={onClick}
+    className={`
+      px-4 py-2 text-sm md:text-base whitespace-nowrap
+      ${isActive 
+        ? 'text-[#FF4D00] border-b-2 border-[#FF4D00]' 
+        : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+      }
+    `}
+  >
+    {children}
+  </button>
+);
 
-const EmptyStateWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: theme.spacing(4),
-  backgroundColor: '#f5f5f5',
-  borderRadius: '12px',
-  minHeight: '200px',
-}));
-
-const MainPage: React.FC = () => {
+const MainPage = () => {
   const [chefs, setChefs] = useState<Chef[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchChefs() {
       try {
         const response = await fetch('/api/chefs');
-        if (!response.ok) {
-          throw new Error('Failed to fetch chefs');
-        }
+        if (!response.ok) throw new Error('Failed to fetch chefs');
         const data = await response.json() as Chef[];
         setChefs(data);
         const uniqueCategories = Array.from(new Set(data.map(chef => chef.specialty)));
@@ -78,21 +69,16 @@ const MainPage: React.FC = () => {
         setIsLoading(false);
       }
     }
-
     void fetchChefs();
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (isLoading) return <div className="p-8 text-center">Loading...</div>;
+  if (error) return <div className="p-8 text-center text-red-600">{error}</div>;
 
   return (
-    <>
-      <div className="relative h-[500px] overflow-hidden">
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative h-[400px] md:h-[500px] overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -102,103 +88,103 @@ const MainPage: React.FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
         <div className="relative h-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start">
-          <h1 className="text-5xl font-bold text-white mb-6">
-            Discover Amazing
-            <br />
-            Local Chefs
+          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6">
+            Discover Amazing<br />Local Chefs
           </h1>
-          <p className="text-xl text-gray-200 mb-8 max-w-xl">
+          <p className="text-lg md:text-xl text-gray-200 mb-6 md:mb-8 max-w-xl">
             Connect with talented culinary artists in your area and experience 
             unforgettable dining experiences.
           </p>
-          <button className="px-6 py-3 bg-[#FF4D00] hover:bg-[#FF4D00]/80 text-white rounded-lg transition-colors">
+          <button className="px-4 py-2 md:px-6 md:py-3 bg-[#FF4D00] hover:bg-[#FF4D00]/80 text-white rounded-lg transition-colors text-sm md:text-base">
             Find Your Chef
           </button>
         </div>
       </div>
 
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-8">
-        <CategoryTabs categories={categories} />
-
-        {categories.map((category, index) => {
-          const categoryChefs = chefs.filter(chef => chef.specialty === category);
-          return (
-            <Box key={category} sx={{ marginBottom: index < categories.length - 1 ? '18px' : 0, position: 'relative' }}>
-              <Typography variant="h5" gutterBottom fontWeight="bold" marginBottom="1rem">
+      {/* Main Content */}
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        {/* Category Tabs */}
+        <div className="mb-6 md:mb-8 overflow-x-auto">
+          <div className="flex space-x-4 border-b border-gray-200 min-w-max">
+            <TabButton 
+              isActive={activeCategory === null}
+              onClick={() => setActiveCategory(null)}
+            >
+              All
+            </TabButton>
+            {categories.map((category) => (
+              <TabButton 
+                key={category}
+                isActive={activeCategory === category}
+                onClick={() => setActiveCategory(category)}
+              >
                 {category}
-              </Typography>
-              {categoryChefs.length === 0 ? (
-                <EmptyState category={category} />
-              ) : (
-                <ChefRow category={category} chefs={categoryChefs} />
-              )}
-            </Box>
+              </TabButton>
+            ))}
+          </div>
+        </div>
+
+        {/* Category Sections */}
+        {categories.map((category, index) => {
+          const categoryChefs = chefs.filter(chef => 
+            chef.specialty === category && 
+            (!activeCategory || activeCategory === category)
+          );
+          
+          if (categoryChefs.length === 0) return null;
+
+          return (
+            <div key={category} className={`relative ${index < categories.length - 1 ? 'mb-8 md:mb-12' : ''}`}>
+              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
+                {category}
+              </h2>
+              
+              <div className="relative">
+                <ScrollButton 
+                  direction="left"
+                  onClick={() => {
+                    const row = document.getElementById(`row-${category}`);
+                    if (row) row.scrollBy({ left: -300, behavior: 'smooth' });
+                  }}
+                  className="-left-5"
+                />
+
+                <ScrollableGrid id={`row-${category}`}>
+                  {categoryChefs.map((chef) => (
+                    <div key={chef.id} className="w-[280px] flex-none">
+                      <ChefCard 
+                        chef={chef}
+                        isFavorite={false}
+                        onToggleFavorite={() => {/* Implement toggle favorite logic */}}
+                      />
+                    </div>
+                  ))}
+                </ScrollableGrid>
+
+                <ScrollButton 
+                  direction="right"
+                  onClick={() => {
+                    const row = document.getElementById(`row-${category}`);
+                    if (row) row.scrollBy({ left: 300, behavior: 'smooth' });
+                  }}
+                  className="-right-5"
+                />
+              </div>
+            </div>
           );
         })}
+
+        {/* Empty State */}
+        {categories.length === 0 && (
+          <div className="rounded-lg border border-gray-200 p-8 text-center">
+            <h3 className="text-lg font-semibold mb-2">No Categories Found</h3>
+            <p className="text-gray-600">
+              Check back later for new chefs and categories.
+            </p>
+          </div>
+        )}
       </div>
-    </>
-  );
-};
-
-const CategoryTabs: React.FC<{ categories: string[] }> = ({ categories }) => {
-  return (
-    <StyledTabs
-      value={null}
-      variant="scrollable"
-      scrollButtons="auto"
-      aria-label="category selector"
-      sx={{ marginBottom: '2rem' }}
-    >
-      <Tab label="All" value={null} />
-      {categories.map((category) => (
-        <Tab key={category} label={category} value={category} />
-      ))}
-    </StyledTabs>
-  );
-};
-
-const EmptyState: React.FC<{ category: string }> = ({ category }) => (
-  <EmptyStateWrapper>
-    <Typography variant="h6" gutterBottom>
-      No items found in {category}
-    </Typography>
-    <Typography variant="body1" color="text.secondary">
-      Check back later for new items in this category.
-    </Typography>
-  </EmptyStateWrapper>
-);
-
-const ChefRow: React.FC<{ category: string, chefs: Chef[] }> = ({ category, chefs }) => {
-  const scrollRow = (direction: 'left' | 'right', rowId: string) => {
-    const row = document.getElementById(rowId);
-    if (row) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      row.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <>
-      <ScrollButton
-        onClick={() => scrollRow('left', `row-${category}`)}
-        sx={{ left: -20 }}
-      >
-        <ArrowBackIosIcon />
-      </ScrollButton>
-      <ScrollableGrid container spacing={2} id={`row-${category}`}>
-        {chefs.map((chef) => (
-          <Grid item key={chef.id}>
-            <ChefCard chef={chef} isFavorite={false} onToggleFavorite={() => {/* Implement toggle favorite logic */}} />
-          </Grid>
-        ))}
-      </ScrollableGrid>
-      <ScrollButton
-        onClick={() => scrollRow('right', `row-${category}`)}
-        sx={{ right: -20 }}
-      >
-        <ArrowForwardIosIcon />
-      </ScrollButton>
-    </>
+    </div>
   );
 };
 
