@@ -42,7 +42,8 @@
     "src/**/*.tsx",
     "components/**/*.ts",
     "components/**/*.tsx",
-    "lib/**/*.ts"
+    "lib/**/*.ts",
+    "src/**/*" // Ensure this includes all TypeScript files in the src directory
   ],
   "exclude": ["node_modules"]
 }
