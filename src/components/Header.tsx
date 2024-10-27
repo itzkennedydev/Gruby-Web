@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
+import { GeocodingResult } from '@/types';
 
 // Types and Interfaces
 interface GeocodingResult {
@@ -223,6 +224,36 @@ const Header: React.FC = () => {
       : `/search?q=${encodeURIComponent(result.name)}`;
     router.push(destination);
     setShowMegaMenu(false);
+  };
+
+  const fetchNearbyChefs = async () => {
+    if (address) {
+      try {
+        const response = await fetch(`YOUR_GEOCODING_API_URL?address=${encodeURIComponent(address)}`);
+        const data = await response.json() as GeocodingResult[];
+        if (data.length > 0) {
+          const result = data[0];
+          if ('lat' in result && 'lon' in result) {
+            const { lat, lon } = result;
+            if (liveLocation) {
+              const distance = calculateDistance(
+                liveLocation.lat,
+                liveLocation.lon,
+                lat,
+                lon
+              );
+              // ... rest of the code
+            }
+          } else {
+            console.error('Geocoding result does not contain lat and lon properties');
+          }
+        } else {
+          console.error('No geocoding results found');
+        }
+      } catch (error) {
+        console.error('Error fetching nearby chefs:', error);
+      }
+    }
   };
 
   if (!isLoaded) {
