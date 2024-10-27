@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { Product } from '@/types'; // Update this line
+import { Product } from '@/types';
 
 interface ProductDetailsProps {
   product: Product | undefined;
@@ -11,11 +11,11 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     return <p className="text-center text-gray-500">Product not found</p>;
   }
 
-  const formattedPrice = useMemo(() => formatPrice(product.price), [product.price]);
+  const formattedPrice = formatPrice(product.price);
   const productName = product.name ?? 'Unknown Product';
   const productImageAlt = product.name ?? 'Product image';
   const productDescription = product.description ?? 'No description available';
-  const productChef = product.chef.name ?? 'Unknown Chef';
+  const productChef = product.chef?.name ?? 'Unknown Chef';
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -23,11 +23,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       <div className="relative w-full h-96 mb-4">
         {product.images && product.images.length > 0 ? (
           <Image
-            src={product.images[0]}
+            src={product.images[0] ?? '/placeholder-image.png'} // Fallback to a placeholder image
             alt={productImageAlt}
             fill
-            style={{ objectFit: 'cover' }}
-            className="rounded-lg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            className="rounded-lg object-cover"
           />
         ) : (
           <ImagePlaceholder />
@@ -40,17 +41,17 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   );
 }
 
-// Helper function to format price safely
-const formatPrice = (price: number | null | undefined): string => {
+function formatPrice(price: number | null | undefined): string {
   if (typeof price !== 'number' || isNaN(price)) {
     return '0.00';
   }
   return price.toFixed(2);
-};
+}
 
-// Component for image placeholder
-const ImagePlaceholder = () => (
-  <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-    <p className="text-gray-500">No image available</p>
-  </div>
-);
+function ImagePlaceholder() {
+  return (
+    <div className="w-full h-full bg-gray-300 flex items-center justify-center">
+      <p className="text-gray-500">No image available</p>
+    </div>
+  );
+}

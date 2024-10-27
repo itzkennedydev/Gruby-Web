@@ -17,3 +17,14 @@ export interface GeocodingResult {
   display_name?: string;
   // Add any other properties that might be returned by your geocoding service
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  chef: {
+    name: string;
+  };
+}
