@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
       description: product.description ?? 'No description available',
       price: Number(product.price),
       chef: { name: product.chefId }, // Update this line
-      images: product.imageUrl ?? ['/placeholder-image.jpg'],
+      images: product.imageUrl ? [product.imageUrl] : ['/placeholder-image.jpg'],
     } : null;
 
     const availableProducts = await db
