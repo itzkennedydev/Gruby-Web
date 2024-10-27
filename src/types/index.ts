@@ -14,8 +14,9 @@ export interface Chef {
 export interface GeocodingResult {
   lat?: number;
   lon?: number;
+  // Add other properties that might be in the result
   display_name?: string;
-  // Add any other properties that might be returned by your geocoding service
+  place_id?: number;
 }
 
 export interface Product {
