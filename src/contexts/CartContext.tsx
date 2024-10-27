@@ -3,17 +3,19 @@
 import * as React from "react"
 import { type ReactNode, createContext, useCallback, useContext, useMemo, useState, useEffect } from "react"
 
-type CartItem = {
+export type CartItem = {
   id: string
   name: string
   price: number
   quantity: number
+  imageUrl: string
 }
 
 type CartContextType = {
-  cart: CartItem[]
+  cartItems: CartItem[]
   addToCart: (item: CartItem) => void
   removeFromCart: (itemId: string) => void
+  updateQuantity: (itemId: string, quantity: number) => void
   clearCart: () => void
 }
 
@@ -36,56 +38,82 @@ export function useCart(): CartContextType {
 export function CartProvider({
   children,
 }: CartProviderProps): JSX.Element {
-  const [cart, setCart] = useState<CartItem[]>([])
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
 
-  // Load cart from localStorage on initial render
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        console.log('Loaded cart from localStorage:', parsedCart);
+        setCartItems(parsedCart);
+      } catch (error) {
+        console.error('Error parsing cart from localStorage:', error);
+      }
     }
   }, []);
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    console.log('Saving cart to localStorage:', cartItems);
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = useCallback((item: CartItem) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((cartItem) => cartItem.id === item.id)
+    console.log('Adding item to cart:', item);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((cartItem) => cartItem.id === item.id)
 
       if (existingItem) {
-        return prevCart.map((cartItem) =>
+        const updatedItems = prevItems.map((cartItem) =>
           cartItem.id === item.id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem,
+            : cartItem
         )
+        console.log('Updated cart after adding:', updatedItems);
+        return updatedItems;
       }
 
-      return [...prevCart, { ...item, quantity: 1 }]
+      const newItems = [...prevItems, { ...item, quantity: 1 }];
+      console.log('New cart after adding:', newItems);
+      return newItems;
     })
   }, [])
 
   const removeFromCart = useCallback((itemId: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId))
+    console.log('Removing item from cart:', itemId);
+    setCartItems((prevItems) => {
+      const updatedItems = prevItems.filter((item) => item.id !== itemId);
+      console.log('Updated cart after removing:', updatedItems);
+      return updatedItems;
+    })
+  }, [])
+
+  const updateQuantity = useCallback((itemId: string, quantity: number) => {
+    console.log('Updating quantity:', itemId, quantity);
+    setCartItems((prevItems) => {
+      const updatedItems = prevItems.map((item) =>
+        item.id === itemId ? { ...item, quantity } : item
+      )
+      console.log('Updated cart after quantity change:', updatedItems);
+      return updatedItems;
+    })
   }, [])
 
   const clearCart = useCallback(() => {
-    setCart([])
+    console.log('Clearing cart');
+    setCartItems([])
   }, [])
 
   const value = useMemo(
     () => ({
-      cart,
+      cartItems,
       addToCart,
       removeFromCart,
+      updateQuantity,
       clearCart,
     }),
-    [cart, addToCart, removeFromCart, clearCart],
+    [cartItems, addToCart, removeFromCart, updateQuantity, clearCart],
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
-
-export type { CartItem }

@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, unique } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, unique, serial, decimal, integer } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import type { InferModel } from 'drizzle-orm';
 
@@ -27,39 +27,33 @@ export const chefs = pgTable('chefs', {
 
 // Products table
 export const products = pgTable('products', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  chefId: uuid('chef_id').references(() => chefs.id).notNull(),
+  id: serial('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description'),
-  price: text('price').notNull(),
+  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   imageUrl: text('image_url'),
+  chefId: text('chef_id').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 // Orders table
 export const orders = pgTable('orders', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  user_id: text('user_id').references(() => users.user_id).notNull(), // Properly reference user_id from users table
+  id: serial('id').primaryKey(),
+  user_id: text('user_id').notNull(),
   status: text('status').notNull(),
-  total: text('total').notNull(),
+  total: decimal('total', { precision: 10, scale: 2 }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-}, (table) => {
-  return {
-    userStatusUnique: unique().on(table.user_id, table.status),
-  };
 });
 
 // Order Items table
 export const orderItems = pgTable('order_items', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  orderId: uuid('order_id').references(() => orders.id).notNull(),
-  productId: uuid('product_id').references(() => products.id).notNull(),
-  quantity: text('quantity').notNull(),
-  price: text('price').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  id: serial('id').primaryKey(),
+  orderId: integer('order_id').references(() => orders.id).notNull(),
+  productId: integer('product_id').references(() => products.id).notNull(),
+  quantity: integer('quantity').notNull(),
+  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
 });
 
 // Define relationships

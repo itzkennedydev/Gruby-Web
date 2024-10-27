@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowLeft, Bug } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import type { Product } from '@/types';
+import { useCart } from '@/contexts/CartContext';
+import { useState, useEffect } from 'react';
 
 interface ProductPageProps {
   product: Product | null;
