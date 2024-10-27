@@ -1,41 +1,39 @@
 'use client'
 
-import React, { createContext, useContext, useState, type ReactNode, type Context } from 'react'
+import * as React from 'react'
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 
-interface CartItem {
+type CartItem = {
   id: string
   name: string
   price: number
   quantity: number
 }
 
-interface CartContextType {
+type CartContextType = {
   cart: CartItem[]
   addToCart: (item: Omit<CartItem, 'quantity'>) => void
   removeFromCart: (id: string) => void
   clearCart: () => void
 }
 
-interface CartProviderProps {
+type CartProviderProps = {
   children: ReactNode
 }
 
-const initialContext: CartContextType = {
+const defaultCartContext: CartContextType = {
   cart: [],
-  addToCart: () => {
-    throw new Error('CartContext not initialized')
-  },
-  removeFromCart: () => {
-    throw new Error('CartContext not initialized')
-  },
-  clearCart: () => {
-    throw new Error('CartContext not initialized')
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  addToCart: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  removeFromCart: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  clearCart: () => {}
 }
 
-const CartContext = createContext<CartContextType>(initialContext)
+const CartContext = createContext(defaultCartContext)
 
-export function useCart(): CartContextType {
+export function useCart() {
   const context = useContext(CartContext)
 
   if (!context) {
@@ -45,10 +43,10 @@ export function useCart(): CartContextType {
   return context
 }
 
-export function CartProvider({ children }: CartProviderProps): JSX.Element {
+export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([])
 
-  const addToCart = (item: Omit<CartItem, 'quantity'>): void => {
+  const addToCart = useCallback((item: Omit<CartItem, 'quantity'>) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id)
 
@@ -62,9 +60,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       return [...prevCart, { ...item, quantity: 1 }]
     })
-  }
+  }, [])
 
-  const removeFromCart = (id: string): void => {
+  const removeFromCart = useCallback((id: string) => {
     setCart((prevCart) => {
       const itemToUpdate = prevCart.find((item) => item.id === id)
 
@@ -80,20 +78,23 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       return prevCart.filter((item) => item.id !== id)
     })
-  }
+  }, [])
 
-  const clearCart = (): void => {
+  const clearCart = useCallback(() => {
     setCart([])
-  }
+  }, [])
 
-  const value = {
-    cart,
-    addToCart,
-    removeFromCart,
-    clearCart
-  }
+  const value = useMemo(
+    () => ({
+      cart,
+      addToCart,
+      removeFromCart,
+      clearCart
+    }),
+    [cart, addToCart, removeFromCart, clearCart]
+  )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 
-export { CartContext }
+export type { CartItem, CartContextType }
