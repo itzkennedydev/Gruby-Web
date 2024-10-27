@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import { db } from '@/server/db'; 
 import { products } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, ArrowLeft, Bug } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Product } from '@/types'; // Import the Product type from your types file
+import type { Product } from '@/types';
 
 interface ProductPageProps {
   product: Product | null;
@@ -52,7 +52,7 @@ function ProductPage({ product, debugInfo }: ProductPageProps) {
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>
-                We couldn't find the product you're looking for.
+                We couldn&apos;t find the product you&apos;re looking for.
               </AlertDescription>
             </Alert>
 
@@ -123,15 +123,15 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
       .select()
       .from(products)
       .where(eq(products.id, id))
-      .then((results) => results[0] || null);
+      .then((results) => results[0] ?? null);
 
     const formattedProduct: Product | null = product ? {
       id: product.id,
       name: product.name,
-      description: product.description || 'No description available',
+      description: product.description ?? 'No description available',
       price: Number(product.price),
       chef: { name: product.chefId }, // Update this line
-      images: product.imageUrl ? [product.imageUrl] : ['/placeholder-image.jpg'],
+      images: product.imageUrl ?? ['/placeholder-image.jpg'],
     } : null;
 
     const availableProducts = await db

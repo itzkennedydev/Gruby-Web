@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCart } from '@/hooks/useCart';
-import { loadStripe, StripeElementsOptions } from '@stripe/stripe-js';
+import type { StripeElementsOptions } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useRouter } from 'next/router';
-import { CartItem } from '@/contexts/CartContext';
+import type { CartItem } from '@/contexts/CartContext';
 import { ArrowLeft, ShoppingCart, CreditCard, LockIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -37,11 +38,11 @@ function CheckoutForm({ totalPrice, orderSummary }: { totalPrice: number; orderS
     });
 
     if (error) {
-      setPaymentError(error.message || 'An unknown error occurred');
+      setPaymentError(error.message ?? 'An unknown error occurred');
       setIsLoading(false);
     } else {
       clearCart();
-      router.push('/order-confirmation');
+      void router.push('/order-confirmation');
     }
   };
 
@@ -158,7 +159,7 @@ export default function CheckoutPage() {
     setOrderSummary(summary);
 
     if (summary.total > 0) {
-      fetch('/api/createPaymentIntent', {
+      void fetch('/api/createPaymentIntent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -169,14 +170,14 @@ export default function CheckoutPage() {
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.json();
         })
-        .then((data) => {
+        .then((data: { clientSecret?: string }) => {
           if (data.clientSecret) {
             setClientSecret(data.clientSecret);
           } else {
             setError('Failed to initialize payment. Please try again.');
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setError('An error occurred while setting up the payment. Please try again.');
         });
     } else {

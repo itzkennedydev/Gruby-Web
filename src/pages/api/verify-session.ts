@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
 // Initialize Stripe client with the secret key

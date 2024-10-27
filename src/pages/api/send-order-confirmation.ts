@@ -15,6 +15,11 @@ interface OrderDetails {
   total_amount?: string;
 }
 
+interface ResendError {
+  message: string;
+  statusCode?: number;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
@@ -35,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { orderDetails } = req.body as { orderDetails: OrderDetails };
 
-  if (!orderDetails || !orderDetails.items || !orderDetails.total_amount) {
+  if (!orderDetails?.items || !orderDetails?.total_amount) {
     return res.status(400).json({
       message: 'Missing required fields',
       details: {
@@ -79,18 +84,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const response = await resend.emails.send({
       from: 'Gruby <orders@gruby.io>',
-      to: [user.emailAddresses?.[0]?.emailAddress],
+      to: [user.emailAddresses[0].emailAddress],
       subject: 'Order Confirmation',
       html: htmlContent.trim(),
       replyTo: 'support@gruby.io'
     });
 
     if (response.error) {
-      console.error('Resend API Error:', response.error);
+      const resendError = response.error as ResendError;
+      console.error('Resend API Error:', resendError);
       return res.status(500).json({
         message: 'Failed to send email',
-        error: response.error.message,
-        code: (response.error as any).statusCode || 'Unknown' // Typecast to access statusCode if present
+        error: resendError.message,
+        code: resendError.statusCode || 'Unknown'
       });
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Product } from '@/types';
+import type { Product } from '@/types';
 
 interface ProductDetailsProps {
   product: Product | undefined;

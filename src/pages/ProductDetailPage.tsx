@@ -15,7 +15,7 @@ interface ProductDetailPageProps {
 
 export default function ProductDetailPage({ product }: ProductDetailPageProps) {
   const pathname = usePathname();
-  // We'll keep productId for potential future use, but mark it as unused for now
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _productId = pathname?.split('/').pop() ?? '';
 
   if (!product) {
@@ -36,7 +36,7 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
       <Container className="my-8">
         <Box className="relative h-64 sm:h-96 md:h-[500px] rounded-lg mb-8 overflow-hidden">
           <Image
-            src={product.images[0] || '/placeholder-image.jpg'}
+            src={product.images[0] ?? '/placeholder-image.jpg'}
             alt={product.name}
             fill
             className="object-cover"

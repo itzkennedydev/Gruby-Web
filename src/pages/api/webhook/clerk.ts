@@ -1,6 +1,7 @@
-import { IncomingHttpHeaders } from 'http';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { Webhook, WebhookRequiredHeaders } from 'svix';
+import type { IncomingHttpHeaders } from 'http';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { Webhook } from 'svix';
+import type { WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
 import { eq } from 'drizzle-orm';
 

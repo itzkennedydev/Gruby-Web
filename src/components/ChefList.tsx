@@ -1,7 +1,7 @@
-import React from 'react';
+import type { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Chef } from '@/types';
+import type { Chef } from '@/types';
 
 // Constants for repeated values
 const DEFAULT_IMAGE = '/default-chef-image.jpg';
@@ -12,7 +12,7 @@ interface ChefCardProps {
   chef: Chef;
 }
 
-const ChefCard: React.FC<ChefCardProps> = ({ chef }) => {
+const ChefCard: FC<ChefCardProps> = ({ chef }) => {
   const chefImage = chef.image ?? DEFAULT_IMAGE; 
   const chefName = chef.name ?? 'Unknown Chef'; 
   const chefDescription = chef.bio ?? NO_DESCRIPTION; 
@@ -43,7 +43,7 @@ interface ChefListProps {
   chefs: Chef[];
 }
 
-const ChefList: React.FC<ChefListProps> = ({ chefs }) => {
+const ChefList: FC<ChefListProps> = ({ chefs }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {chefs.map((chef) => (

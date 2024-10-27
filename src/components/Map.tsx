@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import type { FC } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useRouter } from 'next/router';
@@ -17,7 +18,7 @@ const Map: FC<MapProps> = ({ lat = 41.5067, lng = -90.5151 }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (map.current || !mapContainer.current) return;
+    if (map.current ?? !mapContainer.current) return;
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,

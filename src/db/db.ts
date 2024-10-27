@@ -91,8 +91,14 @@ const shutdownPool = async (pool: Pool) => {
 // Main function to initialize the pool with retries and monitoring
 const initializeDatabase = async () => {
   const pool = await createPoolWithRetries();
-  process.on('SIGINT', () => shutdownPool(pool)); // Handle Ctrl+C
-  process.on('SIGTERM', () => shutdownPool(pool)); // Handle termination signals
+  
+  // Handle shutdown signals with void callback
+  const handleShutdown = () => {
+    void shutdownPool(pool);
+  };
+  
+  process.on('SIGINT', handleShutdown); // Handle Ctrl+C
+  process.on('SIGTERM', handleShutdown); // Handle termination signals
 
   return drizzle(pool);
 };

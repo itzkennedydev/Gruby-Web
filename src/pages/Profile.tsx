@@ -3,14 +3,13 @@ import { UserProfile, useUser } from '@clerk/nextjs';
 import Layout from '../components/Layout';
 import OrderList from '../components/OrderList';
 import { FavoritesList } from '../components/FavoritesList';
-import { Footer } from '../components/Footer';
 import type { Product } from '../types/Product';
 import type { FavoriteItem } from '../types/FavoriteItem';
 
 type TabType = 'profile' | 'orders' | 'favorites';
 
 const Profile: React.FC = () => {
-  const { user } = useUser();
+  const { isLoaded } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isChef, setIsChef] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<Product[]>([]);

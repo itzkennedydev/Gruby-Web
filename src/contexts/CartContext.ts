@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 // Define the shape of a cart item
 export interface CartItem {
@@ -45,7 +46,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     try {
       const storedCart = localStorage.getItem('cart');
       if (storedCart) {
-        const parsedCart = JSON.parse(storedCart);
+        const parsedCart = JSON.parse(storedCart) as CartItem[];
         setCartItems(parsedCart);
       }
     } catch (error) {

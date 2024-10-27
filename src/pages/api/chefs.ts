@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/server/db';
 import { chefs } from '@/server/db/schema';
 

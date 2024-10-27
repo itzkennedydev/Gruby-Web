@@ -1,5 +1,6 @@
 import React from 'react';
-import { useCart, CartItem } from '@/contexts/CartContext';
+import { useCart } from '@/contexts/CartContext';
+import type { CartItem } from '@/contexts/CartContext';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';

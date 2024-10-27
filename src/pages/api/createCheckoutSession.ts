@@ -1,6 +1,6 @@
 // File: src/pages/api/createCheckoutSession.ts
 
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
 // Initialize Stripe with your secret key

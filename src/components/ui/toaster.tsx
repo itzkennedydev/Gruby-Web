@@ -18,7 +18,9 @@ export function Toaster() {
         title?: React.ReactNode;
         description?: React.ReactNode;
         action?: React.ReactNode;
-        [key: string]: any;
+        className?: string;
+        duration?: number;
+        variant?: "default" | "destructive" | null; 
       }) {
         return (
           <Toast key={id} {...props}>

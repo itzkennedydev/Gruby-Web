@@ -116,7 +116,7 @@ const OrderCard: React.FC<{ order: Order }> = ({ order }) => (
 );
 
 export default function OrdersPage() {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -170,7 +170,7 @@ export default function OrdersPage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No orders yet</h3>
               <p className="text-gray-500 mb-8 max-w-sm">
-                Looks like you haven't placed any orders yet. Start shopping to see your orders here.
+                Looks like you haven&apos;t placed any orders yet. Start shopping to see your orders here.
               </p>
               <Button 
                 onClick={() => void router.push('/')}

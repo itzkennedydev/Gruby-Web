@@ -1,9 +1,19 @@
 // middleware/userSync.ts
-import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
+import type { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
 import { db } from '@/db/db';
-import { users as usersSchema } from '@/db/schema'; // Import the schema correctly
+import { users as usersSchema } from '@/db/schema';
 import { getAuth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
+
+interface ClerkUser {
+  id: string;
+  email_addresses: Array<{
+    email_address: string;
+  }>;
+  first_name: string;
+  last_name: string;
+  profile_image_url: string;
+}
 
 export const userSyncMiddleware = (handler: NextApiHandler) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,7 +29,7 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
       const existingUser = await db
         .select()
         .from(usersSchema)
-        .where(eq((usersSchema as any).user_id, userId)); // Cast to any to bypass type error
+        .where(eq(usersSchema.id, userId)); // Changed user_id to id
 
       if (existingUser.length === 0) {
         // If the user doesn't exist, fetch user data from Clerk
@@ -35,7 +45,7 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
           return res.status(500).json({ message: 'Failed to synchronize user data' });
         }
 
-        const clerkUser = await clerkResponse.json();
+        const clerkUser = (await clerkResponse.json()) as ClerkUser;
 
         // Prepare user data for insertion into the database
         const email = clerkUser.email_addresses[0]?.email_address || '';
@@ -45,10 +55,10 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
 
         // Insert the user into the database, ensuring user_id is not null
         await db.insert(usersSchema).values({
-          id: clerkUser.id, // Use Clerk's user ID here
+          id: clerkUser.id,
           email,
           name: fullName,
-          avatarUrl: clerkUser.profile_image_url || '', // Handle missing avatar URL
+          avatarUrl: clerkUser.profile_image_url || '',
         });
 
         console.log(`New user ${fullName} synced from Clerk`);
@@ -62,4 +72,3 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
     }
   };
 };
-

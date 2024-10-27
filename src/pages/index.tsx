@@ -11,7 +11,7 @@ const HomePage: NextPage = () => {
 
   useEffect(() => {
     if (isLoaded && user) {
-      syncUser({
+      void syncUser({
         email: user.primaryEmailAddress?.emailAddress,
         name: user.fullName ?? '',
         avatar_url: user.imageUrl ?? '',

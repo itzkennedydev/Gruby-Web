@@ -28,15 +28,15 @@ const SuccessPage: React.FC = () => {
   useEffect(() => {
     const { session_id } = router.query;
     if (typeof session_id === 'string') {
-      fetchOrderDetails(session_id);
+      void fetchOrderDetails(session_id);
     }
   }, [router.query]);
 
   const fetchOrderDetails = async (sessionId: string) => {
     try {
       const response = await fetch(`/api/order-details?session_id=${sessionId}`);
-      const data = await response.json();
-      setOrderDetails(data as OrderDetails);
+      const data = (await response.json()) as OrderDetails;
+      setOrderDetails(data);
     } catch (error) {
       console.error('Error fetching order details:', error);
     }

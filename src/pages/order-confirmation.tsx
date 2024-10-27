@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { CheckCircle2, HomeIcon, ListIcon, Mail, Package, User, XCircle } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useUser } from '@clerk/nextjs';
@@ -26,21 +26,16 @@ interface OrderDetails {
   total_amount?: string;
 }
 
+interface ErrorResponse {
+  message: string;
+}
+
 export default function OrderConfirmation() {
   const router = useRouter();
   const { user } = useUser();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const { payment_intent, payment_intent_client_secret } = router.query;
-    if (payment_intent && payment_intent_client_secret) {
-      void verifyPayment(payment_intent as string, payment_intent_client_secret as string);
-    }
-  }, [router.isReady, router.query]);
 
   const verifyPayment = async (paymentIntent: string, clientSecret: string) => {
     try {
@@ -52,11 +47,11 @@ export default function OrderConfirmation() {
       if (retrievedIntent?.status === 'succeeded') {
         const response = await fetch(`/api/order-details?payment_intent=${paymentIntent}`);
         if (!response.ok) {
-          const errorData = await response.json() as { message?: string };
+          const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData.message ?? 'Failed to fetch order details');
         }
 
-        const orderData = await response.json() as OrderDetails;
+        const orderData = (await response.json()) as OrderDetails;
         setOrderDetails(orderData);
         setStatus('success');
 
@@ -77,6 +72,15 @@ export default function OrderConfirmation() {
     }
   };
 
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const { payment_intent, payment_intent_client_secret } = router.query;
+    if (payment_intent && payment_intent_client_secret) {
+      void verifyPayment(payment_intent as string, payment_intent_client_secret as string);
+    }
+  }, [router.isReady, router.query, verifyPayment]);
+
   const sendEmailConfirmation = async (orderData: OrderDetails, email: string) => {
     console.log('Attempting to send email confirmation to:', email);
     console.log('Order Data:', orderData);
@@ -89,11 +93,11 @@ export default function OrderConfirmation() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = (await response.json()) as ErrorResponse;
         throw new Error(errorData.message || 'Failed to send email confirmation');
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as { message: string };
       console.log('Response from send-order-confirmation:', data);
 
       toast({

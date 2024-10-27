@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -38,26 +39,18 @@ const ChefPortal: React.FC = () => {
     image_url: '',
     category: '',
   });
-  const [chefProfile, setChefProfile] = useState<ChefProfile | null>(null);
   const [bannerUrl, setBannerUrl] = useState('');
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const categories = ['Mexican', 'American', 'Italian', 'Chinese', 'Indian', 'Japanese', 'Thai', 'Mediterranean', 'French', 'Greek'];
 
-  useEffect(() => {
-    if (user) {
-      fetchMenuItems();
-      fetchChefProfile();
-    }
-  }, [user]);
-
   const fetchMenuItems = async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/menu-items?chef_id=${user?.id}`);
       if (response.ok) {
-        const data: MenuItem[] = await response.json();
+        const data = await response.json() as MenuItem[];
         setMenuItems(data);
       }
     } catch (error) {
@@ -76,9 +69,8 @@ const ChefPortal: React.FC = () => {
     try {
       const response = await fetch(`/api/chef-profile?id=${user?.id}`);
       if (response.ok) {
-        const data: ChefProfile = await response.json();
-        setChefProfile(data);
-        setBannerUrl(data.bannerUrl || '');
+        const data = await response.json() as ChefProfile;
+        setBannerUrl(data.bannerUrl ?? '');
       }
     } catch (error) {
       console.error('Error fetching chef profile:', error);
@@ -89,6 +81,15 @@ const ChefPortal: React.FC = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      void Promise.all([
+        fetchMenuItems(),
+        fetchChefProfile()
+      ]);
+    }
+  }, [user]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -116,7 +117,7 @@ const ChefPortal: React.FC = () => {
 
       if (response.ok) {
         toast({ title: 'Menu item added successfully' });
-        fetchMenuItems();
+        await fetchMenuItems();
         setNewItem({ name: '', price: 0, description: '', image_url: '', category: '' });
         setIsAddingItem(false);
       } else {
@@ -138,7 +139,7 @@ const ChefPortal: React.FC = () => {
 
       if (response.ok) {
         toast({ title: 'Banner updated successfully' });
-        fetchChefProfile();
+        await fetchChefProfile();
       } else {
         toast({ title: 'Failed to update banner', variant: 'destructive' });
       }
@@ -156,7 +157,7 @@ const ChefPortal: React.FC = () => {
 
       if (response.ok) {
         toast({ title: 'Menu item deleted successfully' });
-        fetchMenuItems();
+        await fetchMenuItems();
       } else {
         toast({ title: 'Failed to delete menu item', variant: 'destructive' });
       }
@@ -171,10 +172,12 @@ const ChefPortal: React.FC = () => {
       {/* Hero Section with Banner */}
       <div className="relative h-64 bg-gradient-to-r from-blue-600 to-purple-600 mb-8">
         {bannerUrl ? (
-          <img
+          <Image
             src={bannerUrl}
             alt="Chef Banner"
-            className="w-full h-full object-cover absolute inset-0"
+            className="object-cover"
+            fill
+            priority
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-gray-700 to-gray-900">
@@ -183,7 +186,7 @@ const ChefPortal: React.FC = () => {
         )}
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="text-center text-white">
-            <h1 className="text-4xl font-bold mb-2">{user?.fullName}'s Kitchen</h1>
+            <h1 className="text-4xl font-bold mb-2">{user?.fullName}&apos;s Kitchen</h1>
             <p className="text-lg opacity-90">{user?.emailAddresses[0]?.emailAddress}</p>
           </div>
         </div>
@@ -307,11 +310,14 @@ const ChefPortal: React.FC = () => {
                       >
                         <div className="flex items-center space-x-4">
                           {item.image_url ? (
-                            <img
-                              src={item.image_url}
-                              alt={item.name}
-                              className="w-16 h-16 rounded-lg object-cover"
-                            />
+                            <div className="relative w-16 h-16">
+                              <Image
+                                src={item.image_url}
+                                alt={item.name}
+                                className="rounded-lg object-cover"
+                                fill
+                              />
+                            </div>
                           ) : (
                             <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center">
                               <Camera className="w-6 h-6 text-gray-400" />

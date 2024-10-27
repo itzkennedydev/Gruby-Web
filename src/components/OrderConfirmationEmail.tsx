@@ -26,6 +26,10 @@ interface OrderDetails {
   total_amount?: string;
 }
 
+interface ApiError {
+  message: string;
+}
+
 export default function OrderConfirmation() {
   const router = useRouter();
   const { user } = useUser();
@@ -33,12 +37,6 @@ export default function OrderConfirmation() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
-
-  useEffect(() => {
-    if (payment_intent && payment_intent_client_secret) {
-      void verifyPayment();
-    }
-  }, [payment_intent, payment_intent_client_secret]);
 
   const verifyPayment = async () => {
     try {
@@ -50,15 +48,16 @@ export default function OrderConfirmation() {
       );
 
       if (paymentIntent?.status === 'succeeded') {
-        const response = await fetch(`/api/order-details?payment_intent=${payment_intent}`);
+        const response = await fetch(`/api/order-details?payment_intent=${payment_intent?.toString() ?? ''}`);
         if (!response.ok) {
-          throw new Error((await response.json()).message || 'Failed to fetch order details');
+          const errorData = await response.json() as ApiError;
+          throw new Error(errorData?.message || 'Failed to fetch order details');
         }
 
         const orderData = await response.json() as OrderDetails;
         setOrderDetails(orderData);
 
-        if (user && user.primaryEmailAddress?.emailAddress) {
+        if (user?.primaryEmailAddress?.emailAddress) {
           console.log('User is signed in, sending email to:', user.primaryEmailAddress.emailAddress);
           console.log('Order Data for Email:', orderData);
           
@@ -74,11 +73,17 @@ export default function OrderConfirmation() {
       setStatus('error');
       toast({
         title: "Order Confirmation Failed",
-        description: `Error: ${(error as Error).message}`,
+        description: `Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`,
         variant: "destructive",
       });
     }
   };
+
+  useEffect(() => {
+    if (payment_intent && payment_intent_client_secret) {
+      void verifyPayment();
+    }
+  }, [payment_intent, payment_intent_client_secret, verifyPayment]);
 
   const sendEmailConfirmation = async (orderData: OrderDetails, email: string) => {
     console.log('Attempting to send email confirmation to:', email);
@@ -91,11 +96,11 @@ export default function OrderConfirmation() {
         body: JSON.stringify({ email, orderDetails: orderData }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as ApiError;
       console.log('Response from send-order-confirmation:', data);
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to send email confirmation');
+        throw new Error(data?.message || 'Failed to send email confirmation');
       }
 
       toast({
@@ -103,10 +108,10 @@ export default function OrderConfirmation() {
         description: "Check your inbox for order details.",
       });
     } catch (error) {
-      console.error('Error sending email confirmation:', (error as Error).message);
+      console.error('Error sending email confirmation:', error instanceof Error ? error.message : 'Unknown error');
       toast({
         title: "Email Confirmation Failed",
-        description: `We couldn't send the confirmation email. Error: ${(error as Error).message}`,
+        description: `We couldn't send the confirmation email. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }

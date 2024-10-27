@@ -1,61 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box, Typography, Button, Tabs, Tab, Card, CardMedia, Avatar } from '@mui/material';
+import { Grid, Box, Typography, Button, Tabs, Tab, Card, Avatar } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { styled } from '@mui/system';
 import dynamic from 'next/dynamic';
-import { Chef } from '@/server/db/schema';
+import type { Chef } from '@/server/db/schema';
 
 const ChefCard = dynamic(() => import('../components/ChefCard'), {
   ssr: false,
-});
-
-const StyledCard = styled(Card)({ 
-  width: '288px',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  boxShadow: 'none',
-  borderRadius: '12px',
-  overflow: 'hidden',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  '&:hover': {
-    transform: 'scale(1.03)',
-  },
-});
-
-const StyledCardMedia = styled(CardMedia)({
-  width: '288px',
-  height: '130px',
-  borderRadius: '12px',
-});
-
-const RatingBadge = styled(Box)({
-  position: 'absolute',
-  bottom: 8,
-  right: 8,
-  backgroundColor: '#fff',
-  padding: '4px 8px',
-  borderRadius: '8px',
-  fontSize: '14px',
-  fontWeight: 'bold',
-});
-
-const FavoriteIconWrapper = styled(Box)({
-  position: 'absolute',
-  top: 8,
-  right: 8,
-  zIndex: 2,
-});
-
-const ChefAvatar = styled(Avatar)({
-  position: 'absolute',
-  bottom: -20,
-  left: 8,
-  width: 40,
-  height: 40,
-  border: '2px solid #fff',
 });
 
 const ScrollableGrid = styled(Grid)({

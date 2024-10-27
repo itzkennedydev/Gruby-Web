@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/db/db';
 import { eq, and } from 'drizzle-orm';
 import { orders, orderItems } from '@/server/db/schema';

@@ -1,7 +1,7 @@
-import { nanoid } from 'nanoid';
-import { mockProducts, addProduct, Product } from './mockProducts';
+import type { Product } from './mockProducts';
+import { mockProducts, addProduct } from './mockProducts';
 
-export interface ChefDish extends Product {}
+export type ChefDish = Product;
 
 export interface MealItem {
   id: string;

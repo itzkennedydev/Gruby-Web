@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { UserButton, useUser, SignInButton, SignUpButton } from "@clerk/nextjs";
@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
-import { GeocodingResult } from '@/types';
+import type { GeocodingResult } from '@/types';
 
 // Types and Interfaces
 interface ReverseGeocodingResult {
@@ -57,6 +57,76 @@ const Header: React.FC = () => {
   // Add this helper function at the top of your component
   const cartItemCount = useMemo(() => cartItems?.length ?? 0, [cartItems]);
 
+  const calculateDistance = useCallback((lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  }, []);
+
+  const fetchAddress = useCallback(async (latitude: number, longitude: number) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await response.json() as ReverseGeocodingResult;
+
+      const street = data.address.road ?? data.address.street ?? '';
+      const city = data.address.city ?? data.address.town ?? data.address.village ?? '';
+
+      let formattedAddress = street;
+      if (city) formattedAddress += formattedAddress ? `, ${city}` : city;
+
+      setAddress(formattedAddress || 'Address not found');
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      setAddress('Address not found');
+    } finally {
+      setIsLocating(false);
+    }
+  }, []);
+
+  const getCurrentPosition = useCallback(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLiveLocation({ lat: latitude, lon: longitude });
+        void fetchAddress(latitude, longitude).catch((error) => {
+          console.error("Error fetching address:", error);
+        });
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        setAddress('Location not available');
+        setIsLocating(false);
+      }
+    );
+  }, [fetchAddress]);
+
+  const handleGeolocation = useCallback(() => {
+    if (navigator.geolocation) {
+      // Await the permissions query to handle the promise correctly
+      void navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+        if (result.state === 'granted') {
+          getCurrentPosition();
+        } else if (result.state === 'prompt') {
+          setShowLocationPrompt(true);
+          setIsLocating(false);
+        } else {
+          setAddress('Location not provided');
+          setIsLocating(false);
+        }
+      });
+    } else {
+      setAddress('Geolocation not supported');
+      setIsLocating(false);
+    }
+  }, [getCurrentPosition]);
+
   // Effect for geolocation on load
   useEffect(() => {
     if (isLoaded && isSignedIn) {
@@ -65,7 +135,7 @@ const Header: React.FC = () => {
       setAddress('');
       setIsLocating(false);
     }
-  }, [isSignedIn, isLoaded]);
+  }, [isSignedIn, isLoaded, handleGeolocation]);
 
   // Effect for search results
   useEffect(() => {
@@ -92,26 +162,6 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleGeolocation = useCallback(() => {
-    if (navigator.geolocation) {
-      // Await the permissions query to handle the promise correctly
-      void navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-        if (result.state === 'granted') {
-          getCurrentPosition();
-        } else if (result.state === 'prompt') {
-          setShowLocationPrompt(true);
-          setIsLocating(false);
-        } else {
-          setAddress('Location not provided');
-          setIsLocating(false);
-        }
-      });
-    } else {
-      setAddress('Geolocation not supported');
-      setIsLocating(false);
-    }
-  }, []);
-
   const handleLocationPermission = async (allow: boolean) => {
     setShowLocationPrompt(false);
     if (allow) {
@@ -122,45 +172,6 @@ const Header: React.FC = () => {
       setIsLocating(false);
     }
   };
-
-  const getCurrentPosition = useCallback(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLiveLocation({ lat: latitude, lon: longitude });
-        void fetchAddress(latitude, longitude).catch((error) => {
-          console.error("Error fetching address:", error);
-        });
-      },
-      (error) => {
-        console.error("Error getting location:", error);
-        setAddress('Location not available');
-        setIsLocating(false);
-      }
-    );
-  }, []);
-
-  const fetchAddress = useCallback(async (latitude: number, longitude: number) => {
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-      );
-      const data = await response.json() as ReverseGeocodingResult;
-
-      const street = data.address.road ?? data.address.street ?? '';
-      const city = data.address.city ?? data.address.town ?? data.address.village ?? '';
-
-      let formattedAddress = street;
-      if (city) formattedAddress += formattedAddress ? `, ${city}` : city;
-
-      setAddress(formattedAddress || 'Address not found');
-    } catch (error) {
-      console.error("Error fetching address:", error);
-      setAddress('Address not found');
-    } finally {
-      setIsLocating(false);
-    }
-  }, []);
 
   const handleCustomAddressSubmit = useCallback(async () => {
     if (customAddress.trim()) {
@@ -198,18 +209,7 @@ const Header: React.FC = () => {
         alert('Error processing address. Please try again.');
       }
     }
-  }, [customAddress, liveLocation]);
-
-  const calculateDistance = useMemo(() => (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371; // Earth's radius in km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-  }, []);
+  }, [customAddress, liveLocation, calculateDistance]);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -225,37 +225,6 @@ const Header: React.FC = () => {
       : `/search?q=${encodeURIComponent(result.name)}`;
     router.push(destination);
     setShowMegaMenu(false);
-  };
-
-  const fetchNearbyChefs = async () => {
-    if (address) {
-      try {
-        const response = await fetch(`YOUR_GEOCODING_API_URL?address=${encodeURIComponent(address)}`);
-        const data = await response.json() as GeocodingResult[];
-        if (data.length > 0) {
-          const result = data[0];
-          if (result && typeof result.lat === 'string' && typeof result.lon === 'string') {
-            const lat = parseFloat(result.lat);
-            const lon = parseFloat(result.lon);
-            if (liveLocation) {
-              const distance = calculateDistance(
-                liveLocation.lat,
-                liveLocation.lon,
-                lat,
-                lon
-              );
-              // ... rest of the code
-            }
-          } else {
-            console.error('Geocoding result does not contain valid lat and lon properties');
-          }
-        } else {
-          console.error('No geocoding results found');
-        }
-      } catch (error) {
-        console.error('Error fetching nearby chefs:', error);
-      }
-    }
   };
 
   if (!isLoaded) {

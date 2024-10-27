@@ -1,6 +1,7 @@
 // components/AddProductForm.tsx
 
-import React, { useState, ChangeEvent, FormEvent, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 
 interface ProductData {
   name: string;
@@ -68,8 +69,8 @@ const AddProductForm: React.FC = () => {
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to add product.');
+          const errorData = (await response.json()) as { message?: string };
+          throw new Error(errorData.message ?? 'Failed to add product.');
         }
 
         setFormData(initialFormState);

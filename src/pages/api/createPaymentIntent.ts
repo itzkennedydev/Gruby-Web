@@ -13,13 +13,9 @@ const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2024-09-30.acacia',
 });
 
-// Define types for the request body and response
+// Define types for the request body
 interface CreatePaymentIntentRequest {
   totalAmount: number;
-}
-
-interface PaymentIntentResponse {
-  clientSecret: string;
 }
 
 // API route handler

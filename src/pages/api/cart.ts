@@ -1,8 +1,9 @@
 // api/cart.ts
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/db/db';
 import { eq, and } from 'drizzle-orm';
-import { orders, orderItems, products, type OrderItem } from '@/server/db/schema';
+import { orders, orderItems, products } from '@/server/db/schema';
+import type { OrderItem } from '@/server/db/schema';
 import { getAuth } from '@clerk/nextjs/server';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

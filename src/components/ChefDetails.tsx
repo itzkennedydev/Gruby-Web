@@ -1,4 +1,4 @@
-import { MealItem } from '../data/mockChefs';
+import type { MealItem } from '../data/mockChefs';
 import Image from 'next/image';
 
 interface ChefDetailsProps {

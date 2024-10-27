@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { MapPin, Heart, Clock, Award, ChefHat, Users, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { db } from '@/server/db';
-import { chefs, products, type Chef, type Product } from '@/server/db/schema';
+import { chefs, type Chef, type Product } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 interface SerializedProduct extends Omit<Product, 'createdAt' | 'updatedAt'> {

@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from '@clerk/nextjs/server';
 import { db } from '@/server/db';
 import { orders, orderItems, products } from '@/server/db/schema';
-import { eq, desc, SQL } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {

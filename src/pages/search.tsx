@@ -15,7 +15,6 @@ import { sql } from 'drizzle-orm';
 import { chefs, products } from '@/db/schema';
 import debounce from 'lodash.debounce';  // Debouncing mechanism
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 
 interface Chef {
   id: string;
@@ -30,10 +29,6 @@ interface Product {
   imageUrl: string;
   price: number;
   description: string;
-}
-
-interface CartItem extends Product {
-  quantity: number;
 }
 
 export async function getServerSideProps(context: { query: { q?: string } }) {
@@ -75,7 +70,7 @@ export async function getServerSideProps(context: { query: { q?: string } }) {
   return {
     props: {
       initialData: { chefs: chefsData, products: productsData },
-      query: q || '',
+      query: q ?? '',
     },
   };
 }
@@ -98,7 +93,8 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
     setError(null);
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
-      const newData = await res.json();
+      if (!res.ok) throw new Error('Failed to fetch search results');
+      const newData = await res.json() as { chefs: Chef[]; products: Product[] };
       setData(newData);
     } catch {
       setError('Failed to load search results. Please try again later.');
@@ -109,7 +105,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
 
   useEffect(() => {
     if (router.query.q !== query) {
-      fetchSearchResults(router.query.q as string);
+      void fetchSearchResults(router.query.q as string);
     }
   }, [router.query.q, query, fetchSearchResults]); // Add fetchSearchResults to the dependency array
 
@@ -142,7 +138,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
     <div className="container mx-auto px-4 py-8 space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">
-          Search Results for &quot;{router.query.q || query}&quot;
+          Search Results for &quot;{router.query.q ?? query}&quot;
         </h1>
         {isLoading && (
           <div className="flex items-center gap-2 text-muted-foreground">

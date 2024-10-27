@@ -90,7 +90,7 @@ interface GeocodingResult {
   function formatAddress(address: ReverseGeocodingResult['address']): string {
     const components = [
       address.road,
-      address.city || address.state,
+      address.city ?? address.state,
       address.country,
       address.postcode
     ].filter(Boolean);
