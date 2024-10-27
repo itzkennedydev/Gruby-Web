@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserProfile, useUser } from '@clerk/nextjs';
 import Layout from '../components/Layout';
 import OrderList from '../components/OrderList';
 import { FavoritesList } from '../components/FavoritesList';
 import { Footer } from '../components/Footer';
+import type { Product } from '../types/Product';
+import type { FavoriteItem } from '../types/FavoriteItem';
 
 type TabType = 'profile' | 'orders' | 'favorites';
 
@@ -11,6 +13,21 @@ const Profile: React.FC = () => {
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('profile');
   const [isChef, setIsChef] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await fetch('/api/favorites');
+        const data = await response.json() as Product[];
+        setFavorites(data);
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+      }
+    };
+
+    void fetchFavorites();
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -25,7 +42,13 @@ const Profile: React.FC = () => {
         return (
           <div className="mt-6 bg-white rounded-lg shadow-md p-4">
             <h2 className="text-xl font-semibold mb-4">Your Favorites</h2>
-            <FavoritesList />
+            <FavoritesList 
+              favorites={favorites.map(({ id, chef, ...rest }): FavoriteItem => ({ 
+                ...rest, 
+                id: typeof id === 'string' ? parseInt(id, 10) : id,
+                chef: chef.name // Assuming chef.name is the string representation we want
+              }))} 
+            />
           </div>
         );
       case 'profile':
