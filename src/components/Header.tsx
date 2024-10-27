@@ -389,7 +389,7 @@ const Header = () => {
               <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
                 <ShoppingCart size={24} />
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gray-700 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                     {cartItemCount}
                   </span>
                 )}
@@ -400,12 +400,12 @@ const Header = () => {
               ) : (
                 <div className="hidden md:flex items-center gap-3">
                   <SignInButton mode="modal">
-                    <button className="px-5 py-2 text-sm text-gray-700 hover:bg-[#f5f5f5] rounded-lg">
+                    <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
                       Sign In
                     </button>
                   </SignInButton>
                   <SignUpButton mode="modal">
-                    <button className="px-5 py-2 text-sm bg-gray-700 text-white rounded-lg hover:bg-gray-800">
+                    <button className="px-5 py-2 text-sm bg-black text-white rounded hover:bg-gray-800">
                       Sign Up
                     </button>
                   </SignUpButton>
@@ -505,7 +505,7 @@ const Header = () => {
                 <div className="border-t border-gray-200 pt-4 space-y-2">
                   <SignInButton mode="modal">
                     <button 
-                      className="w-full py-2 px-4 border border-gray-200 rounded-lg text-gray-700 hover:bg-[#f5f5f5]"
+                      className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Sign In
@@ -513,7 +513,7 @@ const Header = () => {
                   </SignInButton>
                   <SignUpButton mode="modal">
                     <button 
-                      className="w-full py-2 px-4 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+                      className="w-full py-2 px-4 bg-black text-white rounded hover:bg-gray-800"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Sign Up
@@ -563,7 +563,7 @@ const Header = () => {
                   <div className="space-y-2">
                     <button 
                       onClick={handleCustomAddressSubmit}
-                      className="w-full py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+                      className="w-full py-2 bg-black text-white rounded hover:bg-gray-800"
                     >
                       Confirm Address
                     </button>
@@ -573,7 +573,7 @@ const Header = () => {
                         setShowAddressModal(false);
                         setShowWarning(false);
                       }}
-                      className="w-full py-2 border border-gray-200 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+                      className="w-full py-2 bg-black text-white rounded hover:bg-gray-800"
                     >
                       Use current location
                     </button>
@@ -596,13 +596,13 @@ const Header = () => {
                 <div className="flex gap-3">
                   <button 
                     onClick={() => handleLocationPermission(false)}
-                    className="flex-1 py-2 border border-gray-200 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+                    className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
                   >
                     Not Now
                   </button>
                   <button 
                     onClick={() => handleLocationPermission(true)}
-                    className="flex-1 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800"
+                    className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
                   >
                     Allow Access
                   </button>
