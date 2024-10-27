@@ -1,8 +1,13 @@
-import type { MealItem } from '../data/mockChefs';
 import Image from 'next/image';
 
+interface Chef {
+  id: string;
+  name: string;
+  image?: string;
+}
+
 interface ChefDetailsProps {
-  chef: MealItem;
+  chef: Chef;
 }
 
 const DEFAULT_IMAGE = '/default-chef-image.webp';
