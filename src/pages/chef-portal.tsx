@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,7 @@ const ChefPortal: React.FC = () => {
 
   const categories = ['Mexican', 'American', 'Italian', 'Chinese', 'Indian', 'Japanese', 'Thai', 'Mediterranean', 'French', 'Greek'];
 
-  const fetchMenuItems = async () => {
+  const fetchMenuItems = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/menu-items?chef_id=${user?.id}`);
@@ -63,9 +63,9 @@ const ChefPortal: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.id, toast]);
 
-  const fetchChefProfile = async () => {
+  const fetchChefProfile = useCallback(async () => {
     try {
       const response = await fetch(`/api/chef-profile?id=${user?.id}`);
       if (response.ok) {
@@ -80,7 +80,7 @@ const ChefPortal: React.FC = () => {
         variant: 'destructive',
       });
     }
-  };
+  }, [user?.id, toast]);
 
   useEffect(() => {
     if (user) {

@@ -109,7 +109,7 @@ export default function OrderConfirmation() {
         variant: "destructive",
       });
     }
-  }, [payment_intent_client_secret, user, setOrderDetails, setStatus]);
+  }, [payment_intent_client_secret, payment_intent, user, setOrderDetails, setStatus]);
 
   useEffect(() => {
     if (payment_intent && payment_intent_client_secret) {

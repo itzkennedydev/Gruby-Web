@@ -1,5 +1,5 @@
 // pages/order-confirmation.tsx
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -64,7 +64,7 @@ export default function OrderConfirmation() {
       console.error('Error sending email confirmation:', error);
       toast({
         title: "Email Confirmation Failed",
-        description: `We couldn't send the confirmation email. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        description: error instanceof Error ? error.message : 'Unknown error',
         variant: "destructive",
       });
     }
@@ -104,7 +104,7 @@ export default function OrderConfirmation() {
           setStatus('error');
           toast({
             title: "Order Confirmation Failed",
-            description: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            description: error instanceof Error ? error.message : 'Unknown error',
             variant: "destructive",
           });
         }
