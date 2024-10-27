@@ -116,10 +116,11 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
     toast({
       title: `Added ${product.name} to cart`,
       description: 'View cart to checkout',
-      action: {
-        label: 'View Cart',
-        onClick: () => router.push('/cart'),
-      },
+      action: (
+        <Button variant="outline" size="sm" onClick={() => router.push('/cart')}>
+          View Cart
+        </Button>
+      ),
     });
   };
 
