@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { UserProfile, useUser } from '@clerk/nextjs';
 import Layout from '../components/Layout';
 import OrderList from '../components/OrderList';
-import FavoritesList from '../components/FavoritesList';
+import { FavoritesList } from '../components/FavoritesList';
+import { Footer } from '../components/Footer';
 
 type TabType = 'profile' | 'orders' | 'favorites';
 

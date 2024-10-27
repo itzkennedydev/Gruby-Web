@@ -2,8 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import { Container, Box, Typography } from '@mui/material';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { Footer } from '../components/Footer';
 import Map from '../components/Map';
+import { FavoritesList } from '../components/FavoritesList';
 
 interface Coordinates {
   lat: number;

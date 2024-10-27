@@ -93,7 +93,7 @@ const ChefCard: React.FC<ChefCardProps> = ({ chef, isFavorite, onToggleFavorite 
             {chef.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rating: {chef.rating ?? 'Not rated yet'}
+            Rating: {chef.rating !== undefined ? chef.rating.toFixed(1) : 'Not rated yet'}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Specialty: {chef.specialty}
