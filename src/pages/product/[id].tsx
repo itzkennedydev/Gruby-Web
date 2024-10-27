@@ -122,7 +122,7 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
     const product = await db
       .select()
       .from(products)
-      .where(eq(products.id, id))
+      .where(eq(products.id, parseInt(id, 10)))
       .then((results) => results[0] ?? null);
 
     const formattedProduct: Product | null = product ? {
