@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { type ReactNode, createContext, useCallback, useContext, useMemo, useState } from "react"
+import { type ReactNode, createContext, useCallback, useContext, useMemo, useState, useEffect } from "react"
 
 type CartItem = {
   id: string
@@ -12,8 +12,8 @@ type CartItem = {
 
 type CartContextType = {
   cart: CartItem[]
-  addToCart: (item: Omit<CartItem, "quantity">) => void
-  removeFromCart: (id: string) => void
+  addToCart: (item: CartItem) => void
+  removeFromCart: (itemId: string) => void
   clearCart: () => void
 }
 
@@ -21,20 +21,12 @@ type CartProviderProps = {
   children: ReactNode
 }
 
-const CartContext = createContext<CartContextType>({
-  cart: [],
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  addToCart: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  removeFromCart: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  clearCart: () => {},
-})
+const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function useCart(): CartContextType {
   const context = useContext(CartContext)
 
-  if (context === null) {
+  if (context === undefined) {
     throw new Error("useCart must be used within a CartProvider")
   }
 
@@ -46,7 +38,20 @@ export function CartProvider({
 }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<CartItem[]>([])
 
-  const addToCart = useCallback((item: Omit<CartItem, "quantity">) => {
+  // Load cart from localStorage on initial render
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = useCallback((item: CartItem) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id)
 
@@ -62,22 +67,8 @@ export function CartProvider({
     })
   }, [])
 
-  const removeFromCart = useCallback((id: string) => {
-    setCart((prevCart) => {
-      const itemToUpdate = prevCart.find((item) => item.id === id)
-
-      if (!itemToUpdate) {
-        return prevCart
-      }
-
-      if (itemToUpdate.quantity > 1) {
-        return prevCart.map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
-        )
-      }
-
-      return prevCart.filter((item) => item.id !== id)
-    })
+  const removeFromCart = useCallback((itemId: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId))
   }, [])
 
   const clearCart = useCallback(() => {
