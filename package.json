@@ -1,8 +1,8 @@
 {
-  "name": "synapse",
+  "name": "gruby",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "next build",
     "db:generate": "drizzle-kit generate",
@@ -10,7 +10,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev --turbo",
-    "lint": "next lint",
+    "lint": "eslint .",
     "start": "next start"
   },
   "dependencies": {

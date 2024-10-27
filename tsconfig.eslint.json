@@ -1,6 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "include": [
-    "src/contexts/**/*" // Include only the contexts directory
-  ]
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    ".eslintrc.cjs",
+    "next.config.js",
+    "*.ts",
+    "*.js"
+  ],
+  "exclude": ["node_modules", ".next", "out"]
 }
