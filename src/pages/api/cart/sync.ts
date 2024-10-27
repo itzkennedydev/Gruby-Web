@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('Received cart items:', cartItems);
 
     // Validate cart items
-    const validCartItems = cartItems.filter(item => item.productId && item.quantity > 0);
+    const validCartItems = cartItems.filter(item => item.productId && Number(item.quantity) > 0);
     if (validCartItems.length !== cartItems.length) {
       console.warn('Some cart items were invalid and have been removed');
     }
@@ -77,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Update the total price of the order
-      const total = validCartItems.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+      const total = validCartItems.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
       const updateResult = await trx
         .update(orders)
         .set({ total: total.toString(), updatedAt: new Date() })
