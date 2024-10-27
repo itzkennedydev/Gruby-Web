@@ -1,5 +1,10 @@
 import { GeocodingResult } from '@/types';
 
+interface LatLng {
+  lat: number;
+  lng: number;
+}
+
 const NOMINATIM_API_URL = 'https://nominatim.openstreetmap.org';
 
 interface ReverseGeocodingResult {
@@ -74,6 +79,23 @@ function formatAddress(address: ReverseGeocodingResult['address']): string {
 
 function isValidGeocodingResult(result: GeocodingResult): result is GeocodingResult & { lat: number; lon: number } {
   return typeof result?.lat === 'number' && typeof result?.lon === 'number';
+}
+
+function deg2rad(deg: number): number {
+  return deg * (Math.PI / 180);
+}
+
+export function calculateDistance(coord1: LatLng, coord2: LatLng): number {
+  const R = 6371; // Earth's radius in km
+  const dLat = deg2rad(coord2.lat - coord1.lat);
+  const dLon = deg2rad(coord2.lng - coord1.lng);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(coord1.lat)) * Math.cos(deg2rad(coord2.lat)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  return distance;
 }
 
 export {

@@ -15,6 +15,7 @@ import { sql } from 'drizzle-orm';
 import { chefs, products } from '@/db/schema';
 import debounce from 'lodash.debounce';  // Debouncing mechanism
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 interface Chef {
   id: string;
