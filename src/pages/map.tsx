@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Header from '../components/Header';
@@ -7,50 +7,37 @@ import { useRouter } from 'next/router';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ?? '';
 
-const Map: React.FC = () => {
+interface MapProps {
+  lat?: number;
+  lng?: number;
+}
+
+const Map: React.FC<MapProps> = ({ lat = 41.5067, lng = -90.5151 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [userLocation, setUserLocation] = useState<[number, number]>([-90.5151, 41.5067]); // Moline, IL coordinates
   const router = useRouter();
-
-  useEffect(() => {
-    // Use Geolocation API to get user's current location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation([longitude, latitude]); // Update userLocation with actual coordinates
-        },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
 
   useEffect(() => {
     if (!map.current && mapContainer.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: userLocation, // Ensure this is set to the correct user location
+        center: [lng, lat],
         zoom: 12,
         attributionControl: false
       });
 
       // Add user location marker
       new mapboxgl.Marker({ color: '#FF0000' })
-        .setLngLat(userLocation) // Ensure this uses the correct coordinates
+        .setLngLat([lng, lat])
         .addTo(map.current);
 
       // Add chef markers once the map is loaded
       map.current.on('load', () => {
         mockChefs.slice(0, 10).forEach((chef) => {
-          // Generate random coordinates near Moline
-          const lat = userLocation[1] + (Math.random() - 0.5) * 0.1;
-          const lng = userLocation[0] + (Math.random() - 0.5) * 0.1;
+          // Generate random coordinates near the center
+          const chefLat = lat + (Math.random() - 0.5) * 0.1;
+          const chefLng = lng + (Math.random() - 0.5) * 0.1;
 
           const popup = new mapboxgl.Popup({ 
             offset: 25,
@@ -71,7 +58,7 @@ const Map: React.FC = () => {
           el.style.cursor = 'pointer';
 
           new mapboxgl.Marker(el)
-            .setLngLat([lng, lat]) // Ensure these coordinates are correct
+            .setLngLat([chefLng, chefLat])
             .setPopup(popup)
             .addTo(map.current!);
 
@@ -95,28 +82,15 @@ const Map: React.FC = () => {
         document.head.appendChild(style);
       });
     }
-  }, [userLocation, router]);
+  }, [lat, lng, router]);
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '100vh', 
-      margin: 0, 
-      padding: 0, 
-      overflow: 'hidden' 
-    }}>
+    <div className="flex flex-col h-screen m-0 p-0 overflow-hidden">
       <Header />
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div className="flex-1 relative">
         <div 
           ref={mapContainer} 
-          style={{ 
-            position: 'absolute', 
-            top: 0, 
-            bottom: 0, 
-            left: 0, 
-            right: 0 
-          }} 
+          className="absolute inset-0"
         />
       </div>
     </div>
