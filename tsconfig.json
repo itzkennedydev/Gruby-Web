@@ -21,6 +21,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "~/*": [
+        "./src/*"
       ]
     },
     "plugins": [
@@ -38,7 +41,7 @@
     "next-env.d.ts",
     "eslint.config.js",
     "drizzle.config.ts",
-    "next.config.js",
+    "next.config.cjs",
     "postcss.config.js",
     "prettier.config.js",
     "tailwind.config.ts",

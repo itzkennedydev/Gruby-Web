@@ -73,7 +73,6 @@ const monitorPool = (pool: Pool) => {
     console.error('Unexpected error on idle client', err);
     process.exit(-1); // Optional: Exit the process on database connection error
   });
-
   // Periodically log the pool status (e.g., every 30 seconds)
   setInterval(logPoolStatus, 30000); // Adjust interval as necessary
 };
@@ -104,3 +103,4 @@ const initializeDatabase = async () => {
 };
 
 export const db = await initializeDatabase();
+

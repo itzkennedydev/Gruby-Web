@@ -183,6 +183,13 @@
       "when": 1729984705731,
       "tag": "0025_jazzy_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1735611021018,
+      "tag": "0026_aspiring_lockheed",
+      "breakpoints": true
     }
   ]
 }

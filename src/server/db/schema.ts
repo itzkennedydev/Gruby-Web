@@ -4,12 +4,12 @@ import type { InferModel } from 'drizzle-orm';
 
 // Users table
 export const users = pgTable('users', {
-  id: uuid('id').defaultRandom().primaryKey(), // Optional unique internal ID
-  user_id: text('user_id').notNull().unique(), // Clerk user ID must be unique and not null
-  email: text('email').notNull().unique(),     // User email must be unique
-  name: text('name'),                          // Optional user name
-  avatarUrl: text('avatar_url'),               // Optional user avatar
-  createdAt: timestamp('created_at').defaultNow().notNull(), // Timestamps
+  id: uuid('id').defaultRandom().primaryKey(),
+  user_id: text('user_id').notNull().unique(),
+  email: text('email').notNull().unique(),
+  name: text('name'),
+  avatarUrl: text('avatar_url'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
@@ -32,7 +32,7 @@ export const products = pgTable('products', {
   description: text('description'),
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   imageUrl: text('image_url'),
-  chefId: text('chef_id').notNull(),
+  chefId: uuid('chef_id').notNull().references(() => chefs.id),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
