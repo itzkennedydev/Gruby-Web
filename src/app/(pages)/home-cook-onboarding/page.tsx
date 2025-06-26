@@ -139,9 +139,9 @@ export default function HomeCookOnboarding() {
           setExistingHomeCook(data.homeCook);
           setFormData({
             'basic-info': {
-              name: data.homeCook.name,
-              cuisine: data.homeCook.cuisine,
-              experience: data.homeCook.experience,
+            name: data.homeCook.name,
+            cuisine: data.homeCook.cuisine,
+            experience: data.homeCook.experience,
               bio: data.homeCook.bio || '',
             }
           });
@@ -220,8 +220,8 @@ export default function HomeCookOnboarding() {
     if (e.key === 'Enter' && !e.shiftKey) {
       const activeElement = document.activeElement;
       if (activeElement && activeElement.tagName === 'TEXTAREA') {
-        return;
-      }
+      return;
+    }
       
       e.preventDefault();
       handleNext();
@@ -230,26 +230,26 @@ export default function HomeCookOnboarding() {
   
   const handleSubmit = async () => {
     if (!user) return;
-    
+
     setIsSubmitting(true);
     
     try {
       // Create or update home cook profile
-      const homeCookResponse = await fetch('/api/home-cooks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        const homeCookResponse = await fetch('/api/home-cooks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
           name: formData['basic-info']?.name || user?.fullName || '',
           bio: formData['basic-info']?.bio || '',
           cuisine: formData['basic-info']?.cuisine || 'General',
           experience: formData['basic-info']?.experience || 'Beginner',
-          userId: user.id,
+            userId: user.id,
           avatarUrl: formData['images']?.profileImage || user?.imageUrl || '',
           coverImageUrl: formData['images']?.bannerImage || '',
-        }),
-      });
+          }),
+        });
 
-      if (!homeCookResponse.ok) {
+        if (!homeCookResponse.ok) {
         throw new Error('Failed to create home cook profile');
       }
 
@@ -277,7 +277,7 @@ export default function HomeCookOnboarding() {
       }
 
       const { url } = await onboardingResponse.json();
-      
+
       // Redirect to Stripe onboarding
       window.location.href = url;
 
@@ -302,7 +302,7 @@ export default function HomeCookOnboarding() {
       </div>
     );
   }
-  
+
   if (!user) {
     return (
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -327,7 +327,7 @@ export default function HomeCookOnboarding() {
       </div>
     );
   }
-  
+
   // Main form - typeform style with one question at a time
   return (
     <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -347,14 +347,14 @@ export default function HomeCookOnboarding() {
               className="h-full transition-all duration-500 ease-out rounded-t-3xl"
               style={{ width: `${progress}%`, backgroundColor: brandColor }}
             ></div>
-          </div>
-          
+        </div>
+
           <div className="absolute bottom-8 left-8 text-white">
             <h1 className="text-3xl font-bold">Gruby</h1>
             <p className="text-sm opacity-80">Step {currentStep > 0 ? currentStep : 0} of {FORM_STEPS.length - 1}</p>
           </div>
         </div>
-        
+
         {/* Right side - Form content with rounded corners */}
         <div 
           className="w-full md:w-1/2 rounded-3xl p-6 md:p-8 flex flex-col bg-white overflow-hidden"
@@ -383,8 +383,8 @@ export default function HomeCookOnboarding() {
                     {currentStepData.subtitle}
                   </p>
                 )}
-              </div>
-              
+                </div>
+
               {/* Form fields */}
               <div className="space-y-6">
                 {currentStepData?.fields.map((field) => (
@@ -403,13 +403,13 @@ export default function HomeCookOnboarding() {
                     <Label className="block text-xl font-medium text-gray-800 mb-3">
                       {currentStepData.textAreaLabel ?? "Additional information"}
                     </Label>
-                    <Textarea
+                  <Textarea
                       className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:border-transparent text-base min-h-[120px]"
                       placeholder={currentStepData.textAreaPlaceholder ?? "Tell us more..."}
                       onChange={(e) => handleInputChange(currentStepData.id, 'bio', e.target.value)}
                       value={formData[currentStepData.id]?.bio ?? ''}
-                    />
-                  </div>
+                  />
+                </div>
                 )}
 
                 {/* Payment setup step */}
@@ -436,15 +436,15 @@ export default function HomeCookOnboarding() {
                           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                             <h4 className="font-semibold text-green-900 mb-2">Subscription Plan:</h4>
                             <div className="flex items-center justify-between">
-                              <div>
+                <div>
                                 <p className="text-lg font-bold text-green-900">$10/month</p>
                                 <p className="text-sm text-green-700">5-day free trial • Cancel anytime</p>
                                 <p className="text-xs text-green-600 mt-1">Billed as "GRUBY HOME COOK SUB"</p>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                        
+                </div>
+                </div>
+              </div>
+
                         {/* Subscribe button */}
                         <div className="pt-4">
                           <button
@@ -494,7 +494,7 @@ export default function HomeCookOnboarding() {
                             You can also press Enter ↵ to continue
                           </p>
                         </div>
-                      </div>
+              </div>
                     ) : (
                       // Show Stripe Connect setup
                       <div className="p-6 border-2 border-gray-200 rounded-lg">
@@ -507,8 +507,8 @@ export default function HomeCookOnboarding() {
                           <p>• SSN or ITIN needed</p>
                           <p>• Bank account information</p>
                           <p>• Takes about 5 minutes</p>
-                        </div>
-                      </div>
+                </div>
+              </div>
                     )}
                   </div>
                 )}
@@ -571,7 +571,7 @@ export default function HomeCookOnboarding() {
                             {tab}
                           </button>
                         ))}
-                      </div>
+                  </div>
                     </div>
                     <div className="text-center py-4 text-gray-500 text-xs">
                       Your products and content will appear here
@@ -601,13 +601,13 @@ export default function HomeCookOnboarding() {
                   Protected by Gruby's Privacy Policy
                 </span>
               </div>
-              
+
               <button
                 onClick={handleNext}
                 className="flex items-center justify-center p-3 text-white bg-[#FF4D00] rounded-full hover:bg-[#E64500] transition-colors"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
                   <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -618,7 +618,7 @@ export default function HomeCookOnboarding() {
                   </svg>
                 )}
               </button>
-            </div>
+              </div>
           </div>
         </div>
       </div>

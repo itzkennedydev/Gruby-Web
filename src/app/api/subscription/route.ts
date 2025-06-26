@@ -92,15 +92,6 @@ export async function POST(request: NextRequest) {
         description: SUBSCRIPTION_DESCRIPTION,
         trial_period_days: 5, // 5-day free trial
       },
-      payment_intent_data: {
-        metadata: {
-          homeCookId: profile.id,
-          userId: userId,
-          homeCookName: profile.name,
-          subscriptionType: 'professional',
-        },
-        description: SUBSCRIPTION_DESCRIPTION,
-      },
     });
 
     console.log('Checkout session created successfully:', session.id);
