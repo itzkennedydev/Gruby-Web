@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 interface FavoriteItem {
   id: number;
   name: string;
-  chef: string;
+  homeCook: string;
 }
 
 interface FavoritesListProps {
@@ -13,8 +13,8 @@ interface FavoritesListProps {
 
 // Mock data (can be replaced with dynamic data later)
 const mockFavorites: FavoriteItem[] = [
-  { id: 1, name: 'Pasta Carbonara', chef: 'Chef Mario' },
-  { id: 2, name: 'Vegan Burger', chef: 'Chef Lisa' },
+  { id: 1, name: 'Pasta Carbonara', homeCook: 'Home Cook Mario' },
+  { id: 2, name: 'Vegan Burger', homeCook: 'Home Cook Lisa' },
 ];
 
 // Reusable Favorite Item component
@@ -25,7 +25,7 @@ function FavoriteItemComponent({ favorite }: { favorite: FavoriteItem }) {
         <CardHeader>
           <CardTitle className="text-lg font-semibold">{favorite.name}</CardTitle>
           <CardDescription className="text-sm text-gray-500">
-            by {favorite.chef}
+            by {favorite.homeCook}
           </CardDescription>
         </CardHeader>
       </Card>

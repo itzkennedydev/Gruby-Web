@@ -1,23 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/server/db'; 
-import { products } from '@/db/schema'; 
+import { products } from '@/server/db/schema'; 
 
 interface ProductRequestBody {
   name: string;
   description?: string;
   price: number;
   imageUrl?: string;
-  chefId: string;
+  homeCookId: string;
 }
 
 // Define the handler
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { name, description, price, imageUrl, chefId } = req.body as ProductRequestBody;
+    const { name, description, price, imageUrl, homeCookId } = req.body as ProductRequestBody;
 
     // Validate required fields
-    if (!name || typeof price !== 'number' || !chefId) {
-      return res.status(400).json({ error: 'Name, price, and chefId are required' });
+    if (!name || typeof price !== 'number' || !homeCookId) {
+      return res.status(400).json({ error: 'Name, price, and homeCookId are required' });
     }
 
     try {
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         description: description ?? null,
         price: price.toFixed(2),
         imageUrl: imageUrl ?? null,
-        chefId,
+        homeCookId,
       });
 
       res.status(201).json({ message: 'Product added successfully' });

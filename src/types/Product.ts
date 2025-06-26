@@ -22,6 +22,15 @@ export interface Meal {
   rating: number;
 }
 
+export interface HomeCook {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  bio?: string;
+  specialty?: string;
+  rating?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -32,10 +41,10 @@ export interface Product {
     address: string;
     coordinates: { lat: number; lng: number };
   };
-  chef: {
+  homeCook: {
     id: string;
     name: string;
-    avatar: string;
+    avatarUrl?: string;
   };
   otherMeals: {
     id: string;

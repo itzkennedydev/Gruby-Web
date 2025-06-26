@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/server/db';
-import { chefs, products } from '@/db/schema';
+import { homeCooks, products } from '@/server/db/schema';
 import { sql } from 'drizzle-orm';
 
-interface Chef {
+interface HomeCook {
   id: string;
   name: string;
   avatarUrl: string;
@@ -19,11 +19,11 @@ interface Product {
 }
 
 interface SearchResults {
-  chefs: Chef[];
+  homeCooks: HomeCook[];
   dishes: Product[];
 }
 
-interface ChefRow {
+interface HomeCookRow {
   id: string;
   name: string;
   avatarUrl: string;
@@ -38,7 +38,7 @@ interface ProductRow {
   imageUrl: string;
 }
 
-function isChefRow(row: unknown): row is ChefRow {
+function isHomeCookRow(row: unknown): row is HomeCookRow {
   return (
     typeof row === 'object' &&
     row !== null &&
@@ -75,11 +75,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const chefResults = await db.execute(sql`
-      SELECT c.id, c.name, c."avatarUrl", 
-             COALESCE((SELECT AVG(rating) FROM reviews WHERE "chefId" = c.id), 0) as rating
-      FROM ${chefs} c
-      WHERE LOWER(c.name) LIKE ${searchTerm}
+    const homeCookResults = await db.execute(sql`
+      SELECT hc.id, hc.name, hc."avatarUrl", 
+             COALESCE((SELECT AVG(rating) FROM reviews WHERE "homeCookId" = hc.id), 0) as rating
+      FROM ${homeCooks} hc
+      WHERE LOWER(hc.name) LIKE ${searchTerm}
     `);
 
     const dishResults = await db.execute(sql`
@@ -89,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     `);
 
     const results: SearchResults = {
-      chefs: chefResults.rows.filter(isChefRow).map(row => ({
+      homeCooks: homeCookResults.rows.filter(isHomeCookRow).map(row => ({
         id: row.id as string, // Cast to string
         name: row.name as string, // Cast to string
         avatarUrl: row.avatarUrl as string, // Cast to string

@@ -6,10 +6,10 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled } from '@mui/system';
 import Link from 'next/link';
-import type { Chef } from '@/types'; // Changed to type import
+import type { HomeCook } from '@/types'; // Changed to type import
 
-interface ChefCardProps {
-  chef: Chef;
+interface HomeCookCardProps {
+  homeCook: HomeCook;
   isFavorite: boolean;
   onToggleFavorite: () => void;
 }
@@ -42,7 +42,7 @@ const FavoriteIconWrapper = styled(Box)({
   zIndex: 2,
 });
 
-const ChefAvatar = styled(Avatar)({
+const HomeCookAvatar = styled(Avatar)({
   position: 'absolute',
   bottom: -20,
   left: 8,
@@ -51,14 +51,14 @@ const ChefAvatar = styled(Avatar)({
   border: '2px solid #fff',
 });
 
-const ChefCard: React.FC<ChefCardProps> = ({ chef, isFavorite, onToggleFavorite }) => {
+const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, isFavorite, onToggleFavorite }) => {
   return (
-    <Link href={`/chef/${chef.id}`} passHref>
+    <Link href={`/home-cook/${homeCook.id}`} passHref>
       <StyledCard>
         <Box sx={{ position: 'relative' }}>
           <StyledCardMedia
-            image={chef.coverImageUrl ?? '/default-chef-cover.jpg'}
-            title={chef.name}
+            image={homeCook.coverImage ?? '/default-home-cook-cover.jpg'}
+            title={homeCook.name}
           />
           <FavoriteIconWrapper>
             <IconButton 
@@ -75,17 +75,20 @@ const ChefCard: React.FC<ChefCardProps> = ({ chef, isFavorite, onToggleFavorite 
               )}
             </IconButton>
           </FavoriteIconWrapper>
-          <ChefAvatar src={chef.avatarUrl ?? '/default-avatar.jpg'} alt={chef.name} />
+          <HomeCookAvatar src={homeCook.avatarUrl ?? '/default-avatar.jpg'} alt={homeCook.name} />
         </Box>
         <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '24px' }}>
           <Typography variant="h6" gutterBottom fontWeight="bold">
-            {chef.name}
+            {homeCook.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rating: {chef.rating !== undefined ? chef.rating.toFixed(1) : 'Not rated yet'}
+            Rating: {homeCook.rating !== undefined ? homeCook.rating.toFixed(1) : 'Not rated yet'}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Specialty: {chef.specialty}
+            Cuisine: {homeCook.cuisine}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Experience: {homeCook.experience}
           </Typography>
         </CardContent>
       </StyledCard>
@@ -93,4 +96,4 @@ const ChefCard: React.FC<ChefCardProps> = ({ chef, isFavorite, onToggleFavorite 
   );
 };
 
-export default ChefCard;
+export default HomeCookCard;

@@ -5,7 +5,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   imageUrl: string | null;
-  chefId: string;
+  homeCookId: string;
   createdAt: Date;
   updatedAt: Date;
 }

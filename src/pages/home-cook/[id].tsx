@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { MapPin, Heart, Clock, Award, ChefHat, Users, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { db } from '@/server/db';
-import { chefs, type Chef, type Product } from '@/server/db/schema';
+import { homeCooks, type HomeCook, type Product } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 interface SerializedProduct extends Omit<Product, 'createdAt' | 'updatedAt'> {
@@ -12,7 +12,7 @@ interface SerializedProduct extends Omit<Product, 'createdAt' | 'updatedAt'> {
   updatedAt: string;
 }
 
-interface ChefWithProducts extends Omit<Chef, 'createdAt' | 'updatedAt'> {
+interface HomeCookWithProducts extends Omit<HomeCook, 'createdAt' | 'updatedAt'> {
   products: SerializedProduct[];
   createdAt: string;
   updatedAt: string;
@@ -27,20 +27,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { notFound: true };
   }
 
-  const chef = await db.query.chefs.findFirst({
-    where: eq(chefs.id, id),
+  const homeCook = await db.query.homeCooks.findFirst({
+    where: eq(homeCooks.id, id),
     with: { products: true },
   });
 
-  if (!chef) {
+  if (!homeCook) {
     return { notFound: true };
   }
 
-  const serializedChef: ChefWithProducts = {
-    ...chef,
-    createdAt: chef.createdAt.toISOString(),
-    updatedAt: chef.updatedAt.toISOString(),
-    products: chef.products.map(product => ({
+  const serializedHomeCook: HomeCookWithProducts = {
+    ...homeCook,
+    createdAt: homeCook.createdAt.toISOString(),
+    updatedAt: homeCook.updatedAt.toISOString(),
+    products: homeCook.products.map(product => ({
       ...product,
       createdAt: product.createdAt.toISOString(),
       updatedAt: product.updatedAt.toISOString(),
@@ -48,11 +48,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 
   return {
-    props: { chef: serializedChef },
+    props: { homeCook: serializedHomeCook },
   };
 };
 
-const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
+const DetailPage: React.FC<{ homeCook: HomeCookWithProducts }> = ({ homeCook }) => {
   const { addToCart } = useCart();
   const [activeTab, setActiveTab] = useState('products');
   const [likedProducts, setLikedProducts] = useState<Set<string>>(new Set());
@@ -92,10 +92,10 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
     }
   };
 
-  if (!chef) {
+  if (!homeCook) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg text-gray-600">Chef not found</p>
+        <p className="text-lg text-gray-600">Home cook not found</p>
       </div>
     );
   }
@@ -103,7 +103,7 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
   const stats = [
     { icon: Users, label: 'Customers Served', value: '500+' },
     { icon: Award, label: 'Years Experience', value: '12+' },
-    { icon: ChefHat, label: 'Signature Dishes', value: chef.products?.length.toString() || '0' }
+    { icon: ChefHat, label: 'Signature Dishes', value: homeCook.products?.length.toString() || '0' }
   ];
 
   return (
@@ -111,8 +111,8 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
       {/* Hero Section */}
       <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] w-full">
         <Image
-          src={chef.coverImageUrl ?? '/default-cover.jpg'}
-          alt={chef.name}
+          src={homeCook.coverImage ?? '/default-cover.jpg'}
+          alt={homeCook.name}
           layout="fill"
           objectFit="cover"
           className="brightness-75"
@@ -123,22 +123,27 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
           <div className="container mx-auto flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6">
             <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-xl overflow-hidden flex-shrink-0">
               <Image
-                src={chef.avatarUrl ?? '/default-avatar.jpg'}
-                alt={chef.name}
+                src={homeCook.avatarUrl ?? '/default-avatar.jpg'}
+                alt={homeCook.name}
                 width={160}
                 height={160}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex-1 text-center sm:text-left mb-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{chef.name}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{homeCook.name}</h1>
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
                 <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="text-sm sm:text-base text-gray-200">Location not specified</span>
               </div>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white">
-                {chef.specialty}
-              </span>
+              <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white">
+                  {homeCook.cuisine}
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white">
+                  {homeCook.experience}
+                </span>
+              </div>
             </div>
             <button className="w-full sm:w-auto px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors mb-4">
               Book Now
@@ -153,7 +158,7 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
           {/* Booking Section for Mobile */}
           <div className="lg:hidden mb-4">
             <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-              <h2 className="text-xl font-semibold mb-4">Book {chef.name}</h2>
+              <h2 className="text-xl font-semibold mb-4">Book {homeCook.name}</h2>
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-gray-600">
                   <Clock className="w-5 h-5" />
@@ -161,13 +166,13 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
                 </div>
                 <div className="flex items-center gap-2 text-gray-600">
                   <ChefHat className="w-5 h-5" />
-                  <span>Specializes in {chef.specialty}</span>
+                  <span>Specializes in {homeCook.cuisine}</span>
                 </div>
                 <button className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-900 transition-colors">
                   Check Availability
                 </button>
                 <button className="w-full py-3 px-4 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                  Message Chef
+                  Message Home Cook
                 </button>
               </div>
             </div>
@@ -197,10 +202,10 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
             {/* Tab Content */}
             {activeTab === 'products' && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {chef.products && chef.products.length > 0 ? (
-                  chef.products.map((product) => (
-                    <div key={product.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
-                      <div className="relative h-40 sm:h-48">
+                {homeCook.products && homeCook.products.length > 0 ? (
+                  homeCook.products.map((product) => (
+                    <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                      <div className="relative h-48">
                         <Image
                           src={product.imageUrl ?? '/default-product.jpg'}
                           alt={product.name}
@@ -209,55 +214,57 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
                         />
                         <button
                           onClick={() => toggleLike(product.id.toString())}
-                          className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors"
+                          className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
                         >
                           <Heart
                             className={`w-5 h-5 ${
                               likedProducts.has(product.id.toString())
-                                ? 'fill-red-500 text-red-500'
+                                ? 'text-red-500 fill-current'
                                 : 'text-gray-600'
                             }`}
                           />
                         </button>
                       </div>
                       <div className="p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="text-base sm:text-lg font-semibold">{product.name}</h3>
-                          <span className="text-base sm:text-lg font-semibold">
-                            ${Number(product.price).toFixed(2)}
-                          </span>
+                        <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                          {product.description || 'No description available'}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-lg font-bold">${Number(product.price).toFixed(2)}</span>
+                          <button
+                            onClick={() => handleAddToCart(product)}
+                            disabled={isAddingToCart[product.id]}
+                            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-900 transition-colors disabled:opacity-50"
+                          >
+                            <ShoppingBag className="w-4 h-4" />
+                            {isAddingToCart[product.id] ? 'Adding...' : 'Add to Cart'}
+                          </button>
                         </div>
-                        <p className="text-sm text-gray-600 mb-4">{product.description}</p>
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          disabled={isAddingToCart[product.id]}
-                          className="w-full py-2 px-4 bg-gray-100 text-gray-900 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center"
-                        >
-                          <ShoppingBag className="w-4 h-4 mr-2" />
-                          {isAddingToCart[product.id] ? 'Adding...' : 'Add to Cart'}
-                        </button>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-600 col-span-2 text-center py-8">
-                    No products available yet.
-                  </p>
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-500">No products available yet</p>
+                  </div>
                 )}
               </div>
             )}
 
             {activeTab === 'about' && (
-              <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-4">About {chef.name}</h2>
-                <p className="text-gray-700 mb-6 sm:mb-8">{chef.bio ?? 'No bio available'}</p>
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <h2 className="text-2xl font-semibold mb-4">About {homeCook.name}</h2>
+                <p className="text-gray-600 mb-6">
+                  {homeCook.bio || 'No bio available for this home cook.'}
+                </p>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                  {stats.map(({ icon: Icon, label, value }) => (
-                    <div key={label} className="text-center p-4 rounded-lg bg-gray-50">
-                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 text-gray-600" />
-                      <div className="font-semibold text-lg sm:text-xl">{value}</div>
-                      <div className="text-sm text-gray-600">{label}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {stats.map((stat, index) => (
+                    <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
+                      <stat.icon className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+                      <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                      <div className="text-sm text-gray-600">{stat.label}</div>
                     </div>
                   ))}
                 </div>
@@ -265,18 +272,17 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
             )}
 
             {activeTab === 'reviews' && (
-              <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <p className="text-center text-gray-600 py-6 sm:py-8">
-                  No reviews available yet.
-                </p>
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+                <p className="text-gray-500">No reviews yet. Be the first to review this home cook!</p>
               </div>
             )}
           </div>
 
-          {/* Right Column - Desktop Only */}
-          <div className="hidden lg:block lg:col-span-1">
+          {/* Right Column - Desktop Booking */}
+          <div className="hidden lg:block">
             <div className="bg-white rounded-lg p-6 shadow-sm sticky top-4">
-              <h2 className="text-xl font-semibold mb-4">Book {chef.name}</h2>
+              <h2 className="text-xl font-semibold mb-4">Book {homeCook.name}</h2>
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-gray-600">
                   <Clock className="w-5 h-5" />
@@ -284,13 +290,17 @@ const DetailPage: React.FC<{ chef: ChefWithProducts }> = ({ chef }) => {
                 </div>
                 <div className="flex items-center gap-2 text-gray-600">
                   <ChefHat className="w-5 h-5" />
-                  <span>Specializes in {chef.specialty}</span>
+                  <span>Specializes in {homeCook.cuisine}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Award className="w-5 h-5" />
+                  <span>Experience: {homeCook.experience}</span>
                 </div>
                 <button className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-900 transition-colors">
                   Check Availability
                 </button>
                 <button className="w-full py-3 px-4 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                  Message Chef
+                  Message Home Cook
                 </button>
               </div>
             </div>

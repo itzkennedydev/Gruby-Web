@@ -61,7 +61,7 @@ export function Footer() {
                 height={23}
               />
             </div>
-            <p className="text-sm mb-4">Connecting food lovers with talented chefs.</p>
+            <p className="text-sm mb-4">Connecting food lovers with talented home cooks.</p>
             <SocialIcons />
           </FooterColumn>
 
@@ -70,7 +70,7 @@ export function Footer() {
               <li><Link href="/about" className="text-gray-800 hover:underline">About Us</Link></li>
               <li><Link href="/faq" className="text-gray-800 hover:underline">FAQ</Link></li>
               <li><Link href="/contact" className="text-gray-800 hover:underline">Contact</Link></li>
-              <li><Link href="/chefs" className="text-gray-800 hover:underline">Find a Chef</Link></li>
+              <li><Link href="/home-cooks" className="text-gray-800 hover:underline">Find a Home Cook</Link></li>
             </ul>
           </FooterColumn>
 
@@ -83,7 +83,7 @@ export function Footer() {
           </FooterColumn>
 
           <FooterColumn title="Newsletter">
-            <p className="text-sm mb-4">Stay updated with our latest offers and chef stories.</p>
+            <p className="text-sm mb-4">Stay updated with our latest offers and home cook stories.</p>
             <form onSubmit={handleNewsletterSubmit} noValidate>
               <input
                 type="email"

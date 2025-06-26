@@ -27,14 +27,15 @@ export interface Database {
           updated_at?: string;
         };
       };
-      chefs: {
+      homeCooks: {
         Row: {
           id: string;
           name: string;
           bio: string | null;
           avatar_url: string | null;
           cover_image_url: string | null;
-          specialty: string;
+          cuisine: string;
+          experience: string;
           created_at: string;
           updated_at: string;
         };
@@ -44,7 +45,8 @@ export interface Database {
           bio?: string | null;
           avatar_url?: string | null;
           cover_image_url?: string | null;
-          specialty: string;
+          cuisine: string;
+          experience: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -54,7 +56,8 @@ export interface Database {
           bio?: string | null;
           avatar_url?: string | null;
           cover_image_url?: string | null;
-          specialty?: string;
+          cuisine?: string;
+          experience?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -62,7 +65,7 @@ export interface Database {
       products: {
         Row: {
           id: string;
-          chef_id: string;
+          homeCookId: string;
           name: string;
           description: string | null;
           price: number;
@@ -72,7 +75,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          chef_id: string;
+          homeCookId: string;
           name: string;
           description?: string | null;
           price: number;
@@ -82,7 +85,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          chef_id?: string;
+          homeCookId?: string;
           name?: string;
           description?: string | null;
           price?: number;

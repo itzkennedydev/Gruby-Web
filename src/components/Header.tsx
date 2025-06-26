@@ -37,7 +37,7 @@ interface ReverseGeocodingResult {
 interface SearchResult {
   id: string;
   name: string;
-  type: 'cuisine' | 'chef' | 'dish';
+  type: 'cuisine' | 'homeCook' | 'dish';
 }
 
 interface NavLinkProps {
@@ -219,7 +219,7 @@ const Header = () => {
       // Mock API call - replace with actual API endpoint
       const mockResults: SearchResult[] = [
         { id: '1', name: term + ' Cuisine', type: 'cuisine' },
-        { id: '2', name: 'Chef ' + term, type: 'chef' },
+        { id: '2', name: 'Home Cook ' + term, type: 'homeCook' },
         { id: '3', name: term + ' Dish', type: 'dish' },
       ];
       setSearchResults(mockResults);
@@ -400,7 +400,7 @@ const Header = () => {
             <form onSubmit={handleSearchSubmit} className="flex-1 relative">
               <input
                 type="text"
-                placeholder="Search for dishes, cuisines, or chefs..."
+                placeholder="Search for dishes, cuisines, or home cooks..."
                 className="w-full px-12 py-2.5 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -441,21 +441,20 @@ const Header = () => {
                       </div>
                     </div>
 
-                    {/* Popular Chefs */}
+                    {/* Popular Home Cooks */}
                     <div>
                       <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
                         <ChefHat className="mr-3 text-gray-700" size={20} />
-                        Popular Chefs
+                        Popular Home Cooks
                       </h3>
                       <div className="space-y-3">
-                        {['Gordon Ramsay', 'Jamie Oliver', 'Wolfgang Puck'].map((chef) => (
+                        {['Gordon Ramsay', 'Jamie Oliver', 'Wolfgang Puck'].map((homeCook) => (
                           <Link
-                            key={chef}
-                            href={`/chef/${encodeURIComponent(chef)}`}
-                            className="block text-gray-700 hover:text-gray-900"
-                            onClick={() => setShowMegaMenu(false)}
+                            key={homeCook}
+                            href={`/home-cook/${encodeURIComponent(homeCook)}`}
+                            className="flex items-center p-2 hover:bg-gray-100 rounded"
                           >
-                            {chef}
+                            {homeCook}
                           </Link>
                         ))}
                       </div>
@@ -488,6 +487,14 @@ const Header = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-6">
+            <Link 
+              href="/home-cook-onboarding" 
+              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-colors"
+            >
+              <ChefHat size={18} />
+              Become a Home Cook
+            </Link>
+            
             {isSignedIn && (
               <Link 
                 href="/orders" 
@@ -530,7 +537,7 @@ const Header = () => {
           <form onSubmit={handleSearchSubmit} className="relative">
             <input
               type="text"
-              placeholder="Search dishes, cuisines, or chefs..."
+              placeholder="Search dishes, cuisines, or home cooks..."
               className="w-full px-10 py-2 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -595,11 +602,18 @@ const Header = () => {
                 Browse Cuisines
               </NavLink>
               <NavLink 
-                href="/chefs" 
+                href="/home-cooks" 
                 icon={ChefHat}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Find Chefs
+                Find Home Cooks
+              </NavLink>
+              <NavLink 
+                href="/home-cook-onboarding" 
+                icon={ChefHat}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Become a Home Cook
               </NavLink>
               {isSignedIn && (
                 <NavLink 
@@ -646,7 +660,7 @@ const Header = () => {
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-4 text-gray-700">Allow Location Access?</h2>
               <p className="text-gray-600 mb-6">
-                Gruby would like to access your location to show nearby chefs and meals.
+                Gruby would like to access your location to show nearby home cooks and meals.
               </p>
               <div className="flex gap-3">
                 <button 

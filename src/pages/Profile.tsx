@@ -10,7 +10,7 @@ type TabType = 'profile' | 'orders' | 'favorites';
 
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
-  const [isChef, setIsChef] = useState<boolean>(false);
+  const [isHomeCook, setIsHomeCook] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -41,10 +41,10 @@ const Profile: React.FC = () => {
           <div className="mt-6 bg-white rounded-lg shadow-md p-4">
             <h2 className="text-xl font-semibold mb-4">Your Favorites</h2>
             <FavoritesList 
-              favorites={favorites.map(({ id, chef, ...rest }): FavoriteItem => ({ 
+              favorites={favorites.map(({ id, ...rest }): FavoriteItem => ({ 
                 ...rest, 
                 id: typeof id === 'string' ? parseInt(id, 10) : id,
-                chef: chef.name // Assuming chef.name is the string representation we want
+                homeCook: 'Home Cook' // Placeholder since Product doesn't have homeCook property
               }))} 
             />
           </div>
@@ -89,10 +89,10 @@ const Profile: React.FC = () => {
             <div className="bg-white rounded-lg shadow-md p-4">
               <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
               <button
-                onClick={() => setIsChef(!isChef)}
+                onClick={() => setIsHomeCook(!isHomeCook)}
                 className="flex items-center justify-center w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors duration-300 mt-4"
               >
-                {isChef ? 'Switch to Buyer Account' : 'Switch to Chef Account'}
+                {isHomeCook ? 'Switch to Buyer Account' : 'Switch to Home Cook Account'}
               </button>
             </div>
           </div>

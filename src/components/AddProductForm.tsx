@@ -8,10 +8,10 @@ interface ProductData {
   description: string;
   price: number;
   imageUrl?: string;
-  chefId: string;
+  homeCookId: string;
 }
 
-const initialFormState: Omit<ProductData, 'chefId'> = {
+const initialFormState: Omit<ProductData, 'homeCookId'> = {
   name: '',
   description: '',
   price: 0,
@@ -19,7 +19,7 @@ const initialFormState: Omit<ProductData, 'chefId'> = {
 };
 
 const AddProductForm: React.FC = () => {
-  const [formData, setFormData] = useState<Omit<ProductData, 'chefId'>>(
+  const [formData, setFormData] = useState<Omit<ProductData, 'homeCookId'>>(
     initialFormState
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -47,16 +47,16 @@ const AddProductForm: React.FC = () => {
       setError(null);
       setSuccessMessage(null);
 
-      // Assuming we have a function to get the current chef's ID from context or state
-      const getCurrentChefId = () => {
-        // This should be replaced with actual logic to retrieve the chef's ID
-        // For example, it could come from a React context or a state management solution
-        return "actual-chef-id";
+      // Assuming we have a function to get the current home cook's ID from context or state
+      const getCurrentHomeCookId = () => {
+        // This should be replaced with actual logic to retrieve the home cook's ID
+        // For now, return a placeholder
+        return "actual-home-cook-id";
       };
 
       const productData: ProductData = {
         ...formData,
-        chefId: getCurrentChefId(),
+        homeCookId: getCurrentHomeCookId(),
       };
 
       try {

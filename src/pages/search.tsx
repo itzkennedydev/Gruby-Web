@@ -12,14 +12,14 @@ import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/components/ui/use-toast';
 import { db } from '@/db/db';
 import { sql } from 'drizzle-orm';
-import { chefs, products } from '@/db/schema';
+import { homeCooks, products } from '@/server/db/schema';
 import debounce from 'lodash.debounce';  // Debouncing mechanism
 import Image from 'next/image';
 
-interface Chef {
+interface HomeCook {
   id: string;
   name: string;
-  avatarUrl: string;  // Frontend field for avatar URL
+  avatarUrl: string;
   category: string;
 }
 
@@ -33,22 +33,22 @@ interface Product {
 
 export async function getServerSideProps(context: { query: { q?: string } }) {
   const { q } = context.query;
-  let chefsData: Chef[] = [];
+  let homeCooksData: HomeCook[] = [];
   let productsData: Product[] = [];
 
   if (q) {
     const searchTerm = `%${q.trim().toLowerCase()}%`;  // Normalize the search term
 
-    // SQL query for chefs
-    const chefResults = await db.execute(sql`
-      SELECT id, name, avatar_url, 'General' as category
-      FROM ${chefs}
+    // SQL query for home cooks
+    const homeCookResults = await db.execute(sql`
+      SELECT id, name, "avatarUrl", cuisine as category
+      FROM ${homeCooks}
       WHERE TRIM(LOWER(name)) ILIKE ${searchTerm}
     `);
-    chefsData = chefResults.rows.map(row => ({
+    homeCooksData = homeCookResults.rows.map(row => ({
       id: row.id as string,
       name: row.name as string,
-      avatarUrl: row.avatar_url as string,  // Map avatar_url to avatarUrl
+      avatarUrl: row.avatarUrl as string,
       category: row.category as string,
     }));
 
@@ -69,21 +69,21 @@ export async function getServerSideProps(context: { query: { q?: string } }) {
 
   return {
     props: {
-      initialData: { chefs: chefsData, products: productsData },
+      initialData: { homeCooks: homeCooksData, products: productsData },
       query: q ?? '',
     },
   };
 }
 
 interface SearchPageProps {
-  initialData: { chefs: Chef[]; products: Product[] };
+  initialData: { homeCooks: HomeCook[]; products: Product[] };
   query: string;
 }
 
 const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
   const router = useRouter();
   const { addToCart } = useCart();
-  const [data, setData] = useState<{ chefs: Chef[]; products: Product[] }>(initialData);
+  const [data, setData] = useState<{ homeCooks: HomeCook[]; products: Product[] }>(initialData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -94,7 +94,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
     try {
       const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
       if (!res.ok) throw new Error('Failed to fetch search results');
-      const newData = await res.json() as { chefs: Chef[]; products: Product[] };
+      const newData = await res.json() as { homeCooks: HomeCook[]; products: Product[] };
       setData(newData);
     } catch {
       setError('Failed to load search results. Please try again later.');
@@ -148,37 +148,36 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
         )}
       </div>
 
-      {/* Chefs Section */}
-      {data?.chefs && data.chefs.length > 0 && (
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
+      {/* Home Cooks Section */}
+      {data?.homeCooks && data.homeCooks.length > 0 && (
+        <div className="mb-8">
+          <div className="flex items-center mb-4">
             <ChefHat className="h-6 w-6" />
-            <h2 className="text-2xl font-semibold">Featured Chefs</h2>
+            <h2 className="text-2xl font-semibold">Featured Home Cooks</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.chefs.map((chef) => (
-              <Link href={`/chef/${chef.id}`} key={chef.id} className="transition-transform hover:scale-105">
-                <Card>
-                  <CardHeader className="relative p-0">
-                    <div className="relative h-48 w-full">
-                      <Image 
-                        src={chef.avatarUrl} 
-                        alt={chef.name} 
-                        width={500} 
-                        height={300} 
-                        layout="responsive"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.homeCooks.map((homeCook) => (
+              <Link href={`/home-cook/${homeCook.id}`} key={homeCook.id} className="transition-transform hover:scale-105">
+                <Card className="overflow-hidden">
+                  <CardHeader className="p-0">
+                    <div className="relative h-48">
+                      <Image
+                        src={homeCook.avatarUrl}
+                        alt={homeCook.name}
+                        fill
+                        className="object-cover"
                       />
                     </div>
                   </CardHeader>
                   <CardContent className="p-4">
-                    <CardTitle>{chef.name}</CardTitle>
-                    <CardDescription>{chef.category}</CardDescription>
+                    <CardTitle>{homeCook.name}</CardTitle>
+                    <CardDescription>{homeCook.category}</CardDescription>
                   </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
-        </section>
+        </div>
       )}
 
       {/* Products Section */}
@@ -219,7 +218,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ initialData, query }) => {
         </section>
       )}
 
-      {!isLoading && (!data?.chefs?.length && !data?.products?.length) && (
+      {!isLoading && (!data?.homeCooks?.length && !data?.products?.length) && (
         <Alert>
           <AlertTitle>No results found</AlertTitle>
           <AlertDescription>

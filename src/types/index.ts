@@ -1,12 +1,13 @@
-export interface Chef {
+export interface HomeCook {
   id: string;
   name: string;
   avatarUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
   bio: string | null;
-  coverImageUrl: string | null;
-  specialty: string;
+  coverImage: string | null;
+  cuisine: string;
+  experience: string;
   rating?: number;
   image?: string; // Add this line to include the image property
 }
@@ -25,7 +26,7 @@ export interface Product {
   description: string;
   price: number;
   images: string[];
-  chef: {
+  homeCook: {
     name: string;
   };
 }

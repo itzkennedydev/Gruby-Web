@@ -1,9 +1,9 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import type { Chef } from '@/server/db/schema';
+import type { HomeCook } from '@/server/db/schema';
 
-const ChefCard = dynamic(() => import('../components/ChefCard'), {
+const HomeCookCard = dynamic(() => import('../components/HomeCookCard'), {
   ssr: false,
 });
 
@@ -70,28 +70,28 @@ const TabButton = ({ isActive, onClick, children }: TabButtonProps) => (
 );
 
 const MainPage = () => {
-  const [chefs, setChefs] = useState<Chef[]>([]);
+  const [homeCooks, setHomeCooks] = useState<HomeCook[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchChefs() {
+    async function fetchHomeCooks() {
       try {
-        const response = await fetch('/api/chefs');
-        if (!response.ok) throw new Error('Failed to fetch chefs');
-        const data = await response.json() as Chef[];
-        setChefs(data);
-        const uniqueCategories = Array.from(new Set(data.map(chef => chef.specialty)));
+        const response = await fetch('/api/home-cooks');
+        if (!response.ok) throw new Error('Failed to fetch home cooks');
+        const data = await response.json() as HomeCook[];
+        setHomeCooks(data);
+        const uniqueCategories = Array.from(new Set(data.map(homeCook => homeCook.cuisine)));
         setCategories(uniqueCategories);
       } catch (err) {
-        setError('Error fetching chefs. Please try again later.');
+        setError('Error fetching home cooks. Please try again later.');
       } finally {
         setIsLoading(false);
       }
     }
-    void fetchChefs();
+    void fetchHomeCooks();
   }, []);
 
   if (isLoading) return <div className="p-8 text-center">Loading...</div>;
@@ -111,14 +111,14 @@ const MainPage = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
         <div className="relative h-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start">
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6">
-            Discover Amazing<br />Local Chefs
+            Discover Amazing<br />Local Home Cooks
           </h1>
           <p className="text-lg md:text-xl text-gray-200 mb-6 md:mb-8 max-w-xl">
-            Connect with talented culinary artists in your area and experience 
-            unforgettable dining experiences.
+            Connect with talented home cooks in your area and experience 
+            authentic homemade meals made with love.
           </p>
           <button className="px-4 py-2 md:px-6 md:py-3 bg-[#FF4D00] hover:bg-[#FF4D00]/80 text-white rounded-lg transition-colors text-sm md:text-base">
-            Find Your Chef
+            Find Your Home Cook
           </button>
         </div>
       </div>
@@ -148,12 +148,12 @@ const MainPage = () => {
 
         {/* Category Sections */}
         {categories.map((category, index) => {
-          const categoryChefs = chefs.filter(chef => 
-            chef.specialty === category && 
+          const categoryHomeCooks = homeCooks.filter(homeCook => 
+            homeCook.cuisine === category && 
             (!activeCategory || activeCategory === category)
           );
           
-          if (categoryChefs.length === 0) return null;
+          if (categoryHomeCooks.length === 0) return null;
 
           return (
             <div key={category} className={`relative ${index < categories.length - 1 ? 'mb-8 md:mb-12' : ''}`}>
@@ -169,14 +169,14 @@ const MainPage = () => {
                     if (row) row.scrollBy({ left: -300, behavior: 'smooth' });
                   }}
                   className="-left-5"
-                  show={categoryChefs.length > 1}
+                  show={categoryHomeCooks.length > 1}
                 />
 
                 <ScrollableGrid id={`row-${category}`}>
-                  {categoryChefs.map((chef) => (
-                    <div key={chef.id} className="w-[280px] flex-none">
-                      <ChefCard 
-                        chef={chef}
+                  {categoryHomeCooks.map((homeCook) => (
+                    <div key={homeCook.id} className="w-[280px] flex-none">
+                      <HomeCookCard 
+                        homeCook={homeCook}
                         isFavorite={false}
                         onToggleFavorite={() => {/* Implement toggle favorite logic */}}
                       />
@@ -191,7 +191,7 @@ const MainPage = () => {
                     if (row) row.scrollBy({ left: 300, behavior: 'smooth' });
                   }}
                   className="-right-5"
-                  show={categoryChefs.length > 1}
+                  show={categoryHomeCooks.length > 1}
                 />
               </div>
             </div>
@@ -203,7 +203,7 @@ const MainPage = () => {
           <div className="rounded-lg border border-gray-200 p-8 text-center">
             <h3 className="text-lg font-semibold mb-2">No Categories Found</h3>
             <p className="text-gray-600">
-              Check back later for new chefs and categories.
+              Check back later for new home cooks and categories.
             </p>
           </div>
         )}

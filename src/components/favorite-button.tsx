@@ -5,26 +5,26 @@ import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface FavoriteButtonProps {
-  chefId: string;
+  homeCookId: string;
 }
 
-export function FavoriteButton({ chefId }: FavoriteButtonProps) {
+export function FavoriteButton({ homeCookId }: FavoriteButtonProps) {
   const [isFavorite, setIsFavorite] = useState(false);
 
   // Load favorite status from localStorage when the component mounts
   useEffect(() => {
-    const storedFavorite = localStorage.getItem(`favorite-${chefId}`);
+    const storedFavorite = localStorage.getItem(`favorite-${homeCookId}`);
     if (storedFavorite) {
       setIsFavorite(JSON.parse(storedFavorite) as boolean);
     }
-  }, [chefId]);
+  }, [homeCookId]);
 
   function handleToggleFavorite(event: React.MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
     setIsFavorite((prevState) => {
       const newFavoriteState = !prevState;
-      localStorage.setItem(`favorite-${chefId}`, JSON.stringify(newFavoriteState));
+      localStorage.setItem(`favorite-${homeCookId}`, JSON.stringify(newFavoriteState));
       return newFavoriteState;
     });
 

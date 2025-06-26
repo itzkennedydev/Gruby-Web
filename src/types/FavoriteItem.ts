@@ -1,6 +1,6 @@
 import type { Product } from './Product';
 
-export type FavoriteItem = Omit<Product, 'id' | 'chef'> & {
+export type FavoriteItem = Omit<Product, 'id' | 'homeCook'> & {
   id: number;
-  chef: string;
+  homeCook: string;
 };
