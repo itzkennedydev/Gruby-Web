@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '@/db/db';
-import { homeCooks } from '@/db/schema';
+import { db } from '@/server/db';
+import { homeCooks } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -17,36 +17,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === 'POST') {
     try {
-      const { name, bio, cuisine, experience, avatarUrl, coverImageUrl, userId } = req.body;
+      const { name, bio, cuisine, experience, avatarUrl, coverImageUrl } = req.body;
       
       // Validate required fields
-      if (!name || !cuisine || !experience || !userId) {
-        return res.status(400).json({ error: 'Name, cuisine, experience, and userId are required' });
-      }
-
-      // Check for existing home cook for this user
-      const existingHomeCook = await db.select()
-        .from(homeCooks)
-        .where(eq(homeCooks.userId, userId))
-        .limit(1);
-
-      if (existingHomeCook.length > 0) {
-        const homeCook = existingHomeCook[0];
-        
-        // If they have a Stripe account and onboarding is complete, return error
-        if (homeCook.stripeAccountId && homeCook.onboardingCompleted === 'true') {
-          return res.status(409).json({ 
-            error: 'You already have a complete home cook profile with payment processing set up',
-            existingHomeCook: homeCook
-          });
-        }
-        
-        // If they have a profile but no Stripe account or incomplete onboarding, return existing profile
-        return res.status(200).json({
-          message: 'Continuing with existing profile',
-          homeCook: homeCook,
-          needsStripeOnboarding: !homeCook.stripeAccountId || homeCook.onboardingCompleted !== 'true'
-        });
+      if (!name || !cuisine || !experience) {
+        return res.status(400).json({ error: 'Name, cuisine, and experience are required' });
       }
 
       // Insert new home cook
@@ -56,8 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         cuisine,
         experience,
         avatarUrl,
-        coverImageUrl,
-        userId,
+        coverImage: coverImageUrl,
       }).returning();
 
       res.status(201).json(newHomeCook[0]);
