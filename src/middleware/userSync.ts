@@ -1,7 +1,7 @@
 // middleware/userSync.ts
 import type { NextApiRequest, NextApiResponse, NextApiHandler } from 'next';
-import { db } from '@/db/db';
-import { users as usersSchema } from '@/db/schema';
+import { db } from '@/server/db';
+import { users as usersSchema } from '@/server/db/schema';
 import { getAuth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 
@@ -55,7 +55,7 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
 
         // Insert the user into the database, ensuring user_id is not null
         await db.insert(usersSchema).values({
-          userId: clerkUser.id,
+          user_id: clerkUser.id,
           email,
           name: fullName,
           avatarUrl: clerkUser.profile_image_url ?? '',

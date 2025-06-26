@@ -2,14 +2,7 @@
 
 import * as React from "react"
 import { type ReactNode, createContext, useCallback, useContext, useMemo, useState, useEffect } from "react"
-
-export type CartItem = {
-  id: string
-  name: string
-  price: number
-  quantity: number
-  imageUrl: string
-}
+import type { CartItem } from "@/types/CartItem"
 
 type CartContextType = {
   cartItems: CartItem[]
@@ -29,7 +22,14 @@ export function useCart(): CartContextType {
   const context = useContext(CartContext)
 
   if (context === undefined) {
-    throw new Error("useCart must be used within a CartProvider")
+    // Return a safe default during SSR or when context is not available
+    return {
+      cartItems: [],
+      addToCart: () => {},
+      removeFromCart: () => {},
+      updateQuantity: () => {},
+      clearCart: () => {},
+    }
   }
 
   return context
@@ -39,8 +39,15 @@ export function CartProvider({
   children,
 }: CartProviderProps): JSX.Element {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+    
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       try {
@@ -51,12 +58,14 @@ export function CartProvider({
         console.error('Error parsing cart from localStorage:', error);
       }
     }
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
+    if (!isClient) return
+    
     console.log('Saving cart to localStorage:', cartItems);
     localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+  }, [cartItems, isClient]);
 
   const addToCart = useCallback((item: CartItem) => {
     console.log('Adding item to cart:', item);

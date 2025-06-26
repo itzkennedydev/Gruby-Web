@@ -1,25 +1,43 @@
 import React from 'react';
 import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
+import { CartProvider } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import ClientOnly from '@/components/ClientOnly';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import '@/styles/globals.css';
+
+export const metadata: Metadata = {
+  title: 'Gruby - Home Cooking Marketplace',
+  description: 'Connect with talented home cooks in your area and experience authentic homemade meals made with love.',
+};
 
 interface RootLayoutProps {
   children: ReactNode;
 }
 
-export const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <head>
-        {/* Add any global meta tags or links here if necessary */}
-      </head>
-      <body className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className="min-h-screen bg-gray-50 flex flex-col">
+          <ErrorBoundary>
+            <CartProvider>
+              <ClientOnly>
+                <Header />
+              </ClientOnly>
+              <main className="flex-1">
+                {children}
+              </main>
+              <ClientOnly>
+                <Footer />
+              </ClientOnly>
+            </CartProvider>
+          </ErrorBoundary>
+        </body>
+      </html>
+    </ClerkProvider>
   );
-};
+}

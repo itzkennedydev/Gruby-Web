@@ -21,7 +21,6 @@ import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 import type { GeocodingResult } from '@/types';
-import type { NextRouter } from 'next/router';
 
 // Types and Interfaces
 interface ReverseGeocodingResult {
@@ -66,7 +65,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }
 const Header = () => {
   const { isSignedIn, isLoaded } = useUser();
   const { cartItems } = useCart();
-  const router = useRouter() as unknown as NextRouter;
+  const router = useRouter();
 
   // State management
   const [address, setAddress] = useState<string>('');
@@ -246,10 +245,6 @@ const Header = () => {
     }
   }, [debouncedSearchTerm]);
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [router.asPath]);
-
   const renderLocationModal = () => {
     if (!showAddressModal) return null;
 
@@ -337,7 +332,7 @@ const Header = () => {
           <div className="p-6 border-t border-gray-100">
             <button 
               onClick={() => void handleCustomAddressSubmit()}
-              className="w-full py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-colors"
+              className="w-full py-3 px-4 bg-[#FF4D00] hover:bg-[#E64500] text-white font-medium rounded-xl transition-colors"
             >
               Confirm Address
             </button>
@@ -361,8 +356,8 @@ const Header = () => {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-5 md:py-4">
-        <div className="flex items-center justify-between gap-6">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between py-4">
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMenuOpen(true)}
@@ -372,31 +367,18 @@ const Header = () => {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
+          <Link href="/" className="flex items-center">
             <Image
               src="https://di8mcd92ly4ww.cloudfront.net/GrubyLogo.png"
               alt="Gruby Logo"
               width={120}
               height={23}
-              className="w-auto h-6 md:h-8"
+              className="h-6 w-auto"
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center flex-1 gap-6">
-            {/* Location Button */}
-            <button
-              onClick={() => setShowAddressModal(true)}
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
-            >
-              <MapPin className="text-gray-700" size={18} />
-              <span className="truncate max-w-[200px]">
-                {isLocating ? 'Locating...' : (address || 'Set location')}
-              </span>
-              <ChevronDown className="text-gray-400 ml-1" size={16} />
-            </button>
-
-            {/* Search Bar */}
+          {/* Search Bar */}
+          <div className="flex-1 max-w-2xl mx-8">
             <form onSubmit={handleSearchSubmit} className="flex-1 relative">
               <input
                 type="text"
@@ -487,14 +469,6 @@ const Header = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-6">
-            <Link 
-              href="/home-cook-onboarding" 
-              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-colors"
-            >
-              <ChefHat size={18} />
-              Become a Home Cook
-            </Link>
-            
             {isSignedIn && (
               <Link 
                 href="/orders" 
@@ -507,7 +481,7 @@ const Header = () => {
             <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
               <ShoppingCart size={24} />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 bg-[#FF4D00] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                   {cartItemCount}
                 </span>
               )}
@@ -665,13 +639,13 @@ const Header = () => {
               <div className="flex gap-3">
                 <button 
                   onClick={() => void handleLocationPermission(false)}
-                  className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
+                  className="flex-1 py-2 bg-[#FF4D00] text-white rounded hover:bg-[#E64500]"
                 >
                   Not Now
                 </button>
                 <button 
                   onClick={() => void handleLocationPermission(true)}
-                  className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
+                  className="flex-1 py-2 bg-[#FF4D00] text-white rounded hover:bg-[#E64500]"
                 >
                   Allow Access
                 </button>

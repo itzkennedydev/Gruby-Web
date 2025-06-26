@@ -1,13 +1,13 @@
 // pages/order-confirmation.tsx
 import React, { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
 import { loadStripe } from '@stripe/stripe-js';
 import { CheckCircle2, HomeIcon, ListIcon, Mail, Package, User, XCircle } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { useUser } from '@clerk/nextjs';
 import { Input } from '@/components/ui/input';
 
@@ -32,8 +32,12 @@ interface ApiError {
 
 export default function OrderConfirmation() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useUser();
-  const { payment_intent, payment_intent_client_secret } = router.query;
+  const { toast } = useToast();
+  
+  const payment_intent = searchParams.get('payment_intent');
+  const payment_intent_client_secret = searchParams.get('payment_intent_client_secret');
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [guestEmail, setGuestEmail] = useState('');

@@ -49,8 +49,8 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-gray-100 text-gray-800 pt-12 mt-auto border-t border-gray-200">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-gray-100 text-gray-800 pt-12 border-t border-gray-200">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <FooterColumn title="">
             <div className="mb-4">
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
       </div>
       <div className="bg-gray-200 py-4 mt-12">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-600">
             &copy; {new Date().getFullYear()} Gruby. All rights reserved.
           </p>
