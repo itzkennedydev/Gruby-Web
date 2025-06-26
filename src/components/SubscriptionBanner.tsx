@@ -176,7 +176,7 @@ const SubscriptionBanner: React.FC = () => {
           
           <div className="text-right ml-8 border-l border-gray-200 pl-8">
             <div className="mb-4">
-              <p className="text-2xl font-bold text-gray-900">$29.99</p>
+              <p className="text-2xl font-bold text-gray-900">$10</p>
               <p className="text-sm text-gray-600">per month</p>
               <p className="text-xs text-gray-500 mt-1">5-day free trial</p>
             </div>

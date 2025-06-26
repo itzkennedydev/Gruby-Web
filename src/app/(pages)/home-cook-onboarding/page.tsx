@@ -437,7 +437,7 @@ export default function HomeCookOnboarding() {
                             <h4 className="font-semibold text-green-900 mb-2">Subscription Plan:</h4>
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="text-lg font-bold text-green-900">$29.99/month</p>
+                                <p className="text-lg font-bold text-green-900">$10/month</p>
                                 <p className="text-sm text-green-700">5-day free trial • Cancel anytime</p>
                                 <p className="text-xs text-green-600 mt-1">Billed as "GRUBY HOME COOK SUB"</p>
                               </div>
