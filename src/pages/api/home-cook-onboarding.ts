@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getStripe } from '@/lib/stripe';
-import { db } from '@/db/db';
-import { homeCooks } from '@/db/schema';
+import { db } from '@/server/db';
+import { homeCooks } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

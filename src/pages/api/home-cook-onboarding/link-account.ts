@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getStripe } from '@/lib/stripe';
-import { db } from '@/db/db';
-import { homeCooks } from '@/db/schema';
+import { db } from '@/server/db';
+import { homeCooks } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,15 +10,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { homeCookId, stripeAccountId, userId } = req.body;
+    const { homeCookId, stripeAccountId } = req.body;
 
-    if (!homeCookId || !stripeAccountId || !userId) {
+    if (!homeCookId || !stripeAccountId) {
       return res.status(400).json({ 
-        error: 'Missing required fields: homeCookId, stripeAccountId, userId' 
+        error: 'Missing required fields: homeCookId, stripeAccountId' 
       });
     }
 
-    // Verify the home cook exists and belongs to the user
+    // Verify the home cook exists
     const existingHomeCook = await db.select()
       .from(homeCooks)
       .where(eq(homeCooks.id, homeCookId))
@@ -29,10 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const homeCookData = existingHomeCook[0];
-    
-    if (homeCookData.userId !== userId) {
-      return res.status(403).json({ error: 'Unauthorized' });
-    }
 
     // Verify the Stripe account exists and get its status
     const stripe = getStripe();
