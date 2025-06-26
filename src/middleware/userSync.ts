@@ -55,7 +55,7 @@ export const userSyncMiddleware = (handler: NextApiHandler) => {
 
         // Insert the user into the database, ensuring user_id is not null
         await db.insert(usersSchema).values({
-          id: clerkUser.id,
+          userId: clerkUser.id,
           email,
           name: fullName,
           avatarUrl: clerkUser.profile_image_url ?? '',

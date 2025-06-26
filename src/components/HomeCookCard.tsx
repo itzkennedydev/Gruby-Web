@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { styled } from '@mui/system';
 import Link from 'next/link';
-import type { HomeCook } from '@/types'; // Changed to type import
+import type { HomeCook } from '@/types';
 
 interface HomeCookCardProps {
   homeCook: HomeCook;
