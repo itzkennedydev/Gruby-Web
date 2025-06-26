@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import type { GetServerSideProps } from 'next';
 import { db } from '@/server/db'; 
-import { products } from '@/server/db/schema';
+import { products, homeCooks } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { ProductDetails } from '@/components/ProductDetails';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -120,8 +120,16 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
 
   try {
     const product = await db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        description: products.description,
+        price: products.price,
+        imageUrl: products.imageUrl,
+        homeCookName: homeCooks.name,
+      })
       .from(products)
+      .leftJoin(homeCooks, eq(products.homeCookId, homeCooks.id))
       .where(eq(products.id, parseInt(id, 10)))
       .then((results) => results[0] ?? null);
 
@@ -130,7 +138,7 @@ export const getServerSideProps: GetServerSideProps<ProductPageProps> = async (c
       name: product.name,
       description: product.description ?? 'No description available',
       price: Number(product.price),
-      chef: { name: product.chefId }, 
+      homeCook: { name: product.homeCookName ?? 'Unknown Home Cook' }, 
       images: product.imageUrl ? [product.imageUrl] : ['/placeholder-image.jpg'],
     } : null;
 
