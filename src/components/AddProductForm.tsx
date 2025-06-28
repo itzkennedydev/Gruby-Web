@@ -273,22 +273,26 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onProductAdded }) => {
                 Product Images
               </label>
               <div className="space-y-4">
-                {imagePreviews.map((preview, index) => (
-                  <div key={index} className="relative">
-                    <img
-                      src={preview}
-                      alt={`Product image ${index + 1}`}
-                      className="w-32 h-32 object-cover rounded-xl border-2 border-gray-200"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+                {imagePreviews.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {imagePreviews.map((preview, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={preview}
+                          alt={`Product image ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-xl border-2 border-gray-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
                 <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-[#FF4D00] transition-colors">
                   <input
                     type="file"

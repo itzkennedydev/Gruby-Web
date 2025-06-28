@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { MapPin, Heart, Clock, Award, ChefHat, Users, ShoppingBag } from 'lucide-react';
+import { MapPin, Heart, Award, ChefHat, Users, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import type { HomeCook, Product } from '@/server/db/schema';
 
@@ -81,8 +81,8 @@ export default function HomeCookDetailClient({ homeCook }: HomeCookDetailClientP
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] w-full">
+      {/* Hero Section - Fixed height to match profile page */}
+      <div className="relative h-80 md:h-96 w-full">
         <Image
           src={homeCook.coverImage ?? '/default-cover.jpg'}
           alt={homeCook.name}
@@ -118,9 +118,6 @@ export default function HomeCookDetailClient({ homeCook }: HomeCookDetailClientP
                 </span>
               </div>
             </div>
-            <button className="w-full sm:w-auto px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors mb-4">
-              Book Now
-            </button>
           </div>
         </div>
       </div>
@@ -128,31 +125,8 @@ export default function HomeCookDetailClient({ homeCook }: HomeCookDetailClientP
       {/* Main Content */}
       <div className="container mx-auto py-4 sm:py-6 md:py-8 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-          {/* Booking Section for Mobile */}
-          <div className="lg:hidden mb-4">
-            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-              <h2 className="text-xl font-semibold mb-4">Book {homeCook.name}</h2>
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Clock className="w-5 h-5" />
-                  <span>Response time: within 24 hours</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <ChefHat className="w-5 h-5" />
-                  <span>Specializes in {homeCook.cuisine}</span>
-                </div>
-                <button className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-900 transition-colors">
-                  Check Availability
-                </button>
-                <button className="w-full py-3 px-4 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                  Message Home Cook
-                </button>
-              </div>
-            </div>
-          </div>
-
           {/* Left Column */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             {/* Tabs */}
             <div className="border-b border-gray-200 mb-4 sm:mb-6 overflow-x-auto">
               <div className="flex space-x-8 min-w-max">
@@ -174,7 +148,7 @@ export default function HomeCookDetailClient({ homeCook }: HomeCookDetailClientP
 
             {/* Tab Content */}
             {activeTab === 'products' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {homeCook.products && homeCook.products.length > 0 ? (
                   homeCook.products.map((product) => (
                     <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -226,16 +200,17 @@ export default function HomeCookDetailClient({ homeCook }: HomeCookDetailClientP
             )}
 
             {activeTab === 'about' && (
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4">About {homeCook.name}</h2>
-                <p className="text-gray-600 mb-6">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">About {homeCook.name}</h2>
+                <p className="text-gray-600 leading-relaxed">
                   {homeCook.bio || 'No bio available for this home cook.'}
                 </p>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                   {stats.map((stat, index) => (
                     <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
-                      <stat.icon className="w-8 h-8 mx-auto mb-2 text-gray-600" />
+                      <stat.icon className="w-8 h-8 mx-auto mb-2 text-[#FF4D00]" />
                       <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
                       <div className="text-sm text-gray-600">{stat.label}</div>
                     </div>
@@ -245,38 +220,11 @@ export default function HomeCookDetailClient({ homeCook }: HomeCookDetailClientP
             )}
 
             {activeTab === 'reviews' && (
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-                <p className="text-gray-500">No reviews yet. Be the first to review this home cook!</p>
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">Reviews</h2>
+                <p className="text-gray-500">Reviews feature coming soon!</p>
               </div>
             )}
-          </div>
-
-          {/* Right Column - Desktop Booking */}
-          <div className="hidden lg:block">
-            <div className="bg-white rounded-lg p-6 shadow-sm sticky top-4">
-              <h2 className="text-xl font-semibold mb-4">Book {homeCook.name}</h2>
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Clock className="w-5 h-5" />
-                  <span>Response time: within 24 hours</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <ChefHat className="w-5 h-5" />
-                  <span>Specializes in {homeCook.cuisine}</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Award className="w-5 h-5" />
-                  <span>Experience: {homeCook.experience}</span>
-                </div>
-                <button className="w-full py-3 px-4 bg-black text-white rounded-lg font-medium hover:bg-gray-900 transition-colors">
-                  Check Availability
-                </button>
-                <button className="w-full py-3 px-4 border border-gray-300 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                  Message Home Cook
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

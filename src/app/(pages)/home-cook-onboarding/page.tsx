@@ -70,9 +70,9 @@ const FORM_STEPS: Step[] = [
     ]
   },
   {
-    id: 'payment-setup',
-    title: 'PAYMENT SETUP',
-    subtitle: 'Set up secure payment processing to start accepting orders',
+    id: 'stripe-connect',
+    title: 'SETUP STRIPE CONNECT',
+    subtitle: 'Set up Stripe Connect to start accepting orders',
     fields: []
   }
 ];
@@ -188,7 +188,7 @@ export default function HomeCookOnboarding() {
       
       if (!hasSelection && !hasInputFields) {
         return;
-      }
+    }
     }
     
     if (currentStep < FORM_STEPS.length - 1) {
@@ -198,14 +198,14 @@ export default function HomeCookOnboarding() {
       void handleSubmit();
     }
   };
-  
+
   const handlePrevious = () => {
     if (currentStep > 0) {
       setDirection(-1);
       setCurrentStep(currentStep - 1);
     }
   };
-  
+
   const handleInputChange = (stepId: string, fieldId: string, value: string) => {
     setFormData({
       ...formData,
@@ -232,7 +232,7 @@ export default function HomeCookOnboarding() {
     if (!user) return;
 
     setIsSubmitting(true);
-    
+
     try {
       // Create or update home cook profile
         const homeCookResponse = await fetch('/api/home-cooks', {
@@ -289,6 +289,14 @@ export default function HomeCookOnboarding() {
     }
   };
   
+  // Refetch home cook profile after payment or subscription change
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('subscription') === 'success') {
+      checkExistingProfile();
+    }
+  }, []);
+
   // Show loading state while Clerk is loading
   if (!isLoaded || !isClient) {
     return (
@@ -331,7 +339,7 @@ export default function HomeCookOnboarding() {
   // Main form - typeform style with one question at a time
   return (
     <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="h-[1100px] flex flex-col md:flex-row gap-4">
+      <div className="h-[950px] flex flex-col md:flex-row gap-4">
         {/* Left side - Background image with rounded corners */}
         <div className="w-full md:w-1/2 h-1/3 md:h-full relative rounded-3xl overflow-hidden">
           <img 
@@ -387,7 +395,7 @@ export default function HomeCookOnboarding() {
 
               {/* Form fields */}
               <div className="space-y-6">
-                {currentStepData?.fields.map((field) => (
+                {currentStepData?.id !== 'images' && currentStepData?.fields.map((field) => (
                   <div key={field.id}>
                     {renderField(
                       currentStepData.id,
@@ -413,174 +421,117 @@ export default function HomeCookOnboarding() {
                 )}
 
                 {/* Payment setup step */}
-                {currentStepData?.id === 'payment-setup' && (
+                {currentStepData?.id === 'stripe-connect' && (
                   <div className="text-center space-y-6">
-                    {existingHomeCook?.subscriptionStatus !== 'active' ? (
-                      // Show subscription information
-                      <div className="space-y-6">
-                        <div className="p-6 border-2 border-gray-200 rounded-lg">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional Subscription Required</h3>
-                          <p className="text-gray-600 mb-4">
-                            To list products and start earning, you need an active subscription.
-                          </p>
-                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                            <h4 className="font-semibold text-blue-900 mb-2">Subscription Benefits:</h4>
-                            <ul className="text-sm text-blue-800 space-y-1">
-                              <li>• List unlimited products and reach more customers</li>
-                              <li>• Get featured placement in search results</li>
-                              <li>• Access detailed analytics and earnings insights</li>
-                              <li>• Priority customer support</li>
-                              <li>• Professional profile with enhanced visibility</li>
-                            </ul>
-                          </div>
-                          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <h4 className="font-semibold text-green-900 mb-2">Subscription Plan:</h4>
-                            <div className="flex items-center justify-between">
-                <div>
-                                <p className="text-lg font-bold text-green-900">$10/month</p>
-                                <p className="text-sm text-green-700">5-day free trial • Cancel anytime</p>
-                                <p className="text-xs text-green-600 mt-1">Billed as "GRUBY HOME COOK SUB"</p>
-                              </div>
+                    <div className="p-6 border-2 border-gray-200 rounded-lg">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Secure Payment Setup</h3>
+                      <p className="text-gray-600 mb-4">
+                        You'll be redirected to Stripe's secure platform to complete your payment setup.
+                      </p>
+                      <div className="text-sm text-gray-500 space-y-1">
+                        <p>• Government-issued ID required</p>
+                        <p>• SSN or ITIN needed</p>
+                        <p>• Bank account information</p>
+                        <p>• Takes about 5 minutes</p>
+                      </div>
                 </div>
-                </div>
-              </div>
-
-                        {/* Subscribe button */}
-                        <div className="pt-4">
-                          <button
-                            onClick={async () => {
-                              try {
-                                setIsSubmitting(true);
-                                const response = await fetch('/api/subscription', {
-                                  method: 'POST',
-                                });
-
-                                if (response.ok) {
-                                  const { url } = await response.json();
-                                  if (url) {
-                                    window.location.href = url;
-                                  }
-                                } else {
-                                  const error = await response.json();
-                                  alert(error.error || 'Failed to create subscription');
-                                }
-                              } catch (err) {
-                                alert('Failed to create subscription');
-                              } finally {
-                                setIsSubmitting(false);
-                              }
-                            }}
-                            disabled={isSubmitting}
-                            className="w-full bg-[#FF4D00] hover:bg-[#E64500] text-white font-semibold py-4 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                <span>Processing...</span>
-                              </>
-                            ) : (
-                              <>
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                </svg>
-                                <span>Start Free Trial & Subscribe</span>
-                              </>
-                            )}
-                          </button>
-                          <p className="text-xs text-gray-500 mt-2">
-                            You can also press Enter ↵ to continue
-                          </p>
-                        </div>
-              </div>
-                    ) : (
-                      // Show Stripe Connect setup
-                      <div className="p-6 border-2 border-gray-200 rounded-lg">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Secure Payment Setup</h3>
-                        <p className="text-gray-600 mb-4">
-                          You'll be redirected to Stripe's secure platform to complete your payment setup.
-                        </p>
-                        <div className="text-sm text-gray-500 space-y-1">
-                          <p>• Government-issued ID required</p>
-                          <p>• SSN or ITIN needed</p>
-                          <p>• Bank account information</p>
-                          <p>• Takes about 5 minutes</p>
-                </div>
-              </div>
-                    )}
+                    <button
+                      onClick={handleStripeConnectOnboarding}
+                      className="w-full bg-[#FF4D00] hover:bg-[#E64500] text-white font-semibold py-4 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mt-4"
+                      disabled={isSubmitting}
+                  >
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span>Processing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Continue</span>
+                        </>
+                      )}
+                    </button>
                   </div>
                 )}
+                </div>
               </div>
-            </div>
-            
-            {/* Main Preview Component - Only show on images step */}
+
+            {/* Images step - Side by side layout */}
             {currentStepData?.id === 'images' && (
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h3 className="text-base font-semibold text-gray-800 mb-3">Your Profile Preview</h3>
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                  {/* Hero Section Preview */}
-                  <div className="relative h-32 w-full">
-                    <img
-                      src={formData['images']?.bannerImage || '/default-cover.jpg'}
-                      alt="Banner preview"
-                      className="w-full h-full object-cover brightness-75"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                      <div className="flex items-end gap-3">
-                        <div className="w-12 h-12 rounded-full border-3 border-white shadow-lg overflow-hidden flex-shrink-0">
-                          <img
-                            src={formData['images']?.profileImage || '/default-avatar.jpg'}
-                            alt="Profile preview"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-sm font-bold mb-1">Your Name</h3>
-                          <div className="flex items-center gap-1 mb-1">
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span className="text-xs text-gray-200">Location not specified</span>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {currentStepData.fields.map((field) => (
+                    <div key={field.id}>
+                      {renderField(currentStepData.id, field, formData[currentStepData.id] || {})}
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                  <h3 className="text-base font-semibold text-gray-800 mb-3">Your Profile Preview</h3>
+                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    {/* Hero Section Preview */}
+                    <div className="relative h-32 w-full">
+                      <img
+                        src={formData['images']?.bannerImage || '/default-cover.jpg'}
+                        alt="Banner preview"
+                        className="w-full h-full object-cover brightness-75"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                        <div className="flex items-end gap-3">
+                          <div className="w-12 h-12 rounded-full border-3 border-white shadow-lg overflow-hidden flex-shrink-0">
+                            <img
+                              src={formData['images']?.profileImage || '/default-avatar.jpg'}
+                              alt="Profile preview"
+                              className="w-full h-full object-cover"
+                            />
                           </div>
-                          <div className="flex gap-1">
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white">
-                              Your Cuisine
-                            </span>
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white">
-                              Your Experience
-                            </span>
+                          <div className="flex-1">
+                            <h3 className="text-sm font-bold mb-1">Your Name</h3>
+                            <div className="flex items-center gap-1 mb-1">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span className="text-xs text-gray-200">Location not specified</span>
+                            </div>
+                            <div className="flex gap-1">
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white">
+                                Your Cuisine
+                              </span>
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white">
+                                Your Experience
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <button className="px-3 py-1 bg-white text-black rounded text-xs font-medium">
-                          Book Now
-                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Content Preview */}
+                    <div className="p-3">
+                      <div className="border-b border-gray-200 mb-3">
+                        <div className="flex space-x-4">
+                          {['Products', 'About', 'Reviews'].map((tab) => (
+                            <button key={tab} className="py-1 px-1 border-b-2 border-transparent text-xs font-medium text-gray-500">
+                              {tab}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-center py-4 text-gray-500 text-xs">
+                        Your products and content will appear here
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Content Preview */}
-                  <div className="p-3">
-                    <div className="border-b border-gray-200 mb-3">
-                      <div className="flex space-x-4">
-                        {['Products', 'About', 'Reviews'].map((tab) => (
-                          <button key={tab} className="py-1 px-1 border-b-2 border-transparent text-xs font-medium text-gray-500">
-                            {tab}
-                          </button>
-                        ))}
-                  </div>
-                    </div>
-                    <div className="text-center py-4 text-gray-500 text-xs">
-                      Your products and content will appear here
-                    </div>
-                  </div>
                 </div>
-              </div>
+              </>
             )}
-            
+
             {/* Navigation buttons */}
             <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-200 px-2">
               <button
@@ -616,7 +567,7 @@ export default function HomeCookOnboarding() {
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                )}
+                  )}
               </button>
               </div>
           </div>
@@ -658,11 +609,56 @@ export default function HomeCookOnboarding() {
             {field.label}
           </Label>
           <div className="space-y-3">
-            {!stepData[field.id] ? (
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#FF4D00] transition-colors">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-[#FF4D00] transition-colors min-h-[280px] flex items-center justify-center">
+              <input
+                type="file"
+                id={field.id}
+                accept={field.accept}
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      const base64 = event.target?.result as string;
+                      handleInputChange(stepId, field.id, base64);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+              <label htmlFor={field.id} className="cursor-pointer">
+                <div className="flex flex-col items-center space-y-4">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                    stepData[field.id] ? 'bg-green-100' : 'bg-gray-100'
+                  }`}>
+                    {stepData[field.id] ? (
+                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-lg font-medium text-gray-700">
+                      {stepData[field.id] ? 'Image uploaded' : 'Click to upload'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {stepData[field.id] ? 'Click to replace' : 'PNG, JPG, GIF up to 10MB'}
+                    </p>
+                  </div>
+                </div>
+              </label>
+            </div>
+            
+            {stepData[field.id] && (
+              <div className="flex justify-center">
                 <input
                   type="file"
-                  id={field.id}
+                  id={`${field.id}-replace`}
                   accept={field.accept}
                   className="hidden"
                   onChange={(e) => {
@@ -677,64 +673,11 @@ export default function HomeCookOnboarding() {
                     }
                   }}
                 />
-                <label htmlFor={field.id} className="cursor-pointer">
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-base font-medium text-gray-700">Click to upload</p>
-                      <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                    </div>
-                  </div>
-                </label>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                <div className="relative">
-                  <img 
-                    src={stepData[field.id]} 
-                    alt={`${field.label} preview`}
-                    className={`w-full object-cover rounded-lg border-2 border-gray-200 ${
-                      field.id === 'profileImage' ? 'h-32' : 'h-24'
-                    }`}
-                  />
-                  <button
-                    onClick={() => handleInputChange(stepId, field.id, '')}
-                    className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
-                  >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                <label htmlFor={`${field.id}-replace`} className="cursor-pointer">
+                  <button className="px-3 py-1.5 bg-[#FF4D00] text-white rounded text-sm font-medium">
+                    Replace Image
                   </button>
-                </div>
-                
-                <div className="flex justify-center">
-                  <input
-                    type="file"
-                    id={`${field.id}-replace`}
-                    accept={field.accept}
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                          const base64 = event.target?.result as string;
-                          handleInputChange(stepId, field.id, base64);
-                        };
-                        reader.readAsDataURL(file);
-                      }
-                    }}
-                  />
-                  <label htmlFor={`${field.id}-replace`} className="cursor-pointer">
-                    <button className="px-3 py-1.5 bg-[#FF4D00] text-white rounded text-sm font-medium">
-                      Replace Image
-                    </button>
-                  </label>
-                </div>
+                </label>
               </div>
             )}
           </div>
@@ -775,5 +718,22 @@ export default function HomeCookOnboarding() {
     }
     
     return null;
+  }
+
+  async function handleStripeConnectOnboarding() {
+    setIsSubmitting(true);
+    try {
+      const accountResponse = await fetch('/api/stripe/create-account', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+      if (!accountResponse.ok) throw new Error('Failed to create Stripe account');
+      const { account: accountId } = await accountResponse.json();
+      const onboardingResponse = await fetch('/api/stripe/create-onboarding-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ account: accountId }) });
+      if (!onboardingResponse.ok) throw new Error('Failed to create Stripe onboarding link');
+      const { url } = await onboardingResponse.json();
+      window.location.href = url;
+    } catch (error) {
+      alert('There was an error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 } 

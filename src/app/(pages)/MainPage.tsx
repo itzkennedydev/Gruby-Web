@@ -4,20 +4,26 @@ import React, { useState, useEffect, ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useCart } from '@/contexts/CartContext';
+import { Footer } from '@/components/Footer';
 
-const ProductCard = dynamic(() => import('@/components/ProductCard'), {
+const HomeCookCard = dynamic(() => import('@/components/HomeCookCard'), {
   ssr: false,
 });
 
-interface Product {
-  id: number;
+interface HomeCook {
+  id: string;
   name: string;
-  description: string | null;
-  price: string;
-  images: string[];
-  homeCookName?: string;
-  homeCookCuisine?: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  coverImage: string | null;
+  cuisine: string;
+  experience: string;
+  averageRating: number;
+  totalReviews: number;
+  subscriptionStatus?: string;
+  city?: string;
+  state?: string;
+  productCount: number;
 }
 
 interface ScrollableGridProps {
@@ -71,58 +77,54 @@ const TabButton = ({ isActive, onClick, children }: TabButtonProps) => (
   <button
     onClick={onClick}
     className={`
-      px-4 py-2 text-sm md:text-base whitespace-nowrap
+      px-2 md:px-3 pb-1 text-base font-medium transition-colors duration-200
+      border-b-2
       ${isActive 
-        ? 'text-[#FF4D00] border-b-2 border-[#FF4D00]' 
-        : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
-      }
+        ? 'border-[#FF4D00] text-[#FF4D00] font-semibold' 
+        : 'border-transparent text-gray-600 hover:text-[#FF4D00]'}
     `}
+    style={{ minWidth: 70 }}
   >
     {children}
   </button>
 );
 
 const MainPage = () => {
-  const { addToCart } = useCart();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [homeCooks, setHomeCooks] = useState<HomeCook[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchHomeCooks() {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/products?featured=true');
-        if (!response.ok) throw new Error('Failed to fetch products');
-        const data = await response.json() as Product[];
-        setProducts(data);
+        const response = await fetch('/api/home-cooks?featured=true');
+        if (!response.ok) throw new Error('Failed to fetch home cooks');
+        const data = await response.json() as HomeCook[];
+        setHomeCooks(data);
         
-        // Extract unique categories from products
+        // Extract unique categories from home cooks
         const uniqueCategories = Array.from(
-          new Set(data.map(product => product.homeCookCuisine).filter((category): category is string => Boolean(category)))
+          new Set(data.map(cook => cook.cuisine).filter((category): category is string => Boolean(category)))
         );
         setCategories(uniqueCategories);
       } catch (err) {
-        setError('Error fetching products. Please try again later.');
-        console.error('Error fetching products:', err);
+        setError('Error fetching home cooks. Please try again later.');
+        console.error('Error fetching home cooks:', err);
       } finally {
         setIsLoading(false);
       }
     }
-    void fetchProducts();
+    void fetchHomeCooks();
   }, []);
-
-  const handleAddToCart = async (product: any) => {
-    addToCart(product);
-  };
 
   if (isLoading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF4D00] mx-auto mb-4"></div>
-        <p className="text-gray-600">Loading amazing products...</p>
+        <p className="text-gray-600">Loading amazing home cooks...</p>
       </div>
     </div>
   );
@@ -142,7 +144,7 @@ const MainPage = () => {
   );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
       <div className="relative h-[400px] md:h-[500px] overflow-hidden">
         <div 
@@ -176,16 +178,16 @@ const MainPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 pb-16 md:pb-20 flex-1">
         {/* Category Tabs */}
         {categories.length > 0 && (
           <div className="mb-6 md:mb-8 overflow-x-auto">
-            <div className="flex space-x-4 border-b border-gray-200 min-w-max">
+            <div className="flex gap-4 min-w-max px-1 py-1">
               <TabButton 
                 isActive={activeCategory === null}
                 onClick={() => setActiveCategory(null)}
               >
-                All Products
+                All Cuisines
               </TabButton>
               {categories.map((category) => (
                 <TabButton 
@@ -200,40 +202,41 @@ const MainPage = () => {
           </div>
         )}
 
-        {/* Products Grid */}
+        {/* Home Cooks Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products
-            .filter(product => !activeCategory || product.homeCookCuisine === activeCategory)
-            .map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
+          {homeCooks
+            .filter(cook => !activeCategory || cook.cuisine === activeCategory)
+            .map((homeCook) => (
+              <HomeCookCard
+                key={homeCook.id}
+                homeCook={homeCook}
               />
             ))}
         </div>
 
         {/* Empty State */}
-        {products.length === 0 && (
+        {homeCooks.length === 0 && (
           <div className="rounded-lg border border-gray-200 p-8 text-center">
-            <h3 className="text-lg font-semibold mb-2">No Products Found</h3>
+            <h3 className="text-lg font-semibold mb-2">No Home Cooks Found</h3>
             <p className="text-gray-600">
-              Check back later for new products from our home cooks.
+              Check back later for new home cooks in your area.
             </p>
           </div>
         )}
 
-        {/* No Products in Category */}
-        {products.length > 0 && activeCategory && 
-         products.filter(product => product.homeCookCuisine === activeCategory).length === 0 && (
+        {/* No Home Cooks in Category */}
+        {homeCooks.length > 0 && activeCategory && 
+         homeCooks.filter(cook => cook.cuisine === activeCategory).length === 0 && (
           <div className="rounded-lg border border-gray-200 p-8 text-center">
-            <h3 className="text-lg font-semibold mb-2">No Products in {activeCategory}</h3>
+            <h3 className="text-lg font-semibold mb-2">No Home Cooks in {activeCategory}</h3>
             <p className="text-gray-600">
-              Try selecting a different category or check back later.
+              Try selecting a different cuisine or check back later.
             </p>
           </div>
         )}
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

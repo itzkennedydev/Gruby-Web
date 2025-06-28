@@ -178,14 +178,13 @@ const SubscriptionBanner: React.FC = () => {
             <div className="mb-4">
               <p className="text-2xl font-bold text-gray-900">$10</p>
               <p className="text-sm text-gray-600">per month</p>
-              <p className="text-xs text-gray-500 mt-1">5-day free trial</p>
             </div>
             <Button
               onClick={handleSubscribe}
               disabled={isSubscribing}
               className="bg-[#FF4D00] hover:bg-[#E64500] text-white w-full"
             >
-              {isSubscribing ? 'Processing...' : 'Start Free Trial'}
+              {isSubscribing ? 'Processing...' : 'Subscribe Now'}
             </Button>
           </div>
         </div>

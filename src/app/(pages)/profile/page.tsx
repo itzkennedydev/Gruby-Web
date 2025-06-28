@@ -137,6 +137,37 @@ const Profile: React.FC = () => {
             {/* Subscription Banner */}
             <SubscriptionBanner />
             
+            {/* Temporary Fix Button */}
+            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-yellow-800">⚠️ Temporary Fix</h3>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    If you've paid for subscription but still see the upgrade banner, click the button to activate it manually.
+                  </p>
+                </div>
+                <button
+                  onClick={async () => {
+                    try {
+                      const response = await fetch('/api/debug/subscription', { method: 'PUT' });
+                      const data = await response.json();
+                      if (data.success) {
+                        alert('Subscription activated! Refreshing page...');
+                        window.location.reload();
+                      } else {
+                        alert('Failed to activate subscription: ' + data.error);
+                      }
+                    } catch (error) {
+                      alert('Error activating subscription: ' + error);
+                    }
+                  }}
+                  className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                >
+                  Activate Subscription
+                </button>
+              </div>
+            </div>
+            
             {/* Add Product Form */}
             <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-6">Add New Product</h3>

@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Creating checkout session for user:', userId, 'with price:', SUBSCRIPTION_PRICE_ID);
 
-    // Create a checkout session for subscription with 5-day trial
+    // Create a checkout session for subscription
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -90,7 +90,6 @@ export async function POST(request: NextRequest) {
           subscriptionType: 'professional',
         },
         description: SUBSCRIPTION_DESCRIPTION,
-        trial_period_days: 5, // 5-day free trial
       },
     });
 
@@ -146,9 +145,93 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Home cook profile not found' }, { status: 404 });
     }
 
-    return NextResponse.json(homeCook[0]);
+    const profile = homeCook[0];
+
+    // If there's a subscription ID, check with Stripe to get the real status
+    if (profile.subscriptionId) {
+      try {
+        const subscription = await stripe.subscriptions.retrieve(profile.subscriptionId);
+        
+        // Update the database with the current status from Stripe
+        if (subscription.status !== profile.subscriptionStatus) {
+          await db
+            .update(homeCooks)
+            .set({
+              subscriptionStatus: subscription.status,
+              subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+            })
+            .where(eq(homeCooks.id, profile.id));
+          
+          console.log(`Updated subscription status from ${profile.subscriptionStatus} to ${subscription.status}`);
+          
+          // Return the updated status
+          return NextResponse.json({
+            ...profile,
+            subscriptionStatus: subscription.status,
+            subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+          });
+        }
+      } catch (stripeError) {
+        console.error('Error fetching subscription from Stripe:', stripeError);
+      }
+    }
+
+    return NextResponse.json(profile);
   } catch (error) {
     console.error('Error fetching subscription:', error);
     return NextResponse.json({ error: 'Failed to fetch subscription' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { subscriptionId } = await request.json();
+
+    if (!subscriptionId) {
+      return NextResponse.json({ error: 'Subscription ID is required' }, { status: 400 });
+    }
+
+    // Get the home cook profile
+    const homeCook = await db
+      .select()
+      .from(homeCooks)
+      .where(eq(homeCooks.userId, userId))
+      .limit(1);
+
+    if (homeCook.length === 0) {
+      return NextResponse.json({ error: 'Home cook profile not found' }, { status: 404 });
+    }
+
+    const profile = homeCook[0];
+
+    // Fetch subscription from Stripe
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    
+    // Update the database
+    await db
+      .update(homeCooks)
+      .set({
+        subscriptionStatus: subscription.status,
+        subscriptionId: subscription.id,
+        subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+        onboardingCompleted: subscription.status === 'active' ? 'true' : profile.onboardingCompleted,
+      })
+      .where(eq(homeCooks.id, profile.id));
+
+    console.log(`Manually updated subscription status to ${subscription.status}`);
+
+    return NextResponse.json({ 
+      success: true, 
+      subscriptionStatus: subscription.status,
+      message: 'Subscription status updated manually'
+    });
+  } catch (error) {
+    console.error('Error updating subscription:', error);
+    return NextResponse.json({ error: 'Failed to update subscription' }, { status: 500 });
   }
 } 

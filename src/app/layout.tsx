@@ -25,15 +25,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <body className="min-h-screen bg-gray-50 flex flex-col">
           <ErrorBoundary>
             <CartProvider>
-              <ClientOnly>
-                <Header />
-              </ClientOnly>
+              <Header />
               <main className="flex-1">
                 {children}
               </main>
-              <ClientOnly>
-                <Footer />
-              </ClientOnly>
             </CartProvider>
           </ErrorBoundary>
         </body>

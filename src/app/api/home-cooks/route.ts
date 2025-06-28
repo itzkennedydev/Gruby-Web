@@ -1,24 +1,108 @@
-import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { db } from '@/server/db';
-import { homeCooks, users } from '@/server/db/schema';
+import { homeCooks, users, products } from '@/server/db/schema';
 import { eq, and } from 'drizzle-orm';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    // Fetch only home cooks with completed payment setup AND active subscription
-    const allHomeCooks = await db
-      .select()
-      .from(homeCooks)
-      .where(and(
-        eq(homeCooks.onboardingCompleted, 'true'),
-        eq(homeCooks.subscriptionStatus, 'active')
-      ));
+    const { searchParams } = new URL(req.url);
+    const featured = searchParams.get('featured');
+    const cuisine = searchParams.get('cuisine');
+
+    // Fetch home cooks with product counts
+    let homeCooksData;
     
-    return NextResponse.json(allHomeCooks, { status: 200 });
+    if (featured === 'true') {
+      // Fetch featured home cooks (active subscription, ordered by rating)
+      homeCooksData = await db
+        .select({
+          id: homeCooks.id,
+          name: homeCooks.name,
+          bio: homeCooks.bio,
+          avatarUrl: homeCooks.avatarUrl,
+          coverImage: homeCooks.coverImage,
+          cuisine: homeCooks.cuisine,
+          experience: homeCooks.experience,
+          averageRating: homeCooks.averageRating,
+          totalReviews: homeCooks.totalReviews,
+          subscriptionStatus: homeCooks.subscriptionStatus,
+          city: homeCooks.city,
+          state: homeCooks.state,
+          createdAt: homeCooks.createdAt,
+          updatedAt: homeCooks.updatedAt,
+        })
+        .from(homeCooks)
+        .where(and(
+          eq(homeCooks.subscriptionStatus, 'active'),
+          eq(homeCooks.onboardingCompleted, 'true')
+        ));
+    } else {
+      // Fetch all home cooks
+      homeCooksData = await db
+        .select({
+          id: homeCooks.id,
+          name: homeCooks.name,
+          bio: homeCooks.bio,
+          avatarUrl: homeCooks.avatarUrl,
+          coverImage: homeCooks.coverImage,
+          cuisine: homeCooks.cuisine,
+          experience: homeCooks.experience,
+          averageRating: homeCooks.averageRating,
+          totalReviews: homeCooks.totalReviews,
+          subscriptionStatus: homeCooks.subscriptionStatus,
+          city: homeCooks.city,
+          state: homeCooks.state,
+          createdAt: homeCooks.createdAt,
+          updatedAt: homeCooks.updatedAt,
+        })
+        .from(homeCooks);
+    }
+
+    // Get product counts for each home cook
+    const allProducts = await db
+      .select({
+        homeCookId: products.homeCookId,
+      })
+      .from(products);
+
+    // Count products per home cook
+    const productCountMap = new Map();
+    allProducts.forEach(product => {
+      const currentCount = productCountMap.get(product.homeCookId) || 0;
+      productCountMap.set(product.homeCookId, currentCount + 1);
+    });
+
+    // Transform the data and add product counts
+    const transformedData = homeCooksData.map(cook => ({
+      ...cook,
+      averageRating: cook.averageRating ? parseFloat(cook.averageRating.toString()) : 0,
+      totalReviews: cook.totalReviews || 0,
+      productCount: productCountMap.get(cook.id) || 0,
+    }));
+
+    // Filter by cuisine if specified
+    const filteredData = cuisine 
+      ? transformedData.filter(cook => cook.cuisine.toLowerCase() === cuisine.toLowerCase())
+      : transformedData;
+
+    // Sort by rating for featured
+    if (featured === 'true') {
+      filteredData.sort((a, b) => {
+        if (a.averageRating !== b.averageRating) {
+          return b.averageRating - a.averageRating;
+        }
+        return b.totalReviews - a.totalReviews;
+      });
+    }
+
+    return NextResponse.json(filteredData);
   } catch (error) {
     console.error('Error fetching home cooks:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to fetch home cooks' },
+      { status: 500 }
+    );
   }
 }
 
@@ -68,54 +152,34 @@ export async function POST(req: NextRequest) {
       .limit(1);
 
     if (existingHomeCook.length > 0) {
-      const homeCook = existingHomeCook[0];
-      
-      // Update existing profile with new data (including images)
-      const updatedHomeCook = await db
-        .update(homeCooks)
-        .set({
-          name,
-          bio,
-          cuisine,
-          experience,
-          avatarUrl: avatarUrl || homeCook.avatarUrl,
-          coverImage: coverImageUrl || homeCook.coverImage,
-        })
-        .where(eq(homeCooks.userId, userId))
-        .returning();
-      
-      // Check if they need Stripe onboarding
-      const needsStripeOnboarding = !homeCook.stripeAccountId || homeCook.onboardingCompleted !== 'true';
-      
-      if (needsStripeOnboarding) {
-        // Return updated profile but indicate Stripe onboarding is needed
-        return NextResponse.json({ 
-          homeCook: updatedHomeCook[0],
-          needsStripeOnboarding: true
-        }, { status: 200 });
-      } else {
-        // Profile is complete, return conflict
-        return NextResponse.json({ 
-          error: 'User already has a complete home cook profile',
-          homeCook: updatedHomeCook[0]
-        }, { status: 409 });
-      }
+      return NextResponse.json(
+        { error: 'User already has a home cook profile' },
+        { status: 400 }
+      );
     }
 
-    // Insert new home cook with userId
-    const newHomeCook = await db.insert(homeCooks).values({
-      userId,
-      name,
-      bio,
-      cuisine,
-      experience,
-      avatarUrl,
-      coverImage: coverImageUrl,
-    }).returning();
+    // Create new home cook profile
+    const [newHomeCook] = await db
+      .insert(homeCooks)
+      .values({
+        userId,
+        name,
+        bio,
+        cuisine,
+        experience,
+        avatarUrl: avatarUrl || null,
+        coverImage: coverImageUrl || null,
+        averageRating: '0.00',
+        totalReviews: 0,
+      })
+      .returning();
 
-    return NextResponse.json(newHomeCook[0], { status: 201 });
+    return NextResponse.json(newHomeCook);
   } catch (error) {
     console.error('Error creating home cook:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to create home cook profile' },
+      { status: 500 }
+    );
   }
 } 

@@ -23,6 +23,9 @@ export const homeCooks = pgTable('home_cooks', {
   coverImage: text('cover_image_url'),
   cuisine: text('cuisine').notNull(),
   experience: text('experience').notNull(),
+  // Rating fields
+  averageRating: decimal('average_rating', { precision: 3, scale: 2 }).default('0.00'),
+  totalReviews: integer('total_reviews').default(0),
   // Stripe Express fields
   stripeAccountId: text('stripe_account_id'),
   stripeAccountStatus: text('stripe_account_status'), // 'pending', 'active', 'restricted', 'disabled'
@@ -43,6 +46,18 @@ export const homeCooks = pgTable('home_cooks', {
   state: text('state'),
   postalCode: text('postal_code'),
   country: text('country'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// Reviews table
+export const reviews = pgTable('reviews', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  homeCookId: uuid('home_cook_id').notNull().references(() => homeCooks.id),
+  userId: text('user_id').notNull().references(() => users.user_id),
+  orderId: integer('order_id').references(() => orders.id),
+  rating: integer('rating').notNull(), // 1-5 stars
+  comment: text('comment'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
@@ -87,26 +102,44 @@ export const orderItems = pgTable('order_items', {
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
 });
 
-// Define relationships
+// Relations
 export const usersRelations = relations(users, ({ many }) => ({
-  orders: many(orders),
   homeCooks: many(homeCooks),
+  reviews: many(reviews),
+  orders: many(orders),
 }));
 
 export const homeCooksRelations = relations(homeCooks, ({ many, one }) => ({
   products: many(products),
+  reviews: many(reviews),
   user: one(users, {
     fields: [homeCooks.userId],
     references: [users.user_id],
   }),
 }));
 
-export const productsRelations = relations(products, ({ one, many }) => ({
+export const reviewsRelations = relations(reviews, ({ one }) => ({
+  homeCook: one(homeCooks, {
+    fields: [reviews.homeCookId],
+    references: [homeCooks.id],
+  }),
+  user: one(users, {
+    fields: [reviews.userId],
+    references: [users.user_id],
+  }),
+  order: one(orders, {
+    fields: [reviews.orderId],
+    references: [orders.id],
+  }),
+}));
+
+export const productsRelations = relations(products, ({ many, one }) => ({
+  images: many(productImages),
+  orderItems: many(orderItems),
   homeCook: one(homeCooks, {
     fields: [products.homeCookId],
     references: [homeCooks.id],
   }),
-  images: many(productImages),
 }));
 
 export const productImagesRelations = relations(productImages, ({ one }) => ({
@@ -116,12 +149,13 @@ export const productImagesRelations = relations(productImages, ({ one }) => ({
   }),
 }));
 
-export const ordersRelations = relations(orders, ({ one, many }) => ({
+export const ordersRelations = relations(orders, ({ many, one }) => ({
+  items: many(orderItems),
+  reviews: many(reviews),
   user: one(users, {
     fields: [orders.user_id],
     references: [users.user_id],
   }),
-  orderItems: many(orderItems),
 }));
 
 export const orderItemsRelations = relations(orderItems, ({ one }) => ({
@@ -135,9 +169,10 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   }),
 }));
 
-// Infer types from tables
+// Types
 export type User = InferModel<typeof users>;
 export type HomeCook = InferModel<typeof homeCooks>;
+export type Review = InferModel<typeof reviews>;
 export type Product = InferModel<typeof products>;
 export type ProductImage = InferModel<typeof productImages>;
 export type Order = InferModel<typeof orders>;

@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
     
     if (featured === 'true') {
       // Fetch all products with home cook information for homepage
-      // Show products from home cooks who have completed onboarding (with or without subscription)
+      // Show products from home cooks who have completed onboarding and have an active subscription
       allProducts = await db
         .select({
           id: products.id,
@@ -127,7 +127,10 @@ export async function GET(request: NextRequest) {
         .from(products)
         .leftJoin(productImages, eq(products.id, productImages.productId))
         .leftJoin(homeCooks, eq(products.homeCookId, homeCooks.id))
-        .where(eq(homeCooks.onboardingCompleted, 'true'));
+        .where(and(
+          eq(homeCooks.onboardingCompleted, 'true'),
+          eq(homeCooks.subscriptionStatus, 'active')
+        ));
     } else if (homeCookId) {
       // Filter products by home cook ID
       allProducts = await db

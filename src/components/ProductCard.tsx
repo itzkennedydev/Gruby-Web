@@ -76,8 +76,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Link href={`/product/${product.id}`} className="block">
       <div className="bg-white border-2 border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
-        {/* Product Image */}
-        <div className="aspect-square bg-gray-100 relative overflow-hidden">
+        {/* Product Image - Reduced height */}
+        <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
           {product.images.length > 0 ? (
             <>
               <img
@@ -92,15 +92,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   <button
                     onClick={prevImage}
                     className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  aria-label="Previous image"
-                  disabled={isAddingToCart}
-                  style={{ pointerEvents: 'auto' }}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onMouseUp={(e) => e.preventDefault()}
-                  onTouchStart={(e) => e.preventDefault()}
-                  onTouchEnd={(e) => e.preventDefault()}
-                  onTouchMove={(e) => e.preventDefault()}
-                >
+                    aria-label="Previous image"
+                    disabled={isAddingToCart}
+                    style={{ pointerEvents: 'auto' }}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onMouseUp={(e) => e.preventDefault()}
+                    onTouchStart={(e) => e.preventDefault()}
+                    onTouchEnd={(e) => e.preventDefault()}
+                    onTouchMove={(e) => e.preventDefault()}
+                  >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
@@ -158,33 +158,38 @@ const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
         
-        {/* Product Info */}
-        <div className="p-4">
-          {/* Subscription Notice */}
+        {/* Product Info - Reduced padding and spacing */}
+        <div className="p-3">
+          {/* Subscription Notice - More compact */}
           {product.subscriptionStatus && product.subscriptionStatus !== 'active' && (
-            <div className="mb-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="mb-2 p-1.5 bg-yellow-50 border border-yellow-200 rounded-md">
               <p className="text-xs text-yellow-800">
-                ⚠️ This home cook needs to activate their subscription to accept orders
+                ⚠️ Subscription needed
               </p>
             </div>
           )}
           
-          <h3 className="font-semibold text-lg mb-2 line-clamp-1">{product.name}</h3>
+          {/* Product name and cook info in one line */}
+          <div className="mb-1">
+            <h3 className="font-semibold text-base line-clamp-1">{product.name}</h3>
+            {product.homeCookName && (
+              <p className="text-xs text-gray-600">by {product.homeCookName}</p>
+            )}
+          </div>
           
-          {product.homeCookName && (
-            <p className="text-sm text-gray-600 mb-1">by {product.homeCookName}</p>
-          )}
-          
+          {/* Cuisine type */}
           {product.homeCookCuisine && (
-            <p className="text-xs text-gray-500 mb-2">{product.homeCookCuisine}</p>
+            <p className="text-xs text-gray-500 mb-1">{product.homeCookCuisine}</p>
           )}
           
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+          {/* Description - Reduced to single line */}
+          <p className="text-gray-600 text-xs mb-2 line-clamp-1">
             {product.description || 'No description available'}
           </p>
           
+          {/* Price and Add to Cart - More compact */}
           <div className="flex items-center justify-between">
-            <span className="text-lg font-bold text-[#FF4D00]">
+            <span className="text-base font-bold text-[#FF4D00]">
               ${Number(product.price).toFixed(2)}
             </span>
             
@@ -192,10 +197,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <button
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
-                className="flex items-center gap-2 px-3 py-2 bg-[#FF4D00] text-white rounded-lg hover:bg-[#E64500] transition-colors disabled:opacity-50 text-sm"
+                className="flex items-center gap-1 px-2 py-1.5 bg-[#FF4D00] text-white rounded-md hover:bg-[#E64500] transition-colors disabled:opacity-50 text-xs"
               >
-                <ShoppingBag className="w-4 h-4" />
-                {isAddingToCart ? 'Adding...' : 'Add to Cart'}
+                <ShoppingBag className="w-3 h-3" />
+                {isAddingToCart ? 'Adding...' : 'Add'}
               </button>
             )}
           </div>
