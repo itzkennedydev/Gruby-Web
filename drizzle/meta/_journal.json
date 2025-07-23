@@ -15,6 +15,27 @@
       "when": 1750938544791,
       "tag": "0001_known_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750948294278,
+      "tag": "0002_amusing_rachel_grey",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1750960182064,
+      "tag": "0003_yielding_scarlet_spider",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1750960934066,
+      "tag": "0004_stormy_rhodey",
+      "breakpoints": true
     }
   ]
 }

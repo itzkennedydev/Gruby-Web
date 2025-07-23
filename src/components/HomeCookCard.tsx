@@ -1,97 +1,79 @@
 'use client'
 
 import React from 'react';
-import { Box, Typography, Card, CardContent, CardMedia, IconButton, Avatar } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { styled } from '@mui/system';
 import Link from 'next/link';
-import type { HomeCook } from '@/types'; // Changed to type import
+import { Star } from 'lucide-react';
+
+interface HomeCook {
+  id: string;
+  name: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  coverImage: string | null;
+  cuisine: string;
+  experience: string;
+  averageRating: number;
+  totalReviews: number;
+  subscriptionStatus?: string;
+  city?: string;
+  state?: string;
+  productCount?: number;
+  // Optionally, you could add images: string[];
+}
 
 interface HomeCookCardProps {
   homeCook: HomeCook;
-  isFavorite: boolean;
-  onToggleFavorite: () => void;
+  className?: string;
 }
 
-const StyledCard = styled(Card)({
-  width: '288px',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  boxShadow: 'none',
-  borderRadius: '12px',
-  overflow: 'hidden',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  '&:hover': {
-    transform: 'scale(1.03)',
-  },
-});
+const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, className = '' }) => {
+  // For demo, stub distance and time
+  const distance = '7.7 mi';
+  const time = '37 min';
+  const promo = '$0 delivery fee, first order';
 
-const StyledCardMedia = styled(CardMedia)({
-  width: '288px',
-  height: '130px',
-  borderRadius: '12px',
-});
+  // For carousel, just one image for now
+  const images = [homeCook.coverImage || '/default-cover.jpg'];
+  const currentImageIndex = 0;
 
-const FavoriteIconWrapper = styled(Box)({
-  position: 'absolute',
-  top: 8,
-  right: 8,
-  zIndex: 2,
-});
-
-const HomeCookAvatar = styled(Avatar)({
-  position: 'absolute',
-  bottom: -20,
-  left: 8,
-  width: 40,
-  height: 40,
-  border: '2px solid #fff',
-});
-
-const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, isFavorite, onToggleFavorite }) => {
   return (
-    <Link href={`/home-cook/${homeCook.id}`} passHref>
-      <StyledCard>
-        <Box sx={{ position: 'relative' }}>
-          <StyledCardMedia
-            image={homeCook.coverImage ?? '/default-home-cook-cover.jpg'}
-            title={homeCook.name}
+    <Link href={`/home-cook/${homeCook.id}`} className={`block ${className}`}>
+      {/* Card: only the image is inside the rounded container */}
+      <div className="rounded-2xl overflow-hidden bg-white border border-gray-100">
+        <div className="relative w-full aspect-[21/9] bg-gray-100">
+          <img
+            src={images[currentImageIndex]}
+            alt={homeCook.name}
+            className="w-full h-full object-cover"
           />
-          <FavoriteIconWrapper>
-            <IconButton 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onToggleFavorite();
-              }}
-            >
-              {isFavorite ? (
-                <FavoriteIcon sx={{ color: '#FF4D00' }} />
-              ) : (
-                <FavoriteBorderIcon sx={{ color: '#fff' }} />
-              )}
-            </IconButton>
-          </FavoriteIconWrapper>
-          <HomeCookAvatar src={homeCook.avatarUrl ?? '/default-avatar.jpg'} alt={homeCook.name} />
-        </Box>
-        <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '24px' }}>
-          <Typography variant="h6" gutterBottom fontWeight="bold">
-            {homeCook.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Rating: {homeCook.rating !== undefined ? homeCook.rating.toFixed(1) : 'Not rated yet'}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Cuisine: {homeCook.cuisine}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Experience: {homeCook.experience}
-          </Typography>
-        </CardContent>
-      </StyledCard>
+          {/* Carousel dots */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+            {images.map((_, idx) => (
+              <span
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  idx === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Text below the card, no background */}
+      <div className="mt-2 px-1">
+        <div className="font-bold text-base mb-1 text-gray-900 line-clamp-1">{homeCook.name}</div>
+        <div className="flex items-center gap-1 text-xs mb-1">
+          <span className="font-bold text-yellow-600 flex items-center">
+            {homeCook.averageRating?.toFixed(1)}
+            <Star className="w-4 h-4 ml-0.5 fill-yellow-500 text-yellow-500" />
+          </span>
+          <span className="text-gray-500">({homeCook.totalReviews > 0 ? `${homeCook.totalReviews}+` : 'New'})</span>
+          <span className="mx-1 text-gray-400">•</span>
+          <span className="text-gray-500">{distance}</span>
+          <span className="mx-1 text-gray-400">•</span>
+          <span className="text-gray-500">{time}</span>
+        </div>
+      </div>
     </Link>
   );
 };

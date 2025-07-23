@@ -8,4 +8,5 @@ export interface CartItem {
   homeCookId: string;
   createdAt: Date;
   updatedAt: Date;
+  selectedOptions?: Record<string, string>;
 }

@@ -21,7 +21,6 @@ import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from 'use-debounce';
 import type { GeocodingResult } from '@/types';
-import type { NextRouter } from 'next/router';
 
 // Types and Interfaces
 interface ReverseGeocodingResult {
@@ -52,6 +51,8 @@ interface RecentAddress {
   type: 'Home' | 'Work' | 'Other';
 }
 
+const RECENT_ADDRESSES_KEY = 'gruby_recent_addresses';
+
 const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }) => (
   <Link 
     href={href}
@@ -66,7 +67,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, icon: Icon, children, onClick }
 const Header = () => {
   const { isSignedIn, isLoaded } = useUser();
   const { cartItems } = useCart();
-  const router = useRouter() as unknown as NextRouter;
+  const router = useRouter();
 
   // State management
   const [address, setAddress] = useState<string>('');
@@ -80,14 +81,47 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [recentAddresses] = useState<RecentAddress[]>([
-    { address: "123 Home Street, Apartment 4B", type: "Home" },
-    { address: "456 Work Avenue, Floor 2", type: "Work" }
-  ]);
+  const [recentAddresses, setRecentAddresses] = useState<RecentAddress[]>([]);
 
   const [debouncedSearchTerm] = useDebounce(searchTerm, 300);
 
   const cartItemCount = useMemo(() => cartItems?.length ?? 0, [cartItems]);
+
+  // Load recent addresses from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem(RECENT_ADDRESSES_KEY);
+    if (stored) {
+      try {
+        setRecentAddresses(JSON.parse(stored));
+      } catch {
+        setRecentAddresses([]);
+      }
+    }
+  }, []);
+
+  // Save recent addresses to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem(RECENT_ADDRESSES_KEY, JSON.stringify(recentAddresses));
+  }, [recentAddresses]);
+
+  // Add a new address to recent addresses (if not present)
+  const addRecentAddress = useCallback((address: string) => {
+    if (!address) return;
+    setRecentAddresses(prev => {
+      // Remove if already present
+      const filtered = prev.filter(a => a.address !== address);
+      // Add new at the top, with correct type
+      return [{ address, type: 'Other' as const }, ...filtered].slice(0, 5);
+    });
+  }, []);
+
+  // When confirming address in modal, update state and recent addresses
+  const handleAddressConfirm = useCallback((newAddress: string) => {
+    setAddress(newAddress);
+    addRecentAddress(newAddress);
+    setShowAddressModal(false);
+    setShowWarning(false);
+  }, [addRecentAddress]);
 
   // Calculate distance between two points
   const calculateDistance = useCallback((lat1: number, lon1: number, lat2: number, lon2: number): number => {
@@ -246,10 +280,6 @@ const Header = () => {
     }
   }, [debouncedSearchTerm]);
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [router.asPath]);
-
   const renderLocationModal = () => {
     if (!showAddressModal) return null;
 
@@ -310,34 +340,33 @@ const Header = () => {
             </div>
 
             {/* Recent Addresses Section */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-medium text-gray-500">RECENT ADDRESSES</h3>
-              <div className="space-y-2">
-                {recentAddresses.map((item, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setCustomAddress(item.address);
-                      void handleCustomAddressSubmit();
-                    }}
-                    className="w-full flex items-start gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors text-left"
-                  >
-                    <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
-                    <div>
-                      <p className="text-gray-700 font-medium">{item.address}</p>
-                      <p className="text-sm text-gray-500">{item.type}</p>
-                    </div>
-                  </button>
-                ))}
+            {recentAddresses.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-sm font-medium text-gray-500">RECENT ADDRESSES</h3>
+                <div className="space-y-2">
+                  {recentAddresses.map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAddressConfirm(item.address)}
+                      className="w-full flex items-start gap-3 p-3 hover:bg-gray-50 rounded-xl transition-colors text-left"
+                    >
+                      <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
+                      <div>
+                        <p className="text-gray-700 font-medium">{item.address}</p>
+                        <p className="text-sm text-gray-500">{item.type}</p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Footer */}
           <div className="p-6 border-t border-gray-100">
             <button 
-              onClick={() => void handleCustomAddressSubmit()}
-              className="w-full py-3 px-4 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-colors"
+              onClick={() => handleAddressConfirm(customAddress)}
+              className="w-full py-3 px-4 bg-[#FF4D00] hover:bg-[#E64500] text-white font-medium rounded-xl transition-colors"
             >
               Confirm Address
             </button>
@@ -361,8 +390,8 @@ const Header = () => {
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-5 md:py-4">
-        <div className="flex items-center justify-between gap-6">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between py-4">
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMenuOpen(true)}
@@ -371,52 +400,56 @@ const Header = () => {
             <Menu size={24} />
           </button>
 
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0 hover:opacity-80 transition-opacity">
+          {/* Logo - reduced size */}
+          <Link href="/" className="flex items-center">
             <Image
               src="https://di8mcd92ly4ww.cloudfront.net/GrubyLogo.png"
               alt="Gruby Logo"
               width={120}
-              height={23}
-              className="w-auto h-6 md:h-8"
+              height={28}
+              className="h-7 w-auto"
+              priority
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center flex-1 gap-6">
-            {/* Location Button */}
+          {/* Search Bar & Location Selector (ghost button style) */}
+          <div className="flex-1 flex items-center max-w-2xl mx-8 gap-2">
+            {/* Location Selector as ghost button */}
             <button
+              type="button"
               onClick={() => setShowAddressModal(true)}
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-lg hover:bg-[#f5f5f5] text-gray-700"
+              className="flex items-center gap-1 text-base text-gray-600 hover:text-[#FF4D00] font-medium bg-transparent border-none outline-none focus:outline-none px-2 py-2 cursor-pointer transition-colors"
+              tabIndex={0}
+              style={{ minWidth: 0 }}
             >
-              <MapPin className="text-gray-700" size={18} />
-              <span className="truncate max-w-[200px]">
+              <MapPin className="w-5 h-5" />
+              <span className="truncate max-w-[110px] md:max-w-[180px]">
                 {isLocating ? 'Locating...' : (address || 'Set location')}
               </span>
-              <ChevronDown className="text-gray-400 ml-1" size={16} />
+              <ChevronDown className="w-4 h-4" />
             </button>
-
+            {/* Vertical line separator */}
+            <span className="h-7 w-px bg-gray-200 mx-1" />
             {/* Search Bar */}
             <form onSubmit={handleSearchSubmit} className="flex-1 relative">
               <input
                 type="text"
                 placeholder="Search for dishes, cuisines, or home cooks..."
-                className="w-full px-12 py-2.5 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400"
+                className="w-full px-4 pr-12 py-3 bg-[#f5f5f5] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400/20 focus:border-gray-400 text-base"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() => setShowMegaMenu(true)}
               />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
                   <X size={16} />
                 </button>
               )}
-
               {/* Mega Menu */}
               {showMegaMenu && (
                 <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-lg shadow-lg border border-gray-100">
@@ -487,14 +520,6 @@ const Header = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-6">
-            <Link 
-              href="/home-cook-onboarding" 
-              className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 rounded-lg transition-colors"
-            >
-              <ChefHat size={18} />
-              Become a Home Cook
-            </Link>
-            
             {isSignedIn && (
               <Link 
                 href="/orders" 
@@ -507,7 +532,7 @@ const Header = () => {
             <Link href="/cart" className="relative text-gray-700 hover:text-gray-900">
               <ShoppingCart size={24} />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 bg-[#FF4D00] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
                   {cartItemCount}
                 </span>
               )}
@@ -665,13 +690,13 @@ const Header = () => {
               <div className="flex gap-3">
                 <button 
                   onClick={() => void handleLocationPermission(false)}
-                  className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
+                  className="flex-1 py-2 bg-[#FF4D00] text-white rounded hover:bg-[#E64500]"
                 >
                   Not Now
                 </button>
                 <button 
                   onClick={() => void handleLocationPermission(true)}
-                  className="flex-1 py-2 bg-black text-white rounded hover:bg-gray-800"
+                  className="flex-1 py-2 bg-[#FF4D00] text-white rounded hover:bg-[#E64500]"
                 >
                   Allow Access
                 </button>
