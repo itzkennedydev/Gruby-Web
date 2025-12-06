@@ -193,14 +193,14 @@ export default function SharedShoppingListPage() {
                 {items.map((item, index) => (
                   <div
                     key={index}
-                    style={[
-                      styles.ingredientRow,
-                      item.checked && styles.ingredientRowChecked
-                    ]}>
-                    <div style={[
-                      styles.checkbox,
-                      item.checked && styles.checkboxChecked
-                    ]}>
+                    style={{
+                      ...styles.ingredientRow,
+                      ...(item.checked ? styles.ingredientRowChecked : {})
+                    }}>
+                    <div style={{
+                      ...styles.checkbox,
+                      ...(item.checked ? styles.checkboxChecked : {})
+                    }}>
                       {item.checked && (
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                           <path
@@ -214,20 +214,20 @@ export default function SharedShoppingListPage() {
                       )}
                     </div>
                     <div style={styles.itemContent}>
-                      <p style={[
-                        styles.itemName,
-                        item.checked && styles.itemNameChecked
-                      ]}>
+                      <p style={{
+                        ...styles.itemName,
+                        ...(item.checked ? styles.itemNameChecked : {})
+                      }}>
                         {item.name}
                       </p>
                       <p style={styles.itemMeta}>
                         {item.quantity} {item.unit}
                       </p>
                     </div>
-                    <span style={[
-                      styles.itemPrice,
-                      item.checked && styles.itemPriceChecked
-                    ]}>
+                    <span style={{
+                      ...styles.itemPrice,
+                      ...(item.checked ? styles.itemPriceChecked : {})
+                    }}>
                       ${item.cost.toFixed(2)}
                     </span>
                   </div>
