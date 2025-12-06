@@ -604,16 +604,16 @@ function ComparisonSectionAnimated({ comparisons, isLoading }: { comparisons: Me
       }`}
     >
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-6 sm:mb-8 md:mb-12">
-          <p className="text-base sm:text-lg md:text-xl text-[#717171] max-w-2xl mx-auto px-4">
-            Spoiler: It's not the food. See how much you're really paying for convenience.
+        {/* Enhanced Header Section */}
+        <div className="text-center mb-8 sm:mb-10 md:mb-14">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#222222] mb-3 sm:mb-4 max-w-3xl mx-auto px-4 leading-tight">
+            Spoiler: You're paying <span className="text-[#FF1E00]">3x more</span> for the same meal.
+          </h2>
+          <p className="text-lg sm:text-xl md:text-2xl text-[#717171] max-w-2xl mx-auto px-4 mb-2 sm:mb-3 font-medium">
+            That $24 delivery order? The ingredients cost $8. The rest is fees, tips, and markup.
           </p>
-        </div>
-
-        {/* Subtle jab callout */}
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <p className="text-xs sm:text-sm text-[#717171]">
-            Real prices from Kroger stores
+          <p className="text-sm text-[#999999] max-w-xl mx-auto px-4">
+            Live prices from major retailers
           </p>
         </div>
 
