@@ -344,7 +344,8 @@ const styles: Record<string, React.CSSProperties> = {
     borderBottom: '1px solid #EBEBEB',
     paddingTop: '60px',
     paddingBottom: '20px',
-    paddingHorizontal: '20px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
   },
   headerContent: {
     maxWidth: '600px',
@@ -366,8 +367,10 @@ const styles: Record<string, React.CSSProperties> = {
   summaryBar: {
     backgroundColor: '#FFFFFF',
     borderBottom: '1px solid #EBEBEB',
-    paddingVertical: '16px',
-    paddingHorizontal: '20px',
+    paddingTop: '16px',
+    paddingBottom: '16px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
   },
   summaryMain: {
     maxWidth: '600px',
@@ -421,7 +424,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: '14px',
+    paddingTop: '14px',
+    paddingBottom: '14px',
     backgroundColor: '#FFFFFF',
     borderBottom: '1px solid #F5F5F5',
   },
