@@ -363,19 +363,19 @@ function FeaturesSectionAnimated() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-x-8 sm:gap-y-10 md:gap-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {features.map((feature, index) => (
             <div 
               key={index}
-              className={`transition-all duration-500 ease-out hover:translate-y-[-4px] ${
+              className={`bg-white rounded-2xl p-6 sm:p-8 border border-[#E5E5E5] transition-all duration-500 ease-out hover:shadow-lg hover:border-[#FF1E00]/20 hover:-translate-y-1 ${
                 isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
               }`}
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
             >
-              <h3 className="text-lg font-semibold text-[#222222] mb-3">
+              <h3 className="text-xl sm:text-2xl font-semibold text-[#222222] mb-3 leading-tight">
                 {feature.title}
               </h3>
-              <p className="text-[#717171] text-sm leading-relaxed">
+              <p className="text-[#717171] text-base leading-relaxed">
                 {feature.description}
               </p>
             </div>
