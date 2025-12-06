@@ -111,7 +111,7 @@ const ProductsList: React.FC<ProductsListProps> = ({ onProductAdded }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-900">Your Products ({products.length})</h3>
         <button
@@ -122,7 +122,7 @@ const ProductsList: React.FC<ProductsListProps> = ({ onProductAdded }) => {
         </button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         {products.map((product) => (
           <div key={product.id} className="bg-white border-2 border-gray-100 rounded-xl overflow-hidden">
             {/* Product Image */}
