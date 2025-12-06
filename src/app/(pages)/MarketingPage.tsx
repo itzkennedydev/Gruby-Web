@@ -636,7 +636,7 @@ function ComparisonSectionAnimated({ comparisons, isLoading }: { comparisons: Me
                         className="object-cover"
                         loading={index < 2 ? "eager" : "lazy"}
                         sizes="(max-width: 1024px) 100vw, 25vw"
-                        quality={index < 2 ? 80 : 75}
+                        quality={100}
                         fetchPriority={index < 2 ? "high" : "auto"}
                       />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent lg:bg-gradient-to-t" />
