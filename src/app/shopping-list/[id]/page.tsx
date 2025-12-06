@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 const BRAND_COLOR = '#fa2625';
 
@@ -221,9 +222,6 @@ export default function SharedShoppingListPage() {
                 {/* Category Header */}
                 <div style={styles.categorySectionHeader}>
                   <span style={styles.categorySectionTitle}>{category}</span>
-                  <span style={styles.categorySectionCount}>
-                    {items.length} {items.length === 1 ? 'item' : 'items'}
-                  </span>
                 </div>
                 
                 {/* Items */}
@@ -299,6 +297,14 @@ export default function SharedShoppingListPage() {
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+        @media print {
+          .no-print {
+            display: none !important;
+          }
+          body {
+            background: white;
+          }
         }
       `}</style>
     </>
@@ -398,9 +404,9 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: '-0.5px',
   },
   summarySubtext: {
-    fontSize: '14px',
-    color: '#717171',
-    fontWeight: '500',
+    fontSize: '13px',
+    color: '#999999',
+    fontWeight: '400',
   },
   content: {
     maxWidth: '600px',
@@ -426,11 +432,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#717171',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
-  },
-  categorySectionCount: {
-    fontSize: '12px',
-    fontWeight: '500',
-    color: '#999999',
   },
   ingredientRow: {
     display: 'flex',
