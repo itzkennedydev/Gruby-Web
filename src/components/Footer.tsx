@@ -55,10 +55,10 @@ export function Footer() {
           <FooterColumn title="">
             <div className="mb-4">
               <Image
-                src="https://di8mcd92ly4ww.cloudfront.net/GrubyLogo.png"
+                src="/GrubyLogo.svg"
                 alt="Gruby Logo"
                 width={120}
-                height={23}
+                height={44}
               />
             </div>
             <p className="text-sm mb-4">Connecting food lovers with talented home cooks.</p>

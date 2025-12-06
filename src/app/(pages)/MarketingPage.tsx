@@ -1,0 +1,949 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setEmail, setSubmitting, setSubmitted, setError } from '@/store/slices/betaSlice';
+import { 
+  ShoppingCart, 
+  ChefHat, 
+  TrendingUp, 
+  MapPin, 
+  Clock, 
+  DollarSign,
+  CheckCircle2,
+  Heart,
+  Users,
+  Target,
+  Loader2,
+  Facebook,
+  Twitter,
+  Instagram,
+  Smartphone,
+  Tablet,
+  X,
+  Check,
+  AlertCircle
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { calculateMealPrice } from '@/lib/kroger-api';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+
+// Features data
+const features = [
+  {
+    icon: ShoppingCart,
+    title: 'From Recipe to Cart in Seconds',
+    description: 'Tap any recipe to build your grocery list. We\'ll even show you the cheapest options nearby.',
+  },
+  {
+    icon: ChefHat,
+    title: 'Discover Local Home Cooks',
+    description: 'Connect with talented home cooks in your neighborhood and enjoy authentic, home-cooked meals.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Watch Your Savings Grow',
+    description: 'Every home-cooked meal adds up. Track your wins and see exactly how much you\'re saving.',
+  },
+  {
+    icon: MapPin,
+    title: 'Find the Best Deals',
+    description: 'We show you the cheapest grocery options nearby, so you always get the best prices.',
+  },
+  {
+    icon: Clock,
+    title: 'Save Time & Money',
+    description: 'The average American spends $300/month on takeout. Keep that money where it belongs — in your pocket.',
+  },
+  {
+    icon: DollarSign,
+    title: 'Budget-Friendly Cooking',
+    description: 'Gruby is a budgeting-focused cooking companion designed to show you the real financial impact of cooking at home.',
+  },
+];
+
+// App slides data
+const appSlides = [
+  {
+    title: 'Your kitchen companion',
+    description: 'Browse recipes, build shopping lists, and track your savings — all from one beautifully designed app.',
+    features: ['Instant grocery lists', 'Real-time price tracking', 'Savings dashboard'],
+  },
+  {
+    title: 'Smart meal planning',
+    description: 'Plan your week with intelligent suggestions based on your budget, preferences, and what\'s on sale.',
+    features: ['Weekly meal plans', 'Budget optimization', 'Dietary preferences'],
+  },
+  {
+    title: 'Track every dollar',
+    description: 'See exactly how much you save with every home-cooked meal. Watch your monthly savings grow.',
+    features: ['Detailed analytics', 'Monthly reports', 'Savings goals'],
+  },
+];
+
+// Benefits data
+const benefits = [
+  {
+    title: 'Cook More, Spend Less',
+    description: 'The average American spends $300/month on takeout. Keep that money where it belongs — in your pocket.',
+    stats: '$300',
+    statLabel: 'Average monthly savings',
+  },
+  {
+    title: 'Join a Community of Cooks',
+    description: 'Join a community of other cooks. Share your recipes, connect with fellow home chefs, and grow together.',
+    stats: 'Growing',
+    statLabel: 'Community of cooks',
+  },
+  {
+    title: 'Track Your Progress',
+    description: 'See exactly how much you\'re saving with every home-cooked meal. Watch your savings grow over time.',
+    stats: 'Real-time',
+    statLabel: 'Savings tracking',
+  },
+];
+
+const valueProps = [
+  'Budget-friendly meal planning',
+  'Local home cook marketplace',
+  'Grocery list automation',
+  'Price comparison tools',
+  'Savings tracking & insights',
+  'Community-driven recipes',
+];
+
+// About values
+const values = [
+  {
+    icon: Heart,
+    title: 'Community First',
+    description: 'We believe in building a community of home cooks who share recipes, support each other, and grow together.',
+  },
+  {
+    icon: Target,
+    title: 'Financial Wellness',
+    description: 'Our mission is to help people understand the real financial impact of their food choices and save money.',
+  },
+  {
+    icon: Users,
+    title: 'Accessibility',
+    description: 'Everyone deserves access to great food. Gruby makes home cooking accessible and affordable for everyone.',
+  },
+];
+
+// Comparison data with images
+interface MealComparison {
+  meal: string;
+  image: string;
+  delivery: {
+    price: number;
+    fees: number;
+    tip: number;
+    total: number;
+  };
+  homeCooked: {
+    ingredients: string[];
+    price: number;
+    servings: number;
+    perServing: number;
+    loading?: boolean;
+  };
+  savings: number;
+  savingsPercent: number;
+}
+
+const initialMealComparisons: MealComparison[] = [
+  {
+    meal: 'Chicken Stir Fry',
+    image: 'https://images.pexels.com/photos/2673353/pexels-photo-2673353.jpeg?auto=compress&cs=tinysrgb&w=800',
+    delivery: {
+      price: 16.99,
+      fees: 3.50,
+      tip: 3.00,
+      total: 23.49,
+    },
+    homeCooked: {
+      ingredients: ['Chicken breast', 'Bell pepper', 'Broccoli', 'Rice', 'Soy sauce'],
+      price: 0,
+      servings: 4,
+      perServing: 0,
+      loading: true,
+    },
+    savings: 0,
+    savingsPercent: 0,
+  },
+  {
+    meal: 'Pasta Carbonara',
+    image: 'https://images.pexels.com/photos/4518843/pexels-photo-4518843.jpeg?auto=compress&cs=tinysrgb&w=800',
+    delivery: {
+      price: 15.99,
+      fees: 3.25,
+      tip: 2.75,
+      total: 21.99,
+    },
+    homeCooked: {
+      ingredients: ['Pasta', 'Bacon', 'Eggs', 'Parmesan cheese', 'Heavy cream'],
+      price: 0,
+      servings: 4,
+      perServing: 0,
+      loading: true,
+    },
+    savings: 0,
+    savingsPercent: 0,
+  },
+  {
+    meal: 'Burger & Fries',
+    image: 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=800',
+    delivery: {
+      price: 14.99,
+      fees: 3.00,
+      tip: 2.50,
+      total: 20.49,
+    },
+    homeCooked: {
+      ingredients: ['Ground beef', 'Hamburger buns', 'Cheese', 'Potatoes', 'Lettuce'],
+      price: 0,
+      servings: 4,
+      perServing: 0,
+      loading: true,
+    },
+    savings: 0,
+    savingsPercent: 0,
+  },
+];
+
+// Footer data
+const socialLinks = [
+  { href: '#', ariaLabel: 'Facebook', icon: Facebook },
+  { href: '#', ariaLabel: 'Twitter', icon: Twitter },
+  { href: '#', ariaLabel: 'Instagram', icon: Instagram },
+];
+
+// Phone Mockup Component
+function PhoneMockup({ children, className = '' }: { children?: React.ReactNode; className?: string }) {
+  return (
+    <div className={`relative ${className}`}>
+      <div className="relative mx-auto w-[260px] h-[540px] bg-[#1a1a1a] rounded-[2.5rem] p-2.5 shadow-2xl ring-1 ring-black/10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#1a1a1a] rounded-b-2xl z-10" />
+        <div className="w-full h-full bg-white rounded-[2rem] overflow-hidden flex items-center justify-center">
+          {children || (
+            <div className="text-center text-[#717171] p-6">
+              <Smartphone className="w-10 h-10 mx-auto mb-2 opacity-30" />
+              <p className="text-sm font-medium">Phone</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Tablet Mockup Component (Landscape iPad)
+function TabletMockup({ children, className = '' }: { children?: React.ReactNode; className?: string }) {
+  return (
+    <div className={`relative ${className}`}>
+      <div className="relative mx-auto w-[720px] h-[540px] bg-[#1a1a1a] rounded-[1.75rem] p-2.5 shadow-2xl ring-1 ring-black/10">
+        <div className="w-full h-full bg-white rounded-[1.25rem] overflow-hidden flex items-center justify-center">
+          {children || (
+            <div className="text-center text-[#717171] p-6">
+              <Tablet className="w-12 h-12 mx-auto mb-2 opacity-30" />
+              <p className="text-sm font-medium">Tablet</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function MarketingPage() {
+  const dispatch = useAppDispatch();
+  const { email, isSubmitting, isSubmitted, error } = useAppSelector((state) => state.beta);
+  const [localEmail, setLocalEmail] = useState('');
+  const [comparisons, setComparisons] = useState<MealComparison[]>(initialMealComparisons);
+  const [isLoading, setIsLoading] = useState(true);
+  const [footerEmail, setFooterEmail] = useState('');
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-advance slides
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % appSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    async function fetchPrices() {
+      setIsLoading(true);
+      const updatedComparisons = await Promise.all(
+        initialMealComparisons.map(async (comparison) => {
+          try {
+            const mealData = await calculateMealPrice(comparison.homeCooked.ingredients);
+            const perServing = mealData.perServing;
+            const total = mealData.total;
+            
+            const finalTotal = total > 0 ? total : comparison.homeCooked.ingredients.length * 3.5;
+            const finalPerServing = finalTotal / 4;
+            const savings = comparison.delivery.total - finalPerServing;
+            const savingsPercent = Math.round((savings / comparison.delivery.total) * 100);
+
+            return {
+              ...comparison,
+              homeCooked: {
+                ...comparison.homeCooked,
+                price: finalTotal,
+                perServing: finalPerServing,
+                loading: false,
+              },
+              savings,
+              savingsPercent,
+            };
+          } catch (error) {
+            console.error(`Error fetching prices for ${comparison.meal}:`, error);
+            const estimatedPrice = comparison.homeCooked.ingredients.length * 3.5;
+            const perServing = estimatedPrice / 4;
+            const savings = comparison.delivery.total - perServing;
+            const savingsPercent = Math.round((savings / comparison.delivery.total) * 100);
+
+            return {
+              ...comparison,
+              homeCooked: {
+                ...comparison.homeCooked,
+                price: estimatedPrice,
+                perServing,
+                loading: false,
+              },
+              savings,
+              savingsPercent,
+            };
+          }
+        })
+      );
+
+      setComparisons(updatedComparisons);
+      setIsLoading(false);
+    }
+
+    fetchPrices();
+  }, []);
+
+  const handleBetaSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!localEmail.trim()) return;
+
+    dispatch(setSubmitting(true));
+    dispatch(setError(null));
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      dispatch(setEmail(localEmail));
+      dispatch(setSubmitted(true));
+      setLocalEmail('');
+      setTimeout(() => {
+        dispatch(setSubmitted(false));
+      }, 5000);
+    } catch (err) {
+      dispatch(setError('Something went wrong. Please try again.'));
+    } finally {
+      dispatch(setSubmitting(false));
+    }
+  };
+
+  function handleNewsletterSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setFooterEmail('');
+  }
+
+  return (
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+          --color-primary: #FF1E00;
+          --color-primary-hover: #E01A00;
+          --color-text: #222222;
+          --color-text-secondary: #717171;
+          --color-border: #E5E5E5;
+          --color-surface: #f5f5f7;
+          --color-success: #16A34A;
+        }
+        
+        * {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+      `}</style>
+
+      <div className="min-h-screen flex flex-col bg-white">
+        {/* Hero Section */}
+        <div className="relative h-[400px] md:h-[500px] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.pexels.com/photos/7613560/pexels-photo-7613560.jpeg)',
+              filter: 'brightness(0.7)'
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
+          <div className="relative h-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start">
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6">
+              Cook Smarter, Save More
+            </h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-6 md:mb-8 max-w-xl">
+              Gruby is a budgeting-focused cooking companion designed to show people the real financial impact of cooking at home.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                onClick={() => {
+                  const element = document.getElementById('beta-signup');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-xl transition-all"
+              >
+                Join Waitlist
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  const element = document.getElementById('features');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/10 text-white border-2 border-white hover:border-white/80 text-sm md:text-base font-medium rounded-xl transition-all"
+              >
+                Learn More
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* App Preview Section */}
+        <section className="py-20 md:py-28">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-semibold text-[#222222] mb-3">
+                Cooking made simple
+              </h2>
+              <p className="text-base text-[#717171] max-w-xl mx-auto">
+                Everything you need to save money on meals, right in your pocket
+              </p>
+            </div>
+
+            <div className="bg-[#f5f5f7] rounded-3xl p-8 md:p-12 lg:p-16">
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16">
+                {/* Mockup */}
+                <div className="flex flex-col items-center">
+                  <PhoneMockup>
+                    {/* Add your mobile app screenshot here */}
+                  </PhoneMockup>
+                </div>
+                
+                {/* Content */}
+                <div className="max-w-md w-full">
+                  <div className="relative overflow-hidden min-h-[220px]">
+                    {appSlides.map((slide, index) => (
+                      <div 
+                        key={index} 
+                        className={`transition-all duration-500 ease-out ${
+                          currentSlide === index 
+                            ? 'opacity-100 translate-x-0' 
+                            : 'opacity-0 absolute top-0 left-0 right-0 translate-x-8'
+                        }`}
+                      >
+                        <h3 className="text-xl font-semibold text-[#222222] mb-3">
+                          {slide.title}
+                        </h3>
+                        <p className="text-[#717171] mb-6 leading-relaxed">
+                          {slide.description}
+                        </p>
+                        <div className="space-y-3">
+                          {slide.features.map((feature, i) => (
+                            <div key={i} className="flex items-center gap-3">
+                              <CheckCircle2 className="w-5 h-5 text-[#16A34A] flex-shrink-0" strokeWidth={2} />
+                              <span className="text-[#222222]">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Progress Bar - Full width at bottom */}
+              <div className="flex justify-between items-center w-full mt-8 gap-2">
+                {appSlides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`h-1 rounded-full transition-all duration-300 flex-1 ${
+                      currentSlide === index 
+                        ? 'bg-[#222222]' 
+                        : 'bg-[#D4D4D4] hover:bg-[#ABABAB]'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="py-20 md:py-28">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-2xl md:text-3xl font-semibold text-[#222222] mb-3">
+                Everything you need to cook smarter
+              </h2>
+              <p className="text-base text-[#717171] max-w-xl mx-auto">
+                Simple tools that help you save money and eat better
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={index} className="group">
+                    <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center mb-4 group-hover:bg-[#e5e5e7] transition-colors">
+                      <Icon className="w-6 h-6 text-[#222222]" strokeWidth={1.5} />
+                    </div>
+                    <h3 className="text-lg font-semibold text-[#222222] mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-[#717171] text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Tablet Preview Section */}
+        <section className="py-20 md:py-28">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-semibold text-[#222222] mb-3">
+                Phone and tablet
+              </h2>
+              <p className="text-base text-[#717171] max-w-xl mx-auto">
+                Access Gruby wherever you are
+              </p>
+            </div>
+
+            <div className="bg-[#f5f5f7] rounded-3xl p-8 md:p-12 lg:p-16">
+              <div className="flex justify-center">
+                <TabletMockup>
+                  {/* Add your tablet app screenshot here */}
+                </TabletMockup>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section id="how-it-works" className="py-20 md:py-28">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-2xl md:text-3xl font-semibold text-[#222222] mb-3">
+                Why choose Gruby?
+              </h2>
+              <p className="text-base text-[#717171] max-w-xl mx-auto">
+                Join thousands cooking smarter every day
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="text-center">
+                  <p className="text-4xl font-bold text-[#FF1E00] mb-2">{benefit.stats}</p>
+                  <p className="text-xs text-[#717171] uppercase tracking-wide mb-4">{benefit.statLabel}</p>
+                  <h3 className="text-lg font-semibold text-[#222222] mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-[#717171] text-sm leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Value Props */}
+            <div className="bg-[#f5f5f7] rounded-3xl p-8 md:p-12">
+              <h3 className="text-xl font-semibold text-[#222222] mb-8 text-center">
+                Everything in one place
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                {valueProps.map((prop, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-[#16A34A] flex-shrink-0" strokeWidth={2} />
+                    <span className="text-[#222222]">{prop}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Comparison Section - Redesigned */}
+        <section id="comparison" className="py-20 md:py-28 bg-[#f5f5f7]">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-4">
+              <p className="text-base text-[#717171] max-w-2xl mx-auto">
+                Spoiler: It's not the food. See how much you're really paying for convenience.
+              </p>
+            </div>
+
+            {/* Subtle jab callout */}
+            <div className="flex items-center justify-center gap-2 mb-12">
+              <AlertCircle className="w-4 h-4 text-[#717171]" />
+              <p className="text-sm text-[#717171]">
+                Real prices from Kroger stores
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {comparisons.map((comparison, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5"
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-12">
+                    {/* Image */}
+                    <div className="lg:col-span-3 relative h-48 lg:h-auto">
+                      <Image
+                        src={comparison.image}
+                        alt={comparison.meal}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent lg:bg-gradient-to-t" />
+                      <div className="absolute bottom-4 left-4 lg:bottom-6 lg:left-6">
+                        <h3 className="text-xl font-semibold text-white">
+                          {comparison.meal}
+                        </h3>
+                      </div>
+                    </div>
+
+                    {/* Comparison Content */}
+                    <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2">
+                      {/* Delivery - The "bad" option */}
+                      <div className="p-6 md:p-8 bg-white border-b md:border-b-0 md:border-r border-gray-200">
+                        <div className="flex items-center justify-between mb-6">
+                          <div>
+                            <p className="text-sm font-medium text-[#222222] mb-0.5">Delivery</p>
+                            <p className="text-xs text-[#717171]">1 serving • 45 min wait • cold on arrival</p>
+                          </div>
+                          <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                            <X className="w-4 h-4 text-red-600" strokeWidth={2.5} />
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2 text-sm mb-4">
+                          <div className="flex justify-between">
+                            <span className="text-[#717171]">Food</span>
+                            <span className="text-[#222222]">${comparison.delivery.price.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-[#717171]">Fees & service charges</span>
+                            <span className="text-[#222222]">${comparison.delivery.fees.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-[#717171]">Tip</span>
+                            <span className="text-[#222222]">${comparison.delivery.tip.toFixed(2)}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-4 border-t border-gray-200">
+                          <div className="flex justify-between items-end min-h-[3.5rem]">
+                            <span className="text-sm font-medium text-[#222222]">Your total</span>
+                            <span className="text-2xl font-bold text-[#222222]">${comparison.delivery.total.toFixed(2)}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Home Cooking - The "good" option */}
+                      <div className="p-6 md:p-8 bg-white">
+                        <div className="flex items-center justify-between mb-6">
+                          <div>
+                            <p className="text-sm font-medium text-[#222222] mb-0.5">Home cooked</p>
+                            <p className="text-xs text-[#717171]">{comparison.homeCooked.servings} servings • fresh • actually hot</p>
+                          </div>
+                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                            <Check className="w-4 h-4 text-[#16A34A]" strokeWidth={2.5} />
+                          </div>
+                        </div>
+
+                        <div className="mb-4">
+                          <p className="text-xs text-[#717171] mb-2">What you'll need:</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {comparison.homeCooked.ingredients.map((ing, i) => (
+                              <span 
+                                key={i}
+                                className="px-2 py-0.5 bg-white rounded text-xs text-[#222222] ring-1 ring-black/5"
+                              >
+                                {ing}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-2 text-sm mb-4">
+                          <div className="flex justify-between">
+                            <span className="text-[#717171]">Groceries (for {comparison.homeCooked.servings})</span>
+                            <span className="text-[#222222]">
+                              {comparison.homeCooked.loading ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                `$${comparison.homeCooked.price.toFixed(2)}`
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-4 border-t border-gray-200 space-y-2 min-h-[3.5rem] flex flex-col justify-end">
+                          <div className="flex justify-between items-baseline">
+                            <span className="text-sm text-[#717171]">Hidden fees</span>
+                            <span className="text-sm text-[#222222]">$0.00</span>
+                          </div>
+                          <div className="flex justify-between items-baseline">
+                            <span className="text-sm font-medium text-[#222222]">Per serving</span>
+                            <span className="text-2xl font-bold text-[#222222]">
+                              {comparison.homeCooked.loading ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                              ) : (
+                                `$${comparison.homeCooked.perServing.toFixed(2)}`
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Savings Strip */}
+                  <div className="px-6 md:px-8 py-4 bg-[#222222] flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="flex items-center gap-4">
+                      <p className="text-white/70 text-sm">You keep</p>
+                      <p className="text-2xl font-bold text-white">
+                        {comparison.homeCooked.loading ? (
+                          <Loader2 className="w-5 h-5 animate-spin text-white" />
+                        ) : (
+                          `$${comparison.savings.toFixed(2)}`
+                        )}
+                      </p>
+                      {!comparison.homeCooked.loading && (
+                        <span className="px-2 py-0.5 bg-[#16A34A] text-white text-xs font-semibold rounded">
+                          Save {comparison.savingsPercent}%
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-white/70 text-sm">
+                      + {comparison.homeCooked.servings - 1} extra meals for tomorrow
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Summary */}
+            <div className="mt-12 bg-[#FF1E00] rounded-2xl p-8 md:p-10 text-white text-center">
+              <h3 className="text-xl md:text-2xl font-semibold mb-3">
+                Stop subsidizing their business model
+              </h3>
+              <p className="text-white/90 mb-8 max-w-lg mx-auto">
+                Delivery apps take 30% from restaurants and charge you fees on top. Cook at home and keep your money.
+              </p>
+              <div className="grid grid-cols-3 gap-6 max-w-md mx-auto">
+                <div>
+                  <p className="text-2xl md:text-3xl font-bold mb-1">$300+</p>
+                  <p className="text-xs text-white/80">Back in your pocket</p>
+                </div>
+                <div>
+                  <p className="text-2xl md:text-3xl font-bold mb-1">4x</p>
+                  <p className="text-xs text-white/80">More food</p>
+                </div>
+                <div>
+                  <p className="text-2xl md:text-3xl font-bold mb-1">0</p>
+                  <p className="text-xs text-white/80">Hidden fees</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section id="about" className="py-20 md:py-28">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-2xl md:text-3xl font-semibold text-[#222222] mb-3">
+                About Gruby
+              </h2>
+              <p className="text-base text-[#717171] max-w-2xl mx-auto leading-relaxed">
+                A budgeting-focused cooking companion showing the real financial impact of cooking at home. 
+                We connect food lovers with talented home cooks in their neighborhood.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {values.map((value, index) => {
+                const Icon = value.icon;
+                return (
+                  <div key={index} className="text-center">
+                    <div className="w-14 h-14 rounded-2xl bg-[#f5f5f7] flex items-center justify-center mx-auto mb-5">
+                      <Icon className="w-7 h-7 text-[#222222]" strokeWidth={1.5} />
+                    </div>
+                    <h3 className="text-lg font-semibold text-[#222222] mb-2">
+                      {value.title}
+                    </h3>
+                    <p className="text-[#717171] text-sm leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section id="beta-signup" className="py-20 md:py-28 bg-[#1a1a1a]">
+          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+              Join the waitlist
+            </h2>
+            <p className="text-base text-gray-400 mb-8">
+              Get early access and be the first to know when we launch
+            </p>
+            
+            {isSubmitted ? (
+              <div className="bg-white/5 ring-1 ring-white/10 rounded-2xl p-6">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <CheckCircle2 className="w-5 h-5 text-[#16A34A]" />
+                  <p className="text-white font-medium">You're on the list!</p>
+                </div>
+                <p className="text-gray-400 text-sm">
+                  We'll notify {email} when Gruby launches.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleBetaSignup}>
+                <div className="flex gap-3 items-center">
+                  <input
+                    type="email"
+                    value={localEmail}
+                    onChange={(e) => setLocalEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                    className="flex-1 px-4 py-2 md:px-4 md:py-3 rounded-xl bg-white text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-shadow text-sm md:text-base"
+                    disabled={isSubmitting}
+                  />
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-full transition-all disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      'Join'
+                    )}
+                  </Button>
+                </div>
+                {error && (
+                  <p className="mt-3 text-red-400 text-sm">{error}</p>
+                )}
+              </form>
+            )}
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-white border-t border-[#E5E5E5]">
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="col-span-2 md:col-span-1">
+                <Image
+                  src="/GrubyLogo.svg"
+                  alt="Gruby Logo"
+                  width={100}
+                  height={36}
+                  className="mb-4"
+                />
+                <p className="text-sm text-[#717171] mb-4">
+                  Join a community of home cooks sharing recipes and growing together.
+                </p>
+                <div className="flex gap-3">
+                  {socialLinks.map((link) => {
+                    const Icon = link.icon;
+                    return (
+                      <a 
+                        key={link.ariaLabel} 
+                        href={link.href} 
+                        aria-label={link.ariaLabel}
+                        className="w-9 h-9 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#717171] hover:bg-[#e5e5e7] hover:text-[#222222] transition-colors"
+                      >
+                        <Icon className="w-4 h-4" strokeWidth={1.5} />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-[#222222] mb-4 text-sm">Support</h3>
+                <ul className="space-y-3 text-sm">
+                  <li><Link href="/about" className="text-[#717171] hover:text-[#222222] transition-colors">About Us</Link></li>
+                  <li><Link href="/faq" className="text-[#717171] hover:text-[#222222] transition-colors">FAQ</Link></li>
+                  <li><Link href="/contact" className="text-[#717171] hover:text-[#222222] transition-colors">Contact</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-[#222222] mb-4 text-sm">Legal</h3>
+                <ul className="space-y-3 text-sm">
+                  <li><Link href="/terms" className="text-[#717171] hover:text-[#222222] transition-colors">Terms</Link></li>
+                  <li><Link href="/privacy" className="text-[#717171] hover:text-[#222222] transition-colors">Privacy</Link></li>
+                  <li><Link href="/cookies" className="text-[#717171] hover:text-[#222222] transition-colors">Cookies</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-[#222222] mb-4 text-sm">Newsletter</h3>
+                <form onSubmit={handleNewsletterSubmit} className="space-y-2">
+                  <input
+                    type="email"
+                    value={footerEmail}
+                    onChange={(e) => setFooterEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-2 md:px-6 md:py-3 text-sm md:text-base bg-[#f5f5f7] border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-shadow"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-full transition-all"
+                  >
+                    Subscribe
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-[#E5E5E5]">
+            <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              <p className="text-center text-sm text-[#717171]">
+                © {new Date().getFullYear()} Gruby. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </>
+  );
+}
