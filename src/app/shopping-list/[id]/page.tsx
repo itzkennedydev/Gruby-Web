@@ -177,15 +177,13 @@ export default function SharedShoppingListPage() {
         {/* Shopping List Items */}
         <div style={styles.content}>
           {Object.entries(categoryGroups).map(([category, items]) => {
-            const categoryChecked = items.filter(item => item.checked).length;
-            
             return (
               <div key={category} style={styles.categorySection}>
                 {/* Category Header */}
                 <div style={styles.categorySectionHeader}>
                   <span style={styles.categorySectionTitle}>{category}</span>
                   <span style={styles.categorySectionCount}>
-                    {categoryChecked}/{items.length}
+                    {items.length} {items.length === 1 ? 'item' : 'items'}
                   </span>
                 </div>
                 
@@ -193,41 +191,16 @@ export default function SharedShoppingListPage() {
                 {items.map((item, index) => (
                   <div
                     key={index}
-                    style={{
-                      ...styles.ingredientRow,
-                      ...(item.checked ? styles.ingredientRowChecked : {})
-                    }}>
-                    <div style={{
-                      ...styles.checkbox,
-                      ...(item.checked ? styles.checkboxChecked : {})
-                    }}>
-                      {item.checked && (
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                          <path
-                            d="M11.6667 3.5L5.25 9.91667L2.33334 7"
-                            stroke="white"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </div>
+                    style={styles.ingredientRow}>
                     <div style={styles.itemContent}>
-                      <p style={{
-                        ...styles.itemName,
-                        ...(item.checked ? styles.itemNameChecked : {})
-                      }}>
+                      <p style={styles.itemName}>
                         {item.name}
                       </p>
                       <p style={styles.itemMeta}>
                         {item.quantity} {item.unit}
                       </p>
                     </div>
-                    <span style={{
-                      ...styles.itemPrice,
-                      ...(item.checked ? styles.itemPriceChecked : {})
-                    }}>
+                    <span style={styles.itemPrice}>
                       ${item.cost.toFixed(2)}
                     </span>
                   </div>
