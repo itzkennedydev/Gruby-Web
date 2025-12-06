@@ -186,31 +186,118 @@ export default function SharedShoppingListPage() {
 
   const categoryGroups = groupByCategory(listData.items);
   const totalItems = listData.items.length;
+  
+  // Calculate and verify total from item costs
+  const calculatedTotal = listData.items.reduce((sum, item) => {
+    const cost = item.cost || 0;
+    return sum + cost;
+  }, 0);
+  
+  // Use calculated total if it differs from provided total (more accurate)
+  const displayTotal = Math.abs(calculatedTotal - listData.total) > 0.01 
+    ? calculatedTotal 
+    : listData.total;
+  
+  // Calculate category totals for better breakdown
+  const categoryTotals = Object.entries(categoryGroups).reduce((acc, [category, items]) => {
+    acc[category] = items.reduce((sum, item) => sum + (item.cost || 0), 0);
+    return acc;
+  }, {} as Record<string, number>);
+  
+  const itemsWithPrice = listData.items.filter(item => item.cost && item.cost > 0).length;
 
   return (
     <>
       <div style={styles.container}>
-        {/* Header */}
+        {/* Header with Logo */}
         <header style={styles.header}>
           <div style={styles.headerContent}>
-            <h1 style={styles.headerTitle}>{listData.name}</h1>
+            <div style={styles.logoContainer}>
+              <Image
+                src="/GrubyLogo.svg"
+                alt="Gruby"
+                width={120}
+                height={32}
+                priority
+                style={styles.logo}
+              />
+            </div>
             {listData.sharedBy && (
               <p style={styles.sharedByText}>
                 {listData.sharedBy} shared this shopping list with you
               </p>
             )}
+            {listData.createdAt && (
+              <p style={styles.createdDateText}>
+                Created {formatDate(listData.createdAt)}
+              </p>
+            )}
           </div>
         </header>
+
+        {/* List Title and Actions */}
+        <div style={styles.titleSection} className="no-print">
+          <h1 style={styles.listTitle}>{listData.name}</h1>
+          <div style={styles.actionButtons}>
+            <button
+              onClick={handleSharePage}
+              style={styles.actionButton}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#F7F7F7';
+                e.currentTarget.style.borderColor = '#DDDDDD';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                e.currentTarget.style.borderColor = '#EBEBEB';
+              }}
+              title="Share this page">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M15 6.667a2.5 2.5 0 1 0-1.875-2.4L7.5 7.5a2.5 2.5 0 1 0 0 3.333l5.625 3.233a2.5 2.5 0 1 0 .625-1.733l-5.625-3.233a2.5 2.5 0 0 0 0-1.667l5.625-3.233A2.5 2.5 0 0 0 15 6.667z"
+                  stroke="#717171"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={handlePrint}
+              style={styles.actionButton}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#F7F7F7';
+                e.currentTarget.style.borderColor = '#DDDDDD';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                e.currentTarget.style.borderColor = '#EBEBEB';
+              }}
+              title="Print list">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M5 5h10v2.5H5V5zm0 5h10M5 12.5h10M3.75 15h12.5a1.25 1.25 0 0 0 1.25-1.25V7.5a1.25 1.25 0 0 0-1.25-1.25H3.75A1.25 1.25 0 0 0 2.5 7.5v6.25A1.25 1.25 0 0 0 3.75 15z"
+                  stroke="#717171"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
 
         {/* Summary Bar */}
         <div style={styles.summaryBar}>
           <div style={styles.summaryMain}>
-            <span style={styles.summaryTotal}>${listData.total.toFixed(2)}</span>
-            {totalItems > 0 && (
-              <span style={styles.summarySubtext}>
-                {totalItems} {totalItems === 1 ? 'item' : 'items'}
+            <div style={styles.summaryTopRow}>
+              <span style={styles.summaryTotal}>${displayTotal.toFixed(2)}</span>
+              <span style={styles.summaryItemCount}>
+                {itemsWithPrice} of {totalItems} items priced
               </span>
-            )}
+            </div>
+            <span style={styles.summarySubtext}>
+              Estimated total • Based on current market prices
+            </span>
           </div>
         </div>
 
@@ -222,6 +309,11 @@ export default function SharedShoppingListPage() {
                 {/* Category Header */}
                 <div style={styles.categorySectionHeader}>
                   <span style={styles.categorySectionTitle}>{category}</span>
+                  {categoryTotals[category] > 0 && (
+                    <span style={styles.categoryTotal}>
+                      ${categoryTotals[category].toFixed(2)}
+                    </span>
+                  )}
                 </div>
                 
                 {/* Items */}
@@ -238,7 +330,11 @@ export default function SharedShoppingListPage() {
                       </p>
                     </div>
                     <span style={styles.itemPrice}>
-                      ${item.cost.toFixed(2)}
+                      {item.cost && item.cost > 0 ? (
+                        `$${item.cost.toFixed(2)}`
+                      ) : (
+                        <span style={styles.itemPriceUnavailable}>—</span>
+                      )}
                     </span>
                   </div>
                 ))}
@@ -360,7 +456,7 @@ const styles: Record<string, React.CSSProperties> = {
   header: {
     backgroundColor: '#FFFFFF',
     borderBottom: '1px solid #EBEBEB',
-    paddingTop: '60px',
+    paddingTop: '24px',
     paddingBottom: '20px',
     paddingLeft: '20px',
     paddingRight: '20px',
@@ -368,19 +464,66 @@ const styles: Record<string, React.CSSProperties> = {
   headerContent: {
     maxWidth: '600px',
     margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '12px',
   },
-  headerTitle: {
-    fontSize: '24px',
-    fontWeight: '700',
-    color: '#222222',
-    margin: 0,
+  logoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: '8px',
+  },
+  logo: {
+    height: 'auto',
+    width: 'auto',
   },
   sharedByText: {
     fontSize: '15px',
     color: '#717171',
     margin: 0,
     fontWeight: '500',
+    textAlign: 'center',
+  },
+  createdDateText: {
+    fontSize: '13px',
+    color: '#999999',
+    margin: 0,
+    fontWeight: '400',
+    textAlign: 'center',
+  },
+  titleSection: {
+    maxWidth: '600px',
+    margin: '0 auto',
+    padding: '24px 20px 16px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  listTitle: {
+    fontSize: '24px',
+    fontWeight: '700',
+    color: '#222222',
+    margin: 0,
+    flex: 1,
+  },
+  actionButtons: {
+    display: 'flex',
+    gap: '8px',
+  },
+  actionButton: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '10px',
+    border: '1px solid #EBEBEB',
+    backgroundColor: '#FFFFFF',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
   },
   summaryBar: {
     backgroundColor: '#FFFFFF',
@@ -395,13 +538,27 @@ const styles: Record<string, React.CSSProperties> = {
     margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
-    gap: '4px',
+    gap: '6px',
+  },
+  summaryTopRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    gap: '16px',
   },
   summaryTotal: {
-    fontSize: '28px',
+    fontSize: '32px',
     fontWeight: '700',
     color: '#222222',
     letterSpacing: '-0.5px',
+    lineHeight: '1',
+  },
+  summaryItemCount: {
+    fontSize: '13px',
+    color: '#717171',
+    fontWeight: '500',
+    whiteSpace: 'nowrap',
   },
   summarySubtext: {
     fontSize: '13px',
@@ -432,6 +589,11 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#717171',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
+  },
+  categoryTotal: {
+    fontSize: '14px',
+    fontWeight: '600',
+    color: '#222222',
   },
   ingredientRow: {
     display: 'flex',
@@ -485,20 +647,24 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: '600',
     color: '#222222',
     flexShrink: 0,
+    textAlign: 'right',
+    minWidth: '60px',
+  },
+  itemPriceUnavailable: {
+    fontSize: '13px',
+    color: '#CCCCCC',
+    fontStyle: 'italic',
   },
   itemPriceChecked: {
     textDecoration: 'line-through',
   },
   importSection: {
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#FFFFFF',
+    maxWidth: '600px',
+    margin: '0 auto',
+    padding: '40px 20px',
+    paddingBottom: 'max(40px, env(safe-area-inset-bottom))',
     borderTop: '1px solid #EBEBEB',
-    padding: '20px',
-    paddingBottom: 'max(20px, env(safe-area-inset-bottom))',
-    boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
+    marginTop: '40px',
   },
   importContent: {
     maxWidth: '600px',
