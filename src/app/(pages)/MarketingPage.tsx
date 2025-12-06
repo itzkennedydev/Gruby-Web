@@ -15,6 +15,7 @@ import { calculateMealPrice } from '@/lib/kroger-api';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 // Features data
 const features = [
@@ -219,6 +220,584 @@ function TabletMockup({ children, className = '' }: { children?: React.ReactNode
   );
 }
 
+// Animated App Preview Section Component
+function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentSlide: number; setCurrentSlide: (index: number) => void }) {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      ref={ref}
+      className={`pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-20 lg:pb-28 transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`bg-black rounded-2xl sm:rounded-3xl pt-28 sm:pt-32 md:pt-36 lg:pt-40 px-6 sm:px-8 md:px-12 lg:px-16 pb-6 sm:pb-8 md:pb-12 lg:pb-16 relative min-h-[450px] sm:min-h-[500px] md:min-h-[550px] lg:min-h-[600px] flex items-center transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98]'
+        }`}>
+          <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 sm:gap-12 lg:gap-16 w-full h-full">
+            {/* Content and Progress Bar - Right side / Top on mobile */}
+            <div className="flex flex-col justify-center items-center lg:items-start max-w-md w-full px-4 sm:px-0 lg:ml-[45%] order-1 lg:-mt-28">
+              {/* Heading and Description */}
+              <div className="text-left mb-6 sm:mb-8 w-full">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 sm:mb-6 whitespace-nowrap">
+                  Cooking made simple
+                </h2>
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
+                  Everything you need to save money on meals, right in your pocket
+                </p>
+              </div>
+
+              {/* Rotating Bullet Points */}
+              <div className="relative overflow-hidden min-h-[200px] sm:min-h-[220px] mb-0 w-full">
+                {appSlides.map((slide, index) => (
+                  <ul 
+                    key={index}
+                    className={`space-y-4 sm:space-y-5 list-disc list-inside transition-all duration-500 ease-out ${
+                      currentSlide === index 
+                        ? 'opacity-100 translate-x-0' 
+                        : 'opacity-0 absolute top-0 left-0 right-0 translate-x-8'
+                    }`}
+                  >
+                    {slide.features.map((feature, i) => (
+                      <li key={i} className="text-base sm:text-lg text-white leading-relaxed">
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+              
+              {/* Progress Bar */}
+              <div className="flex justify-between items-center w-full gap-2 -mt-8 sm:-mt-10">
+                {appSlides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 flex-1 ${
+                      currentSlide === index 
+                        ? 'bg-white' 
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* App Store Links */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full mt-6 sm:mt-8">
+                <a
+                  href="https://apps.apple.com/app/gruby"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-all duration-300 hover:scale-105 active:scale-95"
+                  aria-label="Download on the App Store"
+                >
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                  </svg>
+                  <div className="flex flex-col items-start">
+                    <span className="text-[10px] sm:text-xs leading-tight">Download on the</span>
+                    <span className="text-sm sm:text-base font-semibold leading-tight">App Store</span>
+                  </div>
+                </a>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.gruby.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-all duration-300 hover:scale-105 active:scale-95"
+                  aria-label="Get it on Google Play"
+                >
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                  </svg>
+                  <div className="flex flex-col items-start">
+                    <span className="text-[10px] sm:text-xs leading-tight">Get it on</span>
+                    <span className="text-sm sm:text-base font-semibold leading-tight">Google Play</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            {/* Image - Left side on desktop, bottom on mobile */}
+            <div className="flex-shrink-0 lg:absolute lg:bottom-0 lg:left-16 z-0 order-2">
+              <Image
+                src="/Mobile phone.png"
+                alt="Gruby mobile app"
+                width={500}
+                height={1000}
+                className="w-auto h-auto max-w-[400px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px] object-contain transition-transform duration-700 ease-out hover:scale-105"
+                priority
+                quality={100}
+                sizes="(max-width: 640px) 400px, (max-width: 768px) 480px, (max-width: 1024px) 560px, (max-width: 1280px) 640px, 720px"
+                loading="eager"
+                fetchPriority="high"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Animated Features Section Component
+function FeaturesSectionAnimated() {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      id="features" 
+      ref={ref}
+      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
+            Everything you need to cook smarter
+          </h2>
+          <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
+            Simple tools that help you save money and eat better
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-x-8 sm:gap-y-10 md:gap-y-12">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              className={`transition-all duration-500 ease-out hover:translate-y-[-4px] ${
+                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
+            >
+              <h3 className="text-lg font-semibold text-[#222222] mb-3">
+                {feature.title}
+              </h3>
+              <p className="text-[#717171] text-sm leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Animated Tablet Preview Section
+function TabletPreviewSectionAnimated() {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      ref={ref}
+      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
+            Phone and tablet
+          </h2>
+          <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
+            Access Gruby wherever you are
+          </p>
+        </div>
+
+        <div className={`bg-[#f5f5f7] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98]'
+        }`}>
+          <div className="flex justify-center">
+            <TabletMockup>
+              {/* Add your tablet app screenshot here */}
+            </TabletMockup>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Animated Benefits Section
+function BenefitsSectionAnimated() {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      id="how-it-works" 
+      ref={ref}
+      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
+            Why choose Gruby?
+          </h2>
+          <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
+            Join thousands cooking smarter every day
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 md:mb-20">
+          {benefits.map((benefit, index) => (
+            <div 
+              key={index} 
+              className={`text-center px-4 transition-all duration-500 ease-out hover:translate-y-[-4px] ${
+                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
+            >
+              <p className="text-3xl sm:text-4xl font-bold text-[#FF1E00] mb-2">{benefit.stats}</p>
+              <p className="text-xs text-[#717171] uppercase tracking-wide mb-3 sm:mb-4">{benefit.statLabel}</p>
+              <h3 className="text-base sm:text-lg font-semibold text-[#222222] mb-2">
+                {benefit.title}
+              </h3>
+              <p className="text-[#717171] text-sm leading-relaxed">
+                {benefit.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Animated About Section
+function AboutSectionAnimated() {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      id="about" 
+      ref={ref}
+      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
+            About Gruby
+          </h2>
+          <p className="text-sm sm:text-base text-[#717171] max-w-2xl mx-auto leading-relaxed px-4">
+            A budgeting-focused cooking companion showing the real financial impact of cooking at home. 
+            We connect food lovers with talented home cooks in their neighborhood.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
+          {values.map((value, index) => (
+            <div 
+              key={index} 
+              className={`text-center transition-all duration-500 ease-out hover:translate-y-[-4px] ${
+                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
+            >
+              <h3 className="text-lg font-semibold text-[#222222] mb-3">
+                {value.title}
+              </h3>
+              <p className="text-[#717171] text-sm leading-relaxed">
+                {value.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Animated CTA Section
+function CTASectionAnimated({ 
+  localEmail, 
+  setLocalEmail, 
+  handleBetaSignup, 
+  isSubmitting, 
+  error, 
+  isSubmitted, 
+  email 
+}: { 
+  localEmail: string; 
+  setLocalEmail: (email: string) => void; 
+  handleBetaSignup: (e: React.FormEvent) => void; 
+  isSubmitting: boolean; 
+  error: string | null; 
+  isSubmitted: boolean; 
+  email: string;
+}) {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      id="beta-signup" 
+      ref={ref}
+      className={`py-12 sm:py-16 md:py-20 lg:py-28 bg-[#1a1a1a] transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-3 sm:mb-4">
+          Join the waitlist
+        </h2>
+        <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
+          Get early access and be the first to know when we launch
+        </p>
+        
+        {isSubmitted ? (
+          <div className="bg-white/5 ring-1 ring-white/10 rounded-2xl p-6 transition-all duration-500 ease-out animate-fade-in">
+            <p className="text-white font-medium mb-2">You're on the list!</p>
+            <p className="text-gray-400 text-sm">
+              We'll notify {email} when Gruby launches.
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleBetaSignup}>
+            <div className="flex gap-3 items-center">
+              <input
+                type="email"
+                value={localEmail}
+                onChange={(e) => setLocalEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="flex-1 px-4 py-2.5 sm:py-3 h-[42px] sm:h-[44px] rounded-full bg-white text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-all duration-300 text-sm sm:text-base leading-normal hover:shadow-md"
+                disabled={isSubmitting}
+              />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-6 py-2.5 sm:py-3 h-[42px] sm:h-[44px] bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm sm:text-base font-medium rounded-full transition-all duration-300 disabled:opacity-50 leading-normal hover:scale-105 active:scale-95"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  'Join'
+                )}
+              </Button>
+            </div>
+            {error && (
+              <p className="mt-3 text-red-400 text-sm transition-all duration-300">{error}</p>
+            )}
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// Animated Comparison Section
+function ComparisonSectionAnimated({ comparisons, isLoading }: { comparisons: MealComparison[]; isLoading: boolean }) {
+  const { ref, isVisible } = useScrollAnimation();
+  
+  return (
+    <section 
+      id="comparison" 
+      ref={ref}
+      className={`py-12 sm:py-16 md:py-20 lg:py-28 bg-[#f5f5f7] transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <p className="text-base sm:text-lg md:text-xl text-[#717171] max-w-2xl mx-auto px-4">
+            Spoiler: It's not the food. See how much you're really paying for convenience.
+          </p>
+        </div>
+
+        {/* Subtle jab callout */}
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <p className="text-xs sm:text-sm text-[#717171]">
+            Real prices from Kroger stores
+          </p>
+        </div>
+
+        <div className="space-y-4 sm:space-y-6">
+          {comparisons.map((comparison, index) => (
+            <div
+              key={index}
+              className={`bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 transition-all duration-500 ease-out hover:shadow-md ${
+                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 150}ms` : '0ms' }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12">
+                {/* Image */}
+                    <div className="lg:col-span-3 relative h-40 sm:h-48 lg:h-auto">
+                      <Image
+                        src={comparison.image}
+                        alt={comparison.meal}
+                        fill
+                        className="object-cover"
+                        loading={index < 2 ? "eager" : "lazy"}
+                        sizes="(max-width: 1024px) 100vw, 25vw"
+                        quality={index < 2 ? 80 : 75}
+                        fetchPriority={index < 2 ? "high" : "auto"}
+                      />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent lg:bg-gradient-to-t" />
+                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 lg:bottom-6 lg:left-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-white">
+                      {comparison.meal}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Comparison Content */}
+                <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2">
+                  {/* Delivery - The "bad" option */}
+                  <div className="p-4 sm:p-6 md:p-8 bg-white border-b md:border-b-0 md:border-r border-gray-200">
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="text-xs sm:text-sm font-medium text-[#222222] mb-0.5">Delivery</p>
+                        <p className="text-[10px] sm:text-xs text-[#717171] leading-tight">1 serving • 45 min wait • cold on arrival</p>
+                      </div>
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-600" strokeWidth={2.5} />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm mb-3 sm:mb-4">
+                      <div className="flex justify-between">
+                        <span className="text-[#717171]">Food</span>
+                        <span className="text-[#222222]">${comparison.delivery.price.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#717171]">Fees & service charges</span>
+                        <span className="text-[#222222]">${comparison.delivery.fees.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#717171]">Tip</span>
+                        <span className="text-[#222222]">${comparison.delivery.tip.toFixed(2)}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-3 sm:pt-4 border-t border-gray-200">
+                      <div className="flex justify-between items-end min-h-[3rem] sm:min-h-[3.5rem]">
+                        <span className="text-xs sm:text-sm font-medium text-[#222222]">Your total</span>
+                        <span className="text-xl sm:text-2xl font-bold text-[#222222]">${comparison.delivery.total.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Home Cooking - The "good" option */}
+                  <div className="p-4 sm:p-6 md:p-8 bg-white">
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="text-xs sm:text-sm font-medium text-[#222222] mb-0.5">Home cooked</p>
+                        <p className="text-[10px] sm:text-xs text-[#717171] leading-tight">{comparison.homeCooked.servings} servings • fresh • actually hot</p>
+                      </div>
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#16A34A]" strokeWidth={2.5} />
+                      </div>
+                    </div>
+
+                    <div className="mb-3 sm:mb-4">
+                      <p className="text-[10px] sm:text-xs text-[#717171] mb-1.5 sm:mb-2">What you'll need:</p>
+                      <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                        {comparison.homeCooked.ingredients.map((ing, i) => (
+                          <span 
+                            key={i}
+                            className="px-1.5 sm:px-2 py-0.5 bg-white rounded text-[10px] sm:text-xs text-[#222222] ring-1 ring-black/5"
+                          >
+                            {ing}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm mb-3 sm:mb-4">
+                      <div className="flex justify-between">
+                        <span className="text-[#717171]">Groceries (for {comparison.homeCooked.servings})</span>
+                        <span className="text-[#222222]">
+                          {comparison.homeCooked.loading ? (
+                            <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
+                          ) : (
+                            `$${comparison.homeCooked.price.toFixed(2)}`
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="pt-3 sm:pt-4 border-t border-gray-200 space-y-1.5 sm:space-y-2 min-h-[3rem] sm:min-h-[3.5rem] flex flex-col justify-end">
+                      <div className="flex justify-between items-baseline">
+                        <span className="text-xs sm:text-sm text-[#717171]">Hidden fees</span>
+                        <span className="text-xs sm:text-sm text-[#222222]">$0.00</span>
+                      </div>
+                      <div className="flex justify-between items-baseline">
+                        <span className="text-xs sm:text-sm font-medium text-[#222222]">Per serving</span>
+                        <span className="text-xl sm:text-2xl font-bold text-[#222222]">
+                          {comparison.homeCooked.loading ? (
+                            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                          ) : (
+                            `$${comparison.homeCooked.perServing.toFixed(2)}`
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Savings Strip */}
+              <div className="px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-[#222222] flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
+                <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center sm:justify-start">
+                  <p className="text-white/70 text-xs sm:text-sm">You keep</p>
+                  <p className="text-xl sm:text-2xl font-bold text-white">
+                    {comparison.homeCooked.loading ? (
+                      <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin text-white" />
+                    ) : (
+                      `$${comparison.savings.toFixed(2)}`
+                    )}
+                  </p>
+                  {!comparison.homeCooked.loading && (
+                    <span className="px-1.5 sm:px-2 py-0.5 bg-[#16A34A] text-white text-[10px] sm:text-xs font-semibold rounded">
+                      Save {comparison.savingsPercent}%
+                    </span>
+                  )}
+                </div>
+                <p className="text-white/70 text-xs sm:text-sm text-center sm:text-left">
+                  + {comparison.homeCooked.servings - 1} extra meals for tomorrow
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Summary */}
+        <div className={`mt-8 sm:mt-10 md:mt-12 bg-[#FF1E00] rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 text-white text-center transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`} style={{ transitionDelay: isVisible ? '600ms' : '0ms' }}>
+          <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3">
+            Stop subsidizing their business model
+          </h3>
+          <p className="text-sm sm:text-base text-white/90 mb-6 sm:mb-8 max-w-lg mx-auto px-4">
+            Delivery apps take 30% from restaurants and charge you fees on top. Cook at home and keep your money.
+          </p>
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
+            <div>
+              <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">$300+</p>
+              <p className="text-[10px] sm:text-xs text-white/80">Back in your pocket</p>
+            </div>
+            <div>
+              <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">4x</p>
+              <p className="text-[10px] sm:text-xs text-white/80">More food</p>
+            </div>
+            <div>
+              <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">0</p>
+              <p className="text-[10px] sm:text-xs text-white/80">Hidden fees</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function MarketingPage() {
   const dispatch = useAppDispatch();
   const { email, isSubmitting, isSubmitted, error } = useAppSelector((state) => state.beta);
@@ -347,13 +926,19 @@ export default function MarketingPage() {
       <div className="min-h-screen flex flex-col bg-white">
         {/* Hero Section */}
         <div className="relative -mt-32 pt-32 h-[500px] sm:h-[550px] md:h-[650px] lg:h-[750px] overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: 'url(/HeroImage.jpg)',
-              filter: 'brightness(0.7)'
-            }}
-          />
+          <div className="absolute inset-0">
+            <Image
+              src="/HeroImage.jpg"
+              alt="Hero background"
+              fill
+              priority
+              quality={100}
+              className="object-cover"
+              style={{ filter: 'brightness(0.7)' }}
+              sizes="100vw"
+              fetchPriority="high"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
           <div className="relative h-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight">
@@ -365,7 +950,7 @@ export default function MarketingPage() {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <Button 
                 onClick={() => dispatch(setWaitlistModalOpen(true))}
-                className="px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-full transition-all"
+                className="px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Join Waitlist
               </Button>
@@ -375,7 +960,7 @@ export default function MarketingPage() {
                   const element = document.getElementById('features');
                   element?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/20 text-white border-2 border-white hover:border-white text-sm md:text-base font-medium rounded-full transition-all"
+                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/20 text-white border-2 border-white hover:border-white text-sm md:text-base font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
               >
                 Learn More
               </Button>
@@ -384,450 +969,25 @@ export default function MarketingPage() {
         </div>
 
         {/* App Preview Section */}
-        <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-20 lg:pb-28">
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-black rounded-2xl sm:rounded-3xl pt-28 sm:pt-32 md:pt-36 lg:pt-40 px-6 sm:px-8 md:px-12 lg:px-16 pb-6 sm:pb-8 md:pb-12 lg:pb-16 relative min-h-[450px] sm:min-h-[500px] md:min-h-[550px] lg:min-h-[600px] flex items-center">
-              <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 sm:gap-12 lg:gap-16 w-full h-full">
-                {/* Content and Progress Bar - Right side / Top on mobile */}
-                <div className="flex flex-col justify-center items-center lg:items-start max-w-md w-full px-4 sm:px-0 lg:ml-[45%] order-1 lg:-mt-28">
-                  {/* Heading and Description */}
-                  <div className="text-left mb-6 sm:mb-8 w-full">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 sm:mb-6 whitespace-nowrap">
-                      Cooking made simple
-                    </h2>
-                    <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
-                      Everything you need to save money on meals, right in your pocket
-                    </p>
-                  </div>
-
-                  {/* Rotating Bullet Points */}
-                  <div className="relative overflow-hidden min-h-[200px] sm:min-h-[220px] mb-0 w-full">
-                    {appSlides.map((slide, index) => (
-                      <ul 
-                        key={index}
-                        className={`space-y-4 sm:space-y-5 list-disc list-inside transition-all duration-500 ease-out ${
-                          currentSlide === index 
-                            ? 'opacity-100 translate-x-0' 
-                            : 'opacity-0 absolute top-0 left-0 right-0 translate-x-8'
-                        }`}
-                      >
-                        {slide.features.map((feature, i) => (
-                          <li key={i} className="text-base sm:text-lg text-white leading-relaxed">
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    ))}
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="flex justify-between items-center w-full gap-2 -mt-8 sm:-mt-10">
-                    {appSlides.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentSlide(index)}
-                        className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 flex-1 ${
-                          currentSlide === index 
-                            ? 'bg-white' 
-                            : 'bg-white/30 hover:bg-white/50'
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* App Store Links */}
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full mt-6 sm:mt-8">
-                    <a
-                      href="https://apps.apple.com/app/gruby"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-colors"
-                      aria-label="Download on the App Store"
-                    >
-                      <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                      </svg>
-                      <div className="flex flex-col items-start">
-                        <span className="text-[10px] sm:text-xs leading-tight">Download on the</span>
-                        <span className="text-sm sm:text-base font-semibold leading-tight">App Store</span>
-                      </div>
-                    </a>
-                    <a
-                      href="https://play.google.com/store/apps/details?id=com.gruby.app"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-colors"
-                      aria-label="Get it on Google Play"
-                    >
-                      <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
-                      </svg>
-                      <div className="flex flex-col items-start">
-                        <span className="text-[10px] sm:text-xs leading-tight">Get it on</span>
-                        <span className="text-sm sm:text-base font-semibold leading-tight">Google Play</span>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                
-                {/* Image - Left side on desktop, bottom on mobile */}
-                <div className="flex-shrink-0 lg:absolute lg:bottom-0 lg:left-6 md:left-12 lg:left-16 z-0 order-2">
-                  <Image
-                    src="/Mobile phone.png"
-                    alt="Gruby mobile app"
-                    width={500}
-                    height={1000}
-                    className="w-auto h-auto max-w-[400px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px] object-contain"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <AppPreviewSectionAnimated currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} />
 
         {/* Features Section */}
-        <section id="features" className="py-12 sm:py-16 md:py-20 lg:py-28">
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
-                Everything you need to cook smarter
-              </h2>
-              <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
-                Simple tools that help you save money and eat better
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-x-8 sm:gap-y-10 md:gap-y-12">
-              {features.map((feature, index) => (
-                <div key={index}>
-                  <h3 className="text-lg font-semibold text-[#222222] mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-[#717171] text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <FeaturesSectionAnimated />
 
         {/* Tablet Preview Section */}
-        <section className="py-12 sm:py-16 md:py-20 lg:py-28">
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
-                Phone and tablet
-              </h2>
-              <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
-                Access Gruby wherever you are
-              </p>
-            </div>
-
-            <div className="bg-[#f5f5f7] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
-              <div className="flex justify-center">
-                <TabletMockup>
-                  {/* Add your tablet app screenshot here */}
-                </TabletMockup>
-              </div>
-            </div>
-          </div>
-        </section>
+        <TabletPreviewSectionAnimated />
 
         {/* Benefits Section */}
-        <section id="how-it-works" className="py-12 sm:py-16 md:py-20 lg:py-28">
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
-                Why choose Gruby?
-              </h2>
-              <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
-                Join thousands cooking smarter every day
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 md:mb-20">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="text-center px-4">
-                  <p className="text-3xl sm:text-4xl font-bold text-[#FF1E00] mb-2">{benefit.stats}</p>
-                  <p className="text-xs text-[#717171] uppercase tracking-wide mb-3 sm:mb-4">{benefit.statLabel}</p>
-                  <h3 className="text-base sm:text-lg font-semibold text-[#222222] mb-2">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-[#717171] text-sm leading-relaxed">
-                    {benefit.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </section>
+        <BenefitsSectionAnimated />
 
         {/* Comparison Section - Redesigned */}
-        <section id="comparison" className="py-12 sm:py-16 md:py-20 lg:py-28 bg-[#f5f5f7]">
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-6 sm:mb-8 md:mb-12">
-              <p className="text-base sm:text-lg md:text-xl text-[#717171] max-w-2xl mx-auto px-4">
-                Spoiler: It's not the food. See how much you're really paying for convenience.
-              </p>
-            </div>
-
-            {/* Subtle jab callout */}
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <p className="text-xs sm:text-sm text-[#717171]">
-                Real prices from Kroger stores
-              </p>
-            </div>
-
-            <div className="space-y-4 sm:space-y-6">
-              {comparisons.map((comparison, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5"
-                >
-                  <div className="grid grid-cols-1 lg:grid-cols-12">
-                    {/* Image */}
-                    <div className="lg:col-span-3 relative h-40 sm:h-48 lg:h-auto">
-                      <Image
-                        src={comparison.image}
-                        alt={comparison.meal}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent lg:bg-gradient-to-t" />
-                      <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 lg:bottom-6 lg:left-6">
-                        <h3 className="text-lg sm:text-xl font-semibold text-white">
-                          {comparison.meal}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Comparison Content */}
-                    <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2">
-                      {/* Delivery - The "bad" option */}
-                      <div className="p-4 sm:p-6 md:p-8 bg-white border-b md:border-b-0 md:border-r border-gray-200">
-                        <div className="flex items-center justify-between mb-4 sm:mb-6">
-                          <div className="flex-1 min-w-0 pr-2">
-                            <p className="text-xs sm:text-sm font-medium text-[#222222] mb-0.5">Delivery</p>
-                            <p className="text-[10px] sm:text-xs text-[#717171] leading-tight">1 serving • 45 min wait • cold on arrival</p>
-                          </div>
-                          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                            <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-600" strokeWidth={2.5} />
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm mb-3 sm:mb-4">
-                          <div className="flex justify-between">
-                            <span className="text-[#717171]">Food</span>
-                            <span className="text-[#222222]">${comparison.delivery.price.toFixed(2)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-[#717171]">Fees & service charges</span>
-                            <span className="text-[#222222]">${comparison.delivery.fees.toFixed(2)}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-[#717171]">Tip</span>
-                            <span className="text-[#222222]">${comparison.delivery.tip.toFixed(2)}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="pt-3 sm:pt-4 border-t border-gray-200">
-                          <div className="flex justify-between items-end min-h-[3rem] sm:min-h-[3.5rem]">
-                            <span className="text-xs sm:text-sm font-medium text-[#222222]">Your total</span>
-                            <span className="text-xl sm:text-2xl font-bold text-[#222222]">${comparison.delivery.total.toFixed(2)}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Home Cooking - The "good" option */}
-                      <div className="p-4 sm:p-6 md:p-8 bg-white">
-                        <div className="flex items-center justify-between mb-4 sm:mb-6">
-                          <div className="flex-1 min-w-0 pr-2">
-                            <p className="text-xs sm:text-sm font-medium text-[#222222] mb-0.5">Home cooked</p>
-                            <p className="text-[10px] sm:text-xs text-[#717171] leading-tight">{comparison.homeCooked.servings} servings • fresh • actually hot</p>
-                          </div>
-                          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#16A34A]" strokeWidth={2.5} />
-                          </div>
-                        </div>
-
-                        <div className="mb-3 sm:mb-4">
-                          <p className="text-[10px] sm:text-xs text-[#717171] mb-1.5 sm:mb-2">What you'll need:</p>
-                          <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                            {comparison.homeCooked.ingredients.map((ing, i) => (
-                              <span 
-                                key={i}
-                                className="px-1.5 sm:px-2 py-0.5 bg-white rounded text-[10px] sm:text-xs text-[#222222] ring-1 ring-black/5"
-                              >
-                                {ing}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm mb-3 sm:mb-4">
-                          <div className="flex justify-between">
-                            <span className="text-[#717171]">Groceries (for {comparison.homeCooked.servings})</span>
-                            <span className="text-[#222222]">
-                              {comparison.homeCooked.loading ? (
-                                <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" />
-                              ) : (
-                                `$${comparison.homeCooked.price.toFixed(2)}`
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div className="pt-3 sm:pt-4 border-t border-gray-200 space-y-1.5 sm:space-y-2 min-h-[3rem] sm:min-h-[3.5rem] flex flex-col justify-end">
-                          <div className="flex justify-between items-baseline">
-                            <span className="text-xs sm:text-sm text-[#717171]">Hidden fees</span>
-                            <span className="text-xs sm:text-sm text-[#222222]">$0.00</span>
-                          </div>
-                          <div className="flex justify-between items-baseline">
-                            <span className="text-xs sm:text-sm font-medium text-[#222222]">Per serving</span>
-                            <span className="text-xl sm:text-2xl font-bold text-[#222222]">
-                              {comparison.homeCooked.loading ? (
-                                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                              ) : (
-                                `$${comparison.homeCooked.perServing.toFixed(2)}`
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Savings Strip */}
-                  <div className="px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-[#222222] flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
-                    <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center sm:justify-start">
-                      <p className="text-white/70 text-xs sm:text-sm">You keep</p>
-                      <p className="text-xl sm:text-2xl font-bold text-white">
-                        {comparison.homeCooked.loading ? (
-                          <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin text-white" />
-                        ) : (
-                          `$${comparison.savings.toFixed(2)}`
-                        )}
-                      </p>
-                      {!comparison.homeCooked.loading && (
-                        <span className="px-1.5 sm:px-2 py-0.5 bg-[#16A34A] text-white text-[10px] sm:text-xs font-semibold rounded">
-                          Save {comparison.savingsPercent}%
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-white/70 text-xs sm:text-sm text-center sm:text-left">
-                      + {comparison.homeCooked.servings - 1} extra meals for tomorrow
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Summary */}
-            <div className="mt-8 sm:mt-10 md:mt-12 bg-[#FF1E00] rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 text-white text-center">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3">
-                Stop subsidizing their business model
-              </h3>
-              <p className="text-sm sm:text-base text-white/90 mb-6 sm:mb-8 max-w-lg mx-auto px-4">
-                Delivery apps take 30% from restaurants and charge you fees on top. Cook at home and keep your money.
-              </p>
-              <div className="grid grid-cols-3 gap-4 sm:gap-6 max-w-md mx-auto">
-                <div>
-                  <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">$300+</p>
-                  <p className="text-[10px] sm:text-xs text-white/80">Back in your pocket</p>
-                </div>
-                <div>
-                  <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">4x</p>
-                  <p className="text-[10px] sm:text-xs text-white/80">More food</p>
-                </div>
-                <div>
-                  <p className="text-xl sm:text-2xl md:text-3xl font-bold mb-1">0</p>
-                  <p className="text-[10px] sm:text-xs text-white/80">Hidden fees</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ComparisonSectionAnimated comparisons={comparisons} isLoading={isLoading} />
 
         {/* About Section */}
-        <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-28">
-          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
-                About Gruby
-              </h2>
-              <p className="text-sm sm:text-base text-[#717171] max-w-2xl mx-auto leading-relaxed px-4">
-                A budgeting-focused cooking companion showing the real financial impact of cooking at home. 
-                We connect food lovers with talented home cooks in their neighborhood.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
-              {values.map((value, index) => (
-                <div key={index} className="text-center">
-                  <h3 className="text-lg font-semibold text-[#222222] mb-3">
-                    {value.title}
-                  </h3>
-                  <p className="text-[#717171] text-sm leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AboutSectionAnimated />
 
         {/* CTA Section */}
-        <section id="beta-signup" className="py-12 sm:py-16 md:py-20 lg:py-28 bg-[#1a1a1a]">
-          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-3 sm:mb-4">
-              Join the waitlist
-            </h2>
-            <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
-              Get early access and be the first to know when we launch
-            </p>
-            
-            {isSubmitted ? (
-              <div className="bg-white/5 ring-1 ring-white/10 rounded-2xl p-6">
-                <p className="text-white font-medium mb-2">You're on the list!</p>
-                <p className="text-gray-400 text-sm">
-                  We'll notify {email} when Gruby launches.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleBetaSignup}>
-                <div className="flex gap-3 items-center">
-                  <input
-                    type="email"
-                    value={localEmail}
-                    onChange={(e) => setLocalEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                    className="flex-1 px-4 py-2.5 sm:py-3 h-[42px] sm:h-[44px] rounded-full bg-white text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-shadow text-sm sm:text-base leading-normal"
-                    disabled={isSubmitting}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="px-6 py-2.5 sm:py-3 h-[42px] sm:h-[44px] bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm sm:text-base font-medium rounded-full transition-all disabled:opacity-50 leading-normal"
-                  >
-                    {isSubmitting ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      'Join'
-                    )}
-                  </Button>
-                </div>
-                {error && (
-                  <p className="mt-3 text-red-400 text-sm">{error}</p>
-                )}
-              </form>
-            )}
-          </div>
-        </section>
+        <CTASectionAnimated localEmail={localEmail} setLocalEmail={setLocalEmail} handleBetaSignup={handleBetaSignup} isSubmitting={isSubmitting} error={error} isSubmitted={isSubmitted} email={email} />
 
         {/* Footer */}
         <footer className="bg-white border-t border-[#E5E5E5]">

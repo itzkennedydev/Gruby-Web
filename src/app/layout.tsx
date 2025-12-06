@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     icon: '/GrubyIcon.svg',
     apple: '/GrubyIcon.svg',
   },
+  other: {
+    'preload-hero': '/HeroImage.jpg',
+    'preload-mobile': '/Mobile phone.png',
+  },
 };
 
 interface RootLayoutProps {
@@ -25,6 +29,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link rel="preload" href="/HeroImage.jpg" as="image" fetchPriority="high" />
+          <link rel="preload" href="/Mobile phone.png" as="image" fetchPriority="high" />
+        </head>
         <body className="min-h-screen bg-white flex flex-col">
           <ErrorBoundary>
             <ReduxProvider>
