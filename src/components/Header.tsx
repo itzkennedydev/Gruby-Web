@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
@@ -15,6 +15,30 @@ const Header = () => {
   const waitlistModalOpen = useAppSelector((state) => state.ui.waitlistModalOpen);
   const { email, isSubmitting, isSubmitted, error } = useAppSelector((state) => state.beta);
   const [localEmail, setLocalEmail] = useState('');
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header at the top
+      if (currentScrollY < 100) {
+        setIsHeaderVisible(true);
+      } 
+      // Hide when scrolling down, show when scrolling up
+      else if (currentScrollY > lastScrollY && currentScrollY > 200) {
+        setIsHeaderVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const handleBetaSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +68,16 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50" style={{ paddingTop: 'clamp(1rem, 1.5vw, 2rem)', paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
+    <header 
+      className="sticky z-50 transition-transform duration-300 ease-in-out" 
+      style={{ 
+        paddingTop: 'clamp(1rem, 1.5vw, 2rem)', 
+        paddingLeft: 'clamp(1rem, 2vw, 2rem)', 
+        paddingRight: 'clamp(1rem, 2vw, 2rem)',
+        top: isHeaderVisible ? '0' : '-100px',
+        transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)'
+      }}
+    >
       <div className="max-w-[1920px] mx-auto" style={{ containerType: 'inline-size' }}>
         <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-full shadow-lg" style={{ paddingLeft: 'clamp(1rem, 2vw, 1.5rem)', paddingRight: 'clamp(1rem, 2vw, 1.5rem)' }}>
           <div className="flex items-center justify-between" style={{ paddingTop: 'clamp(0.75rem, 1vw, 1rem)', paddingBottom: 'clamp(0.75rem, 1vw, 1rem)' }}>

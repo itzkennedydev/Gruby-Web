@@ -21,16 +21,16 @@ async function getAccessToken(): Promise<string | null> {
   const credentials = Buffer.from(`${KROGER_CLIENT_ID}:${KROGER_CLIENT_SECRET}`).toString('base64');
 
   try {
-    const response = await fetch(AUTH_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${credentials}`,
-      },
-      body: 'grant_type=client_credentials&scope=product.compact',
-    });
+  const response = await fetch(AUTH_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${credentials}`,
+    },
+    body: 'grant_type=client_credentials&scope=product.compact',
+  });
 
-    if (!response.ok) {
+  if (!response.ok) {
       // Handle authentication failures - use fallback pricing
       // This can happen if:
       // - IP restrictions in Kroger developer portal (localhost may not be whitelisted)
@@ -41,16 +41,16 @@ async function getAccessToken(): Promise<string | null> {
       console.warn(`Error details: ${errorText.substring(0, 200)}`);
       console.warn(`Note: If you're on localhost, you may need to whitelist your IP in Kroger Developer Portal`);
       return null;
-    }
+  }
 
-    const data = await response.json();
+  const data = await response.json();
 
-    tokenCache = {
-      token: data.access_token,
-      expiresAt: Date.now() + (data.expires_in * 1000),
-    };
+  tokenCache = {
+    token: data.access_token,
+    expiresAt: Date.now() + (data.expires_in * 1000),
+  };
 
-    return data.access_token;
+  return data.access_token;
   } catch (error: any) {
     console.error('Kroger API request failed:', error.message);
     return null;

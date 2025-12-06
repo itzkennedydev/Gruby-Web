@@ -28,22 +28,22 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider>
-      <html lang="en">
+    <html lang="en">
         <head>
           <link rel="preload" href="/HeroImage.jpg" as="image" fetchPriority="high" />
           <link rel="preload" href="/Mobile phone.png" as="image" fetchPriority="high" />
         </head>
-        <body className="min-h-screen bg-white flex flex-col">
-          <ErrorBoundary>
-            <ReduxProvider>
-              <Header />
-              <main className="flex-1">
-                {children}
-              </main>
-            </ReduxProvider>
-          </ErrorBoundary>
-        </body>
-      </html>
+      <body className="min-h-screen bg-white flex flex-col">
+        <ErrorBoundary>
+          <ReduxProvider>
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+          </ReduxProvider>
+        </ErrorBoundary>
+      </body>
+    </html>
     </ClerkProvider>
   );
 }

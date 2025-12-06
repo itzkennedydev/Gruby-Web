@@ -312,7 +312,7 @@ export default function SharedShoppingListPage() {
                   {categoryTotals[category] > 0 && (
                     <span style={styles.categoryTotal}>
                       ${categoryTotals[category].toFixed(2)}
-                    </span>
+                  </span>
                   )}
                 </div>
                 

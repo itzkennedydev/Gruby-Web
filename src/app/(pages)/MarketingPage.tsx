@@ -318,11 +318,11 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
                 height={1000}
                 className="w-auto h-auto object-contain"
                 style={{
-                  maxWidth: 'clamp(340px, 35vw, 720px)',
+                  maxWidth: 'clamp(420px, 40vw, 720px)',
                 }}
                 priority
                 quality={100}
-                sizes="(max-width: 640px) 400px, (max-width: 768px) 380px, (max-width: 1024px) 360px, (max-width: 1280px) 480px, (max-width: 1536px) 640px, 720px"
+                sizes="(max-width: 640px) 500px, (max-width: 768px) 450px, (max-width: 1024px) 400px, (max-width: 1280px) 480px, (max-width: 1536px) 640px, 720px"
                 loading="eager"
                 fetchPriority="high"
               />
