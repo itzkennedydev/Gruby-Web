@@ -44,10 +44,10 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 pt-4 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[1920px] mx-auto">
-        <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-full shadow-lg px-4 sm:px-6">
-          <div className="flex items-center justify-between py-3">
+    <header className="sticky top-0 z-50" style={{ paddingTop: 'clamp(1rem, 1.5vw, 2rem)', paddingLeft: 'clamp(1rem, 2vw, 2rem)', paddingRight: 'clamp(1rem, 2vw, 2rem)' }}>
+      <div className="max-w-[1920px] mx-auto" style={{ containerType: 'inline-size' }}>
+        <div className="bg-white/95 backdrop-blur-sm border border-gray-200 rounded-full shadow-lg" style={{ paddingLeft: 'clamp(1rem, 2vw, 1.5rem)', paddingRight: 'clamp(1rem, 2vw, 1.5rem)' }}>
+          <div className="flex items-center justify-between" style={{ paddingTop: 'clamp(0.75rem, 1vw, 1rem)', paddingBottom: 'clamp(0.75rem, 1vw, 1rem)' }}>
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <Image
@@ -55,7 +55,8 @@ const Header = () => {
                 alt="Gruby Logo"
                 width={120}
                 height={28}
-                className="h-7 w-auto"
+                className="w-auto"
+                style={{ height: 'clamp(1.5rem, 2vw, 1.75rem)' }}
                 priority
               />
             </Link>
@@ -63,7 +64,14 @@ const Header = () => {
             {/* CTA Button */}
             <Button 
               onClick={() => dispatch(setWaitlistModalOpen(true))}
-              className="px-4 sm:px-6 py-2 sm:py-2.5 text-sm font-semibold text-white bg-[#FF1E00] hover:bg-[#E01A00] shadow-md hover:shadow-lg rounded-full"
+              className="font-semibold text-white bg-[#FF1E00] hover:bg-[#E01A00] shadow-md hover:shadow-lg rounded-full"
+              style={{ 
+                paddingLeft: 'clamp(1rem, 2vw, 1.5rem)', 
+                paddingRight: 'clamp(1rem, 2vw, 1.5rem)',
+                paddingTop: 'clamp(0.5rem, 0.75vw, 0.625rem)',
+                paddingBottom: 'clamp(0.5rem, 0.75vw, 0.625rem)',
+                fontSize: 'clamp(0.875rem, 1vw, 0.9375rem)'
+              }}
             >
               Join Waitlist
             </Button>
@@ -86,15 +94,15 @@ const Header = () => {
           
           {isSubmitted ? (
             <div className="mt-8 bg-[#f5f5f7] rounded-2xl p-8 text-center border border-gray-200">
-              <p className="text-xl font-bold text-[#222222] mb-4">You're in! 🎉</p>
-              <p className="text-sm text-[#717171]">
+              <p className="font-bold text-[#222222] mb-4" style={{ fontSize: 'clamp(1.25rem, 2vw + 0.5rem, 1.25rem)' }}>You're in! 🎉</p>
+              <p className="text-[#717171]" style={{ fontSize: 'clamp(0.875rem, 1vw + 0.25rem, 0.875rem)' }}>
                 We'll send updates to <span className="font-semibold text-[#222222]">{email}</span>
               </p>
             </div>
           ) : (
             <form onSubmit={handleBetaSignup} className="space-y-4">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-[#222222]">
+                <label className="block font-medium text-[#222222]" style={{ fontSize: 'clamp(0.875rem, 1vw + 0.25rem, 0.875rem)' }}>
                   Email address
                 </label>
                 <input
@@ -103,7 +111,7 @@ const Header = () => {
                   onChange={(e) => setLocalEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="w-full px-4 py-4 rounded-full bg-white border-2 border-gray-200 text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] focus:border-[#FF1E00] transition-all text-base hover:border-gray-300"
+                  className="w-full px-4 py-4 rounded-full bg-white border-2 border-gray-200 text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] focus:border-[#FF1E00] transition-colors duration-200 text-base hover:border-gray-300"
                   disabled={isSubmitting}
                 />
                 {error && (
@@ -115,7 +123,14 @@ const Header = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-4 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-base font-semibold rounded-full transition-all disabled:opacity-50 transform hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full bg-[#FF1E00] hover:bg-[#E01A00] text-white font-semibold rounded-full transition-colors duration-200 disabled:opacity-50"
+                style={{ 
+                  paddingLeft: 'clamp(1.5rem, 2vw, 1.5rem)',
+                  paddingRight: 'clamp(1.5rem, 2vw, 1.5rem)',
+                  paddingTop: 'clamp(1rem, 1.5vw, 1rem)',
+                  paddingBottom: 'clamp(1rem, 1.5vw, 1rem)',
+                  fontSize: 'clamp(1rem, 1.25vw + 0.5rem, 1rem)'
+                }}
               >
                 {isSubmitting ? (
                   <>
@@ -126,7 +141,7 @@ const Header = () => {
                   'Reserve My Spot'
                 )}
               </Button>
-              <p className="text-xs text-center text-[#717171] mt-2">
+              <p className="text-center text-[#717171] mt-2" style={{ fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)' }}>
                 We respect your privacy. No spam, ever.
               </p>
             </form>

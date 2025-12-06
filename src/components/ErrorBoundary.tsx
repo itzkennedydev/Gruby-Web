@@ -30,17 +30,20 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return this.props.fallback || (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center">
+        <div className="min-h-screen flex items-center justify-center bg-white px-4">
+          <div className="text-center max-w-md">
             <div className="text-6xl mb-4">⚠️</div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h1>
-            <p className="text-gray-600 mb-4">We're sorry, but something unexpected happened.</p>
+            <h1 className="font-bold mb-2 text-[#222222]" style={{ fontSize: 'clamp(1.5rem, 3vw + 1rem, 1.5rem)' }}>Something went wrong</h1>
+            <p className="mb-4 text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1rem)' }}>
+              We're sorry, but something unexpected happened.
+            </p>
             <button
               onClick={() => {
                 this.setState({ hasError: false, error: undefined });
                 window.location.reload();
               }}
-              className="px-4 py-2 bg-[#FF4D00] text-white rounded-lg hover:bg-[#E64500] transition-colors"
+              className="px-6 py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white font-medium rounded-full transition-colors duration-200"
+              style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1rem)' }}
             >
               Reload Page
             </button>

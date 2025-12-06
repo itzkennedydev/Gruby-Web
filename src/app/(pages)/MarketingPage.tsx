@@ -15,7 +15,6 @@ import { calculateMealPrice } from '@/lib/kroger-api';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 // Features data
 const features = [
@@ -222,28 +221,19 @@ function TabletMockup({ children, className = '' }: { children?: React.ReactNode
 
 // Animated App Preview Section Component
 function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentSlide: number; setCurrentSlide: (index: number) => void }) {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
-    <section 
-      ref={ref}
-      className={`pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-20 lg:pb-28 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-    >
+    <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-20 lg:pb-28">
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`bg-black rounded-2xl sm:rounded-3xl pt-28 sm:pt-32 md:pt-36 lg:pt-40 px-6 sm:px-8 md:px-12 lg:px-16 pb-6 sm:pb-8 md:pb-12 lg:pb-16 relative min-h-[450px] sm:min-h-[500px] md:min-h-[550px] lg:min-h-[600px] flex items-center transition-all duration-700 ease-out ${
-          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98]'
-        }`}>
+        <div className="bg-black rounded-2xl sm:rounded-3xl pt-12 sm:pt-16 md:pt-36 lg:pt-40 px-6 sm:px-8 md:px-12 lg:px-16 pb-20 sm:pb-24 md:pb-12 lg:pb-16 relative min-h-[500px] sm:min-h-[560px] md:min-h-[550px] lg:min-h-[600px] flex flex-col lg:flex-row lg:items-center" style={{ containerType: 'inline-size' }}>
           <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 sm:gap-12 lg:gap-16 w-full h-full">
             {/* Content and Progress Bar - Right side / Top on mobile */}
-            <div className="flex flex-col justify-center items-center lg:items-start max-w-md w-full px-4 sm:px-0 lg:ml-[45%] order-1 lg:-mt-28">
+            <div className="flex flex-col justify-center items-center lg:items-start max-w-md w-full px-4 sm:px-0 lg:ml-[45%] order-1 lg:-mt-28 flex-shrink-0 z-10 pb-[482px] sm:pb-[560px] md:pb-[620px] lg:pb-0">
               {/* Heading and Description */}
               <div className="text-left mb-6 sm:mb-8 w-full">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 sm:mb-6 whitespace-nowrap">
+                <h2 className="font-semibold text-white mb-4 sm:mb-6 whitespace-nowrap" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 1rem, 3rem)' }}>
                   Cooking made simple
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
+                <p className="text-gray-300 leading-relaxed" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.25rem)' }}>
                   Everything you need to save money on meals, right in your pocket
                 </p>
               </div>
@@ -253,7 +243,7 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
                 {appSlides.map((slide, index) => (
                   <ul 
                     key={index}
-                    className={`space-y-4 sm:space-y-5 list-disc list-inside transition-all duration-500 ease-out ${
+                    className={`space-y-4 sm:space-y-5 list-disc list-inside ${
                       currentSlide === index 
                         ? 'opacity-100 translate-x-0' 
                         : 'opacity-0 absolute top-0 left-0 right-0 translate-x-8'
@@ -274,7 +264,7 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
                   <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
-                    className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 flex-1 ${
+                    className={`h-1 sm:h-1.5 rounded-full transition-colors duration-200 flex-1 ${
                       currentSlide === index 
                         ? 'bg-white' 
                         : 'bg-white/30 hover:bg-white/50'
@@ -290,7 +280,7 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
                   href="https://apps.apple.com/app/gruby"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-colors duration-200"
                   aria-label="Download on the App Store"
                 >
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
@@ -305,7 +295,7 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
                   href="https://play.google.com/store/apps/details?id=com.gruby.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-colors duration-200"
                   aria-label="Get it on Google Play"
                 >
                   <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
@@ -320,16 +310,19 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
             </div>
             
             {/* Image - Left side on desktop, bottom on mobile */}
-            <div className="flex-shrink-0 lg:absolute lg:bottom-0 lg:left-16 z-0 order-2">
+            <div className="flex-shrink-0 absolute bottom-0 left-1/2 -translate-x-1/2 lg:absolute lg:bottom-0 lg:left-16 lg:translate-x-0 z-0 order-2 w-full lg:w-auto flex justify-center lg:justify-start">
               <Image
                 src="/Mobile phone.png"
                 alt="Gruby mobile app"
                 width={500}
                 height={1000}
-                className="w-auto h-auto max-w-[400px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px] object-contain transition-transform duration-700 ease-out hover:scale-105"
+                className="w-auto h-auto object-contain"
+                style={{
+                  maxWidth: 'clamp(340px, 35vw, 720px)',
+                }}
                 priority
                 quality={100}
-                sizes="(max-width: 640px) 400px, (max-width: 768px) 480px, (max-width: 1024px) 560px, (max-width: 1280px) 640px, 720px"
+                sizes="(max-width: 640px) 400px, (max-width: 768px) 380px, (max-width: 1024px) 360px, (max-width: 1280px) 480px, (max-width: 1536px) 640px, 720px"
                 loading="eager"
                 fetchPriority="high"
               />
@@ -343,19 +336,14 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
 
 // Animated Features Section Component
 function FeaturesSectionAnimated() {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
     <section 
       id="features" 
-      ref={ref}
-      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-12 sm:py-16 md:py-20 lg:py-28"
     >
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8" style={{ containerType: 'inline-size' }}>
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
+          <h2 className="font-semibold text-[#222222] mb-2 sm:mb-3" style={{ fontSize: 'clamp(1.25rem, 2vw + 0.75rem, 1.875rem)' }}>
             Everything you need to cook smarter
           </h2>
           <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
@@ -367,10 +355,7 @@ function FeaturesSectionAnimated() {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className={`bg-white rounded-2xl p-6 sm:p-8 border border-[#E5E5E5] transition-all duration-500 ease-out hover:shadow-lg hover:border-[#FF1E00]/20 hover:-translate-y-1 ${
-                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
-              }`}
-              style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
+              className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E5E5E5] hover:shadow-md transition-shadow duration-200"
             >
               <h3 className="text-xl sm:text-2xl font-semibold text-[#222222] mb-3 leading-tight">
                 {feature.title}
@@ -388,14 +373,9 @@ function FeaturesSectionAnimated() {
 
 // Animated Tablet Preview Section
 function TabletPreviewSectionAnimated() {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
     <section 
-      ref={ref}
-      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-12 sm:py-16 md:py-20 lg:py-28"
     >
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
@@ -407,9 +387,7 @@ function TabletPreviewSectionAnimated() {
           </p>
         </div>
 
-        <div className={`bg-[#f5f5f7] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 transition-all duration-700 ease-out ${
-          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-[0.98]'
-        }`}>
+        <div className="bg-[#f5f5f7] rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
           <div className="flex justify-center">
             <TabletMockup>
               {/* Add your tablet app screenshot here */}
@@ -423,15 +401,10 @@ function TabletPreviewSectionAnimated() {
 
 // Animated Benefits Section
 function BenefitsSectionAnimated() {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
     <section 
       id="how-it-works" 
-      ref={ref}
-      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-12 sm:py-16 md:py-20 lg:py-28"
     >
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
@@ -447,10 +420,7 @@ function BenefitsSectionAnimated() {
           {benefits.map((benefit, index) => (
             <div 
               key={index} 
-              className={`text-center px-4 transition-all duration-500 ease-out hover:translate-y-[-4px] ${
-                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
-              }`}
-              style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
+              className="text-center px-4"
             >
               <p className="text-3xl sm:text-4xl font-bold text-[#FF1E00] mb-2">{benefit.stats}</p>
               <p className="text-xs text-[#717171] uppercase tracking-wide mb-3 sm:mb-4">{benefit.statLabel}</p>
@@ -470,40 +440,32 @@ function BenefitsSectionAnimated() {
 
 // Animated About Section
 function AboutSectionAnimated() {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
     <section 
       id="about" 
-      ref={ref}
-      className={`py-12 sm:py-16 md:py-20 lg:py-28 transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-12 sm:py-16 md:py-20 lg:py-28"
     >
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 sm:mb-12 md:mb-16">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
+        <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-16 md:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#222222] mb-4 sm:mb-6">
             About Gruby
           </h2>
-          <p className="text-sm sm:text-base text-[#717171] max-w-2xl mx-auto leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl text-[#717171] leading-relaxed">
             A budgeting-focused cooking companion showing the real financial impact of cooking at home. 
             We connect food lovers with talented home cooks in their neighborhood.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12">
           {values.map((value, index) => (
             <div 
               key={index} 
-              className={`text-center transition-all duration-500 ease-out hover:translate-y-[-4px] ${
-                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
-              }`}
-              style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
+              className="text-center"
             >
-              <h3 className="text-lg font-semibold text-[#222222] mb-3">
+              <h3 className="text-xl sm:text-2xl font-semibold text-[#222222] mb-3 sm:mb-4 leading-tight">
                 {value.title}
               </h3>
-              <p className="text-[#717171] text-sm leading-relaxed">
+              <p className="text-[#717171] text-base leading-relaxed">
                 {value.description}
               </p>
             </div>
@@ -532,60 +494,65 @@ function CTASectionAnimated({
   isSubmitted: boolean; 
   email: string;
 }) {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
     <section 
       id="beta-signup" 
-      ref={ref}
-      className={`py-12 sm:py-16 md:py-20 lg:py-28 bg-[#1a1a1a] transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-12 sm:py-16 md:py-20 lg:py-28 bg-[#1a1a1a]"
     >
-      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-3 sm:mb-4">
-          Join the waitlist
-        </h2>
-        <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
-          Get early access and be the first to know when we launch
-        </p>
-        
-        {isSubmitted ? (
-          <div className="bg-white/5 ring-1 ring-white/10 rounded-2xl p-6 transition-all duration-500 ease-out animate-fade-in">
-            <p className="text-white font-medium mb-2">You're on the list!</p>
-            <p className="text-gray-400 text-sm">
-              We'll notify {email} when Gruby launches.
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleBetaSignup}>
-            <div className="flex gap-3 items-center">
-              <input
-                type="email"
-                value={localEmail}
-                onChange={(e) => setLocalEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                className="flex-1 px-4 py-2.5 sm:py-3 h-[42px] sm:h-[44px] rounded-full bg-white text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-all duration-300 text-sm sm:text-base leading-normal hover:shadow-md"
-                disabled={isSubmitting}
-              />
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="px-6 py-2.5 sm:py-3 h-[42px] sm:h-[44px] bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm sm:text-base font-medium rounded-full transition-all duration-300 disabled:opacity-50 leading-normal hover:scale-105 active:scale-95"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  'Join'
-                )}
-              </Button>
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 sm:gap-12 lg:gap-16">
+            {/* Content - Top on mobile, left on desktop */}
+            <div className="flex-1 text-center lg:text-left order-1 w-full">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mb-3 sm:mb-4">
+                Join the waitlist
+              </h2>
+              <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
+                Get early access and be the first to know when we launch
+              </p>
+              
+              {isSubmitted ? (
+                <div className="bg-white/5 ring-1 ring-white/10 rounded-2xl p-6">
+                  <p className="text-white font-medium mb-2">You're on the list!</p>
+                  <p className="text-gray-400 text-sm">
+                    We'll notify {email} when Gruby launches.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleBetaSignup} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                  <input
+                    type="email"
+                    value={localEmail}
+                    onChange={(e) => setLocalEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                    className="flex-1 px-4 py-2.5 sm:py-3 h-[42px] sm:h-[44px] rounded-full bg-white text-[#222222] placeholder-[#717171] focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-colors duration-200 text-sm sm:text-base leading-normal"
+                    disabled={isSubmitting}
+                  />
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="px-6 py-2.5 sm:py-3 h-[42px] sm:h-[44px] bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm sm:text-base font-medium rounded-full transition-colors duration-200 disabled:opacity-50 leading-normal whitespace-nowrap"
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      'Join'
+                    )}
+                  </Button>
+                </form>
+              )}
+              {error && (
+                <p className="mt-3 text-red-400 text-sm">{error}</p>
+              )}
             </div>
-            {error && (
-              <p className="mt-3 text-red-400 text-sm transition-all duration-300">{error}</p>
-            )}
-          </form>
-        )}
+            
+            {/* Image area - Bottom on mobile, right on desktop */}
+            <div className="flex-shrink-0 order-2 w-full lg:w-auto flex justify-center lg:justify-end">
+              {/* Image placeholder - will be positioned here if needed */}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -593,23 +560,18 @@ function CTASectionAnimated({
 
 // Animated Comparison Section
 function ComparisonSectionAnimated({ comparisons, isLoading }: { comparisons: MealComparison[]; isLoading: boolean }) {
-  const { ref, isVisible } = useScrollAnimation();
-  
   return (
-    <section 
-      id="comparison" 
-      ref={ref}
-      className={`py-12 sm:py-16 md:py-20 lg:py-28 bg-[#f5f5f7] transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+    <section
+      id="comparison"
+      className="py-12 sm:py-16 md:py-20 lg:py-28 bg-[#f5f5f7]"
     >
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Enhanced Header Section */}
         <div className="text-center mb-8 sm:mb-10 md:mb-14">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#222222] mb-3 sm:mb-4 max-w-3xl mx-auto px-4 leading-tight">
-            Spoiler: You're paying <span className="text-[#FF1E00]">3x more</span> for the same meal.
-          </h2>
-          <p className="text-lg sm:text-xl md:text-2xl text-[#717171] max-w-2xl mx-auto px-4 mb-2 sm:mb-3 font-medium">
+          <h2 className="font-bold text-[#222222] mb-3 sm:mb-4 max-w-3xl mx-auto px-4 leading-tight" style={{ fontSize: 'clamp(1.5rem, 3vw + 1rem, 3rem)' }}>
+                Spoiler: You're paying <span className="text-[#FF1E00]">3x more</span> for the same meal.
+              </h2>
+              <p className="text-[#717171] max-w-2xl mx-auto px-4 mb-2 sm:mb-3 font-medium" style={{ fontSize: 'clamp(1.125rem, 1.5vw + 0.875rem, 1.5rem)' }}>
             That $24 delivery order? The ingredients cost $8. The rest is fees, tips, and markup.
           </p>
           <p className="text-sm text-[#999999] max-w-xl mx-auto px-4">
@@ -621,10 +583,7 @@ function ComparisonSectionAnimated({ comparisons, isLoading }: { comparisons: Me
           {comparisons.map((comparison, index) => (
             <div
               key={index}
-              className={`bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 transition-all duration-500 ease-out hover:shadow-md ${
-                isVisible ? `opacity-100 translate-y-0` : 'opacity-0 translate-y-4'
-              }`}
-              style={{ transitionDelay: isVisible ? `${index * 150}ms` : '0ms' }}
+              className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12">
                 {/* Image */}
@@ -769,9 +728,7 @@ function ComparisonSectionAnimated({ comparisons, isLoading }: { comparisons: Me
         </div>
 
         {/* Summary */}
-        <div className={`mt-8 sm:mt-10 md:mt-12 bg-[#FF1E00] rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 text-white text-center transition-all duration-700 ease-out ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`} style={{ transitionDelay: isVisible ? '600ms' : '0ms' }}>
+        <div className="mt-8 sm:mt-10 md:mt-12 bg-[#FF1E00] rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 text-white text-center">
           <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3">
             Stop subsidizing their business model
           </h3>
@@ -941,16 +898,16 @@ export default function MarketingPage() {
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
           <div className="relative h-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight">
+            <h1 className="font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight" style={{ fontSize: 'clamp(1.5rem, 3vw + 1rem, 3rem)' }}>
               Cook Smarter, Save More
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-4 sm:mb-6 md:mb-8 max-w-xl leading-relaxed">
+            <p className="text-gray-200 mb-4 sm:mb-6 md:mb-8 max-w-xl leading-relaxed" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.25rem)' }}>
               Gruby is a budgeting-focused cooking companion designed to show people the real financial impact of cooking at home.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <Button 
                 onClick={() => dispatch(setWaitlistModalOpen(true))}
-                className="px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+                className="px-4 py-2 md:px-6 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-sm md:text-base font-medium rounded-full transition-colors duration-200"
               >
                 Join Waitlist
               </Button>
@@ -960,7 +917,7 @@ export default function MarketingPage() {
                   const element = document.getElementById('features');
                   element?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/20 text-white border-2 border-white hover:border-white text-sm md:text-base font-medium rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/20 text-white border-2 border-white hover:border-white text-sm md:text-base font-medium rounded-full transition-colors duration-200"
               >
                 Learn More
               </Button>
@@ -1036,7 +993,7 @@ export default function MarketingPage() {
                   />
                   <button
                     type="submit"
-                    className="w-full px-4 py-2 sm:py-2.5 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-xs sm:text-sm md:text-base font-medium rounded-full transition-all"
+                    className="w-full px-4 py-2 sm:py-2.5 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-xs sm:text-sm md:text-base font-medium rounded-full transition-colors duration-200"
                   >
                     Subscribe
                   </button>
@@ -1097,7 +1054,7 @@ export default function MarketingPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 py-4 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-base font-semibold rounded-full transition-all disabled:opacity-50 transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full px-6 py-4 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-base font-semibold rounded-full transition-colors duration-200 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>

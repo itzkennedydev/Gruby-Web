@@ -60,9 +60,9 @@ const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, className = '' })
         </div>
       </div>
       {/* Text below the card, no background */}
-      <div className="mt-2 px-1">
-        <div className="font-bold text-base mb-1 text-gray-900 line-clamp-1">{homeCook.name}</div>
-        <div className="flex items-center gap-1 text-xs mb-1">
+      <div className="mt-2 px-1" style={{ containerType: 'inline-size' }}>
+        <div className="font-bold mb-1 text-gray-900 line-clamp-1" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.5rem, 1rem)' }}>{homeCook.name}</div>
+        <div className="flex items-center gap-1 mb-1" style={{ fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)' }}>
           <span className="font-bold text-yellow-600 flex items-center">
             {homeCook.averageRating?.toFixed(1)}
             <Star className="w-4 h-4 ml-0.5 fill-yellow-500 text-yellow-500" />

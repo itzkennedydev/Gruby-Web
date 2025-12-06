@@ -9,22 +9,28 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
+      <div className="max-w-4xl mx-auto" style={{ 
+        paddingLeft: 'clamp(1rem, 2vw, 2rem)', 
+        paddingRight: 'clamp(1rem, 2vw, 2rem)',
+        paddingTop: 'clamp(3rem, 5vw, 5rem)',
+        paddingBottom: 'clamp(3rem, 5vw, 5rem)',
+        containerType: 'inline-size'
+      }}>
         <div className="prose prose-lg max-w-none">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4">GRUBY PRIVACY POLICY</h1>
+          <h1 className="font-semibold mb-4" style={{ fontSize: 'clamp(1.875rem, 4vw + 1rem, 3rem)' }}>GRUBY PRIVACY POLICY</h1>
           
-          <p className="text-sm text-gray-600 mb-8">
+          <p className="text-gray-600 mb-8" style={{ fontSize: 'clamp(0.875rem, 1vw + 0.5rem, 0.875rem)' }}>
             <strong>Effective Date: December 6, 2025</strong>
           </p>
 
-          <p className="text-base sm:text-lg mb-8">
+          <p className="mb-8" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
             This Privacy Policy describes how Gruby ("Company," "we," "us," or "our") collects, uses, discloses, and protects the personal information of users ("User," "you," or "your") of the Gruby mobile application and related services (collectively, the "Service"). By using the Service, you consent to the collection and use of your information as described in this Privacy Policy.
           </p>
 
           <section className="mb-8">
-            <h2 className="text-2xl sm:text-3xl font-semibold mt-8 mb-4">1. INFORMATION WE COLLECT</h2>
+            <h2 className="font-semibold mt-8 mb-4" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)' }}>1. INFORMATION WE COLLECT</h2>
             
-            <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">1.1 Information You Provide Directly</h3>
+            <h3 className="font-semibold mt-6 mb-3" style={{ fontSize: 'clamp(1.25rem, 2vw + 0.5rem, 1.5rem)' }}>1.1 Information You Provide Directly</h3>
             <p className="mb-4">
               <strong>Account Information:</strong> When you create an account, we collect your name, email address, and authentication credentials. If you register using Apple Sign-In or Google Sign-In, we receive basic profile information as permitted by those services.
             </p>

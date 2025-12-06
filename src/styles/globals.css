@@ -336,3 +336,129 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* Container Queries Support */
+/* Container queries are defined inline using containerType and @container queries in components */
+
+/* Fluid Typography Utilities */
+@layer utilities {
+  /* Fluid font sizes using clamp() */
+  .text-fluid-xs {
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  }
+  
+  .text-fluid-sm {
+    font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  }
+  
+  .text-fluid-base {
+    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  }
+  
+  .text-fluid-lg {
+    font-size: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  }
+  
+  .text-fluid-xl {
+    font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  }
+  
+  .text-fluid-2xl {
+    font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  }
+  
+  .text-fluid-3xl {
+    font-size: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+  }
+  
+  .text-fluid-4xl {
+    font-size: clamp(2.25rem, 1.8rem + 2.25vw, 3rem);
+  }
+  
+  .text-fluid-5xl {
+    font-size: clamp(3rem, 2.4rem + 3vw, 4rem);
+  }
+  
+  /* Fluid spacing utilities */
+  .spacing-fluid-sm {
+    padding: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+  }
+  
+  .spacing-fluid-md {
+    padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+  }
+  
+  .spacing-fluid-lg {
+    padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  }
+  
+  .spacing-fluid-xl {
+    padding: clamp(2rem, 1.6rem + 2vw, 3.5rem);
+  }
+  
+  /* Fluid width utilities */
+  .w-fluid-sm {
+    width: clamp(200px, 25vw, 300px);
+  }
+  
+  .w-fluid-md {
+    width: clamp(300px, 40vw, 500px);
+  }
+  
+  .w-fluid-lg {
+    width: clamp(400px, 50vw, 700px);
+  }
+  
+  .w-fluid-xl {
+    width: clamp(500px, 60vw, 900px);
+  }
+  
+  /* Fluid max-width utilities */
+  .max-w-fluid-sm {
+    max-width: clamp(300px, 30vw, 400px);
+  }
+  
+  .max-w-fluid-md {
+    max-width: clamp(400px, 40vw, 600px);
+  }
+  
+  .max-w-fluid-lg {
+    max-width: clamp(600px, 50vw, 900px);
+  }
+  
+  .max-w-fluid-xl {
+    max-width: clamp(800px, 60vw, 1200px);
+  }
+}
+
+/* CSS Custom Properties for Responsive Design */
+:root {
+  /* Viewport-based sizing */
+  --vw-unit: 1vw;
+  --vh-unit: 1vh;
+  
+  /* Fluid spacing scale */
+  --spacing-xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem);
+  --spacing-sm: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+  --spacing-md: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+  --spacing-lg: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
+  --spacing-xl: clamp(2rem, 1.6rem + 2vw, 3.5rem);
+  --spacing-2xl: clamp(3rem, 2.4rem + 3vw, 5rem);
+  
+  /* Fluid typography scale */
+  --font-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --font-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --font-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --font-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --font-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --font-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --font-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+  --font-4xl: clamp(2.25rem, 1.8rem + 2.25vw, 3rem);
+  --font-5xl: clamp(3rem, 2.4rem + 3vw, 4rem);
+  
+  /* Container query breakpoints */
+  --container-sm: 400px;
+  --container-md: 600px;
+  --container-lg: 900px;
+  --container-xl: 1200px;
+}

@@ -126,11 +126,17 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
+      <div className="max-w-4xl mx-auto" style={{ 
+        paddingLeft: 'clamp(1rem, 2vw, 2rem)', 
+        paddingRight: 'clamp(1rem, 2vw, 2rem)',
+        paddingTop: 'clamp(3rem, 5vw, 5rem)',
+        paddingBottom: 'clamp(3rem, 5vw, 5rem)',
+        containerType: 'inline-size'
+      }}>
         <div className="prose prose-lg max-w-none">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4">Frequently Asked Questions</h1>
+          <h1 className="font-semibold mb-4" style={{ fontSize: 'clamp(1.875rem, 4vw + 1rem, 3rem)' }}>Frequently Asked Questions</h1>
           
-          <p className="text-base sm:text-lg mb-12 text-[#717171]">
+          <p className="mb-12 text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
             Find answers to common questions about Gruby. Can't find what you're looking for? <a href="mailto:support@gruby.app" className="text-[#FF1E00] hover:underline">Contact our support team</a>.
           </p>
 
@@ -155,18 +161,18 @@ export default function FAQPage() {
           ))}
 
           <section className="mt-12 sm:mt-16 pt-8 border-t border-[#E5E5E5]">
-            <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-[#222222]">Still have questions?</h2>
-            <p className="text-base sm:text-lg text-[#717171] mb-6">
+            <h2 className="font-semibold mb-4 text-[#222222]" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)' }}>Still have questions?</h2>
+            <p className="text-[#717171] mb-6" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
               We're here to help! Reach out to our support team and we'll get back to you as soon as possible.
             </p>
             <div className="space-y-4">
-              <p className="text-base text-[#222222]">
+              <p className="text-[#222222]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1rem)' }}>
                 <strong>Email:</strong>{' '}
                 <a href="mailto:support@gruby.app" className="text-[#FF1E00] hover:underline">
                   support@gruby.app
                 </a>
               </p>
-              <p className="text-base text-[#222222]">
+              <p className="text-[#222222]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1rem)' }}>
                 <strong>Response time:</strong> We typically respond within 24-48 hours.
               </p>
             </div>

@@ -74,8 +74,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <Link href={`/product/${product.id}`} className="block">
-      <div className="bg-white border-2 border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group">
+    <Link href={`/product/${product.id}`} className="block" style={{ containerType: 'inline-size' }}>
+      <div className="bg-white border-2 border-gray-100 rounded-xl overflow-hidden hover:shadow-md transition-shadow duration-200 group">
         {/* Product Image - Reduced height */}
         <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
           {product.images.length > 0 ? (
@@ -83,7 +83,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <img
                 src={product.images[currentImageIndex]}
                 alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover"
               />
               
               {/* Image Navigation */}
@@ -159,11 +159,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         
         {/* Product Info - Reduced padding and spacing */}
-        <div className="p-3">
+        <div style={{ padding: 'clamp(0.75rem, 1.5vw, 1rem)' }}>
           {/* Subscription Notice - More compact */}
           {product.subscriptionStatus && product.subscriptionStatus !== 'active' && (
-            <div className="mb-2 p-1.5 bg-yellow-50 border border-yellow-200 rounded-md">
-              <p className="text-xs text-yellow-800">
+            <div className="mb-2 bg-yellow-50 border border-yellow-200 rounded-md" style={{ 
+              padding: 'clamp(0.375rem, 0.75vw, 0.5rem)',
+              marginBottom: 'clamp(0.5rem, 1vw, 0.75rem)'
+            }}>
+              <p className="text-yellow-800" style={{ fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)' }}>
                 ⚠️ Subscription needed
               </p>
             </div>
@@ -171,25 +174,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
           
           {/* Product name and cook info in one line */}
           <div className="mb-1">
-            <h3 className="font-semibold text-base line-clamp-1">{product.name}</h3>
+            <h3 className="font-semibold line-clamp-1" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.5rem, 1rem)' }}>{product.name}</h3>
             {product.homeCookName && (
-              <p className="text-xs text-gray-600">by {product.homeCookName}</p>
+              <p className="text-gray-600" style={{ fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)' }}>by {product.homeCookName}</p>
             )}
           </div>
           
           {/* Cuisine type */}
           {product.homeCookCuisine && (
-            <p className="text-xs text-gray-500 mb-1">{product.homeCookCuisine}</p>
+            <p className="text-gray-500 mb-1" style={{ fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)' }}>{product.homeCookCuisine}</p>
           )}
           
           {/* Description - Reduced to single line */}
-          <p className="text-gray-600 text-xs mb-2 line-clamp-1">
+          <p className="text-gray-600 mb-2 line-clamp-1" style={{ fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)' }}>
             {product.description || 'No description available'}
           </p>
           
           {/* Price and Add to Cart - More compact */}
           <div className="flex items-center justify-between">
-            <span className="text-base font-bold text-[#FF4D00]">
+            <span className="font-bold text-[#FF4D00]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.5rem, 1rem)' }}>
               ${Number(product.price).toFixed(2)}
             </span>
             
@@ -197,7 +200,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <button
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
-                className="flex items-center gap-1 px-2 py-1.5 bg-[#FF4D00] text-white rounded-md hover:bg-[#E64500] transition-colors disabled:opacity-50 text-xs"
+                className="flex items-center gap-1 bg-[#FF4D00] text-white rounded-md hover:bg-[#E64500] transition-colors disabled:opacity-50"
+                style={{
+                  paddingLeft: 'clamp(0.5rem, 1vw, 0.75rem)',
+                  paddingRight: 'clamp(0.5rem, 1vw, 0.75rem)',
+                  paddingTop: 'clamp(0.375rem, 0.75vw, 0.5rem)',
+                  paddingBottom: 'clamp(0.375rem, 0.75vw, 0.5rem)',
+                  fontSize: 'clamp(0.75rem, 0.875vw + 0.25rem, 0.75rem)'
+                }}
               >
                 <ShoppingBag className="w-3 h-3" />
                 {isAddingToCart ? 'Adding...' : 'Add'}
