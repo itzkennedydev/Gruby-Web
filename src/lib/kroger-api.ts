@@ -5,7 +5,7 @@
 
 // Note: Client-side authentication removed - all API calls go through server-side route
 // Client ID can remain public, but secret should never be exposed client-side
-const KROGER_CLIENT_ID = process.env.NEXT_PUBLIC_KROGER_CLIENT_ID || 'gruby-bbc93mxh';
+const KROGER_CLIENT_ID = process.env.NEXT_PUBLIC_KROGER_CLIENT_ID || 'gruby-bbc94mcp';
 
 const API_BASE = 'https://api.kroger.com/v1';
 const AUTH_URL = 'https://api.kroger.com/v1/connect/oauth2/token';

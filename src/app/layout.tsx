@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 import Header from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -22,17 +23,19 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-white flex flex-col">
-        <ErrorBoundary>
-          <ReduxProvider>
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-          </ReduxProvider>
-        </ErrorBoundary>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className="min-h-screen bg-white flex flex-col">
+          <ErrorBoundary>
+            <ReduxProvider>
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+            </ReduxProvider>
+          </ErrorBoundary>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

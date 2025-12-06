@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const KROGER_CLIENT_ID = process.env.KROGER_CLIENT_ID || process.env.NEXT_PUBLIC_KROGER_CLIENT_ID || 'gruby-bbc93mxh';
-const KROGER_CLIENT_SECRET = process.env.KROGER_CLIENT_SECRET || 'efQVjBiDb5Bs4r5MOQRZ7uyJKUnM2a0hUz5Gh0v7';
+const KROGER_CLIENT_ID = process.env.KROGER_CLIENT_ID || process.env.NEXT_PUBLIC_KROGER_CLIENT_ID || 'gruby-bbc94mcp';
+const KROGER_CLIENT_SECRET = process.env.KROGER_CLIENT_SECRET || 'BGzjxxeOmggxu6gE0qOczAZo7nFwexCsfSTaAmxF';
 
 const API_BASE = 'https://api.kroger.com/v1';
 const AUTH_URL = 'https://api.kroger.com/v1/connect/oauth2/token';
@@ -20,33 +20,41 @@ async function getAccessToken(): Promise<string | null> {
 
   const credentials = Buffer.from(`${KROGER_CLIENT_ID}:${KROGER_CLIENT_SECRET}`).toString('base64');
 
-  const response = await fetch(AUTH_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${credentials}`,
-    },
-    body: 'grant_type=client_credentials&scope=product.compact',
-  });
+  try {
+    const response = await fetch(AUTH_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${credentials}`,
+      },
+      body: 'grant_type=client_credentials&scope=product.compact',
+    });
 
-  if (!response.ok) {
-    // Silently handle authentication failures - use fallback pricing
-    // This can happen if:
-    // - IP restrictions in Kroger developer portal
-    // - Credentials not configured for web/server-side use
-    // - Rate limiting or security restrictions
-    console.warn(`Kroger authentication failed: ${response.status}. Using fallback pricing.`);
+    if (!response.ok) {
+      // Handle authentication failures - use fallback pricing
+      // This can happen if:
+      // - IP restrictions in Kroger developer portal (localhost may not be whitelisted)
+      // - Credentials not configured for web/server-side use
+      // - Rate limiting or security restrictions
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.warn(`Kroger authentication failed: ${response.status}. Using fallback pricing.`);
+      console.warn(`Error details: ${errorText.substring(0, 200)}`);
+      console.warn(`Note: If you're on localhost, you may need to whitelist your IP in Kroger Developer Portal`);
+      return null;
+    }
+
+    const data = await response.json();
+
+    tokenCache = {
+      token: data.access_token,
+      expiresAt: Date.now() + (data.expires_in * 1000),
+    };
+
+    return data.access_token;
+  } catch (error: any) {
+    console.error('Kroger API request failed:', error.message);
     return null;
   }
-
-  const data = await response.json();
-
-  tokenCache = {
-    token: data.access_token,
-    expiresAt: Date.now() + (data.expires_in * 1000),
-  };
-
-  return data.access_token;
 }
 
 /**

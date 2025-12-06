@@ -1,30 +1,172 @@
-# Create T3 App
+# Gruby Web
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A budgeting-focused cooking companion web application designed to show people the real financial impact of cooking at home. Gruby connects food lovers with talented home cooks in their neighborhood and helps users save money by comparing delivery costs with home-cooked meal prices.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- 🍳 **Home Cook Marketplace** - Discover and connect with local home cooks
+- 💰 **Price Comparison** - Compare delivery app costs with home-cooked meal prices using real Kroger store data
+- 📊 **Savings Tracking** - Track how much you save by cooking at home
+- 🛒 **Grocery List Automation** - Build shopping lists from recipes instantly
+- 👥 **Community** - Join a community of home cooks sharing recipes and growing together
+- 🎨 **Modern UI** - Beautiful, responsive design built with Next.js and Tailwind CSS
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Tech Stack
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **Framework**: [Next.js 14](https://nextjs.org) with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL with [Drizzle ORM](https://orm.drizzle.team)
+- **Authentication**: [Clerk](https://clerk.com)
+- **State Management**: Redux Toolkit
+- **UI Components**: Radix UI, shadcn/ui
+- **Payments**: Stripe
+- **API Integration**: Kroger API for real-time grocery prices
 
-## Learn More
+## Getting Started
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### Prerequisites
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- Node.js 18+ 
+- npm, yarn, or bun
+- PostgreSQL database
+- Clerk account (for authentication)
+- Stripe account (for payments)
+- Kroger API credentials (optional, for price comparison)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Installation
 
-## How do I deploy this?
+1. Clone the repository:
+```bash
+git clone https://github.com/itzkennedydev/Gruby-Web.git
+cd Gruby-Web
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
-# grubWeb
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+bun install
+```
+
+3. Set up environment variables:
+Create a `.env.local` file in the root directory:
+
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/gruby"
+
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+# Stripe
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+
+# Kroger API (optional)
+KROGER_CLIENT_ID=your_kroger_client_id
+KROGER_CLIENT_SECRET=your_kroger_client_secret
+
+# Next.js
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+4. Set up the database:
+```bash
+npm run db:push
+# or
+npm run db:migrate
+```
+
+5. Run the development server:
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+grubWeb/
+├── src/
+│   ├── app/              # Next.js app router pages
+│   │   ├── (pages)/      # Route groups
+│   │   │   ├── MarketingPage.tsx
+│   │   │   ├── MainPage.tsx
+│   │   │   └── home-cook-onboarding/
+│   │   └── api/          # API routes
+│   │       └── kroger/   # Kroger API integration
+│   ├── components/       # React components
+│   ├── lib/              # Utility functions
+│   │   └── kroger-api.ts # Kroger API service
+│   └── store/            # Redux store
+├── drizzle/              # Database migrations
+└── public/               # Static assets
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run db:generate` - Generate database migrations
+- `npm run db:push` - Push schema changes to database
+- `npm run db:migrate` - Run database migrations
+- `npm run db:studio` - Open Drizzle Studio
+
+## Key Features
+
+### Marketing Page
+A comprehensive landing page showcasing:
+- App features and benefits
+- Price comparison between delivery apps and home cooking
+- Community benefits
+- Waitlist signup
+
+### Home Cook Marketplace
+- Browse local home cooks
+- View cook profiles and specialties
+- Filter by cuisine type
+- View ratings and reviews
+
+### Price Comparison
+- Real-time grocery prices from Kroger stores
+- Compare delivery costs vs. home-cooked meals
+- Calculate savings per meal
+- Track monthly savings
+
+## Environment Variables
+
+### Required
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk publishable key
+- `CLERK_SECRET_KEY` - Clerk secret key
+
+### Optional
+- `KROGER_CLIENT_ID` - Kroger API client ID
+- `KROGER_CLIENT_SECRET` - Kroger API client secret (server-side only)
+- `STRIPE_SECRET_KEY` - Stripe secret key
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+
+**Note**: Never commit `.env.local` or expose sensitive credentials. The Kroger client secret should only be used server-side.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is private and proprietary.
+
+## Contact
+
+For questions or support, please open an issue on GitHub.
+
+---
+
+Built with ❤️ by the Gruby team
