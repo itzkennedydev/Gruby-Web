@@ -121,6 +121,46 @@ export default function SharedShoppingListPage() {
     }, 500);
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleSharePage = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: listData?.name || 'Shopping List',
+          text: `${listData?.sharedBy || 'Someone'} shared a shopping list with you`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        // User cancelled or error occurred
+        console.log('Share cancelled');
+      }
+    } else {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard!');
+      } catch (error) {
+        console.error('Failed to copy link:', error);
+      }
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      });
+    } catch {
+      return '';
+    }
+  };
+
   if (loading) {
     return (
       <div style={styles.container}>
@@ -144,7 +184,6 @@ export default function SharedShoppingListPage() {
   }
 
   const categoryGroups = groupByCategory(listData.items);
-  const checkedCount = listData.items.filter(item => item.checked).length;
   const totalItems = listData.items.length;
 
   return (
@@ -168,7 +207,7 @@ export default function SharedShoppingListPage() {
             <span style={styles.summaryTotal}>${listData.total.toFixed(2)}</span>
             {totalItems > 0 && (
               <span style={styles.summarySubtext}>
-                {checkedCount}/{totalItems} items
+                {totalItems} {totalItems === 1 ? 'item' : 'items'}
               </span>
             )}
           </div>
@@ -367,7 +406,7 @@ const styles: Record<string, React.CSSProperties> = {
     maxWidth: '600px',
     margin: '0 auto',
     padding: '20px',
-    paddingBottom: '120px', // Space for import section
+    paddingBottom: '40px',
   },
   categorySection: {
     marginBottom: '24px',
