@@ -8,8 +8,7 @@ import { setWaitlistModalOpen } from '@/store/slices/uiSlice';
 import { 
   Loader2,
   X,
-  Check,
-  CheckCircle2
+  Check
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { calculateMealPrice } from '@/lib/kroger-api';
@@ -84,15 +83,6 @@ const benefits = [
     stats: 'Real-time',
     statLabel: 'Savings tracking',
   },
-];
-
-const valueProps = [
-  'Budget-friendly meal planning',
-  'Local home cook marketplace',
-  'Grocery list automation',
-  'Price comparison tools',
-  'Savings tracking & insights',
-  'Community-driven recipes',
 ];
 
 // About values
@@ -394,7 +384,7 @@ export default function MarketingPage() {
         </div>
 
         {/* App Preview Section */}
-        <section className="pt-24 sm:pt-32 md:pt-40 lg:pt-48 pb-12 sm:pb-16 md:pb-20 lg:pb-28">
+        <section className="pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-20 lg:pb-28">
           <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-black rounded-2xl sm:rounded-3xl pt-28 sm:pt-32 md:pt-36 lg:pt-40 px-6 sm:px-8 md:px-12 lg:px-16 pb-6 sm:pb-8 md:pb-12 lg:pb-16 relative min-h-[450px] sm:min-h-[500px] md:min-h-[550px] lg:min-h-[600px] flex items-center">
               <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 sm:gap-12 lg:gap-16 w-full h-full">
@@ -573,25 +563,11 @@ export default function MarketingPage() {
               ))}
             </div>
 
-            {/* Value Props */}
-            <div className="bg-[#f5f5f7] rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12">
-              <h3 className="text-lg sm:text-xl font-semibold text-[#222222] mb-6 sm:mb-8 text-center">
-                Everything in one place
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto">
-                {valueProps.map((prop, index) => (
-                  <div key={index} className="flex items-center gap-2 sm:gap-3">
-                    <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#16A34A] flex-shrink-0" strokeWidth={2} />
-                    <span className="text-sm sm:text-base text-[#222222]">{prop}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
         {/* Comparison Section - Redesigned */}
-        <section id="comparison" className="py-20 md:py-28 bg-[#f5f5f7]">
+        <section id="comparison" className="py-12 sm:py-16 md:py-20 lg:py-28 bg-[#f5f5f7]">
           <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-6 sm:mb-8 md:mb-12">
               <p className="text-base sm:text-lg md:text-xl text-[#717171] max-w-2xl mx-auto px-4">
@@ -884,7 +860,6 @@ export default function MarketingPage() {
                 <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
                   <li><Link href="/terms" className="text-[#717171] hover:text-[#222222] transition-colors">Terms</Link></li>
                   <li><Link href="/privacy" className="text-[#717171] hover:text-[#222222] transition-colors">Privacy</Link></li>
-                  <li><Link href="/cookies" className="text-[#717171] hover:text-[#222222] transition-colors">Cookies</Link></li>
                 </ul>
               </div>
 

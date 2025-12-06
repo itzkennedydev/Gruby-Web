@@ -3,109 +3,77 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram } from 'lucide-react';
 import { useState } from 'react';
 
-interface SocialLink {
-  href: string;
-  ariaLabel: string;
-  icon: JSX.Element;
-}
-
-const socialLinks: SocialLink[] = [
-  { href: '#', ariaLabel: 'Facebook', icon: <Facebook className="w-6 h-6" /> },
-  { href: '#', ariaLabel: 'Twitter', icon: <Twitter className="w-6 h-6" /> },
-  { href: '#', ariaLabel: 'Instagram', icon: <Instagram className="w-6 h-6" /> },
-];
-
-function SocialIcons() {
-  return (
-    <div className="flex space-x-4">
-      {socialLinks.map((link) => (
-        <a key={link.ariaLabel} href={link.href} aria-label={link.ariaLabel} className="text-gray-800 hover:text-black">
-          {link.icon}
-        </a>
-      ))}
-    </div>
-  );
-}
-
-function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
-      {children}
-    </div>
-  );
-}
-
 export function Footer() {
-  const [email, setEmail] = useState('');
+  const [footerEmail, setFooterEmail] = useState('');
 
   function handleNewsletterSubmit(event: React.FormEvent) {
     event.preventDefault();
     // Handle newsletter subscription logic here
-    setEmail(''); // Clear the input after submission
+    setFooterEmail(''); // Clear the input after submission
   }
 
   return (
-    <footer className="bg-gray-100 text-gray-800 pt-12 border-t border-gray-200">
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          <FooterColumn title="">
-            <div className="mb-4">
-              <Image
-                src="/GrubyLogo.svg"
-                alt="Gruby Logo"
-                width={120}
-                height={44}
-              />
-            </div>
-            <p className="text-sm mb-4">Connecting food lovers with talented home cooks.</p>
-            <SocialIcons />
-          </FooterColumn>
+    <footer className="bg-white border-t border-[#E5E5E5]">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          <div className="col-span-1 sm:col-span-2 md:col-span-1">
+            <Image
+              src="/GrubyLogo.svg"
+              alt="Gruby Logo"
+              width={100}
+              height={36}
+              className="mb-3 sm:mb-4"
+            />
+            <p className="text-xs sm:text-sm text-[#717171]">
+              Join a community of home cooks sharing recipes and growing together.
+            </p>
+          </div>
 
-          <FooterColumn title="Quick Links">
-            <ul className="space-y-2">
-              <li><Link href="/about" className="text-gray-800 hover:underline">About Us</Link></li>
-              <li><Link href="/faq" className="text-gray-800 hover:underline">FAQ</Link></li>
-              <li><Link href="/contact" className="text-gray-800 hover:underline">Contact</Link></li>
-              <li><Link href="/home-cooks" className="text-gray-800 hover:underline">Find a Home Cook</Link></li>
+          <div>
+            <h3 className="font-semibold text-[#222222] mb-3 sm:mb-4 text-xs sm:text-sm">Support</h3>
+            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
+              <li><Link href="/about" className="text-[#717171] hover:text-[#222222] transition-colors">About Us</Link></li>
+              <li><Link href="/faq" className="text-[#717171] hover:text-[#222222] transition-colors">FAQ</Link></li>
+              <li><Link href="/contact" className="text-[#717171] hover:text-[#222222] transition-colors">Contact</Link></li>
             </ul>
-          </FooterColumn>
+          </div>
 
-          <FooterColumn title="Legal">
-            <ul className="space-y-2">
-              <li><Link href="/terms" className="text-gray-800 hover:underline">Terms of Service</Link></li>
-              <li><Link href="/privacy" className="text-gray-800 hover:underline">Privacy Policy</Link></li>
+          <div>
+            <h3 className="font-semibold text-[#222222] mb-3 sm:mb-4 text-xs sm:text-sm">Legal</h3>
+            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
+              <li><Link href="/terms" className="text-[#717171] hover:text-[#222222] transition-colors">Terms</Link></li>
+              <li><Link href="/privacy" className="text-[#717171] hover:text-[#222222] transition-colors">Privacy</Link></li>
             </ul>
-          </FooterColumn>
+          </div>
 
-          <FooterColumn title="Newsletter">
-            <p className="text-sm mb-4">Stay updated with our latest offers and home cook stories.</p>
-            <form onSubmit={handleNewsletterSubmit} noValidate>
+          <div>
+            <h3 className="font-semibold text-[#222222] mb-3 sm:mb-4 text-xs sm:text-sm">Newsletter</h3>
+            <form onSubmit={handleNewsletterSubmit} className="space-y-2">
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={footerEmail}
+                onChange={(e) => setFooterEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full p-2 mb-2 border border-gray-300 rounded"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm md:text-base bg-[#f5f5f7] border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FF1E00] transition-shadow"
                 required
               />
               <button
                 type="submit"
-                className="w-full p-2 bg-black text-white rounded hover:bg-gray-800"
+                className="w-full px-4 py-2 sm:py-2.5 md:py-3 bg-[#FF1E00] hover:bg-[#E01A00] text-white text-xs sm:text-sm md:text-base font-medium rounded-full transition-all"
               >
                 Subscribe
               </button>
             </form>
-          </FooterColumn>
+          </div>
         </div>
       </div>
-      <div className="bg-gray-200 py-4 mt-12">
-        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-600">
-            &copy; {new Date().getFullYear()} Gruby. All rights reserved.
+      
+      <div className="border-t border-[#E5E5E5]">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <p className="text-center text-xs sm:text-sm text-[#717171]">
+            © {new Date().getFullYear()} Gruby. All rights reserved.
           </p>
         </div>
       </div>
