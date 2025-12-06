@@ -385,7 +385,7 @@ export default function MarketingPage() {
                   const element = document.getElementById('features');
                   element?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/10 text-white border-2 border-white hover:border-white/80 text-sm md:text-base font-medium rounded-full transition-all"
+                className="px-4 py-2 md:px-6 md:py-3 bg-transparent hover:bg-white/20 text-white border-2 border-white hover:border-white text-sm md:text-base font-medium rounded-full transition-all"
               >
                 Learn More
               </Button>
@@ -394,71 +394,104 @@ export default function MarketingPage() {
         </div>
 
         {/* App Preview Section */}
-        <section className="py-12 sm:py-16 md:py-20 lg:py-28">
+        <section className="pt-24 sm:pt-32 md:pt-40 lg:pt-48 pb-12 sm:pb-16 md:pb-20 lg:pb-28">
           <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#222222] mb-2 sm:mb-3">
-                Cooking made simple
-              </h2>
-              <p className="text-sm sm:text-base text-[#717171] max-w-xl mx-auto px-4">
-                Everything you need to save money on meals, right in your pocket
-              </p>
-            </div>
+            <div className="bg-black rounded-2xl sm:rounded-3xl pt-28 sm:pt-32 md:pt-36 lg:pt-40 px-6 sm:px-8 md:px-12 lg:px-16 pb-6 sm:pb-8 md:pb-12 lg:pb-16 relative min-h-[450px] sm:min-h-[500px] md:min-h-[550px] lg:min-h-[600px] flex items-center">
+              <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8 sm:gap-12 lg:gap-16 w-full h-full">
+                {/* Content and Progress Bar - Right side / Top on mobile */}
+                <div className="flex flex-col justify-center items-center lg:items-start max-w-md w-full px-4 sm:px-0 lg:ml-[45%] order-1 lg:-mt-28">
+                  {/* Heading and Description */}
+                  <div className="text-left mb-6 sm:mb-8 w-full">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 sm:mb-6 whitespace-nowrap">
+                      Cooking made simple
+                    </h2>
+                    <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
+                      Everything you need to save money on meals, right in your pocket
+                    </p>
+                  </div>
 
-            <div className="bg-[#f5f5f7] rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-16">
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-12 lg:gap-16">
-                {/* Mockup */}
-                <div className="flex flex-col items-center">
-                  <PhoneMockup>
-                    {/* Add your mobile app screenshot here */}
-                  </PhoneMockup>
-                </div>
-                
-                {/* Content */}
-                <div className="max-w-md w-full px-4 sm:px-0">
-                  <div className="relative overflow-hidden min-h-[200px] sm:min-h-[220px]">
+                  {/* Rotating Bullet Points */}
+                  <div className="relative overflow-hidden min-h-[200px] sm:min-h-[220px] mb-0 w-full">
                     {appSlides.map((slide, index) => (
-                      <div 
-                        key={index} 
-                        className={`transition-all duration-500 ease-out ${
+                      <ul 
+                        key={index}
+                        className={`space-y-4 sm:space-y-5 list-disc list-inside transition-all duration-500 ease-out ${
                           currentSlide === index 
                             ? 'opacity-100 translate-x-0' 
                             : 'opacity-0 absolute top-0 left-0 right-0 translate-x-8'
                         }`}
                       >
-                        <h3 className="text-lg sm:text-xl font-semibold text-[#222222] mb-2 sm:mb-3">
-                          {slide.title}
-                        </h3>
-                        <p className="text-sm sm:text-base text-[#717171] mb-4 sm:mb-6 leading-relaxed">
-                          {slide.description}
-                        </p>
-                        <ul className="space-y-2 sm:space-y-3 list-disc list-inside">
-                          {slide.features.map((feature, i) => (
-                            <li key={i} className="text-sm sm:text-base text-[#222222]">
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                        {slide.features.map((feature, i) => (
+                          <li key={i} className="text-base sm:text-lg text-white leading-relaxed">
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
                     ))}
                   </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="flex justify-between items-center w-full gap-2 -mt-8 sm:-mt-10">
+                    {appSlides.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 flex-1 ${
+                          currentSlide === index 
+                            ? 'bg-white' 
+                            : 'bg-white/30 hover:bg-white/50'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* App Store Links */}
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full mt-6 sm:mt-8">
+                    <a
+                      href="https://apps.apple.com/app/gruby"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-colors"
+                      aria-label="Download on the App Store"
+                    >
+                      <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                      </svg>
+                      <div className="flex flex-col items-start">
+                        <span className="text-[10px] sm:text-xs leading-tight">Download on the</span>
+                        <span className="text-sm sm:text-base font-semibold leading-tight">App Store</span>
+                      </div>
+                    </a>
+                    <a
+                      href="https://play.google.com/store/apps/details?id=com.gruby.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center h-12 sm:h-14 bg-white text-black rounded-xl sm:rounded-2xl px-4 sm:px-6 hover:bg-gray-100 transition-colors"
+                      aria-label="Get it on Google Play"
+                    >
+                      <svg className="w-6 h-6 sm:w-7 sm:h-7 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                      </svg>
+                      <div className="flex flex-col items-start">
+                        <span className="text-[10px] sm:text-xs leading-tight">Get it on</span>
+                        <span className="text-sm sm:text-base font-semibold leading-tight">Google Play</span>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              
-              {/* Progress Bar - Full width at bottom */}
-              <div className="flex justify-between items-center w-full mt-6 sm:mt-8 gap-2">
-                {appSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 flex-1 ${
-                      currentSlide === index 
-                        ? 'bg-[#222222]' 
-                        : 'bg-[#D4D4D4] hover:bg-[#ABABAB]'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
+                
+                {/* Image - Left side on desktop, bottom on mobile */}
+                <div className="flex-shrink-0 lg:absolute lg:bottom-0 lg:left-6 md:left-12 lg:left-16 z-0 order-2">
+                  <Image
+                    src="/Mobile phone.png"
+                    alt="Gruby mobile app"
+                    width={500}
+                    height={1000}
+                    className="w-auto h-auto max-w-[400px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] xl:max-w-[720px] object-contain"
+                    priority
                   />
-                ))}
+                </div>
               </div>
             </div>
           </div>

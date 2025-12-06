@@ -78,7 +78,6 @@ export function Footer() {
             <ul className="space-y-2">
               <li><Link href="/terms" className="text-gray-800 hover:underline">Terms of Service</Link></li>
               <li><Link href="/privacy" className="text-gray-800 hover:underline">Privacy Policy</Link></li>
-              <li><Link href="/cookies" className="text-gray-800 hover:underline">Cookie Policy</Link></li>
             </ul>
           </FooterColumn>
 
