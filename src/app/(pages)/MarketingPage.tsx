@@ -10,7 +10,7 @@ import {
   X,
   Check
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { calculateMealPrice } from '@/lib/kroger-api';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -336,6 +336,37 @@ function AppPreviewSectionAnimated({ currentSlide, setCurrentSlide }: { currentS
 
 // Animated Features Section Component
 function FeaturesSectionAnimated() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft;
+      const containerWidth = container.clientWidth;
+      const cardWidth = containerWidth; // First card is full width
+      const otherCardWidth = containerWidth * 0.85; // Other cards are 85vw
+      
+      // Calculate which card is currently in view
+      let currentIndex = 0;
+      let accumulatedWidth = cardWidth;
+      
+      if (scrollLeft < cardWidth * 0.5) {
+        currentIndex = 0;
+      } else {
+        currentIndex = Math.round((scrollLeft - cardWidth + otherCardWidth * 0.5) / (otherCardWidth + 16)) + 1;
+        currentIndex = Math.min(currentIndex, features.length - 1);
+      }
+      
+      setActiveIndex(currentIndex);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section 
       id="features" 
@@ -351,7 +382,55 @@ function FeaturesSectionAnimated() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {/* Mobile: Horizontal scrollable carousel */}
+        <div className="sm:hidden">
+          <div 
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide" 
+            style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+          >
+            {features.map((feature, index) => (
+              <div 
+                key={index}
+                className={`bg-white rounded-2xl p-6 border border-[#E5E5E5] flex-shrink-0 ${index === 0 ? 'w-full' : 'w-[85vw] max-w-[320px]'}`}
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <h3 className="text-lg font-semibold text-[#222222] mb-2 leading-tight" style={{ fontSize: 'clamp(1rem, 4vw, 1.125rem)' }}>
+                  {feature.title}
+                </h3>
+                <p className="text-[#717171] text-sm leading-relaxed" style={{ fontSize: 'clamp(0.875rem, 3.5vw, 0.9375rem)' }}>
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+          {/* Scroll indicator dots */}
+          <div className="flex justify-center items-center gap-2 mt-6">
+            {features.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  const container = scrollContainerRef.current;
+                  if (!container) return;
+                  const cardWidth = container.clientWidth;
+                  const otherCardWidth = container.clientWidth * 0.85;
+                  const scrollPosition = index === 0 ? 0 : cardWidth + (index - 1) * (otherCardWidth + 16);
+                  container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                }}
+                className={`transition-all duration-300 rounded-full ${
+                  index === activeIndex 
+                    ? 'w-8 h-2 bg-[#FF1E00]' 
+                    : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to feature ${index + 1}`}
+                aria-current={index === activeIndex ? 'true' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Tablet and Desktop: Grid layout */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {features.map((feature, index) => (
             <div 
               key={index}
