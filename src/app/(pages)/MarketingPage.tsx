@@ -392,8 +392,12 @@ function FeaturesSectionAnimated() {
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className={`bg-white rounded-2xl p-6 border border-[#E5E5E5] flex-shrink-0 ${index === 0 ? 'w-full' : 'w-[85vw] max-w-[320px]'}`}
-                style={{ scrollSnapAlign: 'start' }}
+                className="bg-white rounded-2xl p-6 border border-[#E5E5E5] flex-shrink-0"
+                style={{ 
+                  scrollSnapAlign: 'start',
+                  width: index === 0 ? '100%' : '85vw',
+                  maxWidth: index === 0 ? '100%' : '320px'
+                }}
               >
                 <h3 className="text-lg font-semibold text-[#222222] mb-2 leading-tight" style={{ fontSize: 'clamp(1rem, 4vw, 1.125rem)' }}>
                   {feature.title}
