@@ -661,9 +661,9 @@ function CTASectionAnimated({
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
+          <div className="flex flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-row lg:items-center lg:gap-16">
             {/* Content - Top on mobile, left on desktop */}
-              <div className="order-1 w-full flex-1 text-center lg:text-left">
+            <div className="order-1 w-full flex-1 text-center lg:text-left">
               <h2 className="mb-3 text-xl font-semibold text-white sm:mb-4 sm:text-2xl md:text-3xl">
                 Join the waitlist
               </h2>
@@ -683,7 +683,7 @@ function CTASectionAnimated({
               ) : (
                 <form
                   onSubmit={handleBetaSignup}
-                  className="mx-auto flex w-full max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center"
+                  className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
                 >
                   <input
                     type="email"
