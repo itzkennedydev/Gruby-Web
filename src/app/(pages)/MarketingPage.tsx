@@ -1202,7 +1202,7 @@ export default function MarketingPage() {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
-          <div className="relative mx-auto flex h-full max-w-[1920px] flex-col items-start justify-center px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-center px-4 sm:px-6 lg:px-8">
             <h1
               className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
               style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
@@ -1216,21 +1216,31 @@ export default function MarketingPage() {
               Gruby is a budgeting-focused cooking companion designed to show
               people the real financial impact of cooking at home.
             </p>
-            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+            <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
               <button
-                onClick={() => dispatch(setWaitlistModalOpen(true))}
-                className="inline-flex items-center justify-center rounded-full bg-[#FF1E00] px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] md:px-6 md:py-3 md:text-base"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  dispatch(setWaitlistModalOpen(true));
+                }}
+                className="h-[42px] inline-flex items-center justify-center rounded-full bg-[#FF1E00] px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[44px] sm:text-base"
               >
-                Join Waitlist
+                Get Early Access
               </button>
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   const element = document.getElementById("features");
-                  element?.scrollIntoView({ behavior: "smooth" });
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }
                 }}
-                className="inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:border-white hover:bg-white/20 hover:text-white md:px-6 md:py-3 md:text-base"
+                className="h-[42px] inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-6 text-sm font-medium text-white transition-all duration-200 hover:border-white hover:bg-white/20 hover:text-white sm:h-[44px] sm:text-base"
               >
-                Learn More
+                Explore Features
               </button>
             </div>
           </div>

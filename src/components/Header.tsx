@@ -117,7 +117,7 @@ const Header = () => {
                 fontSize: 'clamp(0.875rem, 1vw, 0.9375rem)'
               }}
             >
-              Join Waitlist
+              Get Notified
             </Button>
           </div>
         </div>

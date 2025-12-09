@@ -1,175 +1,223 @@
 import { Resend } from "resend";
+import { env } from "@/env";
+import { getBaseUrl } from "@/lib/utils";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(env.RESEND_API_KEY);
+
+// Get the logo URL - use the API route for better email client compatibility
+const getLogoUrl = () => {
+  const baseUrl = getBaseUrl();
+  return `${baseUrl}/api/logo`;
+};
 
 export async function sendWaitlistConfirmation(email: string) {
   try {
     const { data, error } = await resend.emails.send({
       from: "Gruby <noreply@gruby.app>",
       to: [email],
-      subject: "Welcome to the Gruby Waitlist! 🎉",
+      subject: "Welcome to Gruby, we are glad you are here ✨",
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to Gruby</title>
-          <style>
-            body {
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              margin: 0;
-              padding: 0;
-              background-color: #f5f5f7;
-              color: #222222;
-            }
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+          }
+
+          .container {
+            width: 100percent !important;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 12px;
+          }
+
+          @media only screen and (max-width: 600px) {
             .container {
-              max-width: 600px;
-              margin: 0 auto;
-              padding: 20px;
+              border-radius: 0 !important;
             }
-            .header {
-              text-align: center;
-              padding: 40px 0;
-              background: white;
-              border-radius: 16px 16px 0 0;
+
+            .wrapper {
+              padding: 0 !important;
             }
-            .logo {
-              width: 120px;
-              height: auto;
-              margin-bottom: 20px;
-            }
+
             .content {
-              background: white;
-              padding: 0 40px 40px;
-              border-radius: 0 0 16px 16px;
+              padding: 32px 24px !important;
             }
-            .title {
-              font-size: 28px;
-              font-weight: 700;
-              margin-bottom: 16px;
-              color: #222222;
+
+            .feature-block {
+              padding: 28px 24px !important;
             }
-            .subtitle {
-              font-size: 18px;
-              color: #717171;
-              margin-bottom: 32px;
-              line-height: 1.5;
+
+            .mobile-center {
+              text-align: center !important;
             }
-            .feature-list {
-              background: #f5f5f7;
-              border-radius: 12px;
-              padding: 24px;
-              margin: 32px 0;
+
+            .btn {
+              display: block !important;
+              width: 100percent !important;
             }
-            .feature-item {
-              display: flex;
-              align-items: center;
-              margin-bottom: 16px;
+
+            /* Hide checkmark icons on mobile */
+            .icon-col {
+              display: none !important;
+              width: 0 !important;
+              height: 0 !important;
+              overflow: hidden !important;
             }
-            .feature-item:last-child {
-              margin-bottom: 0;
-            }
-            .checkmark {
-              width: 24px;
-              height: 24px;
-              background: #FF1E00;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              margin-right: 16px;
-              flex-shrink: 0;
-            }
-            .checkmark::after {
-              content: '✓';
-              color: white;
-              font-weight: bold;
-            }
-            .feature-text {
-              font-size: 16px;
-              color: #222222;
-            }
-            .cta-button {
-              display: inline-block;
-              background: #FF1E00;
-              color: white;
-              text-decoration: none;
-              padding: 16px 32px;
-              border-radius: 50px;
-              font-weight: 600;
-              font-size: 16px;
-              text-align: center;
-              margin: 32px 0;
-              transition: background-color 0.2s;
-            }
-            .cta-button:hover {
-              background: #E01A00;
-            }
-            .footer {
-              text-align: center;
-              padding: 32px 0;
-              color: #717171;
-              font-size: 14px;
-            }
-            .social-links {
-              margin-top: 16px;
-            }
-            .social-link {
-              color: #717171;
-              text-decoration: none;
-              margin: 0 8px;
-            }
-            .social-link:hover {
-              color: #FF1E00;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <img src="https://gruby.app/GrubyLogo.svg" alt="Gruby Logo" class="logo">
-            </div>
-            <div class="content">
-              <h1 class="title">You're on the list! 🎉</h1>
-              <p class="subtitle">
-                Thanks for joining the Gruby waitlist. We're building something special to help you cook smarter and save more.
-              </p>
-              
-              <div class="feature-list">
-                <div class="feature-item">
-                  <div class="checkmark"></div>
-                  <div class="feature-text">Save $300+ per month on food</div>
-                </div>
-                <div class="feature-item">
-                  <div class="checkmark"></div>
-                  <div class="feature-text">Connect with local home cooks</div>
-                </div>
-                <div class="feature-item">
-                  <div class="checkmark"></div>
-                  <div class="feature-text">Track your savings in real-time</div>
-                </div>
-              </div>
-              
-              <div style="text-align: center;">
-                <a href="https://gruby.app" class="cta-button">Learn More About Gruby</a>
-              </div>
-              
-              <p style="font-size: 16px; color: #717171; line-height: 1.5; margin-top: 32px;">
-                We'll send you updates as we get closer to launch. In the meantime, follow us on social media for cooking tips and behind-the-scenes content!
-              </p>
-            </div>
-            <div class="footer">
-              <p>© 2024 Gruby. All rights reserved.</p>
-              <div class="social-links">
-                <a href="#" class="social-link">Twitter</a>
-                <a href="#" class="social-link">Instagram</a>
-                <a href="#" class="social-link">LinkedIn</a>
-              </div>
-            </div>
-          </div>
-        </body>
-        </html>
+          }
+        </style>
+      </head>
+
+      <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <table role="presentation" width="100percent" cellspacing="0" cellpadding="0" class="wrapper" style="background-color: #f8f9fa; padding: 40px 20px;">
+          <tr>
+            <td align="center">
+
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" class="container" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+
+                <!-- Header -->
+                <tr>
+                  <td style="padding: 48px 48px 40px; text-align: center; border-bottom: 1px solid #e9ecef;">
+                    <img src="${getLogoUrl()}" alt="Gruby" width="160" height="40" border="0" style="display: block; margin: 0 auto; max-width: 160px; height: auto; width: 160px;" />
+                  </td>
+                </tr>
+
+                <!-- Main Content -->
+                <tr>
+                  <td class="content" style="padding: 56px 48px 0;">
+                    <h1 style="margin: 0 0 20px; font-size: 34px; font-weight: 700; line-height: 1.25; color: #1a1a1a; text-align: center;">
+                      You are officially on the list 🎉
+                    </h1>
+                    <p style="margin: 0 0 40px; font-size: 17px; color: #4a5568; line-height: 1.7; text-align: center;">
+                      Thank you for joining the Gruby waitlist. We are building something we always wished existed, a simple and thoughtful way to cook more, spend less, and feel inspired in your own kitchen. We are really glad you are here.
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Features Section -->
+                <tr>
+                  <td style="padding: 0 48px 40px;">
+                    <table role="presentation" width="100percent" class="feature-block" style="background-color: #f8f9fa; border-radius: 16px; padding: 40px 36px;">
+
+                      <!-- Feature 1 -->
+                      <tr>
+                        <td style="padding-bottom: 24px;">
+                          <table role="presentation" width="100percent">
+                            <tr>
+                              <td class="icon-col" width="36" valign="top">
+                                <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
+                                  ✓
+                                </div>
+                              </td>
+                              <td style="padding-left: 20px;">
+                                <p style="margin: 0; font-size: 17px; font-weight: 600; color: #1a1a1a;">
+                                  Save more without trying
+                                </p>
+                                <p style="margin: 6px 0 0; font-size: 15px; color: #4a5568;">
+                                  Smart price insights help you spend less on groceries while keeping the meals you love.
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- Feature 2 -->
+                      <tr>
+                        <td style="padding-bottom: 24px;">
+                          <table role="presentation" width="100percent">
+                            <tr>
+                              <td class="icon-col" width="36" valign="top">
+                                <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
+                                  ✓
+                                </div>
+                              </td>
+                              <td style="padding-left: 20px;">
+                                <p style="margin: 0; font-size: 17px; font-weight: 600; color: #1a1a1a;">
+                                  Recipes from real people
+                                </p>
+                                <p style="margin: 6px 0 0; font-size: 15px; color: #4a5568;">
+                                  Discover dishes made by real home cooks in your community, not curated or staged, just real.
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                      <!-- Feature 3 -->
+                      <tr>
+                        <td>
+                          <table role="presentation" width="100percent">
+                            <tr>
+                              <td class="icon-col" width="36" valign="top">
+                                <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
+                                  ✓
+                                </div>
+                              </td>
+                              <td style="padding-left: 20px;">
+                                <p style="margin: 0; font-size: 17px; font-weight: 600; color: #1a1a1a;">
+                                  Your pantry but smarter
+                                </p>
+                                <p style="margin: 6px 0 0; font-size: 15px; color: #4a5568;">
+                                  Gruby learns what you have on hand and suggests meals you can make right now with no extra trips.
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- CTA -->
+                <tr>
+                  <td style="padding: 0 48px 40px; text-align: center;">
+                    <a href="https://gruby.app"
+                      class="btn"
+                      style="display: inline-block; padding: 18px 48px; background-color: #FF1E00; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 17px; box-shadow: 0 4px 12px rgba(255, 30, 0, 0.3);">
+                      Learn more about Gruby
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Closing -->
+                <tr>
+                  <td class="content" style="padding: 0 48px 56px;">
+                    <p style="margin: 0; font-size: 16px; color: #4a5568; text-align: center; line-height: 1.7;">
+                      We will keep you updated as we get closer to launch. Until then, you can follow along for cooking ideas, early previews, and the small moments behind building Gruby.
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 40px 48px; background-color: #f8f9fa; text-align: center; border-top: 1px solid #e9ecef;">
+                    <a href="https://twitter.com/gruby" style="margin: 0 16px; color: #4a5568; font-size: 15px; text-decoration: none;">Twitter</a>
+                    <a href="https://instagram.com/gruby" style="margin: 0 16px; color: #4a5568; font-size: 15px; text-decoration: none;">Instagram</a>
+                    <a href="https://linkedin.com/company/gruby" style="margin: 0 16px; color: #4a5568; font-size: 15px; text-decoration: none;">LinkedIn</a>
+                    <p style="margin: 20px 0 0; font-size: 14px; color: #718096;">
+                      © ${new Date().getFullYear()} Gruby. All rights reserved.
+                    </p>
+                  </td>
+                </tr>
+
+              </table>
+
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
       `,
     });
 
@@ -190,129 +238,94 @@ export async function sendAdminNotification(email: string) {
     const { data, error } = await resend.emails.send({
       from: "Gruby <noreply@gruby.app>",
       to: ["itskennedy.dev@gmail.com"],
-      subject: "New Waitlist Signup! 🚀",
+      subject: "A new person just joined the waitlist 🚀",
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Waitlist Signup</title>
-          <style>
-            body {
-              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              margin: 0;
-              padding: 0;
-              background-color: #f5f5f7;
-              color: #222222;
-            }
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+          .container {
+            width: 100percent !important;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 12px;
+          }
+          @media only screen and (max-width: 600px) {
             .container {
-              max-width: 600px;
-              margin: 0 auto;
-              padding: 20px;
-            }
-            .header {
-              background: #FF1E00;
-              color: white;
-              padding: 32px;
-              border-radius: 16px 16px 0 0;
-              text-align: center;
-            }
-            .logo {
-              width: 80px;
-              height: auto;
-              margin-bottom: 16px;
-            }
-            .title {
-              font-size: 24px;
-              font-weight: 700;
-              margin: 0;
+              border-radius: 0 !important;
             }
             .content {
-              background: white;
-              padding: 32px;
-              border-radius: 0 0 16px 16px;
+              padding: 32px 24px !important;
             }
-            .email-box {
-              background: #f5f5f7;
-              border: 2px solid #FF1E00;
-              border-radius: 12px;
-              padding: 20px;
-              text-align: center;
-              margin: 24px 0;
-            }
-            .email {
-              font-size: 20px;
-              font-weight: 600;
-              color: #FF1E00;
-              margin: 0;
-            }
-            .stats {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              gap: 16px;
-              margin: 32px 0;
-            }
-            .stat {
-              background: #f5f5f7;
-              padding: 20px;
-              border-radius: 12px;
-              text-align: center;
-            }
-            .stat-number {
-              font-size: 24px;
-              font-weight: 700;
-              color: #FF1E00;
-              margin-bottom: 8px;
-            }
-            .stat-label {
-              font-size: 14px;
-              color: #717171;
-            }
-            .footer {
-              text-align: center;
-              padding: 24px 0;
-              color: #717171;
-              font-size: 14px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <img src="https://gruby.app/GrubyLogo.svg" alt="Gruby Logo" class="logo">
-              <h1 class="title">New Waitlist Signup! 🚀</h1>
-            </div>
-            <div class="content">
-              <p style="font-size: 18px; margin-bottom: 24px;">
-                Someone just joined the Gruby waitlist! Here are the details:
-              </p>
-              
-              <div class="email-box">
-                <p class="email">${email}</p>
-              </div>
-              
-              <div class="stats">
-                <div class="stat">
-                  <div class="stat-number">1</div>
-                  <div class="stat-label">New signup today</div>
-                </div>
-                <div class="stat">
-                  <div class="stat-number">Growing</div>
-                  <div class="stat-label">Total waitlist</div>
-                </div>
-              </div>
-              
-              <p style="font-size: 16px; color: #717171; line-height: 1.5;">
-                Keep up the great work! The community is excited about Gruby.
-              </p>
-            </div>
-            <div class="footer">
-              <p>© 2024 Gruby. All rights reserved.</p>
-            </div>
-          </div>
-        </body>
-        </html>
+          }
+        </style>
+      </head>
+
+      <body style="background-color: #f8f9fa; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+        <table role="presentation" width="100percent" cellspacing="0" cellpadding="0" style="padding: 40px 20px;">
+          <tr>
+            <td align="center">
+
+              <table role="presentation" width="600" class="container" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+
+                <tr>
+                  <td style="padding: 40px 48px 32px; text-align: center; border-bottom: 1px solid #e9ecef;">
+                    <img src="${getLogoUrl()}" alt="Gruby" width="140" height="35" border="0" style="display: block; margin: 0 auto 24px; max-width: 140px; height: auto; width: 140px;" />
+                    <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #1a1a1a;">
+                      A new person just joined the waitlist 🚀
+                    </h1>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="content" style="padding: 56px 48px 0;">
+                    <p style="margin: 0 0 36px; font-size: 18px; color: #1a1a1a; line-height: 1.7;">
+                      Someone just signed up for the Gruby waitlist. Here is their email:
+                    </p>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding: 0 48px 40px;">
+                    <table role="presentation" width="100percent" style="background-color: #fff5f5; border: 2px solid #FF1E00; border-radius: 16px;">
+                      <tr>
+                        <td style="padding: 28px 32px; text-align: center;">
+                          <p style="margin: 0; font-size: 22px; font-weight: 600; color: #FF1E00; word-break: break-all;">
+                            ${email}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="content" style="padding: 0 48px 56px;">
+                    <p style="margin: 0; font-size: 16px; color: #4a5568; text-align: center; line-height: 1.7;">
+                      Gruby is growing one person at a time. Let us keep building something people are excited about.
+                    </p>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding: 40px 48px; background-color: #f8f9fa; text-align: center; border-top: 1px solid #e9ecef; border-radius: 0 0 12px 12px;">
+                    <p style="margin: 0; font-size: 14px; color: #718096;">
+                      © ${new Date().getFullYear()} Gruby. All rights reserved.
+                    </p>
+                  </td>
+                </tr>
+
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+      </body>
+      </html>
       `,
     });
 
