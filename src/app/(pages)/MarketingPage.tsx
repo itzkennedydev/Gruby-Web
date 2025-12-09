@@ -482,9 +482,9 @@ function FeaturesSectionAnimated() {
 
         {/* Mobile: simple stacked list */}
         <div className="sm:hidden space-y-4">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
               <div
                 key={index}
                 className="rounded-2xl border border-[#E5E5E5] bg-white p-6"
@@ -507,8 +507,8 @@ function FeaturesSectionAnimated() {
                   {feature.description}
                 </p>
               </div>
-            );
-          })}
+              );
+            })}
         </div>
 
         {/* Tablet and Desktop: Grid layout */}
@@ -657,7 +657,7 @@ function CTASectionAnimated({
   return (
     <section
       id="beta-signup"
-      className="bg-[#1a1a1a] pt-12 sm:pt-16 md:pt-20 lg:pt-28"
+      className="bg-[#1a1a1a] pt-16 sm:pt-20 md:pt-24 lg:pt-32"
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
