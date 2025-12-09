@@ -334,7 +334,7 @@ function AppPreviewSectionAnimated({
               </div>
 
               {/* Progress Bar */}
-              <div className="-mt-8 flex w-full items-center justify-between gap-2 sm:-mt-10">
+              <div className="relative z-20 -mt-8 flex w-full items-center justify-between gap-2 sm:-mt-10">
                 {appSlides.map((_, index) => (
                   <button
                     key={index}
@@ -480,23 +480,14 @@ function FeaturesSectionAnimated() {
           </p>
         </div>
 
-        {/* Mobile: Horizontal scrollable carousel */}
-        <div className="sm:hidden">
-          <div
-            ref={scrollContainerRef}
-            className="scrollbar-hide flex gap-4 overflow-x-auto pb-4"
-            style={{
-              scrollSnapType: "x mandatory",
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
+        {/* Mobile: simple stacked list */}
+        <div className="sm:hidden space-y-4">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
               <div
                 key={index}
-                className="w-[85vw] max-w-[320px] flex-shrink-0 rounded-2xl border border-[#E5E5E5] bg-white p-6"
-                style={{ scrollSnapAlign: "start" }}
+                className="rounded-2xl border border-[#E5E5E5] bg-white p-6"
               >
                 <div className="mb-3 flex items-center gap-3">
                   <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
@@ -518,7 +509,6 @@ function FeaturesSectionAnimated() {
               </div>
               );
             })}
-          </div>
         </div>
 
         {/* Tablet and Desktop: Grid layout */}
@@ -616,7 +606,7 @@ function BenefitsSectionAnimated() {
 // Animated About Section
 function AboutSectionAnimated() {
   return (
-    <section id="about" className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
+    <section id="about" className="pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-28 lg:pb-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-16 md:mb-20">
           <h2 className="mb-4 text-2xl font-bold text-[#222222] sm:mb-6 sm:text-3xl md:text-4xl">
@@ -671,9 +661,9 @@ function CTASectionAnimated({
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-row lg:items-center lg:gap-16">
+          <div className="flex flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-row lg:items-center lg:justify-center lg:gap-16">
             {/* Content - Top on mobile, left on desktop */}
-            <div className="order-1 w-full flex-1 text-center lg:text-left">
+              <div className="order-1 w-full flex-1 text-center lg:text-left">
               <h2 className="mb-3 text-xl font-semibold text-white sm:mb-4 sm:text-2xl md:text-3xl">
                 Join the waitlist
               </h2>
@@ -693,7 +683,7 @@ function CTASectionAnimated({
               ) : (
                 <form
                   onSubmit={handleBetaSignup}
-                  className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
+                  className="mx-auto flex w-full max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center"
                 >
                   <input
                     type="email"
@@ -1174,7 +1164,7 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[850px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 h-[760px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           <div className="absolute inset-0">
             <Image
               src="/HeroImage.jpg"
@@ -1361,7 +1351,7 @@ export default function MarketingPage() {
                   />
                   <button
                     type="submit"
-                    className="w-full rounded-full bg-[#FF1E00] px-4 py-2 text-xs font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:py-2.5 sm:text-sm md:py-3 md:text-base"
+                    className="w-full h-[44px] rounded-full bg-[#FF1E00] px-4 text-xs font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[46px] sm:text-sm md:h-[48px] md:text-base"
                   >
                     Subscribe
                   </button>
