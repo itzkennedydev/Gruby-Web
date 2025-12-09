@@ -284,7 +284,7 @@ function AppPreviewSectionAnimated({
   setCurrentSlide: (index: number) => void;
 }) {
   return (
-    <section className="pb-12 pt-20 sm:pb-16 sm:pt-24 md:pb-20 md:pt-28 lg:pb-28 lg:pt-32">
+    <section className="pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-28 lg:pb-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div
           className="relative flex min-h-[500px] flex-col rounded-2xl bg-black px-6 pb-20 pt-12 sm:min-h-[560px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[550px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40"
@@ -463,7 +463,7 @@ function FeaturesSectionAnimated() {
   }, []);
 
   return (
-    <section id="features" className="py-12 sm:py-16 md:py-20 lg:py-28">
+    <section id="features" className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
       <div
         className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8"
         style={{ containerType: "inline-size" }}
@@ -553,7 +553,7 @@ function FeaturesSectionAnimated() {
 // Animated Tablet Preview Section
 function TabletPreviewSectionAnimated() {
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-28">
+    <section className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center sm:mb-10 md:mb-12">
           <h2 className="mb-2 text-xl font-semibold text-[#222222] sm:mb-3 sm:text-2xl md:text-3xl">
@@ -579,7 +579,7 @@ function TabletPreviewSectionAnimated() {
 // Animated Benefits Section
 function BenefitsSectionAnimated() {
   return (
-    <section id="how-it-works" className="py-12 sm:py-16 md:py-20 lg:py-28">
+    <section id="how-it-works" className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center sm:mb-12 md:mb-16">
           <h2 className="mb-2 text-xl font-semibold text-[#222222] sm:mb-3 sm:text-2xl md:text-3xl">
@@ -616,7 +616,7 @@ function BenefitsSectionAnimated() {
 // Animated About Section
 function AboutSectionAnimated() {
   return (
-    <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-28">
+    <section id="about" className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-16 md:mb-20">
           <h2 className="mb-4 text-2xl font-bold text-[#222222] sm:mb-6 sm:text-3xl md:text-4xl">
@@ -667,7 +667,7 @@ function CTASectionAnimated({
   return (
     <section
       id="beta-signup"
-      className="bg-[#1a1a1a] py-12 sm:py-16 md:py-20 lg:py-28"
+      className="bg-[#1a1a1a] pt-12 sm:pt-16 md:pt-20 lg:pt-28"
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
@@ -742,7 +742,7 @@ function ComparisonSectionAnimated({
   return (
     <section
       id="comparison"
-      className="bg-[#f5f5f7] py-12 sm:py-16 md:py-20 lg:py-28"
+      className="bg-[#f5f5f7] pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-28 lg:pb-28"
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         {/* Enhanced Header Section */}
@@ -1174,7 +1174,7 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[950px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 h-[850px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           <div className="absolute inset-0">
             <Image
               src="/HeroImage.jpg"

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 
+// This route relies on query params; force dynamic rendering to avoid static errors
+export const dynamic = "force-dynamic";
+
 const pool = new Pool({
   connectionString:
     "postgres://74b017d6a8db709aaeb335032f78ad5b1e35f82ebb2137ddc59744c7ea18406b:sk_AtedbOlZMmSa-TTeiqs-y@db.prisma.io:5432/postgres?sslmode=require",
