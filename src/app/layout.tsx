@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 import Header from '@/components/Header';
-import { Footer } from '@/components/Footer';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { ReduxProvider } from '@/components/ReduxProvider';
 import '@/styles/globals.css';

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface BetaState {
   email: string;
+  name: string;
   isSubmitting: boolean;
   isSubmitted: boolean;
   error: string | null;
@@ -9,6 +10,7 @@ interface BetaState {
 
 const initialState: BetaState = {
   email: '',
+  name: '',
   isSubmitting: false,
   isSubmitted: false,
   error: null,
@@ -21,6 +23,9 @@ const betaSlice = createSlice({
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
+    setName: (state, action: PayloadAction<string>) => {
+      state.name = action.payload;
+    },
     setSubmitting: (state, action: PayloadAction<boolean>) => {
       state.isSubmitting = action.payload;
     },
@@ -32,6 +37,7 @@ const betaSlice = createSlice({
     },
     resetBeta: (state) => {
       state.email = '';
+      state.name = '';
       state.isSubmitting = false;
       state.isSubmitted = false;
       state.error = null;
@@ -39,6 +45,6 @@ const betaSlice = createSlice({
   },
 });
 
-export const { setEmail, setSubmitting, setSubmitted, setError, resetBeta } = betaSlice.actions;
+export const { setEmail, setName, setSubmitting, setSubmitted, setError, resetBeta } = betaSlice.actions;
 export default betaSlice.reducer;
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from 'next';
 import { Footer } from '@/components/Footer';
 
@@ -30,7 +31,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="font-semibold mt-8 mb-4" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)' }}>1. ACCEPTANCE OF TERMS</h2>
             <p className="mb-4">
-              These Terms of Service ("Terms") constitute a legally binding agreement between you ("User," "you," or "your") and Gruby ("Company," "we," "us," or "our") governing your access to and use of the Gruby mobile application and related services (collectively, the "Service"). By creating an account, downloading, accessing, or using the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms, as well as our Privacy Policy, incorporated herein by reference.
+              These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and Gruby (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) governing your access to and use of the Gruby mobile application and related services (collectively, the &quot;Service&quot;). By creating an account, downloading, accessing, or using the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms, as well as our Privacy Policy, incorporated herein by reference.
             </p>
             <p className="mb-4">
               We reserve the right to modify these Terms at any time. Material changes will be communicated through the application or via email. Your continued use of the Service following such modifications constitutes acceptance of the revised Terms. It is your responsibility to review these Terms periodically.

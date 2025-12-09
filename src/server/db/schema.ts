@@ -173,6 +173,7 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
 export const waitlist = pgTable('waitlist', {
   id: uuid('id').defaultRandom().primaryKey(),
   email: text('email').notNull().unique(),
+  name: text('name'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 

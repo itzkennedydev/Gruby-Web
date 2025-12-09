@@ -1,13 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setEmail,
@@ -236,7 +229,7 @@ const initialMealComparisons: MealComparison[] = [
 // Footer data - removed social links for cleaner design
 
 // Phone Mockup Component
-function PhoneMockup({
+function _PhoneMockup({
   children,
   className = "",
 }: {
@@ -450,7 +443,6 @@ function FeaturesSectionAnimated() {
 
       // Calculate which card is currently in view
       let currentIndex = 0;
-      let accumulatedWidth = cardWidth;
 
       if (scrollLeft < cardWidth * 0.5) {
         currentIndex = 0;
@@ -721,10 +713,10 @@ function CTASectionAnimated({
               {isSubmitted ? (
                 <div className="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
                   <p className="mb-2 font-medium text-white">
-                    You're on the list!
+                    You&apos;re on the list!
                   </p>
                   <p className="text-sm text-gray-400">
-                    We'll notify {email} when Gruby launches.
+                    We&apos;ll notify {email} when Gruby launches.
                   </p>
                 </div>
               ) : (
@@ -771,7 +763,7 @@ function CTASectionAnimated({
 // Animated Comparison Section
 function ComparisonSectionAnimated({
   comparisons,
-  isLoading,
+  isLoading: _isLoading,
 }: {
   comparisons: MealComparison[];
   isLoading: boolean;
@@ -788,7 +780,7 @@ function ComparisonSectionAnimated({
             className="mx-auto mb-3 max-w-3xl px-4 font-bold leading-tight text-[#222222] sm:mb-4"
             style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
           >
-            Spoiler: You're paying{" "}
+            Spoiler: You&apos;re paying{" "}
             <span className="text-[#FF1E00]">3x more</span> for the same meal.
           </h2>
           <p
@@ -908,7 +900,7 @@ function ComparisonSectionAnimated({
 
                     <div className="mb-3 sm:mb-4">
                       <p className="mb-1.5 text-[10px] text-[#717171] sm:mb-2 sm:text-xs">
-                        What you'll need:
+                        What you&apos;ll need:
                       </p>
                       <div className="flex flex-wrap gap-1 sm:gap-1.5">
                         {comparison.homeCooked.ingredients.map((ing, i) => (
@@ -1033,7 +1025,7 @@ export default function MarketingPage() {
   const { email, isSubmitting, isSubmitted, error } = useAppSelector(
     (state) => state.beta,
   );
-  const waitlistModalOpen = useAppSelector(
+  const _waitlistModalOpen = useAppSelector(
     (state) => state.ui.waitlistModalOpen,
   );
   const [localEmail, setLocalEmail] = useState("");
@@ -1061,7 +1053,7 @@ export default function MarketingPage() {
             const mealData = await calculateMealPrice(
               comparison.homeCooked.ingredients,
             );
-            const perServing = mealData.perServing;
+            const _perServing = mealData.perServing;
             const total = mealData.total;
 
             const finalTotal =
@@ -1169,6 +1161,7 @@ export default function MarketingPage() {
 
   return (
     <>
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
@@ -1411,72 +1404,6 @@ export default function MarketingPage() {
           </div>
         </footer>
 
-        {/* Join Waitlist Modal */}
-        <Dialog
-          open={waitlistModalOpen}
-          onOpenChange={(open) => dispatch(setWaitlistModalOpen(open))}
-        >
-          <DialogContent className="border border-gray-200 bg-white p-6 shadow-lg outline-none sm:max-w-md">
-            <DialogHeader className="space-y-2 pb-4 text-center">
-              <DialogTitle className="text-2xl font-bold tracking-tight text-[#222222] sm:text-3xl">
-                Join the waitlist
-              </DialogTitle>
-              <DialogDescription className="px-0 text-base text-[#717171]">
-                Be among the first to experience Gruby. Get early access and
-                exclusive updates.
-              </DialogDescription>
-            </DialogHeader>
-
-            {isSubmitted ? (
-              <div className="mt-8 rounded-2xl border border-gray-200 bg-[#f5f5f7] p-8 text-center">
-                <p className="mb-4 text-xl font-bold text-[#222222]">
-                  You're in! 🎉
-                </p>
-                <p className="text-sm text-[#717171]">
-                  We'll send updates to{" "}
-                  <span className="font-semibold text-[#222222]">{email}</span>
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleBetaSignup} className="space-y-4">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-[#222222]">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    value={localEmail}
-                    onChange={(e) => setLocalEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    required
-                    className="w-full rounded-full border border-gray-200 bg-white px-4 py-4 text-base text-[#222222] placeholder-[#717171] transition-all hover:border-gray-300 focus:border-[#FF1E00] focus:outline-none focus:ring-2 focus:ring-[#FF1E00]"
-                    disabled={isSubmitting}
-                  />
-                  {error && (
-                    <p className="mt-2 text-sm text-red-500">{error}</p>
-                  )}
-                </div>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full rounded-full bg-[#FF1E00] px-6 py-4 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#E01A00] disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Securing your spot...
-                    </>
-                  ) : (
-                    "Reserve My Spot"
-                  )}
-                </Button>
-                <p className="mt-2 text-center text-xs text-[#717171]">
-                  We respect your privacy. No spam, ever.
-                </p>
-              </form>
-            )}
-          </DialogContent>
-        </Dialog>
       </div>
     </>
   );

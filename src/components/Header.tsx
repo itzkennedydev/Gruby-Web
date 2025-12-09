@@ -3,33 +3,29 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setWaitlistModalOpen } from "@/store/slices/uiSlice";
 import {
   setEmail,
+  setName,
   setSubmitting,
   setSubmitted,
   setError,
 } from "@/store/slices/betaSlice";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { WaitlistModal } from "@/components/WaitlistModal";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const waitlistModalOpen = useAppSelector(
     (state) => state.ui.waitlistModalOpen,
   );
-  const { email, isSubmitting, isSubmitted, error } = useAppSelector(
+  const { email, name, isSubmitting, isSubmitted, error } = useAppSelector(
     (state) => state.beta,
   );
   const [localEmail, setLocalEmail] = useState("");
+  const [localName, setLocalName] = useState("");
+  const [position, setPosition] = useState<number | undefined>(undefined);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -68,24 +64,32 @@ const Header = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: localEmail.trim() }),
+        body: JSON.stringify({ 
+          email: localEmail.trim(),
+          name: localName.trim() || "",
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to join waitlist");
+        const errorMessage = data.error || "Failed to join waitlist";
+        // Check if it's a duplicate email error
+        if (errorMessage.includes("already on the waitlist") || response.status === 409) {
+          dispatch(setError("duplicate"));
+          return;
+        }
+        throw new Error(errorMessage);
       }
 
       dispatch(setEmail(localEmail));
+      dispatch(setName(localName));
       dispatch(setSubmitted(true));
+      setPosition(data.position || undefined);
       setLocalEmail("");
+      setLocalName("");
 
-      // Reset submitted state after 3 seconds
-      setTimeout(() => {
-        dispatch(setSubmitted(false));
-        dispatch(setWaitlistModalOpen(false));
-      }, 3000);
+      // Modal will stay open until user manually closes it
     } catch (err) {
       dispatch(
         setError(
@@ -160,83 +164,21 @@ const Header = () => {
       </div>
 
       {/* Join Waitlist Modal */}
-      <Dialog
-        open={waitlistModalOpen}
-        onOpenChange={(open) => dispatch(setWaitlistModalOpen(open))}
-      >
-        <DialogContent className="rounded-3xl border-0 bg-white p-8 shadow-xl outline-none sm:max-w-md sm:p-10">
-          <DialogHeader className="space-y-3 pb-6 text-center">
-            <DialogTitle className="text-3xl font-bold tracking-tight text-[#222222] sm:text-[2rem]">
-              Join the waitlist
-            </DialogTitle>
-
-            <DialogDescription className="mx-auto max-w-sm text-base leading-relaxed text-[#717171]">
-              Gruby is coming soon. Save your spot and be part of the first
-              group to try it.
-            </DialogDescription>
-          </DialogHeader>
-
-          {isSubmitted ? (
-            <div className="animate-fadeIn mt-6 rounded-3xl border border-gray-200 bg-[#fafafa] p-8 text-center shadow-sm">
-              <p className="mb-3 text-xl font-semibold text-[#222222]">
-                You are in, {email.split("@")[0]} ✨
-              </p>
-
-              <p className="text-base leading-relaxed text-[#717171]">
-                You just joined an early group of people who will get access
-                before everyone else. We will send all updates to
-                <span className="font-semibold text-[#222222]"> {email}</span>.
-              </p>
-
-              <div className="mt-6 text-sm text-[#717171]">
-                You are closer than most.
-              </div>
-            </div>
-          ) : (
-            <form
-              onSubmit={handleBetaSignup}
-              className="animate-fadeIn space-y-6"
-            >
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-[#222222]">
-                  Email address
-                </label>
-
-                <input
-                  type="email"
-                  value={localEmail}
-                  onChange={(e) => setLocalEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                  disabled={isSubmitting}
-                  className="w-full rounded-full border border-gray-300 bg-white px-5 py-4 text-base text-[#222222] placeholder-[#9e9e9e] shadow-sm transition-all duration-200 focus:border-[#FF1E00] focus:outline-none focus:ring-2 focus:ring-[#FF1E00]"
-                />
-
-                {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full transform rounded-full bg-[#FF1E00] py-4 text-lg font-semibold text-white shadow-md transition-colors duration-200 hover:bg-[#E01A00] active:scale-[0.98] disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Securing your spot...
-                  </>
-                ) : (
-                  "Reserve My Spot"
-                )}
-              </Button>
-
-              <p className="text-center text-sm text-[#9e9e9e]">
-                No spam, ever. Just thoughtful updates.
-              </p>
-            </form>
-          )}
-        </DialogContent>
-      </Dialog>
+      <WaitlistModal
+        waitlistModalOpen={waitlistModalOpen}
+        setWaitlistModalOpen={(open) => dispatch(setWaitlistModalOpen(open))}
+        isSubmitted={isSubmitted}
+        isSubmitting={isSubmitting}
+        email={email}
+        name={name}
+        localEmail={localEmail}
+        setLocalEmail={setLocalEmail}
+        localName={localName}
+        setLocalName={setLocalName}
+        handleBetaSignup={handleBetaSignup}
+        error={error}
+        position={position}
+      />
     </header>
   );
 };

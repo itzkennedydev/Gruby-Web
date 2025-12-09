@@ -10,7 +10,7 @@ const getLogoUrl = () => {
   return `${baseUrl}/api/logo`;
 };
 
-export async function sendWaitlistConfirmation(email: string) {
+export async function sendWaitlistConfirmation(email: string, name: string = "") {
   try {
     const { data, error } = await resend.emails.send({
       from: "Gruby <noreply@gruby.app>",
@@ -96,7 +96,7 @@ export async function sendWaitlistConfirmation(email: string) {
                       You are officially on the list 🎉
                     </h1>
                     <p style="margin: 0 0 40px; font-size: 17px; color: #4a5568; line-height: 1.7; text-align: center;">
-                      Thank you for joining the Gruby waitlist. We are building something we always wished existed, a simple and thoughtful way to cook more, spend less, and feel inspired in your own kitchen. We are really glad you are here.
+                      ${name ? `Hi ${name}, ` : ""}Thank you for joining the Gruby waitlist. We are building something we always wished existed, a simple and thoughtful way to cook more, spend less, and feel inspired in your own kitchen. We are really glad you are here.
                     </p>
                   </td>
                 </tr>
@@ -205,7 +205,10 @@ export async function sendWaitlistConfirmation(email: string) {
                     <a href="https://twitter.com/gruby" style="margin: 0 16px; color: #4a5568; font-size: 15px; text-decoration: none;">Twitter</a>
                     <a href="https://instagram.com/gruby" style="margin: 0 16px; color: #4a5568; font-size: 15px; text-decoration: none;">Instagram</a>
                     <a href="https://linkedin.com/company/gruby" style="margin: 0 16px; color: #4a5568; font-size: 15px; text-decoration: none;">LinkedIn</a>
-                    <p style="margin: 20px 0 0; font-size: 14px; color: #718096;">
+                    <p style="margin: 24px 0 12px; font-size: 14px; color: #718096;">
+                      <a href="${getBaseUrl()}/api/unsubscribe?email=${encodeURIComponent(email)}" style="color: #718096; text-decoration: underline;">Unsubscribe</a>
+                    </p>
+                    <p style="margin: 0; font-size: 14px; color: #718096;">
                       © ${new Date().getFullYear()} Gruby. All rights reserved.
                     </p>
                   </td>
@@ -233,7 +236,7 @@ export async function sendWaitlistConfirmation(email: string) {
   }
 }
 
-export async function sendAdminNotification(email: string) {
+export async function sendAdminNotification(email: string, name: string = "") {
   try {
     const { data, error } = await resend.emails.send({
       from: "Gruby <noreply@gruby.app>",
@@ -283,7 +286,7 @@ export async function sendAdminNotification(email: string) {
                 <tr>
                   <td class="content" style="padding: 56px 48px 0;">
                     <p style="margin: 0 0 36px; font-size: 18px; color: #1a1a1a; line-height: 1.7;">
-                      Someone just signed up for the Gruby waitlist. Here is their email:
+                      Someone just signed up for the Gruby waitlist. Here are their details:
               </p>
                   </td>
                 </tr>
@@ -292,7 +295,18 @@ export async function sendAdminNotification(email: string) {
                   <td style="padding: 0 48px 40px;">
                     <table role="presentation" width="100percent" style="background-color: #fff5f5; border: 2px solid #FF1E00; border-radius: 16px;">
                       <tr>
-                        <td style="padding: 28px 32px; text-align: center;">
+                        <td style="padding: 28px 32px;">
+                          ${name ? `
+                          <p style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: #1a1a1a;">
+                            Name:
+                          </p>
+                          <p style="margin: 0 0 24px; font-size: 22px; font-weight: 600; color: #FF1E00;">
+                            ${name}
+                          </p>
+                          ` : ""}
+                          <p style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: #1a1a1a;">
+                            Email:
+                          </p>
                           <p style="margin: 0; font-size: 22px; font-weight: 600; color: #FF1E00; word-break: break-all;">
                             ${email}
                           </p>

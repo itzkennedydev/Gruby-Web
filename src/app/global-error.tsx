@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
 export default function GlobalError({
-  error,
+  error: _error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -39,7 +39,7 @@ export default function GlobalError({
             
             {/* Description */}
             <p className="mb-10 text-[#717171] leading-relaxed" style={{ fontSize: 'clamp(1rem, 1.5vw + 0.75rem, 1.25rem)' }}>
-              We're sorry, but something unexpected happened. Don't worry, we're here to help you get back on track.
+              We&apos;re sorry, but something unexpected happened. Don&apos;t worry, we&apos;re here to help you get back on track.
             </p>
 
             {/* Action Buttons */}

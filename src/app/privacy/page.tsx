@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           </p>
 
           <p className="mb-8" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
-            This Privacy Policy describes how Gruby ("Company," "we," "us," or "our") collects, uses, discloses, and protects the personal information of users ("User," "you," or "your") of the Gruby mobile application and related services (collectively, the "Service"). By using the Service, you consent to the collection and use of your information as described in this Privacy Policy.
+            This Privacy Policy describes how Gruby (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) collects, uses, discloses, and protects the personal information of users (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) of the Gruby mobile application and related services (collectively, the &quot;Service&quot;). By using the Service, you consent to the collection and use of your information as described in this Privacy Policy.
           </p>
 
           <section className="mb-8">
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
               <strong>Authentication Providers:</strong> When you sign in using Apple or Google, we receive your name, email address, and account identifier as authorized by you.
             </p>
             <p className="mb-4">
-              <strong>Kroger:</strong> If you connect your Kroger account or use Kroger integration features, we may receive purchase history, loyalty information, and pricing data as authorized by you and permitted by Kroger's terms.
+              <strong>Kroger:</strong> If you connect your Kroger account or use Kroger integration features, we may receive purchase history, loyalty information, and pricing data as authorized by you and permitted by Kroger&apos;s terms.
             </p>
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">1.4 Location Information</h3>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl sm:text-3xl font-semibold mt-8 mb-4">2. LEGAL BASES FOR PROCESSING (GDPR)</h2>
             <p className="mb-4">
-              For users in the European Economic Area ("EEA"), United Kingdom, or Switzerland, we process personal information under the following legal bases pursuant to the General Data Protection Regulation ("GDPR"):
+              For users in the European Economic Area (&quot;EEA&quot;), United Kingdom, or Switzerland, we process personal information under the following legal bases pursuant to the General Data Protection Regulation (&quot;GDPR&quot;):
             </p>
             <ul className="list-disc list-inside mb-4 space-y-2 ml-4">
               <li><strong>Contractual Necessity:</strong> Processing necessary to provide the Service and fulfill our agreement with you.</li>
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
               <li><strong>Service Provision:</strong> To create and manage your account, provide and personalize the Service, and deliver features you request.</li>
               <li><strong>Personalization:</strong> To generate recipe recommendations, create meal plans, and tailor content based on your preferences, dietary restrictions, and usage patterns.</li>
               <li><strong>Communication:</strong> To send service-related communications, respond to inquiries, and provide customer support.</li>
-              <li><strong>Improvement:</strong> To analyze usage patterns, diagnose technical issues, and improve the Service's functionality and user experience.</li>
+              <li><strong>Improvement:</strong> To analyze usage patterns, diagnose technical issues, and improve the Service&apos;s functionality and user experience.</li>
               <li><strong>Safety and Security:</strong> To detect, prevent, and address fraud, abuse, security incidents, and violations of our Terms of Service.</li>
               <li><strong>Legal Compliance:</strong> To comply with applicable laws, regulations, legal processes, and governmental requests.</li>
             </ul>
@@ -115,7 +115,7 @@ export default function PrivacyPage() {
               <strong>Apple and Google:</strong> Authentication data is processed by Apple and Google in accordance with their privacy policies.
             </p>
             <p className="mb-4">
-              <strong>Kroger:</strong> If you use Kroger integration features, we share and receive information with Kroger as necessary to provide those features. This may include shopping list data and account identifiers. Your use of Kroger services is subject to Kroger's privacy policy.
+              <strong>Kroger:</strong> If you use Kroger integration features, we share and receive information with Kroger as necessary to provide those features. This may include shopping list data and account identifiers. Your use of Kroger services is subject to Kroger&apos;s privacy policy.
             </p>
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">4.3 User Content</h3>
@@ -192,7 +192,7 @@ export default function PrivacyPage() {
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">7.2 California Privacy Rights (CCPA/CPRA)</h3>
             <p className="mb-4">
-              If you are a California resident, you have additional rights under the California Consumer Privacy Act, as amended by the California Privacy Rights Act (collectively, "CCPA"), Cal. Civ. Code §§ 1798.100-1798.199.100:
+              If you are a California resident, you have additional rights under the California Consumer Privacy Act, as amended by the California Privacy Rights Act (collectively, &quot;CCPA&quot;), Cal. Civ. Code §§ 1798.100-1798.199.100:
             </p>
             <ul className="list-disc list-inside mb-4 space-y-2 ml-4">
               <li><strong>Right to Know:</strong> You may request disclosure of the categories and specific pieces of personal information we have collected, the sources of collection, the purposes for collection, and the categories of third parties with whom we share personal information.</li>
@@ -220,7 +220,7 @@ export default function PrivacyPage() {
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">7.3 Virginia, Colorado, Connecticut, and Utah Privacy Rights</h3>
             <p className="mb-4">
-              Residents of Virginia (VCDPA), Colorado (CPA), Connecticut (CTDPA), and Utah (UCPA) have similar rights to access, correct, delete, and obtain a copy of their personal data. To exercise these rights, contact us at <a href="mailto:privacy@gruby.app" className="text-blue-600 hover:underline">privacy@gruby.app</a>. You may appeal any decision regarding your request by emailing <a href="mailto:privacy@gruby.app" className="text-blue-600 hover:underline">privacy@gruby.app</a> with "Privacy Appeal" in the subject line.
+              Residents of Virginia (VCDPA), Colorado (CPA), Connecticut (CTDPA), and Utah (UCPA) have similar rights to access, correct, delete, and obtain a copy of their personal data. To exercise these rights, contact us at <a href="mailto:privacy@gruby.app" className="text-blue-600 hover:underline">privacy@gruby.app</a>. You may appeal any decision regarding your request by emailing <a href="mailto:privacy@gruby.app" className="text-blue-600 hover:underline">privacy@gruby.app</a> with &quot;Privacy Appeal&quot; in the subject line.
             </p>
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">7.4 European Privacy Rights (GDPR)</h3>
@@ -236,9 +236,9 @@ export default function PrivacyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl sm:text-3xl font-semibold mt-8 mb-4">8. CHILDREN'S PRIVACY</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold mt-8 mb-4">8. CHILDREN&apos;S PRIVACY</h2>
             <p className="mb-4">
-              The Service is not directed to children under the age of thirteen (13). We do not knowingly collect personal information from children under 13 in compliance with the Children's Online Privacy Protection Act ("COPPA"), 15 U.S.C. §§ 6501-6506, and its implementing regulations at 16 C.F.R. Part 312.
+              The Service is not directed to children under the age of thirteen (13). We do not knowingly collect personal information from children under 13 in compliance with the Children&apos;s Online Privacy Protection Act (&quot;COPPA&quot;), 15 U.S.C. §§ 6501-6506, and its implementing regulations at 16 C.F.R. Part 312.
             </p>
             <p className="mb-4">
               If we become aware that we have collected personal information from a child under 13 without parental consent, we will take steps to delete such information promptly. If you believe we have collected information from a child under 13, please contact us immediately at <a href="mailto:privacy@gruby.app" className="text-blue-600 hover:underline">privacy@gruby.app</a>.
@@ -255,12 +255,12 @@ export default function PrivacyPage() {
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">9.2 Apple App Tracking Transparency</h3>
             <p className="mb-4">
-              We comply with Apple's App Tracking Transparency framework. We will request your permission before tracking your activity across other companies' apps and websites for advertising purposes. You may change your tracking preferences at any time in your device Settings under Privacy &gt; Tracking.
+              We comply with Apple&apos;s App Tracking Transparency framework. We will request your permission before tracking your activity across other companies&apos; apps and websites for advertising purposes. You may change your tracking preferences at any time in your device Settings under Privacy &gt; Tracking.
             </p>
 
             <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">9.3 Do Not Track</h3>
             <p className="mb-4">
-              We do not currently respond to "Do Not Track" browser signals as there is no industry standard for compliance.
+              We do not currently respond to &quot;Do Not Track&quot; browser signals as there is no industry standard for compliance.
             </p>
           </section>
 
@@ -281,7 +281,7 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl sm:text-3xl font-semibold mt-8 mb-4">12. CHANGES TO THIS PRIVACY POLICY</h2>
             <p className="mb-4">
-              We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy on the Service and updating the "Effective Date" above. For material changes, we will provide additional notice, such as email notification or in-app alert. Your continued use of the Service after the effective date of the revised policy constitutes acceptance of the changes.
+              We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy on the Service and updating the &quot;Effective Date&quot; above. For material changes, we will provide additional notice, such as email notification or in-app alert. Your continued use of the Service after the effective date of the revised policy constitutes acceptance of the changes.
             </p>
           </section>
 

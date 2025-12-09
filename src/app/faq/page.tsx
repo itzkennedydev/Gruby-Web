@@ -137,7 +137,7 @@ export default function FAQPage() {
           <h1 className="font-semibold mb-4" style={{ fontSize: 'clamp(1.875rem, 4vw + 1rem, 3rem)' }}>Frequently Asked Questions</h1>
           
           <p className="mb-12 text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
-            Find answers to common questions about Gruby. Can't find what you're looking for? <a href="mailto:support@gruby.app" className="text-[#FF1E00] hover:underline">Contact our support team</a>.
+            Find answers to common questions about Gruby. Can&apos;t find what you&apos;re looking for? <a href="mailto:support@gruby.app" className="text-[#FF1E00] hover:underline">Contact our support team</a>.
           </p>
 
           {faqs.map((category, categoryIndex) => (
@@ -163,7 +163,7 @@ export default function FAQPage() {
           <section className="mt-12 sm:mt-16 pt-8 border-t border-[#E5E5E5]">
             <h2 className="font-semibold mb-4 text-[#222222]" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)' }}>Still have questions?</h2>
             <p className="text-[#717171] mb-6" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
-              We're here to help! Reach out to our support team and we'll get back to you as soon as possible.
+              We&apos;re here to help! Reach out to our support team and we&apos;ll get back to you as soon as possible.
             </p>
             <div className="space-y-4">
               <p className="text-[#222222]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1rem)' }}>
