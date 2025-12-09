@@ -519,35 +519,6 @@ function FeaturesSectionAnimated() {
               );
             })}
           </div>
-          {/* Scroll indicator dots */}
-          <div className="mt-6 flex items-center justify-center gap-2">
-            {features.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  const container = scrollContainerRef.current;
-                  if (!container) return;
-                  const cardWidth = container.clientWidth;
-                  const otherCardWidth = container.clientWidth * 0.85;
-                  const scrollPosition =
-                    index === 0
-                      ? 0
-                      : cardWidth + (index - 1) * (otherCardWidth + 16);
-                  container.scrollTo({
-                    left: scrollPosition,
-                    behavior: "smooth",
-                  });
-                }}
-                className={`rounded-full transition-all duration-300 ${
-                  index === activeIndex
-                    ? "h-2 w-8 bg-[#FF1E00]"
-                    : "h-2 w-2 bg-gray-300 hover:bg-gray-400"
-                }`}
-                aria-label={`Go to feature ${index + 1}`}
-                aria-current={index === activeIndex ? "true" : undefined}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Tablet and Desktop: Grid layout */}
@@ -1203,7 +1174,7 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[500px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 h-[950px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           <div className="absolute inset-0">
             <Image
               src="/HeroImage.jpg"
@@ -1218,7 +1189,10 @@ export default function MarketingPage() {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
-          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-center px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end pb-16 px-4 sm:justify-center sm:pb-0 sm:px-6 lg:px-8">
+            {/* Mobile-only gradient under content */}
+            <div className="absolute -bottom-16 left-0 right-0 h-[32rem] bg-gradient-to-t from-black/90 via-black/70 to-transparent pointer-events-none sm:hidden" />
+            <div className="relative z-10">
             <h1
               className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
               style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
@@ -1258,6 +1232,7 @@ export default function MarketingPage() {
               >
                 Explore Features
               </button>
+            </div>
             </div>
           </div>
         </div>
