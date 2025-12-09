@@ -17,26 +17,26 @@ export async function sendWaitlistConfirmation(email: string) {
       to: [email],
       subject: "Welcome to Gruby, we are glad you are here ✨",
       html: `
-      <!DOCTYPE html>
+        <!DOCTYPE html>
       <html lang="en">
-      <head>
+        <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <style>
-          body {
-            margin: 0;
-            padding: 0;
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
             background-color: #f8f9fa;
-          }
+            }
 
-          .container {
+            .container {
             width: 100percent !important;
-            max-width: 600px;
-            margin: 0 auto;
+              max-width: 600px;
+              margin: 0 auto;
             border-radius: 12px;
-          }
+            }
 
           @media only screen and (max-width: 600px) {
             .container {
@@ -71,9 +71,9 @@ export async function sendWaitlistConfirmation(email: string) {
               height: 0 !important;
               overflow: hidden !important;
             }
-          }
-        </style>
-      </head>
+            }
+          </style>
+        </head>
 
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
         <table role="presentation" width="100percent" cellspacing="0" cellpadding="0" class="wrapper" style="background-color: #f8f9fa; padding: 40px 20px;">
@@ -114,7 +114,7 @@ export async function sendWaitlistConfirmation(email: string) {
                               <td class="icon-col" width="36" valign="top">
                                 <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
                                   ✓
-                                </div>
+            </div>
                               </td>
                               <td style="padding-left: 20px;">
                                 <p style="margin: 0; font-size: 17px; font-weight: 600; color: #1a1a1a;">
@@ -122,7 +122,7 @@ export async function sendWaitlistConfirmation(email: string) {
                                 </p>
                                 <p style="margin: 6px 0 0; font-size: 15px; color: #4a5568;">
                                   Smart price insights help you spend less on groceries while keeping the meals you love.
-                                </p>
+              </p>
                               </td>
                             </tr>
                           </table>
@@ -137,7 +137,7 @@ export async function sendWaitlistConfirmation(email: string) {
                               <td class="icon-col" width="36" valign="top">
                                 <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
                                   ✓
-                                </div>
+                </div>
                               </td>
                               <td style="padding-left: 20px;">
                                 <p style="margin: 0; font-size: 17px; font-weight: 600; color: #1a1a1a;">
@@ -160,7 +160,7 @@ export async function sendWaitlistConfirmation(email: string) {
                               <td class="icon-col" width="36" valign="top">
                                 <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
                                   ✓
-                                </div>
+                </div>
                               </td>
                               <td style="padding-left: 20px;">
                                 <p style="margin: 0; font-size: 17px; font-weight: 600; color: #1a1a1a;">
@@ -178,7 +178,7 @@ export async function sendWaitlistConfirmation(email: string) {
                     </table>
                   </td>
                 </tr>
-
+              
                 <!-- CTA -->
                 <tr>
                   <td style="padding: 0 48px 40px; text-align: center;">
@@ -195,7 +195,7 @@ export async function sendWaitlistConfirmation(email: string) {
                   <td class="content" style="padding: 0 48px 56px;">
                     <p style="margin: 0; font-size: 16px; color: #4a5568; text-align: center; line-height: 1.7;">
                       We will keep you updated as we get closer to launch. Until then, you can follow along for cooking ideas, early previews, and the small moments behind building Gruby.
-                    </p>
+              </p>
                   </td>
                 </tr>
 
@@ -216,8 +216,8 @@ export async function sendWaitlistConfirmation(email: string) {
             </td>
           </tr>
         </table>
-      </body>
-      </html>
+        </body>
+        </html>
       `,
     });
 
@@ -240,12 +240,12 @@ export async function sendAdminNotification(email: string) {
       to: ["itskennedy.dev@gmail.com"],
       subject: "A new person just joined the waitlist 🚀",
       html: `
-      <!DOCTYPE html>
+        <!DOCTYPE html>
       <html lang="en">
-      <head>
+        <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <style>
+          <style>
           .container {
             width: 100percent !important;
             max-width: 600px;
@@ -259,9 +259,9 @@ export async function sendAdminNotification(email: string) {
             .content {
               padding: 32px 24px !important;
             }
-          }
-        </style>
-      </head>
+            }
+          </style>
+        </head>
 
       <body style="background-color: #f8f9fa; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
 
@@ -284,7 +284,7 @@ export async function sendAdminNotification(email: string) {
                   <td class="content" style="padding: 56px 48px 0;">
                     <p style="margin: 0 0 36px; font-size: 18px; color: #1a1a1a; line-height: 1.7;">
                       Someone just signed up for the Gruby waitlist. Here is their email:
-                    </p>
+              </p>
                   </td>
                 </tr>
 
@@ -306,7 +306,7 @@ export async function sendAdminNotification(email: string) {
                   <td class="content" style="padding: 0 48px 56px;">
                     <p style="margin: 0; font-size: 16px; color: #4a5568; text-align: center; line-height: 1.7;">
                       Gruby is growing one person at a time. Let us keep building something people are excited about.
-                    </p>
+              </p>
                   </td>
                 </tr>
 
@@ -324,8 +324,8 @@ export async function sendAdminNotification(email: string) {
           </tr>
         </table>
 
-      </body>
-      </html>
+        </body>
+        </html>
       `,
     });
 

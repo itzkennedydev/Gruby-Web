@@ -16,7 +16,7 @@ import {
   setError,
 } from "@/store/slices/betaSlice";
 import { setWaitlistModalOpen } from "@/store/slices/uiSlice";
-import { Loader2, X, Check } from "lucide-react";
+import { Loader2, X, Check, ShoppingCart, Users, TrendingUp, Tag, Clock, Wallet } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { calculateMealPrice } from "@/lib/kroger-api";
 import Image from "next/image";
@@ -29,31 +29,37 @@ const features = [
     title: "From Recipe to Cart in Seconds",
     description:
       "Tap any recipe to build your grocery list. We'll even show you the cheapest options nearby.",
+    icon: ShoppingCart,
   },
   {
     title: "Discover Local Home Cooks",
     description:
       "Connect with talented home cooks in your neighborhood and enjoy authentic, home-cooked meals.",
+    icon: Users,
   },
   {
     title: "Watch Your Savings Grow",
     description:
       "Every home-cooked meal adds up. Track your wins and see exactly how much you're saving.",
+    icon: TrendingUp,
   },
   {
     title: "Find the Best Deals",
     description:
       "We show you the cheapest grocery options nearby, so you always get the best prices.",
+    icon: Tag,
   },
   {
     title: "Save Time & Money",
     description:
       "The average American spends $300/month on takeout. Keep that money where it belongs — in your pocket.",
+    icon: Clock,
   },
   {
     title: "Budget-Friendly Cooking",
     description:
       "Gruby is a budgeting-focused cooking companion designed to show you the real financial impact of cooking at home.",
+    icon: Wallet,
   },
 ];
 
@@ -340,12 +346,13 @@ function AppPreviewSectionAnimated({
                   <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
-                    className={`h-1 flex-1 rounded-full transition-colors duration-200 sm:h-1.5 ${
+                    className={`h-1.5 flex-1 rounded-full transition-all duration-200 cursor-pointer sm:h-2 ${
                       currentSlide === index
                         ? "bg-white"
-                        : "bg-white/30 hover:bg-white/50"
+                        : "bg-white/30 hover:bg-white/50 active:bg-white/60"
                     }`}
                     aria-label={`Go to slide ${index + 1}`}
+                    type="button"
                   />
                 ))}
               </div>
@@ -491,18 +498,25 @@ function FeaturesSectionAnimated() {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {features.map((feature, index) => (
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
               <div
                 key={index}
                 className="w-[85vw] max-w-[320px] flex-shrink-0 rounded-2xl border border-[#E5E5E5] bg-white p-6"
                 style={{ scrollSnapAlign: "start" }}
               >
-                <h3
-                  className="mb-2 text-lg font-semibold leading-tight text-[#222222]"
-                  style={{ fontSize: "clamp(1rem, 4vw, 1.125rem)" }}
-                >
-                  {feature.title}
-                </h3>
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
+                    <Icon className="h-4 w-4 text-gray-700" />
+                  </div>
+                  <h3
+                    className="flex-1 text-lg font-semibold leading-tight text-[#222222]"
+                    style={{ fontSize: "clamp(1rem, 4vw, 1.125rem)" }}
+                  >
+                    {feature.title}
+                  </h3>
+                </div>
                 <p
                   className="text-sm leading-relaxed text-[#717171]"
                   style={{ fontSize: "clamp(0.875rem, 3.5vw, 0.9375rem)" }}
@@ -510,7 +524,8 @@ function FeaturesSectionAnimated() {
                   {feature.description}
                 </p>
               </div>
-            ))}
+              );
+            })}
           </div>
           {/* Scroll indicator dots */}
           <div className="mt-6 flex items-center justify-center gap-2">
@@ -545,19 +560,27 @@ function FeaturesSectionAnimated() {
 
         {/* Tablet and Desktop: Grid layout */}
         <div className="hidden gap-6 sm:grid sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
-          {features.map((feature, index) => (
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
             <div
               key={index}
-              className="rounded-2xl border border-[#E5E5E5] bg-white p-6 transition-shadow duration-200 hover:shadow-md sm:p-8"
+                className="rounded-2xl border border-[#E5E5E5] bg-white p-6 sm:p-8"
             >
-              <h3 className="mb-3 text-xl font-semibold leading-tight text-[#222222] sm:text-2xl">
-                {feature.title}
-              </h3>
+              <div className="mb-4 flex items-center gap-4">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
+                  <Icon className="h-5 w-5 text-gray-700" />
+                </div>
+                <h3 className="flex-1 text-xl font-semibold leading-tight text-[#222222] sm:text-2xl">
+                  {feature.title}
+                </h3>
+              </div>
               <p className="text-base leading-relaxed text-[#717171]">
                 {feature.description}
               </p>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
