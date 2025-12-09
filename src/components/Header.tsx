@@ -48,8 +48,19 @@ const Header = () => {
     dispatch(setError(null));
 
     try {
-      // Simulate API call - replace with actual beta signup endpoint
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: localEmail.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to join waitlist');
+      }
       
       dispatch(setEmail(localEmail));
       dispatch(setSubmitted(true));
@@ -61,7 +72,7 @@ const Header = () => {
         dispatch(setWaitlistModalOpen(false));
       }, 3000);
     } catch (err) {
-      dispatch(setError('Something went wrong. Please try again.'));
+      dispatch(setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.'));
     } finally {
       dispatch(setSubmitting(false));
     }

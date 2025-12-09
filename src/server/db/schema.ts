@@ -169,6 +169,13 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   }),
 }));
 
+// Waitlist table
+export const waitlist = pgTable('waitlist', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  email: text('email').notNull().unique(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
 // Types
 export type User = InferModel<typeof users>;
 export type HomeCook = InferModel<typeof homeCooks>;
@@ -177,3 +184,4 @@ export type Product = InferModel<typeof products>;
 export type ProductImage = InferModel<typeof productImages>;
 export type Order = InferModel<typeof orders>;
 export type OrderItem = InferModel<typeof orderItems>;
+export type Waitlist = InferModel<typeof waitlist>;
