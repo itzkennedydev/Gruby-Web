@@ -47,3 +47,4 @@ yarn-error.log*
 
 # Firebase service account (DO NOT COMMIT)
 serviceAccountKey.json
+.env*.local
