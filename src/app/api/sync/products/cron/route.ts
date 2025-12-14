@@ -11,13 +11,21 @@ export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {
-    // Verify this is coming from Vercel Cron
+    // Verify this is coming from Vercel Cron (uses special header)
+    const cronHeader = request.headers.get('x-vercel-cron');
+    
+    // Also allow manual triggers with Bearer token for testing
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET || process.env.SYNC_API_SECRET;
     
-    if (authHeader !== `Bearer ${cronSecret}`) {
+    // Accept either Vercel cron header OR valid Bearer token
+    const isVercelCron = cronHeader === '1' || cronHeader === 'true';
+    const isAuthorized = authHeader === `Bearer ${cronSecret}`;
+    
+    if (!isVercelCron && !isAuthorized) {
+      console.log('Cron auth failed:', { cronHeader, hasAuth: !!authHeader });
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - Not from Vercel Cron or missing valid token' },
         { status: 401 }
       );
     }
@@ -44,6 +52,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Cron job executed successfully',
+      triggeredBy: cronHeader ? 'Vercel Cron' : 'Manual trigger',
       syncResult: result,
       timestamp: new Date().toISOString(),
     });
