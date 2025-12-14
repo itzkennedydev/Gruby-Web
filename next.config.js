@@ -40,6 +40,15 @@ const config = {
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  experimental: {
+    serverComponentsExternalPackages: [
+      'firebase-admin',
+      '@google-cloud/firestore',
+      '@opentelemetry/api',
+      '@opentelemetry/instrumentation',
+      '@opentelemetry/sdk-trace-base'
+    ],
+  },
   transpilePackages: ["geist", '@mui/x-date-pickers', '@mui/material', '@mui/system', '@emotion/react', '@emotion/styled'],
   webpack: (config) => {
     if (config.resolve && config.resolve.alias) {
