@@ -1,6 +1,17 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default clerkMiddleware();
+const isPublicRoute = createRouteMatcher([
+  '/api/sync/products(.*)',
+  '/api/sync/products/cron(.*)',
+]);
+
+export default clerkMiddleware((auth, req) => {
+  // Allow public API routes without authentication
+  if (isPublicRoute(req)) {
+    return;
+  }
+  // Protect all other routes
+});
 
 export const config = {
     matcher: [

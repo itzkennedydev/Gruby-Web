@@ -1,11 +1,13 @@
 /**
  * Cron job endpoint for automated daily product syncing
  * Triggered by Vercel Cron at 2 AM daily
- * 
- * This endpoint is called by Vercel's cron system, not by users
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {
@@ -21,7 +23,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Call the sync API internally
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3005';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3005';
+      
     const response = await fetch(`${baseUrl}/api/sync/products`, {
       method: 'POST',
       headers: {
