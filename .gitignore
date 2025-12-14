@@ -43,4 +43,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # idea files
-.idea
+.ideaserviceAccountKey.json
+
+# Firebase service account (DO NOT COMMIT)
+serviceAccountKey.json

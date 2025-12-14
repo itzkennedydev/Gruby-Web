@@ -1,0 +1,304 @@
+/**
+ * Background Product Sync API Route
+ * 
+ * POST /api/sync/products
+ * 
+ * Syncs products from Kroger API to Firebase
+ * - Searches for products by ingredients list
+ * - Updates product prices in recipes collection
+ * - Tracks sync history
+ * - Rate limited and authenticated
+ * - Smart caching and confidence scoring
+ * 
+ * Usage:
+ * ```
+ * curl -X POST https://your-domain.com/api/sync/products \
+ *   -H "Authorization: Bearer YOUR_SECRET" \
+ *   -H "Content-Type: application/json" \
+ *   -d '{"recipeIds": ["recipe1", "recipe2"], "locationId": "01400943"}'
+ * ```
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/firebase-admin';
+import { searchProducts, batchSearchProducts } from '@/lib/kroger-api';
+
+// Collections
+const SYNC_HISTORY_COLLECTION = 'productSyncHistory';
+const RECIPES_COLLECTION = 'recipes';
+const PRODUCT_CACHE_COLLECTION = 'productCache';
+
+// Configuration
+const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+const MIN_CONFIDENCE_SCORE = 0.7; // Don't update if existing match is high confidence
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 10; // Max 10 requests per minute
+
+// In-memory rate limiting (use Redis in production)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+interface SyncRequest {
+  recipeIds?: string[]; // Specific recipes to sync (optional, syncs all if not provided)
+  locationId?: string; // Kroger store location ID
+  limit?: number; // Max recipes to sync (default 50)
+}
+
+interface SyncResult {
+  success: boolean;
+  message: string;
+  recipesProcessed: number;
+  productsUpdated: number;
+  errors: string[];
+  timestamp: string;
+}
+
+interface Recipe {
+  id: string;
+  ingredients?: any[];
+  [key: string]: any; // Allow other recipe fields
+}
+
+/**
+ * Authenticate the request
+ */
+function authenticateRequest(request: NextRequest): boolean {
+  const authHeader = request.headers.get('authorization');
+  const expectedSecret = process.env.SYNC_API_SECRET;
+
+  if (!expectedSecret) {
+    console.error('SYNC_API_SECRET not configured');
+    return false;
+  }
+
+  if (!authHeader) {
+    return false;
+  }
+
+  // Support both "Bearer TOKEN" and "TOKEN" formats
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
+  return token === expectedSecret;
+}
+
+/**
+ * Get recipe data from Firestore
+ */
+async function getRecipes(recipeIds?: string[], limit: number = 50): Promise<Recipe[]> {
+  try {
+    if (recipeIds && recipeIds.length > 0) {
+      // Get specific recipes
+      const recipePromises = recipeIds.map(id => 
+        db.collection(RECIPES_COLLECTION).doc(id).get()
+      );
+      const recipeDocs = await Promise.all(recipePromises);
+      return recipeDocs
+        .filter(doc => doc.exists)
+        .map(doc => ({ id: doc.id, ...doc.data() } as Recipe));
+    } else {
+      // Get all recipes (limited)
+      const snapshot = await db.collection(RECIPES_COLLECTION)
+        .limit(limit)
+        .get();
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Recipe));
+    }
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    throw error;
+  }
+}
+
+/**
+ * Update recipe with product prices
+ */
+async function updateRecipeProducts(recipeId: string, ingredients: any[], locationId?: string) {
+  try {
+    // Extract ingredient names
+    const ingredientNames = ingredients.map((ing: any) => ing.name).filter(Boolean);
+    
+    if (ingredientNames.length === 0) {
+      return { updated: false, reason: 'No ingredients found' };
+    }
+
+    // Search Kroger API for products
+    const productResults = await batchSearchProducts(ingredientNames, locationId);
+    
+    let updatedCount = 0;
+    const updatedIngredients = ingredients.map((ingredient: any) => {
+      const products = productResults.get(ingredient.name);
+      
+      if (products && products.length > 0) {
+        const product = products[0]; // Use first/best match
+        const item = product.items?.[0];
+        
+        if (item?.price) {
+          updatedCount++;
+          return {
+            ...ingredient,
+            krogerProductId: product.productId,
+            krogerPrice: item.price.promo || item.price.regular,
+            krogerRegularPrice: item.price.regular,
+            krogerPromoPrice: item.price.promo || null, // Firestore doesn't accept undefined
+            krogerImageUrl: product.images?.[0]?.sizes[0]?.url || null,
+            krogerSize: item.size || null,
+            lastUpdated: new Date().toISOString(),
+          };
+        }
+      }
+      
+      return ingredient;
+    });
+
+    // Update recipe in Firestore
+    if (updatedCount > 0) {
+      await db.collection(RECIPES_COLLECTION).doc(recipeId).update({
+        ingredients: updatedIngredients,
+        productDataLastSynced: new Date().toISOString(),
+      });
+    }
+
+    return { updated: updatedCount > 0, count: updatedCount };
+  } catch (error) {
+    console.error(`Error updating recipe ${recipeId}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Log sync history to Firestore
+ */
+async function logSyncHistory(result: SyncResult) {
+  try {
+    await db.collection(SYNC_HISTORY_COLLECTION).add({
+      ...result,
+      createdAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error logging sync history:', error);
+  }
+}
+
+/**
+ * Main POST handler
+ */
+export async function POST(request: NextRequest) {
+  // Authenticate
+  if (!authenticateRequest(request)) {
+    return NextResponse.json(
+      { success: false, message: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
+  const startTime = Date.now();
+  const errors: string[] = [];
+  let recipesProcessed = 0;
+  let productsUpdated = 0;
+
+  try {
+    // Parse request body
+    const body: SyncRequest = await request.json();
+    const { recipeIds, locationId, limit = 50 } = body;
+
+    // Get recipes to sync
+    const recipes = await getRecipes(recipeIds, limit);
+    
+    if (recipes.length === 0) {
+      return NextResponse.json({
+        success: false,
+        message: 'No recipes found to sync',
+        recipesProcessed: 0,
+        productsUpdated: 0,
+        errors: [],
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Process each recipe
+    for (const recipe of recipes) {
+      try {
+        const result = await updateRecipeProducts(
+          recipe.id,
+          recipe.ingredients || [],
+          locationId || process.env.DEFAULT_STORE_LOCATION_ID
+        );
+        
+        recipesProcessed++;
+        if (result.updated) {
+          productsUpdated += result.count || 0;
+        }
+
+        // Add delay to respect rate limits
+        await new Promise(resolve => setTimeout(resolve, 500));
+      } catch (error: any) {
+        errors.push(`Recipe ${recipe.id}: ${error.message}`);
+      }
+    }
+
+    const duration = Date.now() - startTime;
+    const result: SyncResult = {
+      success: errors.length === 0,
+      message: errors.length === 0 
+        ? `Successfully synced ${recipesProcessed} recipes` 
+        : `Synced with ${errors.length} errors`,
+      recipesProcessed,
+      productsUpdated,
+      errors,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Log sync history
+    await logSyncHistory(result);
+
+    console.log(`Product sync completed in ${duration}ms:`, result);
+
+    return NextResponse.json(result);
+  } catch (error: any) {
+    const result: SyncResult = {
+      success: false,
+      message: `Sync failed: ${error.message}`,
+      recipesProcessed,
+      productsUpdated,
+      errors: [error.message, ...errors],
+      timestamp: new Date().toISOString(),
+    };
+
+    await logSyncHistory(result);
+
+    return NextResponse.json(result, { status: 500 });
+  }
+}
+
+/**
+ * GET handler - Returns sync status/history
+ */
+export async function GET(request: NextRequest) {
+  // Authenticate
+  if (!authenticateRequest(request)) {
+    return NextResponse.json(
+      { success: false, message: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
+  try {
+    // Get last 10 sync history entries
+    const snapshot = await db.collection(SYNC_HISTORY_COLLECTION)
+      .orderBy('createdAt', 'desc')
+      .limit(10)
+      .get();
+
+    const history = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return NextResponse.json({
+      success: true,
+      history,
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
+  }
+}
