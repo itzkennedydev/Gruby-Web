@@ -30,16 +30,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Call the sync API internally
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+    // Build internal API URL with bypass parameter for Vercel Authentication
+    const bypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+    const baseUrl = process.env.VERCEL_URL 
       ? `https://${process.env.VERCEL_URL}` 
       : 'http://localhost:3005';
+    
+    // Add bypass parameter to URL if available
+    const apiUrl = bypassSecret 
+      ? `${baseUrl}/api/sync/products?x-vercel-protection-bypass=${bypassSecret}`
+      : `${baseUrl}/api/sync/products`;
       
-    const response = await fetch(`${baseUrl}/api/sync/products`, {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.SYNC_API_SECRET}`,
         'Content-Type': 'application/json',
+        // Also send bypass in header
+        ...(bypassSecret && { 'x-vercel-protection-bypass': bypassSecret }),
       },
       body: JSON.stringify({
         limit: 100, // Sync 100 recipes per day
