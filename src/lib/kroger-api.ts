@@ -260,3 +260,60 @@ export async function batchSearchProducts(
 
   return results;
 }
+
+/**
+ * Calculate total meal price from ingredient list
+ * Used by marketing page to show price comparisons
+ */
+export async function calculateMealPrice(
+  ingredients: string[],
+  locationId?: string
+): Promise<{ total: number; perServing: number; ingredientPrices: Record<string, number> }> {
+  const ingredientPrices: Record<string, number> = {};
+  let total = 0;
+
+  try {
+    const productResults = await batchSearchProducts(ingredients, locationId);
+
+    for (const ingredient of ingredients) {
+      const products = productResults.get(ingredient);
+      
+      if (products && products.length > 0) {
+        // Get first product with valid price
+        const product = products[0];
+        const item = product.items?.[0];
+        
+        if (item?.price) {
+          const price = item.price.promo || item.price.regular;
+          ingredientPrices[ingredient] = price;
+          total += price;
+        } else {
+          // Fallback: estimate $3.50 per ingredient
+          ingredientPrices[ingredient] = 3.5;
+          total += 3.5;
+        }
+      } else {
+        // No products found, use estimate
+        ingredientPrices[ingredient] = 3.5;
+        total += 3.5;
+      }
+    }
+
+    // Assume 4 servings per meal
+    const perServing = total / 4;
+
+    return { total, perServing, ingredientPrices };
+  } catch (error) {
+    console.error('Error calculating meal price:', error);
+    // Return estimate if API fails
+    const estimate = ingredients.length * 3.5;
+    return {
+      total: estimate,
+      perServing: estimate / 4,
+      ingredientPrices: ingredients.reduce((acc, ing) => {
+        acc[ing] = 3.5;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+  }
+}
