@@ -46,6 +46,7 @@ export function Footer() {
               <li><Link href="/about" className="text-[#717171] hover:text-[#222222] transition-colors">About Us</Link></li>
               <li><Link href="/faq" className="text-[#717171] hover:text-[#222222] transition-colors">FAQ</Link></li>
               <li><Link href="/contact" className="text-[#717171] hover:text-[#222222] transition-colors">Contact</Link></li>
+              <li><Link href="/media-kit" className="text-[#717171] hover:text-[#222222] transition-colors">Media Kit</Link></li>
             </ul>
           </div>
 
