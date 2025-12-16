@@ -253,28 +253,6 @@ function _PhoneMockup({
 }
 
 // Tablet Mockup Component (Landscape iPad)
-function TabletMockup({
-  children,
-  className = "",
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={`relative w-full ${className}`}>
-      <div className="relative mx-auto aspect-[4/3] w-full max-w-[90vw] rounded-xl bg-[#1a1a1a] p-2 shadow-2xl ring-1 ring-black/10 sm:max-w-[600px] sm:rounded-2xl sm:p-2.5 md:max-w-[700px] md:rounded-[1.5rem] lg:max-w-[720px] lg:rounded-[1.75rem]">
-        <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-lg bg-white sm:rounded-xl md:rounded-2xl lg:rounded-[1.25rem]">
-          {children || (
-            <div className="p-4 text-center text-[#717171] sm:p-6">
-              <p className="text-xs font-medium sm:text-sm">Tablet</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Animated App Preview Section Component
 function AppPreviewSectionAnimated({
   currentSlide,
@@ -554,12 +532,16 @@ function TabletPreviewSectionAnimated() {
           </p>
         </div>
 
-        <div className="rounded-2xl bg-[#f5f5f7] p-4 sm:rounded-3xl sm:p-6 md:p-8 lg:p-12 xl:p-16">
-          <div className="flex justify-center">
-            <TabletMockup>
-              {/* Add your tablet app screenshot here */}
-            </TabletMockup>
-          </div>
+        <div className="relative w-full rounded-2xl overflow-hidden sm:rounded-3xl" style={{ aspectRatio: '16/9', maxHeight: '650px' }}>
+          <Image
+            src="/GrubyWatch.png"
+            alt="Gruby Watch"
+            fill
+            className="object-cover rounded-2xl sm:rounded-3xl"
+            priority
+            quality={100}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 100vw, (max-width: 1920px) 1920px, 1920px"
+          />
         </div>
       </div>
     </section>
