@@ -9,7 +9,17 @@ import {
   setError,
 } from "@/store/slices/betaSlice";
 import { setWaitlistModalOpen } from "@/store/slices/uiSlice";
-import { Loader2, X, Check, ShoppingCart, Users, TrendingUp, Tag, Clock, Wallet } from "lucide-react";
+import {
+  Loader2,
+  X,
+  Check,
+  ShoppingCart,
+  Users,
+  TrendingUp,
+  Tag,
+  Clock,
+  Wallet,
+} from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { calculateMealPrice } from "@/lib/kroger-api";
 import Image from "next/image";
@@ -19,39 +29,39 @@ import React from "react";
 // Features data
 const features = [
   {
-    title: "From Recipe to Cart in Seconds",
+    title: "Recipe to Cart in One Tap",
     description:
-      "Tap any recipe to build your grocery list. We'll even show you the cheapest options nearby.",
+      "Pick a recipe, instant grocery list. We'll show you where to get ingredients for the least amount of money.",
     icon: ShoppingCart,
   },
   {
-    title: "Discover Local Home Cooks",
+    title: "Discover Community Recipes",
     description:
-      "Connect with talented home cooks in your neighborhood and enjoy authentic, home-cooked meals.",
+      "Browse recipes shared by home chefs like you. Save your favorites, get inspired, and share your own creations.",
     icon: Users,
   },
   {
-    title: "Watch Your Savings Grow",
+    title: "Track What You're Saving",
     description:
-      "Every home-cooked meal adds up. Track your wins and see exactly how much you're saving.",
+      "Every meal you cook instead of ordering? That's cash back in your account. Watch the number go up.",
     icon: TrendingUp,
   },
   {
-    title: "Find the Best Deals",
+    title: "Always Get the Cheapest Price",
     description:
-      "We show you the cheapest grocery options nearby, so you always get the best prices.",
+      "We compare prices at stores near you in real-time. No more overpaying because you didn't check.",
     icon: Tag,
   },
   {
-    title: "Save Time & Money",
+    title: "Save $300+ Every Month",
     description:
-      "The average American spends $300/month on takeout. Keep that money where it belongs — in your pocket.",
+      "That's what the average person spends on delivery fees and markup. Keep it in your account instead.",
     icon: Clock,
   },
   {
-    title: "Budget-Friendly Cooking",
+    title: "See the Real Numbers",
     description:
-      "Gruby is a budgeting-focused cooking companion designed to show you the real financial impact of cooking at home.",
+      "We show you exactly what eating out costs you vs. cooking at home. The difference adds up fast.",
     icon: Wallet,
   },
 ];
@@ -59,9 +69,9 @@ const features = [
 // App slides data
 const appSlides = [
   {
-    title: "Your kitchen companion",
+    title: "Actually useful features",
     description:
-      "Browse recipes, build shopping lists, and track your savings — all from one beautifully designed app.",
+      "Browse recipes, build shopping lists, and see your savings stack up — all in one app that doesn't suck.",
     features: [
       "Instant grocery lists",
       "Real-time price tracking",
@@ -69,9 +79,9 @@ const appSlides = [
     ],
   },
   {
-    title: "Smart meal planning",
+    title: "Meal planning that saves you money",
     description:
-      "Plan your week with intelligent suggestions based on your budget, preferences, and what's on sale.",
+      "Weekly plans based on your budget, what you like, and what's actually on sale near you.",
     features: [
       "Weekly meal plans",
       "Budget optimization",
@@ -79,9 +89,9 @@ const appSlides = [
     ],
   },
   {
-    title: "Track every dollar",
+    title: "Watch the savings pile up",
     description:
-      "See exactly how much you save with every home-cooked meal. Watch your monthly savings grow.",
+      "Track every dollar you keep by cooking instead of ordering. Your bank account will thank you.",
     features: ["Detailed analytics", "Monthly reports", "Savings goals"],
   },
 ];
@@ -91,7 +101,7 @@ const benefits = [
   {
     title: "Cook More, Spend Less",
     description:
-      "The average American spends $300/month on takeout. Keep that money where it belongs — in your pocket.",
+      "The average American spends $300/month eating out. Keep that money where it belongs — in your pocket.",
     stats: "$300",
     statLabel: "Average monthly savings",
   },
@@ -114,19 +124,19 @@ const benefits = [
 // About values
 const values = [
   {
-    title: "Community First",
+    title: "Recipes Worth Sharing",
     description:
-      "We believe in building a community of home cooks who share recipes, support each other, and grow together.",
+      "Discover dishes from real people, not food bloggers with 10-page life stories. Save what you love, share what works, skip what doesn't.",
   },
   {
-    title: "Financial Wellness",
+    title: "Your Money, Your Call",
     description:
-      "Our mission is to help people understand the real financial impact of their food choices and save money.",
+      "See exactly where your food budget goes. Track what you save every time you cook instead of ordering. The numbers don't lie.",
   },
   {
-    title: "Accessibility",
+    title: "Built for Everyone",
     description:
-      "Everyone deserves access to great food. Gruby makes home cooking accessible and affordable for everyone.",
+      "Whether you're a college student with $20 or a parent feeding five, Gruby helps you eat better for less. No gatekeeping, just good food.",
   },
 ];
 
@@ -262,7 +272,7 @@ function AppPreviewSectionAnimated({
   setCurrentSlide: (index: number) => void;
 }) {
   return (
-    <section className="pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-28 lg:pb-28">
+    <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div
           className="relative flex min-h-[500px] flex-col rounded-2xl bg-black px-6 pb-20 pt-12 sm:min-h-[560px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[550px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40"
@@ -317,7 +327,7 @@ function AppPreviewSectionAnimated({
                   <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
-                    className={`h-1.5 flex-1 rounded-full transition-all duration-200 cursor-pointer sm:h-2 ${
+                    className={`h-1.5 flex-1 cursor-pointer rounded-full transition-all duration-200 sm:h-2 ${
                       currentSlide === index
                         ? "bg-white"
                         : "bg-white/30 hover:bg-white/50 active:bg-white/60"
@@ -451,18 +461,19 @@ function FeaturesSectionAnimated() {
             className="mb-2 font-semibold text-[#222222] sm:mb-3"
             style={{ fontSize: "clamp(1.25rem, 2vw + 0.75rem, 1.875rem)" }}
           >
-            Everything you need to cook smarter
+            Everything you need to start saving
           </h2>
           <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
-            Simple tools that help you save money and eat better
+            No fluff, no gimmicks. Just tools that actually help you cook more
+            and spend less.
           </p>
         </div>
 
         {/* Mobile: simple stacked list */}
-        <div className="sm:hidden space-y-4">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
+        <div className="space-y-4 sm:hidden">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
               <div
                 key={index}
                 className="rounded-2xl border border-[#E5E5E5] bg-white p-6"
@@ -485,8 +496,8 @@ function FeaturesSectionAnimated() {
                   {feature.description}
                 </p>
               </div>
-              );
-            })}
+            );
+          })}
         </div>
 
         {/* Tablet and Desktop: Grid layout */}
@@ -494,22 +505,22 @@ function FeaturesSectionAnimated() {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-            <div
-              key={index}
+              <div
+                key={index}
                 className="rounded-2xl border border-[#E5E5E5] bg-white p-6 sm:p-8"
-            >
-              <div className="mb-4 flex items-center gap-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
-                  <Icon className="h-5 w-5 text-gray-700" />
+              >
+                <div className="mb-4 flex items-center gap-4">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
+                    <Icon className="h-5 w-5 text-gray-700" />
+                  </div>
+                  <h3 className="flex-1 text-xl font-semibold leading-tight text-[#222222] sm:text-2xl">
+                    {feature.title}
+                  </h3>
                 </div>
-                <h3 className="flex-1 text-xl font-semibold leading-tight text-[#222222] sm:text-2xl">
-                  {feature.title}
-                </h3>
+                <p className="text-base leading-relaxed text-[#717171]">
+                  {feature.description}
+                </p>
               </div>
-              <p className="text-base leading-relaxed text-[#717171]">
-                {feature.description}
-              </p>
-            </div>
             );
           })}
         </div>
@@ -525,19 +536,22 @@ function TabletPreviewSectionAnimated() {
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center sm:mb-10 md:mb-12">
           <h2 className="mb-2 text-xl font-semibold text-[#222222] sm:mb-3 sm:text-2xl md:text-3xl">
-            Phone and tablet
+            Access Gruby wherever you go
           </h2>
           <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
-            Access Gruby wherever you are
+            Available on all your devices
           </p>
         </div>
 
-        <div className="relative w-full rounded-2xl overflow-hidden sm:rounded-3xl" style={{ aspectRatio: '16/9', maxHeight: '650px' }}>
+        <div
+          className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl"
+          style={{ aspectRatio: "16/9", maxHeight: "650px" }}
+        >
           <Image
             src="/GrubyWatch.png"
             alt="Gruby Watch"
             fill
-            className="object-cover rounded-2xl sm:rounded-3xl"
+            className="rounded-2xl object-cover sm:rounded-3xl"
             priority
             quality={100}
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 100vw, (max-width: 1920px) 1920px, 1920px"
@@ -558,7 +572,8 @@ function BenefitsSectionAnimated() {
             Why choose Gruby?
           </h2>
           <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
-            Join thousands cooking smarter every day
+            Because your bank account deserves better than another $25 delivery
+            fee
           </p>
         </div>
 
@@ -588,16 +603,19 @@ function BenefitsSectionAnimated() {
 // Animated About Section
 function AboutSectionAnimated() {
   return (
-    <section id="about" className="pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-28 lg:pb-28">
+    <section
+      id="about"
+      className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28"
+    >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-16 md:mb-20">
           <h2 className="mb-4 text-2xl font-bold text-[#222222] sm:mb-6 sm:text-3xl md:text-4xl">
             About Gruby
           </h2>
           <p className="text-base leading-relaxed text-[#717171] sm:text-lg md:text-xl">
-            A budgeting-focused cooking companion showing the real financial
-            impact of cooking at home. We connect food lovers with talented home
-            cooks in their neighborhood.
+            Instagram for home cooking, minus the influencer nonsense. Share
+            recipes with real people, see what they're actually making, and stop
+            bleeding money on takeout. No BS, just good food and better savings.
           </p>
         </div>
 
@@ -650,7 +668,7 @@ function CTASectionAnimated({
                 Join the waitlist
               </h2>
               <p className="mb-6 text-sm text-gray-400 sm:mb-8 sm:text-base">
-                Get early access and be the first to know when we launch
+                Be first in line. Start saving money the day we launch.
               </p>
 
               {isSubmitted ? (
@@ -714,7 +732,7 @@ function ComparisonSectionAnimated({
   return (
     <section
       id="comparison"
-      className="bg-[#f5f5f7] pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-28 lg:pb-28"
+      className="bg-[#f5f5f7] pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28"
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         {/* Enhanced Header Section */}
@@ -730,8 +748,8 @@ function ComparisonSectionAnimated({
             className="mx-auto mb-2 max-w-2xl px-4 font-medium text-[#717171] sm:mb-3"
             style={{ fontSize: "clamp(1.125rem, 1.5vw + 0.875rem, 1.5rem)" }}
           >
-            That $24 delivery order? The ingredients cost $8. The rest is fees,
-            tips, and markup.
+            That $24 restaurant meal? The ingredients cost $8. The rest is
+            markup, fees, and tip.
           </p>
           <p className="mx-auto max-w-xl px-4 text-sm text-[#999999]">
             Live prices from major retailers
@@ -767,15 +785,15 @@ function ComparisonSectionAnimated({
 
                 {/* Comparison Content */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:col-span-9">
-                  {/* Delivery - The "bad" option */}
+                  {/* Eating Out - The "bad" option */}
                   <div className="border-b border-gray-200 bg-white p-4 sm:p-6 md:border-b-0 md:border-r md:p-8">
                     <div className="mb-4 flex items-center justify-between sm:mb-6">
                       <div className="min-w-0 flex-1 pr-2">
                         <p className="mb-0.5 text-xs font-medium text-[#222222] sm:text-sm">
-                          Delivery
+                          Eating Out
                         </p>
                         <p className="text-[10px] leading-tight text-[#717171] sm:text-xs">
-                          1 serving • 45 min wait • cold on arrival
+                          1 serving • wait time • inconsistent quality
                         </p>
                       </div>
                       <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:h-8 sm:w-8">
@@ -930,8 +948,8 @@ function ComparisonSectionAnimated({
             Stop subsidizing their business model
           </h3>
           <p className="mx-auto mb-6 max-w-lg px-4 text-sm text-white/90 sm:mb-8 sm:text-base">
-            Delivery apps take 30% from restaurants and charge you fees on top.
-            Cook at home and keep your money.
+            Restaurants and delivery platforms mark up prices significantly.
+            Cook at home and keep the difference.
           </p>
           <div className="mx-auto grid max-w-md grid-cols-3 gap-4 sm:gap-6">
             <div>
@@ -1146,7 +1164,7 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[760px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 h-[680px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           <div className="absolute inset-0">
             <Image
               src="/HeroImage.jpg"
@@ -1161,50 +1179,53 @@ export default function MarketingPage() {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
-          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end pb-16 px-4 sm:justify-center sm:pb-0 sm:px-6 lg:px-8">
+          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-16 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
             {/* Mobile-only gradient under content */}
-            <div className="absolute -bottom-16 left-0 right-0 h-[32rem] bg-gradient-to-t from-black/90 via-black/70 to-transparent pointer-events-none sm:hidden" />
+            <div className="pointer-events-none absolute -bottom-16 left-0 right-0 h-[32rem] bg-gradient-to-t from-black/90 via-black/70 to-transparent sm:hidden" />
             <div className="relative z-10">
-            <h1
-              className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
-              style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
-            >
-              Cook Smarter, Save More
-            </h1>
-            <p
-              className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
-              style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
-            >
-              Gruby is a budgeting-focused cooking companion designed to show
-              people the real financial impact of cooking at home.
-            </p>
-            <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  dispatch(setWaitlistModalOpen(true));
-                }}
-                className="h-[42px] inline-flex items-center justify-center rounded-full bg-[#FF1E00] px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[44px] sm:text-base"
+              <h1
+                className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
+                style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
               >
-                Get Early Access
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  const element = document.getElementById("features");
-                  if (element) {
-                    element.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }
-                }}
-                className="h-[42px] inline-flex items-center justify-center rounded-full border-2 border-white bg-transparent px-6 text-sm font-medium text-white transition-all duration-200 hover:border-white hover:bg-white/20 hover:text-white sm:h-[44px] sm:text-base"
+                Mom Was Right.
+              </h1>
+              <p
+                className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
+                style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
               >
-                Explore Features
-              </button>
-            </div>
+                We got food at home. See exactly how much eating out is costing
+                you, find cheaper groceries nearby, and start keeping your cash.
+              </p>
+              <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dispatch(setWaitlistModalOpen(true));
+                  }}
+                  className="inline-flex h-[42px] items-center justify-center rounded-full bg-[#FF1E00] px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[44px] sm:text-base"
+                >
+                  Get Early Access
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const element = document.getElementById("features");
+                    if (element) {
+                      element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }
+                  }}
+                  className="inline-flex h-[42px] items-center justify-center rounded-full border-2 border-white bg-transparent px-6 text-sm font-medium text-white transition-all duration-200 hover:border-white hover:bg-white/20 hover:text-white sm:h-[44px] sm:text-base"
+                >
+                  Explore Features
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1247,7 +1268,7 @@ export default function MarketingPage() {
         {/* Footer */}
         <footer className="border-t border-[#E5E5E5] bg-white">
           <div className="mx-auto max-w-[1920px] px-4 py-8 sm:px-6 sm:py-10 md:py-12 lg:px-8">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-5">
               <div className="col-span-1 sm:col-span-2 md:col-span-1">
                 <Image
                   src="/GrubyLogo.svg"
@@ -1269,14 +1290,6 @@ export default function MarketingPage() {
                 <ul className="space-y-2 text-xs sm:space-y-3 sm:text-sm">
                   <li>
                     <Link
-                      href="/about"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
-                    >
-                      About Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
                       href="/faq"
                       className="text-[#717171] transition-colors hover:text-[#222222]"
                     >
@@ -1285,10 +1298,18 @@ export default function MarketingPage() {
                   </li>
                   <li>
                     <Link
-                      href="/contact"
+                      href="/media-kit"
                       className="text-[#717171] transition-colors hover:text-[#222222]"
                     >
-                      Contact
+                      Media Kit
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/logos"
+                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                    >
+                      Logos & Assets
                     </Link>
                   </li>
                 </ul>
@@ -1304,7 +1325,7 @@ export default function MarketingPage() {
                       href="/terms"
                       className="text-[#717171] transition-colors hover:text-[#222222]"
                     >
-                      Terms
+                      Terms of Service
                     </Link>
                   </li>
                   <li>
@@ -1312,7 +1333,47 @@ export default function MarketingPage() {
                       href="/privacy"
                       className="text-[#717171] transition-colors hover:text-[#222222]"
                     >
-                      Privacy
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/cookies"
+                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                    >
+                      Cookie Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/dmca"
+                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                    >
+                      DMCA Policy
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="mb-3 text-xs font-semibold text-[#222222] sm:mb-4 sm:text-sm">
+                  Community
+                </h3>
+                <ul className="space-y-2 text-xs sm:space-y-3 sm:text-sm">
+                  <li>
+                    <Link
+                      href="/community-guidelines"
+                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                    >
+                      Community Guidelines
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/accessibility"
+                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                    >
+                      Accessibility
                     </Link>
                   </li>
                 </ul>
@@ -1333,7 +1394,7 @@ export default function MarketingPage() {
                   />
                   <button
                     type="submit"
-                    className="w-full h-[44px] rounded-full bg-[#FF1E00] px-4 text-xs font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[46px] sm:text-sm md:h-[48px] md:text-base"
+                    className="h-[44px] w-full rounded-full bg-[#FF1E00] px-4 text-xs font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[46px] sm:text-sm md:h-[48px] md:text-base"
                   >
                     Subscribe
                   </button>
@@ -1350,7 +1411,6 @@ export default function MarketingPage() {
             </div>
           </div>
         </footer>
-
       </div>
     </>
   );
