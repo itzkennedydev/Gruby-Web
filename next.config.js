@@ -24,6 +24,31 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  // Headers for Universal Links and App Links
+  async headers() {
+    return [
+      {
+        // apple-app-site-association for iOS Universal Links
+        source: '/.well-known/apple-app-site-association',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/json',
+          },
+        ],
+      },
+      {
+        // assetlinks.json for Android App Links
+        source: '/.well-known/assetlinks.json',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/json',
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
