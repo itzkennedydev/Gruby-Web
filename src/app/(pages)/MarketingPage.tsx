@@ -16,9 +16,12 @@ import {
   ShoppingCart,
   Users,
   TrendingUp,
-  Tag,
-  Clock,
-  Wallet,
+  Sparkles,
+  Video,
+  ChefHat,
+  Camera,
+  Leaf,
+  Trophy,
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { calculateMealPrice } from "@/lib/kroger-api";
@@ -29,114 +32,114 @@ import React from "react";
 // Features data
 const features = [
   {
-    title: "Recipe to Cart in One Tap",
+    title: "TikTok to Table",
     description:
-      "Pick a recipe, instant grocery list. We'll show you where to get ingredients for the least amount of money.",
+      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically. Works with TikTok, YouTube, and Instagram.",
+    icon: Video,
+  },
+  {
+    title: "Real-Time Grocery Prices",
+    description:
+      "Kroger prices updated in real-time. See exactly what ingredients cost, compare options, and add everything to your cart in one tap.",
     icon: ShoppingCart,
   },
   {
-    title: "Discover Community Recipes",
+    title: "Step-by-Step Cooking Mode",
     description:
-      "Browse recipes shared by home chefs like you. Save your favorites, get inspired, and share your own creations.",
-    icon: Users,
+      "Timers, video clips, voice instructions. Cook like a pro, even if you're not. Confetti celebration when you're done (seriously).",
+    icon: ChefHat,
   },
   {
-    title: "Track What You're Saving",
+    title: "24-Hour Stories",
     description:
-      "Every meal you cook instead of ordering? That's cash back in your account. Watch the number go up.",
-    icon: TrendingUp,
+      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks. No influencer energy required.",
+    icon: Camera,
   },
   {
-    title: "Always Get the Cheapest Price",
+    title: "Gruby AI Budget Coach",
     description:
-      "We compare prices at stores near you in real-time. No more overpaying because you didn't check.",
-    icon: Tag,
+      "Ask anything. \"What can I make with chicken and rice?\" \"How do I reduce my cart total?\" Gruby AI has your back.",
+    icon: Sparkles,
   },
   {
-    title: "Save $300+ Every Month",
+    title: "Zero Waste Pantry",
     description:
-      "That's what the average person spends on delivery fees and markup. Keep it in your account instead.",
-    icon: Clock,
-  },
-  {
-    title: "See the Real Numbers",
-    description:
-      "We show you exactly what eating out costs you vs. cooking at home. The difference adds up fast.",
-    icon: Wallet,
+      "Track what's in your fridge. Get alerts before things expire. Gruby suggests recipes to use up ingredients before they go bad.",
+    icon: Leaf,
   },
 ];
 
 // App slides data
 const appSlides = [
   {
-    title: "Actually useful features",
+    title: "Import any recipe instantly",
     description:
-      "Browse recipes, build shopping lists, and see your savings stack up — all in one app that doesn't suck.",
+      "Paste a TikTok, YouTube, or Instagram link. Gruby AI extracts everything — ingredients, steps, nutrition, even timestamps for cooking videos.",
     features: [
-      "Instant grocery lists",
-      "Real-time price tracking",
-      "Savings dashboard",
+      "AI-powered recipe import",
+      "Works with any video platform",
+      "Automatic ingredient detection",
     ],
   },
   {
-    title: "Meal planning that saves you money",
+    title: "Cook with confidence",
     description:
-      "Weekly plans based on your budget, what you like, and what's actually on sale near you.",
+      "Step-by-step cooking mode with built-in timers, video clips for each step, and voice guidance. Even beginners cook like pros.",
     features: [
-      "Weekly meal plans",
-      "Budget optimization",
-      "Dietary preferences",
+      "Guided cooking mode",
+      "Video clips at each step",
+      "Voice instructions",
     ],
   },
   {
-    title: "Watch the savings pile up",
+    title: "Track your wins",
     description:
-      "Track every dollar you keep by cooking instead of ordering. Your bank account will thank you.",
-    features: ["Detailed analytics", "Monthly reports", "Savings goals"],
+      "Every home-cooked meal saves money. Watch your savings grow daily, weekly, and yearly. Build streaks. Unlock achievements. Flex on DoorDash.",
+    features: ["Savings dashboard", "Cooking streaks", "Achievement badges"],
   },
 ];
 
 // Benefits data
 const benefits = [
   {
-    title: "Cook More, Spend Less",
+    title: "Keep Your Cash",
     description:
-      "The average American spends $300/month eating out. Keep that money where it belongs — in your pocket.",
-    stats: "$300",
-    statLabel: "Average monthly savings",
+      "The average person spends $300/month on delivery fees and markups alone. That's $3,600/year. Cook at home and actually keep it.",
+    stats: "$3,600",
+    statLabel: "Yearly savings potential",
   },
   {
-    title: "Join a Community of Cooks",
+    title: "Skip the Waste",
     description:
-      "Join a community of other cooks. Share your recipes, connect with fellow home chefs, and grow together.",
-    stats: "Growing",
-    statLabel: "Community of cooks",
+      "Every delivery order = foam containers, plastic bags, and carbon emissions. Cooking at home is the greenest choice you can make.",
+    stats: "Zero",
+    statLabel: "Packaging waste",
   },
   {
-    title: "Track Your Progress",
+    title: "Level Up Your Skills",
     description:
-      "See exactly how much you're saving with every home-cooked meal. Watch your savings grow over time.",
-    stats: "Real-time",
-    statLabel: "Savings tracking",
+      "Cooking streaks, achievement badges, and guided cooking mode help you go from microwave meals to actual chef-level. For real.",
+    stats: "100+",
+    statLabel: "Achievements to unlock",
   },
 ];
 
 // About values
 const values = [
   {
-    title: "Recipes Worth Sharing",
+    title: "AI That Actually Helps",
     description:
-      "Discover dishes from real people, not food bloggers with 10-page life stories. Save what you love, share what works, skip what doesn't.",
+      "Gruby AI imports recipes from any link, suggests meals based on what's in your fridge, and helps you cut your grocery bill. It's like having a personal chef and accountant in your pocket.",
   },
   {
-    title: "Your Money, Your Call",
+    title: "Real People, Real Food",
     description:
-      "See exactly where your food budget goes. Track what you save every time you cook instead of ordering. The numbers don't lie.",
+      "No influencers. No 10-paragraph life stories before the recipe. Just home cooks sharing what actually works, what their families actually eat, and what actually tastes good.",
   },
   {
-    title: "Built for Everyone",
+    title: "Built for Your Budget",
     description:
-      "Whether you're a college student with $20 or a parent feeding five, Gruby helps you eat better for less. No gatekeeping, just good food.",
+      "Whether you're a college student with $20 or a parent feeding five, Gruby shows you exactly what things cost and helps you eat better for less. No gatekeeping.",
   },
 ];
 
@@ -287,14 +290,13 @@ function AppPreviewSectionAnimated({
                   className="mb-4 whitespace-nowrap font-semibold text-white sm:mb-6"
                   style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 3rem)" }}
                 >
-                  Cooking made simple
+                  Your AI kitchen assistant
                 </h2>
                 <p
                   className="leading-relaxed text-gray-300"
                   style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
                 >
-                  Everything you need to save money on meals, right in your
-                  pocket
+                  Import recipes from anywhere. Get real prices. Cook like a pro.
                 </p>
               </div>
 
@@ -461,11 +463,11 @@ function FeaturesSectionAnimated() {
             className="mb-2 font-semibold text-[#222222] sm:mb-3"
             style={{ fontSize: "clamp(1.25rem, 2vw + 0.75rem, 1.875rem)" }}
           >
-            Everything you need to start saving
+            Features that actually matter
           </h2>
           <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
-            No fluff, no gimmicks. Just tools that actually help you cook more
-            and spend less.
+            AI-powered recipe import. Real-time grocery prices. Guided cooking mode.
+            Everything you need to cook better and spend less.
           </p>
         </div>
 
@@ -569,11 +571,10 @@ function BenefitsSectionAnimated() {
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center sm:mb-12 md:mb-16">
           <h2 className="mb-2 text-xl font-semibold text-[#222222] sm:mb-3 sm:text-2xl md:text-3xl">
-            Why choose Gruby?
+            Why cook with Gruby?
           </h2>
           <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
-            Because your bank account deserves better than another $25 delivery
-            fee
+            Because scrolling DoorDash at 8pm isn't a personality trait. But saving $3,600 a year? That's a flex.
           </p>
         </div>
 
@@ -613,9 +614,7 @@ function AboutSectionAnimated() {
             About Gruby
           </h2>
           <p className="text-base leading-relaxed text-[#717171] sm:text-lg md:text-xl">
-            Instagram for home cooking, minus the influencer nonsense. Share
-            recipes with real people, see what they're actually making, and stop
-            bleeding money on takeout. No BS, just good food and better savings.
+            Gruby is your AI-powered kitchen companion. Import recipes from TikTok, YouTube, or any website. Get real grocery prices from Kroger. Cook with step-by-step guidance. Track your savings. Share your wins with a community of real home cooks — not influencers with sponsored content. Just people who actually love to cook.
           </p>
         </div>
 
@@ -665,10 +664,10 @@ function CTASectionAnimated({
             {/* Content - Top on mobile, left on desktop */}
             <div className="order-1 w-full flex-1 text-center lg:text-center">
               <h2 className="mb-3 text-xl font-semibold text-white sm:mb-4 sm:text-2xl md:text-3xl">
-                Join the waitlist
+                Ready to cook smarter?
               </h2>
               <p className="mb-6 text-sm text-gray-400 sm:mb-8 sm:text-base">
-                Be first in line. Start saving money the day we launch.
+                Join thousands of home cooks who are saving money, eating better, and actually enjoying cooking.
               </p>
 
               {isSubmitted ? (
@@ -945,11 +944,10 @@ function ComparisonSectionAnimated({
         {/* Summary */}
         <div className="mt-8 rounded-xl bg-[#FF1E00] p-6 text-center text-white sm:mt-10 sm:rounded-2xl sm:p-8 md:mt-12 md:p-10">
           <h3 className="mb-2 text-lg font-semibold sm:mb-3 sm:text-xl md:text-2xl">
-            Stop subsidizing their business model
+            Keep your money. Skip the plastic.
           </h3>
           <p className="mx-auto mb-6 max-w-lg px-4 text-sm text-white/90 sm:mb-8 sm:text-base">
-            Restaurants and delivery platforms mark up prices significantly.
-            Cook at home and keep the difference.
+            Every delivery order = fees, markup, and a pile of packaging. Cook at home with Gruby and keep the difference.
           </p>
           <div className="mx-auto grid max-w-md grid-cols-3 gap-4 sm:gap-6">
             <div>
@@ -1193,8 +1191,7 @@ export default function MarketingPage() {
                 className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
                 style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
               >
-                We got food at home. See exactly how much eating out is costing
-                you, find cheaper groceries nearby, and start keeping your cash.
+                We got food at home. Paste any recipe link, get real grocery prices, and cook with AI-powered guidance. Scrolling DoorDash at 8pm isn't a personality trait — but saving $300/month is.
               </p>
               <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
                 <button
@@ -1278,8 +1275,7 @@ export default function MarketingPage() {
                   className="mb-3 sm:mb-4"
                 />
                 <p className="text-xs text-[#717171] sm:text-sm">
-                  Join a community of home cooks sharing recipes and growing
-                  together.
+                  Your AI-powered kitchen companion. Import recipes, get real prices, cook like a pro.
                 </p>
               </div>
 

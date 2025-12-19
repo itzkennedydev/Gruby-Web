@@ -3,7 +3,7 @@ import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions | Gruby',
-  description: 'Frequently asked questions about Gruby - your budgeting-focused cooking companion',
+  description: 'Frequently asked questions about Gruby - your AI-powered kitchen companion',
 };
 
 export default function FAQPage() {
@@ -13,20 +13,37 @@ export default function FAQPage() {
       questions: [
         {
           question: 'What is Gruby?',
-          answer: 'Gruby is a budgeting-focused cooking companion designed to show people the real financial impact of cooking at home. We help you discover recipes, build grocery lists, compare prices, and track your savings while connecting you with talented home cooks in your neighborhood.',
+          answer: 'Gruby is your AI-powered kitchen companion. Import recipes from TikTok, YouTube, or any website with one tap. Get real-time grocery prices from Kroger. Cook with step-by-step guidance including timers, video clips, and voice instructions. Track your savings and share your wins with a community of real home cooks.',
         },
         {
           question: 'How do I get started?',
-          answer: 'Simply download the Gruby app from the App Store or Google Play, create an account using Apple Sign-In, Google Sign-In, or email, and start exploring recipes. You can set your dietary preferences, budget goals, and household size to get personalized recommendations.',
+          answer: 'Download the Gruby app from the App Store or Google Play, create an account, and start importing recipes. Paste any recipe link (TikTok, YouTube, Instagram, or websites) and Gruby AI will extract the ingredients, steps, and nutrition automatically. Set your dietary preferences and budget to get personalized recommendations.',
         },
         {
           question: 'Is Gruby free to use?',
-          answer: 'Yes! Gruby is completely free to download and use. You can browse recipes, create grocery lists, compare prices, track your savings, and access all community features at no cost.',
+          answer: 'Yes! Gruby is completely free. Recipe import, Gruby AI, grocery prices, cooking mode, savings tracking, and all community features are available at no cost.',
         },
       ],
     },
     {
-      category: 'Features & Functionality',
+      category: 'Gruby AI Features',
+      questions: [
+        {
+          question: 'What is Gruby AI?',
+          answer: 'Gruby AI is your personal cooking assistant. It can import recipes from any video or website, suggest meals based on what\'s in your pantry, help you reduce your grocery bill, and answer any cooking questions you have. Just ask it anything!',
+        },
+        {
+          question: 'How does recipe import work?',
+          answer: 'Just paste any recipe link — TikTok, YouTube, Instagram, or any cooking website. Gruby AI automatically extracts the ingredients, cooking steps, nutrition info, and even timestamps from videos. No more manually copying recipes or taking screenshots.',
+        },
+        {
+          question: 'Can Gruby AI help me save money?',
+          answer: 'Gruby AI can analyze your shopping cart and suggest cheaper alternatives, help you find recipes that use ingredients you already have, and recommend meals based on what\'s on sale at your local Kroger store.',
+        },
+      ],
+    },
+    {
+      category: 'Grocery Prices & Shopping',
       questions: [
         {
           question: 'How does price comparison work?',
@@ -34,36 +51,45 @@ export default function FAQPage() {
         },
         {
           question: 'Can I connect my Kroger account?',
-          answer: 'Yes! You can connect your Kroger account to access personalized pricing, loyalty benefits, and purchase history. This helps us provide more accurate cost estimates and savings calculations.',
+          answer: 'Yes! Connect your Kroger account to access personalized pricing, loyalty benefits, and purchase history. This helps us provide more accurate cost estimates and you can add items directly to your Kroger cart.',
         },
         {
           question: 'How accurate are the savings calculations?',
-          answer: 'Our savings calculations are based on real prices from Kroger stores and average delivery app costs. While prices may vary slightly by location and time, we provide accurate estimates to help you understand the financial benefits of cooking at home.',
-        },
-        {
-          question: 'Can I save my favorite recipes?',
-          answer: 'Absolutely! You can save recipes to your collection, create meal plans, and organize them by category. Your saved recipes sync across all your devices.',
-        },
-        {
-          question: 'Does Gruby work offline?',
-          answer: 'You can view saved recipes and meal plans offline, but price comparisons and grocery list features require an internet connection to access real-time pricing data.',
+          answer: 'Our savings calculations are based on real prices from Kroger stores and average delivery app costs. We show you exactly what eating out costs vs. cooking at home so you can see the real difference.',
         },
       ],
     },
     {
-      category: 'Community & Sharing',
+      category: 'Cooking Mode',
       questions: [
         {
-          question: 'What is the home cook marketplace?',
-          answer: 'Everyone is a home cook! The marketplace connects you with people in your neighborhood who share recipes and cooking ideas. You can discover authentic, home-cooked meals, connect with others in your community, and share your own recipes while enjoying delicious food together.',
+          question: 'What is Cooking Mode?',
+          answer: 'Cooking Mode guides you through recipes step-by-step with built-in timers, video clips for each step (when available), and voice instructions. Even beginners can cook like pros. And yes, there\'s a confetti celebration when you finish.',
+        },
+        {
+          question: 'How do video clips work in Cooking Mode?',
+          answer: 'When you import a recipe from a video, Gruby AI extracts timestamps for each cooking step. During Cooking Mode, you can play the exact video clip for each step so you can see exactly what to do.',
+        },
+        {
+          question: 'Can I use voice instructions?',
+          answer: 'Yes! Enable voice guidance and Gruby will read each step aloud so you can cook hands-free. Perfect for when your hands are covered in flour.',
+        },
+      ],
+    },
+    {
+      category: 'Community & Stories',
+      questions: [
+        {
+          question: 'What are Stories?',
+          answer: 'Stories are 24-hour posts where you can share your cooking wins, what you\'re making tonight, or your finished dishes. It\'s like Instagram Stories but for home cooks — no influencers, just real food.',
         },
         {
           question: 'How do I share my recipes?',
-          answer: 'Simply create an account and start sharing your recipes! There\'s no special application process - everyone can share their favorite recipes, cooking tips, and connect with others in the community.',
+          answer: 'Create an account and start sharing! There\'s no application process — everyone can share their favorite recipes, cooking tips, and connect with others in the community.',
         },
         {
-          question: 'Can I connect with other cooks in my area?',
-          answer: 'Yes! Gruby helps you discover and connect with people in your neighborhood who love cooking. You can browse recipes, see what others are making, and build a community around home cooking.',
+          question: 'Can I connect with other cooks?',
+          answer: 'Yes! Follow other home cooks, see what they\'re making, get recipe inspiration, and even send direct messages. Build your own cooking community.',
         },
       ],
     },
@@ -75,16 +101,12 @@ export default function FAQPage() {
           answer: 'You can delete your account at any time through the app settings. Go to Settings > Account > Delete Account. Please note that this action is permanent and cannot be undone.',
         },
         {
-          question: 'What information does Gruby collect?',
-          answer: 'We collect information necessary to provide our services, including account information, usage data, preferences, and content you create. We do not sell your personal information. For more details, please see our Privacy Policy.',
+          question: 'Is my data private?',
+          answer: 'We take privacy seriously. We don\'t sell your personal information. Messages between users are end-to-end encrypted. For full details, check out our Privacy Policy.',
         },
         {
           question: 'How do I update my dietary preferences?',
-          answer: 'You can update your dietary preferences, restrictions, and allergies at any time in the app settings under Preferences. This helps us provide better recipe recommendations.',
-        },
-        {
-          question: 'Can I change my email address?',
-          answer: 'Yes, you can update your email address in the app settings under Account Information. You\'ll need to verify your new email address.',
+          answer: 'Go to Settings > Preferences to update your dietary restrictions, allergies, and cuisine preferences. Gruby AI uses these to give you better recommendations.',
         },
       ],
     },
@@ -92,33 +114,29 @@ export default function FAQPage() {
       category: 'Technical Support',
       questions: [
         {
-          question: 'The app is not loading prices correctly. What should I do?',
-          answer: 'First, try refreshing the app or restarting it. If prices still aren\'t loading, check your internet connection. If the problem persists, please contact our support team at support@gruby.app.',
+          question: 'Recipe import isn\'t working. What should I do?',
+          answer: 'Make sure you\'re pasting a valid recipe URL (TikTok, YouTube, Instagram, or a cooking website). If it still doesn\'t work, try a different link or email us at support@gruby.app with the URL.',
         },
         {
           question: 'What devices are supported?',
-          answer: 'Gruby is available on iOS (iPhone and iPad) and Android devices. The app requires iOS 13.0 or later, or Android 8.0 or later.',
+          answer: 'Gruby is available on iOS (iPhone and iPad) and Android devices. We also support Apple Watch for quick access to recipes and savings stats.',
         },
         {
-          question: 'How do I report a bug or issue?',
-          answer: 'You can report bugs or issues through the app by going to Settings > Help & Support > Report an Issue, or email us directly at support@gruby.app. Please include details about the issue and your device information.',
-        },
-        {
-          question: 'How do I contact customer support?',
-          answer: 'You can reach our support team by emailing support@gruby.app. We typically respond within 24-48 hours. You can also access in-app support through Settings > Help & Support.',
+          question: 'How do I contact support?',
+          answer: 'Email us at support@gruby.app. We typically respond within 24-48 hours. You can also use the in-app support option in Settings > Help & Support.',
         },
       ],
     },
     {
-      category: 'Billing & Subscriptions',
+      category: 'Pricing',
       questions: [
         {
-          question: 'Is Gruby free?',
-          answer: 'Yes! Gruby is completely free to use. All features including recipe browsing, grocery lists, price comparisons, savings tracking, and community features are available at no cost.',
+          question: 'Is Gruby really free?',
+          answer: 'Yes! Gruby AI, recipe import, grocery prices, cooking mode, savings tracking, and all community features are completely free. No tricks, no hidden fees.',
         },
         {
           question: 'Will Gruby always be free?',
-          answer: 'For now, Gruby is free. We may introduce optional premium features in the future, but core features like recipe browsing, grocery lists, and price comparisons will always remain free.',
+          answer: 'All the features you love will always be free. We may introduce optional premium features in the future, but the core Gruby experience — including Gruby AI — will remain free forever.',
         },
       ],
     },
