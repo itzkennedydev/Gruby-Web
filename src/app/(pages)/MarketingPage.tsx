@@ -34,13 +34,13 @@ const features = [
   {
     title: "TikTok to Table",
     description:
-      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically. Works with TikTok, YouTube, and Instagram.",
+      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically. Works with TikTok, YouTube, Instagram, and more.",
     icon: Video,
   },
   {
     title: "Real-Time Grocery Prices",
     description:
-      "Kroger prices updated in real-time. See exactly what ingredients cost, compare options, and add everything to your cart in one tap.",
+      "Grocery prices updated in real-time. See exactly what ingredients cost, compare options, and add everything to your cart in one tap.",
     icon: ShoppingCart,
   },
   {
@@ -416,7 +416,240 @@ function AppPreviewSectionAnimated({
   );
 }
 
-// Animated Features Section Component
+// Feature Showcase Data with mockup images
+const featureShowcase = [
+  {
+    title: "TikTok to Table",
+    description:
+      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically. Works with TikTok, YouTube, Instagram, and more.",
+    icon: Video,
+    bullets: [
+      "AI-powered recipe extraction",
+      "Works with any video platform",
+      "Automatic ingredient detection",
+      "Timestamps synced to cooking steps",
+    ],
+    mockupImage: "/mockups/recipe-import.png", // Placeholder - user will add
+  },
+  {
+    title: "Real-Time Grocery Prices",
+    description:
+      "Grocery prices updated in real-time. See exactly what ingredients cost, compare options, and add everything to your cart in one tap.",
+    icon: ShoppingCart,
+    bullets: [
+      "Live grocery prices",
+      "Per-serving cost breakdown",
+      "One-tap cart sync",
+      "Price comparison across brands",
+    ],
+    mockupImage: "/mockups/grocery-prices.png",
+  },
+  {
+    title: "Step-by-Step Cooking Mode",
+    description:
+      "Timers, video clips, voice instructions. Cook like a pro, even if you're not. Confetti celebration when you're done (seriously).",
+    icon: ChefHat,
+    bullets: [
+      "Built-in timers for each step",
+      "Video clips at key moments",
+      "Hands-free voice guidance",
+      "Achievement unlocks when done",
+    ],
+    mockupImage: "/mockups/cooking-mode.png",
+  },
+  {
+    title: "24-Hour Stories",
+    description:
+      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks. No influencer energy required.",
+    icon: Camera,
+    bullets: [
+      "Photo and video stories",
+      "24-hour auto-expiration",
+      "React and comment on posts",
+      "Build your cooking community",
+    ],
+    mockupImage: "/mockups/stories.png",
+  },
+  {
+    title: "Gruby AI Budget Coach",
+    description:
+      "Ask anything. \"What can I make with chicken and rice?\" \"How do I reduce my cart total?\" Gruby AI has your back.",
+    icon: Sparkles,
+    bullets: [
+      "Natural language chat",
+      "Meal suggestions from pantry",
+      "Budget optimization tips",
+      "Answers any cooking question",
+    ],
+    mockupImage: "/mockups/ai-coach.png",
+  },
+  {
+    title: "Zero Waste Pantry",
+    description:
+      "Track what's in your fridge. Get alerts before things expire. Gruby suggests recipes to use up ingredients before they go bad.",
+    icon: Leaf,
+    bullets: [
+      "Pantry inventory tracking",
+      "Expiration date alerts",
+      "Use-it-up recipe suggestions",
+      "Reduce food waste by 40%",
+    ],
+    mockupImage: "/mockups/pantry.png",
+  },
+];
+
+// Phone Mockup for Feature Showcase
+function FeatureMockup({
+  imageSrc,
+  alt,
+  icon: Icon,
+  title,
+}: {
+  imageSrc: string;
+  alt: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  title?: string;
+}) {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <div className="relative mx-auto w-[240px] sm:w-[280px] md:w-[300px]">
+      {/* Phone frame */}
+      <div className="relative rounded-[2.5rem] bg-[#1a1a1a] p-2 shadow-2xl ring-1 ring-black/10 sm:rounded-[3rem] sm:p-2.5">
+        {/* Notch */}
+        <div className="absolute left-1/2 top-0 z-10 h-5 w-20 -translate-x-1/2 rounded-b-xl bg-[#1a1a1a] sm:h-6 sm:w-24 sm:rounded-b-2xl" />
+        {/* Screen */}
+        <div className="relative aspect-[9/19] overflow-hidden rounded-[2rem] bg-gradient-to-b from-gray-50 to-gray-100 sm:rounded-[2.5rem]">
+          {!imageError ? (
+            <Image
+              src={imageSrc}
+              alt={alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 240px, (max-width: 768px) 280px, 300px"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            // Placeholder when image is not available
+            <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
+              {Icon && (
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FF1E00]/10">
+                  <Icon className="h-8 w-8 text-[#FF1E00]" />
+                </div>
+              )}
+              <p className="text-sm font-medium text-gray-500">
+                {title || "Screenshot coming soon"}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Feature Showcase Section with Rotating Mockups
+function FeatureShowcaseSectionAnimated() {
+  const [currentFeature, setCurrentFeature] = useState(0);
+
+  const feature = featureShowcase[currentFeature];
+  const Icon = feature?.icon || Video;
+
+  return (
+    <section id="features" className="bg-white pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-24 md:pt-24 lg:pb-32 lg:pt-32">
+      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="mb-12 text-center sm:mb-14 md:mb-16">
+          <h2
+            className="mb-3 font-semibold text-[#222222] sm:mb-4"
+            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
+          >
+            Features that actually matter
+          </h2>
+          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
+            AI-powered recipe import. Real-time grocery prices. Guided cooking mode.
+            Everything you need to cook better and spend less.
+          </p>
+        </div>
+
+        {/* Feature Showcase Container */}
+        <div className="flex flex-col items-stretch gap-8 lg:flex-row lg:gap-0">
+          {/* Phone Mockup Container - Left Side (50%) */}
+          <div className="flex w-full justify-center lg:w-1/2">
+            <div className="relative w-full overflow-hidden rounded-[2rem] bg-[#f5f5f7] sm:rounded-[2.5rem] lg:rounded-r-[2.5rem]" style={{ minHeight: '500px' }}>
+              {/* Phone Mockup - Positioned to show top half, centered horizontally */}
+              <div className="absolute left-1/2 top-[35%] -translate-x-1/2 scale-110 sm:top-[30%] sm:scale-125 md:scale-130">
+                <FeatureMockup
+                  imageSrc={feature?.mockupImage || ""}
+                  alt={`${feature?.title || "Feature"} screenshot`}
+                  icon={Icon}
+                  title={feature?.title}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Feature Content - Right Side (50%) */}
+          <div className="flex w-full flex-col justify-center px-4 sm:px-6 lg:w-1/2 lg:px-10 xl:px-16">
+            {/* Feature Title */}
+            <h3
+              className="mb-4 font-semibold text-[#222222] sm:mb-5"
+              style={{ fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.75rem)" }}
+            >
+              {feature?.title}
+            </h3>
+
+            {/* Description */}
+            <p className="mb-5 text-base leading-relaxed text-[#717171] sm:mb-6 sm:text-lg">
+              {feature?.description}
+            </p>
+
+            {/* Bullet Points */}
+            <ul className="mb-8 space-y-3 sm:mb-10 sm:space-y-4">
+              {feature?.bullets.map((bullet, bulletIndex) => (
+                <li key={bulletIndex} className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#FF1E00]/10">
+                    <Check className="h-3 w-3 text-[#FF1E00]" strokeWidth={3} />
+                  </div>
+                  <span className="text-sm text-[#222222] sm:text-base">
+                    {bullet}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Feature Navigation List */}
+            <div className="space-y-2 sm:space-y-3">
+              {featureShowcase.map((f, index) => {
+                const isActive = currentFeature === index;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentFeature(index)}
+                    className={`w-full rounded-xl px-4 py-3 text-left transition-all duration-200 sm:rounded-2xl sm:px-5 sm:py-4 ${
+                      isActive
+                        ? "bg-white ring-2 ring-[#E5E5E5] shadow-sm"
+                        : "bg-transparent hover:bg-gray-50"
+                    }`}
+                    type="button"
+                  >
+                    <span className={`text-sm font-semibold sm:text-base ${
+                      isActive ? "text-[#222222]" : "text-[#717171]"
+                    }`}>
+                      {f.title}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Animated Features Section Component (Grid version - kept as backup)
 function FeaturesSectionAnimated() {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -453,7 +686,7 @@ function FeaturesSectionAnimated() {
   }, []);
 
   return (
-    <section id="features" className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
+    <section className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
       <div
         className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8"
         style={{ containerType: "inline-size" }}
@@ -534,13 +767,16 @@ function FeaturesSectionAnimated() {
 // Animated Tablet Preview Section
 function TabletPreviewSectionAnimated() {
   return (
-    <section className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
+    <section className="pb-16 sm:pb-20 md:pb-24 lg:pb-32">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center sm:mb-10 md:mb-12">
-          <h2 className="mb-2 text-xl font-semibold text-[#222222] sm:mb-3 sm:text-2xl md:text-3xl">
+        <div className="mb-10 text-center sm:mb-12 md:mb-14">
+          <h2
+            className="mb-3 font-semibold text-[#222222] sm:mb-4"
+            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
+          >
             Access Gruby wherever you go
           </h2>
-          <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
+          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
             Available on all your devices
           </p>
         </div>
@@ -567,13 +803,16 @@ function TabletPreviewSectionAnimated() {
 // Animated Benefits Section
 function BenefitsSectionAnimated() {
   return (
-    <section id="how-it-works" className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
+    <section id="how-it-works" className="pb-16 sm:pb-20 md:pb-24 lg:pb-32">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center sm:mb-12 md:mb-16">
-          <h2 className="mb-2 text-xl font-semibold text-[#222222] sm:mb-3 sm:text-2xl md:text-3xl">
+        <div className="mb-12 text-center sm:mb-14 md:mb-16">
+          <h2
+            className="mb-3 font-semibold text-[#222222] sm:mb-4"
+            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
+          >
             Why cook with Gruby?
           </h2>
-          <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
+          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
             Because scrolling DoorDash at 8pm isn't a personality trait. But saving $3,600 a year? That's a flex.
           </p>
         </div>
@@ -606,15 +845,18 @@ function AboutSectionAnimated() {
   return (
     <section
       id="about"
-      className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28"
+      className="pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-24 md:pt-24 lg:pb-32 lg:pt-32"
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-16 md:mb-20">
-          <h2 className="mb-4 text-2xl font-bold text-[#222222] sm:mb-6 sm:text-3xl md:text-4xl">
+        <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-14 md:mb-16">
+          <h2
+            className="mb-4 font-semibold text-[#222222] sm:mb-6"
+            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
+          >
             About Gruby
           </h2>
           <p className="text-base leading-relaxed text-[#717171] sm:text-lg md:text-xl">
-            Gruby is your AI-powered kitchen companion. Import recipes from TikTok, YouTube, or any website. Get real grocery prices from Kroger. Cook with step-by-step guidance. Track your savings. Share your wins with a community of real home cooks — not influencers with sponsored content. Just people who actually love to cook.
+            Gruby is your AI-powered kitchen companion. Import recipes from TikTok, YouTube, or any website. Get real-time grocery prices. Cook with step-by-step guidance. Track your savings. Share your wins with a community of real home cooks — not influencers with sponsored content. Just people who actually love to cook.
           </p>
         </div>
 
@@ -1191,7 +1433,7 @@ export default function MarketingPage() {
                 className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
                 style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
               >
-                We got food at home. Paste any recipe link, get real grocery prices, and cook with AI-powered guidance. Scrolling DoorDash at 8pm isn't a personality trait — but saving $300/month is.
+                We got food at home. Paste any recipe link, get real grocery prices, and cook with AI-powered guidance.
               </p>
               <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
                 <button
@@ -1233,8 +1475,8 @@ export default function MarketingPage() {
           setCurrentSlide={setCurrentSlide}
         />
 
-        {/* Features Section */}
-        <FeaturesSectionAnimated />
+        {/* Features Section with Mockups */}
+        <FeatureShowcaseSectionAnimated />
 
         {/* Tablet Preview Section */}
         <TabletPreviewSectionAnimated />
