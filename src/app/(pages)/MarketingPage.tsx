@@ -124,25 +124,6 @@ const benefits = [
   },
 ];
 
-// About values
-const values = [
-  {
-    title: "AI That Actually Helps",
-    description:
-      "Gruby AI imports recipes from any link, suggests meals based on what's in your fridge, and helps you cut your grocery bill. It's like having a personal chef and accountant in your pocket.",
-  },
-  {
-    title: "Real People, Real Food",
-    description:
-      "No influencers. No 10-paragraph life stories before the recipe. Just home cooks sharing what actually works, what their families actually eat, and what actually tastes good.",
-  },
-  {
-    title: "Built for Your Budget",
-    description:
-      "Whether you're a college student with $20 or a parent feeding five, Gruby shows you exactly what things cost and helps you eat better for less. No gatekeeping.",
-  },
-];
-
 // Comparison data with images
 interface MealComparison {
   meal: string;
@@ -840,43 +821,6 @@ function BenefitsSectionAnimated() {
   );
 }
 
-// Animated About Section
-function AboutSectionAnimated() {
-  return (
-    <section
-      id="about"
-      className="pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-24 md:pt-24 lg:pb-32 lg:pt-32"
-    >
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-12 max-w-4xl text-center sm:mb-14 md:mb-16">
-          <h2
-            className="mb-4 font-semibold text-[#222222] sm:mb-6"
-            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
-          >
-            About Gruby
-          </h2>
-          <p className="text-base leading-relaxed text-[#717171] sm:text-lg md:text-xl">
-            Gruby is your AI-powered kitchen companion. Import recipes from TikTok, YouTube, or any website. Get real-time grocery prices. Cook with step-by-step guidance. Track your savings. Share your wins with a community of real home cooks — not influencers with sponsored content. Just people who actually love to cook.
-          </p>
-        </div>
-
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 sm:gap-10 md:grid-cols-3 md:gap-12">
-          {values.map((value, index) => (
-            <div key={index} className="text-center">
-              <h3 className="mb-3 text-xl font-semibold leading-tight text-[#222222] sm:mb-4 sm:text-2xl">
-                {value.title}
-              </h3>
-              <p className="text-base leading-relaxed text-[#717171]">
-                {value.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // Animated CTA Section
 function CTASectionAnimated({
   localEmail,
@@ -1490,8 +1434,6 @@ export default function MarketingPage() {
           isLoading={isLoading}
         />
 
-        {/* About Section */}
-        <AboutSectionAnimated />
 
         {/* CTA Section */}
         <CTASectionAnimated
