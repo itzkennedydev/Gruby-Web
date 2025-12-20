@@ -34,7 +34,7 @@ const features = [
   {
     title: "TikTok to Table",
     description:
-      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically. Works with TikTok, YouTube, Instagram, and more.",
+      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically.",
     icon: Video,
   },
   {
@@ -46,13 +46,13 @@ const features = [
   {
     title: "Step-by-Step Cooking Mode",
     description:
-      "Timers, video clips, voice instructions. Cook like a pro, even if you're not. Confetti celebration when you're done (seriously).",
+      "Timers, video clips, voice instructions. Cook like a pro, even if you're not.",
     icon: ChefHat,
   },
   {
-    title: "24-Hour Stories",
+    title: "Stories",
     description:
-      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks. No influencer energy required.",
+      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks.",
     icon: Camera,
   },
   {
@@ -111,8 +111,8 @@ const benefits = [
   {
     title: "Skip the Waste",
     description:
-      "Every delivery order = foam containers, plastic bags, and carbon emissions. Cooking at home is the greenest choice you can make.",
-    stats: "Zero",
+      "Every delivery order = foam containers, plastic bags, and carbon emissions. Cooking at home is the greener choice.",
+    stats: "Less",
     statLabel: "Packaging waste",
   },
   {
@@ -402,7 +402,7 @@ const featureShowcase = [
   {
     title: "TikTok to Table",
     description:
-      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically. Works with TikTok, YouTube, Instagram, and more.",
+      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically.",
     icon: Video,
     bullets: [
       "AI-powered recipe extraction",
@@ -428,24 +428,22 @@ const featureShowcase = [
   {
     title: "Step-by-Step Cooking Mode",
     description:
-      "Timers, video clips, voice instructions. Cook like a pro, even if you're not. Confetti celebration when you're done (seriously).",
+      "Timers, video clips, voice instructions. Cook like a pro, even if you're not.",
     icon: ChefHat,
     bullets: [
       "Built-in timers for each step",
       "Video clips at key moments",
       "Hands-free voice guidance",
-      "Achievement unlocks when done",
     ],
     mockupImage: "/mockups/cooking-mode.png",
   },
   {
-    title: "24-Hour Stories",
+    title: "Stories",
     description:
-      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks. No influencer energy required.",
+      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks.",
     icon: Camera,
     bullets: [
       "Photo and video stories",
-      "24-hour auto-expiration",
       "React and comment on posts",
       "Build your cooking community",
     ],
@@ -580,13 +578,15 @@ function FeatureShowcaseSectionAnimated() {
               {feature?.title}
             </h3>
 
-            {/* Description */}
-            <p className="mb-5 text-base leading-relaxed text-[#717171] sm:mb-6 sm:text-lg">
-              {feature?.description}
-            </p>
+            {/* Description - Fixed height to prevent layout shift */}
+            <div className="mb-5 min-h-[72px] sm:mb-6 sm:min-h-[56px]">
+              <p className="text-base leading-relaxed text-[#717171] sm:text-lg">
+                {feature?.description}
+              </p>
+            </div>
 
-            {/* Bullet Points */}
-            <ul className="mb-8 space-y-3 sm:mb-10 sm:space-y-4">
+            {/* Bullet Points - Fixed height to prevent layout shift */}
+            <ul className="mb-8 min-h-[180px] space-y-3 sm:mb-10 sm:min-h-[160px] sm:space-y-4">
               {feature?.bullets.map((bullet, bulletIndex) => (
                 <li key={bulletIndex} className="flex items-start gap-3">
                   <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#FF1E00]/10">
@@ -786,19 +786,7 @@ function BenefitsSectionAnimated() {
   return (
     <section id="how-it-works" className="pb-16 sm:pb-20 md:pb-24 lg:pb-32">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center sm:mb-14 md:mb-16">
-          <h2
-            className="mb-3 font-semibold text-[#222222] sm:mb-4"
-            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
-          >
-            Why cook with Gruby?
-          </h2>
-          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
-            Because scrolling DoorDash at 8pm isn't a personality trait. But saving $3,600 a year? That's a flex.
-          </p>
-        </div>
-
-        <div className="mb-12 grid grid-cols-1 gap-6 sm:mb-16 sm:grid-cols-2 sm:gap-8 md:mb-20 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-3">
           {benefits.map((benefit, index) => (
             <div key={index} className="px-4 text-center">
               <p className="mb-2 text-3xl font-bold text-[#FF1E00] sm:text-4xl">
@@ -917,27 +905,19 @@ function ComparisonSectionAnimated({
   return (
     <section
       id="comparison"
-      className="bg-[#f5f5f7] pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28"
+      className="bg-[#f5f5f7] pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-24 md:pt-24 lg:pb-32 lg:pt-32"
     >
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        {/* Enhanced Header Section */}
-        <div className="mb-8 text-center sm:mb-10 md:mb-14">
+        {/* Header Section */}
+        <div className="mb-12 text-center sm:mb-14 md:mb-16">
           <h2
-            className="mx-auto mb-3 max-w-3xl px-4 font-bold leading-tight text-[#222222] sm:mb-4"
-            style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
+            className="mb-3 font-semibold text-[#222222] sm:mb-4"
+            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
           >
-            Spoiler: You&apos;re paying{" "}
-            <span className="text-[#FF1E00]">3x more</span> for the same meal.
+            See what you&apos;re actually paying
           </h2>
-          <p
-            className="mx-auto mb-2 max-w-2xl px-4 font-medium text-[#717171] sm:mb-3"
-            style={{ fontSize: "clamp(1.125rem, 1.5vw + 0.875rem, 1.5rem)" }}
-          >
-            That $24 restaurant meal? The ingredients cost $8. The rest is
-            markup, fees, and tip.
-          </p>
-          <p className="mx-auto max-w-xl px-4 text-sm text-[#999999]">
-            Live prices from major retailers
+          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
+            Same meal. Different price. You decide.
           </p>
         </div>
 
@@ -978,7 +958,7 @@ function ComparisonSectionAnimated({
                           Eating Out
                         </p>
                         <p className="text-[10px] leading-tight text-[#717171] sm:text-xs">
-                          1 serving • wait time • inconsistent quality
+                          1 serving
                         </p>
                       </div>
                       <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:h-8 sm:w-8">
@@ -997,25 +977,17 @@ function ComparisonSectionAnimated({
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#717171]">
-                          Fees & service charges
-                        </span>
+                        <span className="text-[#717171]">Fees & tip</span>
                         <span className="text-[#222222]">
-                          ${comparison.delivery.fees.toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#717171]">Tip</span>
-                        <span className="text-[#222222]">
-                          ${comparison.delivery.tip.toFixed(2)}
+                          ${(comparison.delivery.fees + comparison.delivery.tip).toFixed(2)}
                         </span>
                       </div>
                     </div>
 
                     <div className="border-t border-gray-200 pt-3 sm:pt-4">
-                      <div className="flex min-h-[3rem] items-end justify-between sm:min-h-[3.5rem]">
+                      <div className="flex items-end justify-between">
                         <span className="text-xs font-medium text-[#222222] sm:text-sm">
-                          Your total
+                          Total
                         </span>
                         <span className="text-xl font-bold text-[#222222] sm:text-2xl">
                           ${comparison.delivery.total.toFixed(2)}
@@ -1029,11 +1001,10 @@ function ComparisonSectionAnimated({
                     <div className="mb-4 flex items-center justify-between sm:mb-6">
                       <div className="min-w-0 flex-1 pr-2">
                         <p className="mb-0.5 text-xs font-medium text-[#222222] sm:text-sm">
-                          Home cooked
+                          Home Cooked
                         </p>
                         <p className="text-[10px] leading-tight text-[#717171] sm:text-xs">
-                          {comparison.homeCooked.servings} servings • fresh •
-                          actually hot
+                          {comparison.homeCooked.servings} servings
                         </p>
                       </div>
                       <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:h-8 sm:w-8">
@@ -1044,27 +1015,9 @@ function ComparisonSectionAnimated({
                       </div>
                     </div>
 
-                    <div className="mb-3 sm:mb-4">
-                      <p className="mb-1.5 text-[10px] text-[#717171] sm:mb-2 sm:text-xs">
-                        What you&apos;ll need:
-                      </p>
-                      <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                        {comparison.homeCooked.ingredients.map((ing, i) => (
-                          <span
-                            key={i}
-                            className="rounded bg-white px-1.5 py-0.5 text-[10px] text-[#222222] ring-1 ring-black/5 sm:px-2 sm:text-xs"
-                          >
-                            {ing}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
                     <div className="mb-3 space-y-1.5 text-xs sm:mb-4 sm:space-y-2 sm:text-sm">
                       <div className="flex justify-between">
-                        <span className="text-[#717171]">
-                          Groceries (for {comparison.homeCooked.servings})
-                        </span>
+                        <span className="text-[#717171]">Groceries</span>
                         <span className="text-[#222222]">
                           {comparison.homeCooked.loading ? (
                             <Loader2 className="h-3.5 w-3.5 animate-spin sm:h-4 sm:w-4" />
@@ -1073,22 +1026,18 @@ function ComparisonSectionAnimated({
                           )}
                         </span>
                       </div>
+                      <div className="flex justify-between">
+                        <span className="text-[#717171]">Fees</span>
+                        <span className="text-[#222222]">$0.00</span>
+                      </div>
                     </div>
 
-                    <div className="flex min-h-[3rem] flex-col justify-end space-y-1.5 border-t border-gray-200 pt-3 sm:min-h-[3.5rem] sm:space-y-2 sm:pt-4">
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-xs text-[#717171] sm:text-sm">
-                          Hidden fees
-                        </span>
-                        <span className="text-xs text-[#222222] sm:text-sm">
-                          $0.00
-                        </span>
-                      </div>
-                      <div className="flex items-baseline justify-between">
+                    <div className="border-t border-gray-200 pt-3 sm:pt-4">
+                      <div className="flex items-end justify-between">
                         <span className="text-xs font-medium text-[#222222] sm:text-sm">
                           Per serving
                         </span>
-                        <span className="text-xl font-bold text-[#222222] sm:text-2xl">
+                        <span className="text-xl font-bold text-[#16A34A] sm:text-2xl">
                           {comparison.homeCooked.loading ? (
                             <Loader2 className="h-4 w-4 animate-spin sm:h-5 sm:w-5" />
                           ) : (
@@ -1104,7 +1053,7 @@ function ComparisonSectionAnimated({
               {/* Savings Strip */}
               <div className="flex flex-col items-center justify-between gap-2 bg-[#222222] px-4 py-3 sm:flex-row sm:gap-3 sm:px-6 sm:py-4 md:px-8">
                 <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start sm:gap-4">
-                  <p className="text-xs text-white/70 sm:text-sm">You keep</p>
+                  <p className="text-xs text-white/70 sm:text-sm">You save</p>
                   <p className="text-xl font-bold text-white sm:text-2xl">
                     {comparison.homeCooked.loading ? (
                       <Loader2 className="h-4 w-4 animate-spin text-white sm:h-5 sm:w-5" />
@@ -1114,51 +1063,16 @@ function ComparisonSectionAnimated({
                   </p>
                   {!comparison.homeCooked.loading && (
                     <span className="rounded bg-[#16A34A] px-1.5 py-0.5 text-[10px] font-semibold text-white sm:px-2 sm:text-xs">
-                      Save {comparison.savingsPercent}%
+                      {comparison.savingsPercent}% less
                     </span>
                   )}
                 </div>
                 <p className="text-center text-xs text-white/70 sm:text-left sm:text-sm">
-                  + {comparison.homeCooked.servings - 1} extra meals for
-                  tomorrow
+                  + {comparison.homeCooked.servings - 1} extra servings
                 </p>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Summary */}
-        <div className="mt-8 rounded-xl bg-[#FF1E00] p-6 text-center text-white sm:mt-10 sm:rounded-2xl sm:p-8 md:mt-12 md:p-10">
-          <h3 className="mb-2 text-lg font-semibold sm:mb-3 sm:text-xl md:text-2xl">
-            Keep your money. Skip the plastic.
-          </h3>
-          <p className="mx-auto mb-6 max-w-lg px-4 text-sm text-white/90 sm:mb-8 sm:text-base">
-            Every delivery order = fees, markup, and a pile of packaging. Cook at home with Gruby and keep the difference.
-          </p>
-          <div className="mx-auto grid max-w-md grid-cols-3 gap-4 sm:gap-6">
-            <div>
-              <p className="mb-1 text-xl font-bold sm:text-2xl md:text-3xl">
-                $300+
-              </p>
-              <p className="text-[10px] text-white/80 sm:text-xs">
-                Back in your pocket
-              </p>
-            </div>
-            <div>
-              <p className="mb-1 text-xl font-bold sm:text-2xl md:text-3xl">
-                4x
-              </p>
-              <p className="text-[10px] text-white/80 sm:text-xs">More food</p>
-            </div>
-            <div>
-              <p className="mb-1 text-xl font-bold sm:text-2xl md:text-3xl">
-                0
-              </p>
-              <p className="text-[10px] text-white/80 sm:text-xs">
-                Hidden fees
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
