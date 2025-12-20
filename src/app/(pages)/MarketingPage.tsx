@@ -259,12 +259,12 @@ function AppPreviewSectionAnimated({
     <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div
-          className="relative flex min-h-[500px] flex-col rounded-2xl bg-black px-6 pb-20 pt-12 sm:min-h-[560px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[550px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40"
+          className="relative flex min-h-[720px] flex-col rounded-2xl bg-black px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40"
           style={{ containerType: "inline-size" }}
         >
           <div className="flex h-full w-full flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-row lg:items-center lg:gap-16">
             {/* Content and Progress Bar - Right side / Top on mobile */}
-            <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[482px] sm:px-0 sm:pb-[560px] md:pb-[620px] lg:-mt-28 lg:ml-[45%] lg:items-start lg:pb-0">
+            <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
               {/* Heading and Description */}
               <div className="mb-6 w-full text-left sm:mb-8">
                 <h2
@@ -379,13 +379,10 @@ function AppPreviewSectionAnimated({
                 alt="Gruby mobile app"
                 width={500}
                 height={1000}
-                className="h-auto w-auto object-contain"
-                style={{
-                  maxWidth: "clamp(420px, 40vw, 720px)",
-                }}
+                className="h-auto w-[320px] max-w-[85vw] object-contain sm:w-[360px] sm:max-w-[70vw] md:w-[400px] md:max-w-[50vw] lg:w-[500px] lg:max-w-none xl:w-[600px] 2xl:w-[720px]"
                 priority
                 quality={100}
-                sizes="(max-width: 640px) 500px, (max-width: 768px) 450px, (max-width: 1024px) 400px, (max-width: 1280px) 480px, (max-width: 1536px) 640px, 720px"
+                sizes="(max-width: 640px) 320px, (max-width: 768px) 360px, (max-width: 1024px) 400px, (max-width: 1280px) 500px, (max-width: 1536px) 600px, 720px"
                 loading="eager"
                 fetchPriority="high"
               />
