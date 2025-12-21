@@ -156,70 +156,82 @@ function CaseStudyCard({
             left: "24px",
             right: "24px",
             display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            maxWidth: "580px",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            gap: "24px",
           }}
         >
-          {/* Glassmorphism badge */}
-          <div
-            style={{
-              display: "inline-flex",
-              width: "fit-content",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              backdropFilter: "blur(10px)",
-              backgroundColor: "rgba(255, 255, 255, 0.25)",
-            }}
-          >
-            <p
-              style={{
-                fontWeight: 600,
-                fontSize: "14px",
-                lineHeight: "20px",
-                color: "rgb(255, 255, 255)",
-                margin: 0,
-              }}
-            >
-              {study.tagline}
-            </p>
-          </div>
-
-          {/* Name and quote */}
+          {/* Left side: Text content */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "8px",
+              gap: "16px",
+              maxWidth: "580px",
+              flex: 1,
             }}
           >
-            <h5
+            {/* Glassmorphism badge */}
+            <div
               style={{
-                fontWeight: 600,
-                fontSize: "18px",
-                lineHeight: "140%",
-                color: "rgb(255, 255, 255)",
-                margin: 0,
+                display: "inline-flex",
+                width: "fit-content",
+                padding: "6px 12px",
+                borderRadius: "8px",
+                backdropFilter: "blur(10px)",
+                backgroundColor: "rgba(255, 255, 255, 0.25)",
               }}
             >
-              {study.name}
-            </h5>
-            {isExpanded && (
+              <p
+                style={{
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  color: "rgb(255, 255, 255)",
+                  margin: 0,
+                }}
+              >
+                {study.tagline}
+              </p>
+            </div>
+
+            {/* Name and quote */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+              }}
+            >
               <h5
                 style={{
                   fontWeight: 600,
                   fontSize: "18px",
                   lineHeight: "140%",
-                  color: "rgba(255, 255, 255, 0.5)",
+                  color: "rgb(255, 255, 255)",
                   margin: 0,
                 }}
               >
-                {study.quote}
+                {study.name}
               </h5>
-            )}
+              {isExpanded && (
+                <h5
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "18px",
+                    lineHeight: "140%",
+                    color: "rgba(255, 255, 255, 0.5)",
+                    margin: 0,
+                  }}
+                >
+                  {study.quote}
+                </h5>
+              )}
+            </div>
           </div>
 
-          {/* CTA Button */}
+          {/* Right side: CTA Button */}
           {isExpanded && (
             <button
               style={{
@@ -236,6 +248,7 @@ function CaseStudyCard({
                   "rgba(0, 0, 0, 0.12) 0px 1px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 8px 0px",
                 transition: "transform 0.2s ease, box-shadow 0.2s ease",
                 pointerEvents: "auto",
+                flexShrink: 0,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px)";
