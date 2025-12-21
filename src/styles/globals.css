@@ -4,128 +4,128 @@
 
 /* Aeonik Pro Font Family */
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Thin.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Thin.otf") format("opentype");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-ThinItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-ThinItalic.otf") format("opentype");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Air.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Air.otf") format("opentype");
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-AirItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-AirItalic.otf") format("opentype");
   font-weight: 200;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Light.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-LightItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-LightItalic.otf") format("opentype");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Regular.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-RegularItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-RegularItalic.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Medium.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-MediumItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-MediumItalic.otf") format("opentype");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-SemiBold.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-SemiBold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-SemiBoldItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-SemiBoldItalic.otf") format("opentype");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Bold.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-BoldItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-BoldItalic.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-Black.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-Black.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Aeonik Pro';
-  src: url('/fonts/AeonikPro-BlackItalic.otf') format('opentype');
+  font-family: "Aeonik Pro";
+  src: url("/fonts/AeonikPro-BlackItalic.otf") format("opentype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -140,13 +140,14 @@
 
     /* PRIMITIVE COLORS */
     --color-charcoal: #222222;
-    --color-white: #FFFFFF;
-    --color-warm-parchment: #FAF9F6;
-    --color-wolf-gray: #D9D9D6;
+    --color-primary-brown: #504944;
+    --color-white: #ffffff;
+    --color-warm-parchment: #faf9f6;
+    --color-wolf-gray: #d9d9d6;
     --color-olive: #222222; /* DEPRECATED - Maps to charcoal */
-    --color-burnt-umber: #9C6B3F;
-    --color-clay-taupe: #B8A89A;
-    --color-dried-chili: #7A3E2E;
+    --color-burnt-umber: #9c6b3f;
+    --color-clay-taupe: #b8a89a;
+    --color-dried-chili: #7a3e2e;
 
     /* SEMANTIC - BACKGROUNDS */
     --color-bg: var(--color-white);
@@ -171,11 +172,11 @@
     --color-border-subtle: rgba(217, 217, 214, 0.5);
     --color-border-strong: var(--color-charcoal);
 
-    /* SEMANTIC - PRIMARY (Charcoal - Infrastructure) */
-    --color-primary: var(--color-charcoal);
+    /* SEMANTIC - PRIMARY (Primary Brown - Buttons & Key Elements) */
+    --color-primary: var(--color-primary-brown);
     --color-primary-foreground: var(--color-white);
-    --color-primary-hover: #333333;
-    --color-primary-active: #111111;
+    --color-primary-hover: #403a36;
+    --color-primary-active: #302b28;
 
     /* SEMANTIC - SECONDARY */
     --color-secondary: var(--color-white);
@@ -202,7 +203,7 @@
     /* SEMANTIC - SUCCESS/WARNING/INFO */
     --color-success: var(--color-charcoal);
     --color-success-foreground: var(--color-white);
-    --color-warning: #D4A574;
+    --color-warning: #d4a574;
     --color-warning-foreground: var(--color-charcoal);
     --color-info: var(--color-burnt-umber);
     --color-info-foreground: var(--color-white);
@@ -303,10 +304,10 @@
 
   .dark {
     /* SEMANTIC - BACKGROUNDS */
-    --color-bg: #1A1A1A;
+    --color-bg: #1a1a1a;
     --color-bg-subtle: #222222;
     --color-surface: #222222;
-    --color-surface-elevated: #2A2A2A;
+    --color-surface-elevated: #2a2a2a;
     --color-surface-muted: #333333;
 
     /* SEMANTIC - TEXT */
@@ -332,22 +333,22 @@
     --color-primary-active: var(--color-wolf-gray);
 
     /* SEMANTIC - SECONDARY */
-    --color-secondary: #2A2A2A;
+    --color-secondary: #2a2a2a;
     --color-secondary-foreground: var(--color-warm-parchment);
     --color-secondary-border: #333333;
     --color-secondary-hover: #333333;
 
     /* SEMANTIC - SUPPORT (lighter olive for dark) */
-    --color-support: #8B8B6A;
-    --color-support-foreground: #1A1A1A;
+    --color-support: #8b8b6a;
+    --color-support-foreground: #1a1a1a;
     --color-support-muted: rgba(139, 139, 106, 0.2);
 
     /* SEMANTIC - ACCENT WARM */
-    --color-accent-warm: #B8916B;
-    --color-accent-warm-foreground: #1A1A1A;
+    --color-accent-warm: #b8916b;
+    --color-accent-warm-foreground: #1a1a1a;
 
     /* SEMANTIC - DANGER */
-    --color-danger: #A85A4A;
+    --color-danger: #a85a4a;
     --color-danger-foreground: var(--color-warm-parchment);
 
     /* SEMANTIC - INTERACTIVE */
@@ -358,17 +359,17 @@
 
     /* SEMANTIC - UI ELEMENTS */
     --color-skeleton: #333333;
-    --color-input: #2A2A2A;
+    --color-input: #2a2a2a;
     --color-input-border: #333333;
     --color-input-focus-border: var(--color-warm-parchment);
     --color-input-placeholder: var(--color-olive);
 
     /* SEMANTIC - NAV/TABS/BADGES */
-    --color-nav-chrome: #8B8B6A;
-    --color-tab-indicator: #8B8B6A;
+    --color-nav-chrome: #8b8b6a;
+    --color-tab-indicator: #8b8b6a;
     --color-badge: rgba(139, 139, 106, 0.2);
-    --color-badge-text: #8B8B6A;
-    --color-chip: #2A2A2A;
+    --color-badge-text: #8b8b6a;
+    --color-chip: #2a2a2a;
     --color-chip-border: #333333;
     --color-chip-selected: var(--color-warm-parchment);
     --color-chip-selected-text: var(--color-charcoal);
@@ -403,14 +404,31 @@
   body {
     @apply bg-background text-foreground;
   }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Aeonik Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family:
+      "Aeonik Pro",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
   }
 }
 
 @layer utilities {
   .font-heading {
-    font-family: 'Aeonik Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      "Aeonik Pro",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
   }
 }
 
@@ -488,19 +506,19 @@
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
   }
-  
+
   .animate-slide-up {
     animation: slideUp 0.7s ease-out forwards;
   }
-  
+
   .will-change-transform {
     will-change: transform;
   }
-  
+
   .will-change-opacity {
     will-change: opacity;
   }
-  
+
   /* GPU acceleration for smooth animations */
   .gpu-accelerated {
     transform: translateZ(0);
@@ -554,86 +572,86 @@ html {
   .text-fluid-xs {
     font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
   }
-  
+
   .text-fluid-sm {
     font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
   }
-  
+
   .text-fluid-base {
     font-size: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
   }
-  
+
   .text-fluid-lg {
     font-size: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
   }
-  
+
   .text-fluid-xl {
     font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
   }
-  
+
   .text-fluid-2xl {
     font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
   }
-  
+
   .text-fluid-3xl {
     font-size: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
   }
-  
+
   .text-fluid-4xl {
     font-size: clamp(2.25rem, 1.8rem + 2.25vw, 3rem);
   }
-  
+
   .text-fluid-5xl {
     font-size: clamp(3rem, 2.4rem + 3vw, 4rem);
   }
-  
+
   /* Fluid spacing utilities */
   .spacing-fluid-sm {
     padding: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
   }
-  
+
   .spacing-fluid-md {
     padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
   }
-  
+
   .spacing-fluid-lg {
     padding: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
   }
-  
+
   .spacing-fluid-xl {
     padding: clamp(2rem, 1.6rem + 2vw, 3.5rem);
   }
-  
+
   /* Fluid width utilities */
   .w-fluid-sm {
     width: clamp(200px, 25vw, 300px);
   }
-  
+
   .w-fluid-md {
     width: clamp(300px, 40vw, 500px);
   }
-  
+
   .w-fluid-lg {
     width: clamp(400px, 50vw, 700px);
   }
-  
+
   .w-fluid-xl {
     width: clamp(500px, 60vw, 900px);
   }
-  
+
   /* Fluid max-width utilities */
   .max-w-fluid-sm {
     max-width: clamp(300px, 30vw, 400px);
   }
-  
+
   .max-w-fluid-md {
     max-width: clamp(400px, 40vw, 600px);
   }
-  
+
   .max-w-fluid-lg {
     max-width: clamp(600px, 50vw, 900px);
   }
-  
+
   .max-w-fluid-xl {
     max-width: clamp(800px, 60vw, 1200px);
   }
@@ -644,7 +662,7 @@ html {
   /* Viewport-based sizing */
   --vw-unit: 1vw;
   --vh-unit: 1vh;
-  
+
   /* Fluid spacing scale */
   --spacing-xs: clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem);
   --spacing-sm: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
@@ -652,7 +670,7 @@ html {
   --spacing-lg: clamp(1.5rem, 1.2rem + 1.5vw, 2.5rem);
   --spacing-xl: clamp(2rem, 1.6rem + 2vw, 3.5rem);
   --spacing-2xl: clamp(3rem, 2.4rem + 3vw, 5rem);
-  
+
   /* Fluid typography scale */
   --font-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
   --font-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
@@ -663,7 +681,7 @@ html {
   --font-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
   --font-4xl: clamp(2.25rem, 1.8rem + 2.25vw, 3rem);
   --font-5xl: clamp(3rem, 2.4rem + 3vw, 4rem);
-  
+
   /* Container query breakpoints */
   --container-sm: 400px;
   --container-md: 600px;
@@ -673,10 +691,10 @@ html {
 
 /* Scrollbar hide utility for horizontal scrollable elements */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari and Opera */
+  display: none; /* Chrome, Safari and Opera */
 }

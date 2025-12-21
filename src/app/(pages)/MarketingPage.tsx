@@ -517,7 +517,7 @@ export default function MarketingPage() {
         {/* App Preview Section - Phone mockup with content */}
         <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
           <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-            <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#1a1a1a] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
+            <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#222222] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
               {/* Content - Right side on desktop */}
               <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
                 {/* Heading */}
@@ -664,17 +664,6 @@ export default function MarketingPage() {
 
         {/* Templates/Recipes Section */}
         <Templates />
-
-        {/* CTA Section */}
-        <CTASection
-          localEmail={localEmail}
-          setLocalEmail={setLocalEmail}
-          handleBetaSignup={handleBetaSignup}
-          isSubmitting={isSubmitting}
-          error={error}
-          isSubmitted={isSubmitted}
-          email={email}
-        />
 
         {/* Footer */}
         <footer className="border-t border-[#e5e5e5] bg-white">

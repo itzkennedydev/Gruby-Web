@@ -101,91 +101,98 @@ export default function Customers() {
               flex: "1 0 0",
             }}
           >
-            {/* Average User Card */}
+            {/* Average Savings Row */}
             <div
               style={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "0px",
-                borderRadius: "16px",
-                overflow: "hidden",
-                backgroundColor: "rgb(255, 255, 255)",
+                gap: "24px",
+                flex: "1 0 0",
               }}
             >
-              {/* Content area */}
+              {/* Stats Card */}
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "24px",
                   flex: "1 0 0",
-                  position: "relative",
+                  padding: "32px",
+                  borderRadius: "16px",
+                  backgroundColor: "rgb(255, 255, 255)",
                 }}
               >
-                {/* Stats */}
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "center",
-                    gap: "4px",
+                    gap: "0px",
                   }}
                 >
+                  <h5
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "18px",
+                      letterSpacing: "-0.01em",
+                      lineHeight: "140%",
+                      color: "rgb(0, 0, 0)",
+                    }}
+                  >
+                    Average monthly savings
+                  </h5>
                   <h1
                     style={{
-                      fontWeight: 700,
-                      fontSize: "64px",
-                      letterSpacing: "-0.04em",
-                      lineHeight: "100%",
-                      color: "rgb(16, 163, 74)",
+                      fontWeight: 600,
+                      fontSize: "96px",
+                      letterSpacing: "-0.05em",
+                      lineHeight: "110%",
+                      color: "rgba(0, 0, 0, 0.25)",
                     }}
                   >
                     $247
                   </h1>
-                  <p
-                    style={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "-0.01em",
-                      lineHeight: "24px",
-                      color: "rgb(105, 105, 105)",
-                      textAlign: "center",
-                    }}
-                  >
-                    Average monthly savings
-                  </p>
                 </div>
-                {/* Subtext */}
-                <p
+                <div
                   style={{
-                    fontWeight: 500,
-                    fontSize: "14px",
-                    letterSpacing: "-0.01em",
-                    lineHeight: "24px",
-                    color: "rgb(105, 105, 105)",
-                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0px",
                   }}
                 >
-                  compared to delivery apps
-                </p>
+                  <h5
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "18px",
+                      letterSpacing: "-0.01em",
+                      lineHeight: "140%",
+                      color: "rgb(0, 0, 0)",
+                    }}
+                  >
+                    Compared to delivery apps
+                    <br />
+                    <span style={{ color: "rgba(0, 0, 0, 0.25)" }}>
+                      That&apos;s real money back in your pocket
+                    </span>
+                  </h5>
+                </div>
               </div>
-              {/* Image */}
+
+              {/* Image Column */}
               <div
                 style={{
+                  display: "flex",
+                  flexDirection: "column",
                   width: "284px",
                   flexShrink: 0,
-                  position: "relative",
-                  backgroundColor: "#f5f5f7",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  borderRadius: "16px",
+                  overflow: "hidden",
                 }}
               >
                 <img
-                  src="https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Home cooking"
+                  src="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024"
+                  srcSet="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=512 512w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024 1024w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg 1280w"
+                  sizes="284px"
+                  alt="Home cooking savings"
                   style={{
                     display: "block",
                     width: "100%",
