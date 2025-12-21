@@ -190,54 +190,6 @@ function CTASection({
         {error && (
           <p style={{ fontSize: "14px", color: "rgb(239, 68, 68)" }}>{error}</p>
         )}
-
-        {/* App Store Links */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "16px",
-            marginTop: "8px",
-          }}
-          className="app-store-links"
-        >
-          <a
-            href="https://apps.apple.com/app/gruby"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
-          >
-            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-            </svg>
-            <div className="flex flex-col items-start">
-              <span className="text-[10px] leading-tight text-[#717171]">
-                Download on the
-              </span>
-              <span className="text-sm font-semibold leading-tight">
-                App Store
-              </span>
-            </div>
-          </a>
-          <a
-            href="https://play.google.com/store/apps/details?id=com.gruby.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
-          >
-            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
-            </svg>
-            <div className="flex flex-col items-start">
-              <span className="text-[10px] leading-tight text-[#717171]">
-                Get it on
-              </span>
-              <span className="text-sm font-semibold leading-tight">
-                Google Play
-              </span>
-            </div>
-          </a>
-        </div>
       </div>
     </section>
   );
@@ -517,7 +469,7 @@ export default function MarketingPage() {
         {/* App Preview Section - Phone mockup with content */}
         <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
           <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-            <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#222222] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
+            <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#1a1a1a] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
               {/* Content - Right side on desktop */}
               <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
                 {/* Heading */}
@@ -664,6 +616,17 @@ export default function MarketingPage() {
 
         {/* Templates/Recipes Section */}
         <Templates />
+
+        {/* CTA Section */}
+        <CTASection
+          localEmail={localEmail}
+          setLocalEmail={setLocalEmail}
+          handleBetaSignup={handleBetaSignup}
+          isSubmitting={isSubmitting}
+          error={error}
+          isSubmitted={isSubmitted}
+          email={email}
+        />
 
         {/* Footer */}
         <footer className="border-t border-[#e5e5e5] bg-white">
