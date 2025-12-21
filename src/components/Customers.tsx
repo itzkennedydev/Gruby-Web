@@ -337,7 +337,7 @@ export default function Customers() {
                       fontSize: "18px",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
-                      color: "rgba(0, 0, 0, 0.5)",
+                      color: "rgb(0, 0, 0)",
                     }}
                   >
                     Users cook
@@ -345,10 +345,10 @@ export default function Customers() {
                   <h1
                     style={{
                       fontWeight: 600,
-                      fontSize: "72px",
+                      fontSize: "96px",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
-                      color: "rgb(0, 0, 0)",
+                      color: "rgba(0, 0, 0, 0.25)",
                     }}
                   >
                     4.2x
@@ -372,7 +372,7 @@ export default function Customers() {
                   >
                     More home-cooked meals
                     <br />
-                    <span style={{ color: "rgba(0, 0, 0, 0.5)" }}>
+                    <span style={{ color: "rgba(0, 0, 0, 0.25)" }}>
                       after their first month with Gruby
                     </span>
                   </h5>
@@ -390,63 +390,19 @@ export default function Customers() {
                   overflow: "hidden",
                 }}
               >
-                {/* Quote area */}
-                <div
+                <img
+                  src="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024"
+                  srcSet="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=512 512w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024 1024w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg 1280w"
+                  sizes="284px"
+                  alt="Home cooking"
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "24px",
-                    backgroundColor: "rgb(255, 255, 255)",
+                    display: "block",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center",
                   }}
-                >
-                  <p
-                    style={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "-0.01em",
-                      lineHeight: "24px",
-                      color: "rgb(0, 0, 0)",
-                      textAlign: "center",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    &quot;Honestly didn&apos;t think I&apos;d stick with it but
-                    here we are 3 months in&quot;
-                  </p>
-                  <p
-                    style={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "-0.01em",
-                      lineHeight: "24px",
-                      color: "rgb(105, 105, 105)",
-                      textAlign: "center",
-                    }}
-                  >
-                    — Jessica M.
-                  </p>
-                </div>
-                {/* Image */}
-                <div
-                  style={{
-                    flex: "1 0 0",
-                    position: "relative",
-                  }}
-                >
-                  <img
-                    src="https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Happy cook"
-                    style={{
-                      display: "block",
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "center",
-                    }}
-                  />
-                </div>
+                />
               </div>
             </div>
 
@@ -470,75 +426,19 @@ export default function Customers() {
                   overflow: "hidden",
                 }}
               >
-                {/* Quote area */}
-                <div
+                <img
+                  src="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024"
+                  srcSet="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=512 512w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024 1024w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg 1280w"
+                  sizes="284px"
+                  alt="Cooking at home"
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "24px",
-                    backgroundColor: "rgb(255, 255, 255)",
+                    display: "block",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "center",
                   }}
-                >
-                  <p
-                    style={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "-0.01em",
-                      lineHeight: "24px",
-                      color: "rgb(0, 0, 0)",
-                      textAlign: "center",
-                      fontStyle: "italic",
-                    }}
-                  >
-                    &quot;Made dinner in the time it used to take for
-                    delivery&quot;
-                  </p>
-                  <p
-                    style={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "-0.01em",
-                      lineHeight: "24px",
-                      color: "rgb(105, 105, 105)",
-                      textAlign: "center",
-                    }}
-                  >
-                    — Tyler K.
-                  </p>
-                  <p
-                    style={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      letterSpacing: "-0.01em",
-                      lineHeight: "24px",
-                      color: "rgb(105, 105, 105)",
-                      textAlign: "center",
-                    }}
-                  >
-                    — Tyler K.
-                  </p>
-                </div>
-                {/* Image */}
-                <div
-                  style={{
-                    flex: "1 0 0",
-                    position: "relative",
-                  }}
-                >
-                  <img
-                    src="https://images.pexels.com/photos/4252137/pexels-photo-4252137.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Quick cooking"
-                    style={{
-                      display: "block",
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "center",
-                    }}
-                  />
-                </div>
+                />
               </div>
 
               {/* Stats Card */}
