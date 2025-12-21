@@ -1,6 +1,43 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+
+// Utility function to split text into animated characters
+function AnimatedText({
+  text,
+  style,
+  isVisible,
+}: {
+  text: string;
+  style: React.CSSProperties;
+  isVisible: boolean;
+}) {
+  const words = text.split(" ");
+
+  return (
+    <h5 style={style}>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} style={{ whiteSpace: "nowrap" }}>
+          {word.split("").map((char, charIndex) => (
+            <span
+              key={charIndex}
+              style={{
+                display: "inline-block",
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? "none" : "translateY(10px)",
+                willChange: "transform, opacity",
+                transition: `opacity 0.3s ease ${(wordIndex * 3 + charIndex) * 0.02}s, transform 0.3s ease ${(wordIndex * 3 + charIndex) * 0.02}s`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
+          {wordIndex < words.length - 1 && " "}
+        </span>
+      ))}
+    </h5>
+  );
+}
 
 const caseStudies = [
   {
@@ -188,7 +225,9 @@ function CaseStudyCard({
               gap: "8px",
             }}
           >
-            <h5
+            <AnimatedText
+              text={study.name}
+              isVisible={isExpanded}
               style={{
                 fontWeight: 600,
                 fontSize: "18px",
@@ -196,11 +235,11 @@ function CaseStudyCard({
                 color: "rgb(255, 255, 255)",
                 margin: 0,
               }}
-            >
-              {study.name}
-            </h5>
+            />
             {isExpanded && (
-              <h5
+              <AnimatedText
+                text={study.quote}
+                isVisible={isExpanded}
                 style={{
                   fontWeight: 600,
                   fontSize: "18px",
@@ -208,9 +247,7 @@ function CaseStudyCard({
                   color: "rgba(255, 255, 255, 0.5)",
                   margin: 0,
                 }}
-              >
-                {study.quote}
-              </h5>
+              />
             )}
           </div>
         </div>
