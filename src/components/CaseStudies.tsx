@@ -167,41 +167,17 @@ function CaseStudyCard({
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "16px",
+              gap: "8px",
               maxWidth: "580px",
               flex: 1,
             }}
           >
-            {/* Glassmorphism badge */}
-            <div
-              style={{
-                display: "inline-flex",
-                width: "fit-content",
-                padding: "6px 12px",
-                borderRadius: "8px",
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 0.25)",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: 600,
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                  color: "rgb(255, 255, 255)",
-                  margin: 0,
-                }}
-              >
-                {study.tagline}
-              </p>
-            </div>
-
-            {/* Name and quote */}
+            {/* Name with tagline */}
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "4px",
               }}
             >
               <h5
@@ -215,20 +191,33 @@ function CaseStudyCard({
               >
                 {study.name}
               </h5>
-              {isExpanded && (
-                <h5
-                  style={{
-                    fontWeight: 600,
-                    fontSize: "18px",
-                    lineHeight: "140%",
-                    color: "rgba(255, 255, 255, 0.5)",
-                    margin: 0,
-                  }}
-                >
-                  {study.quote}
-                </h5>
-              )}
+              <p
+                style={{
+                  fontWeight: 500,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  color: "rgba(255, 255, 255, 0.7)",
+                  margin: 0,
+                }}
+              >
+                {study.tagline}
+              </p>
             </div>
+
+            {/* Quote */}
+            {isExpanded && (
+              <h5
+                style={{
+                  fontWeight: 600,
+                  fontSize: "18px",
+                  lineHeight: "140%",
+                  color: "rgba(255, 255, 255, 0.5)",
+                  margin: 0,
+                }}
+              >
+                {study.quote}
+              </h5>
+            )}
           </div>
 
           {/* Right side: CTA Button */}
