@@ -78,7 +78,7 @@ function CaseStudyCard({
       style={{
         display: "flex",
         flexDirection: "column",
-        flex: isExpanded ? "6 0 0" : "1 0 0",
+        flex: isExpanded ? "6 0 0" : "2 0 0",
         placeContent: "flex-start",
         alignItems: "flex-start",
         gap: "16px",
