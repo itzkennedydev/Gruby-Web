@@ -12,6 +12,7 @@ const caseStudies = [
       "https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
     quote:
       '"I built this because I was tired of paying $18 for a burrito bowl. Now I make the same recipes I see online for a fraction of the cost. If I can do it, trust me, anyone can."',
+    ctaText: "Save on groceries",
   },
   {
     name: "Tyler K.",
@@ -22,6 +23,7 @@ const caseStudies = [
       "https://images.pexels.com/photos/3771120/pexels-photo-3771120.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
     quote:
       '"Delivery apps were bleeding me dry. Like $400+ some months. Started meal prepping Sundays with recipes from the app - now I\'m spending maybe $180/month total on groceries. Already paid off my credit card."',
+    ctaText: "Start meal prepping",
   },
   {
     name: "Maria S.",
@@ -32,6 +34,7 @@ const caseStudies = [
       "https://images.pexels.com/photos/4259707/pexels-photo-4259707.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
     quote:
       '"Between work and two kids, cooking felt impossible. The price compare saved me so much money - found out one store was half the price for my weekly staples. That\'s $70 extra every week for their activities."',
+    ctaText: "Compare prices",
   },
   {
     name: "David L.",
@@ -42,6 +45,7 @@ const caseStudies = [
       "https://images.pexels.com/photos/4253311/pexels-photo-4253311.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
     quote:
       '"Literally never made anything beyond ramen. The step-by-step mode walks you through everything. Made chicken tikka masala that tasted better than takeout. My girlfriend keeps asking when I learned to cook lol."',
+    ctaText: "Learn to cook",
   },
 ];
 
@@ -214,6 +218,64 @@ function CaseStudyCard({
               </h5>
             )}
           </div>
+
+          {/* CTA Button */}
+          {isExpanded && (
+            <button
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                width: "fit-content",
+                padding: "12px 20px",
+                borderRadius: "13px",
+                backgroundColor: "rgb(255, 255, 255)",
+                border: "none",
+                cursor: "pointer",
+                boxShadow:
+                  "rgba(0, 0, 0, 0.12) 0px 1px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 8px 0px",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                pointerEvents: "auto",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow =
+                  "rgba(0, 0, 0, 0.15) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 4px 12px 0px";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "rgba(0, 0, 0, 0.12) 0px 1px 2px 0px, rgba(0, 0, 0, 0.04) 0px 2px 8px 0px";
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 500,
+                  fontSize: "14px",
+                  lineHeight: "24px",
+                  letterSpacing: "-0.01em",
+                  color: "rgb(0, 0, 0)",
+                }}
+              >
+                {study.ctaText}
+              </span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 21"
+                fill="none"
+                style={{ flexShrink: 0 }}
+              >
+                <path
+                  d="M7.5 15.5L12.5 10.5L7.5 5.5"
+                  stroke="rgb(0, 0, 0)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </div>
