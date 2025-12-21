@@ -139,7 +139,7 @@ function CaseStudyCard({
             right: 0,
             height: "60%",
             background:
-              "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%)",
+              "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.95) 100%)",
             pointerEvents: "none",
           }}
         />
