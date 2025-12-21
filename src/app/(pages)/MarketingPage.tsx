@@ -651,7 +651,7 @@ export default function MarketingPage() {
                     href="https://apps.apple.com/app/gruby"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#504944] hover:text-[#504944] active:scale-[0.98]"
+                    className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#504944] hover:text-[#504944] active:scale-[0.98]"
                   >
                     <svg
                       className="h-3.5 w-3.5"
@@ -673,7 +673,7 @@ export default function MarketingPage() {
                     href="https://play.google.com/store/apps/details?id=com.gruby.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#504944] hover:text-[#504944] active:scale-[0.98]"
+                    className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#504944] hover:text-[#504944] active:scale-[0.98]"
                   >
                     <svg
                       className="h-3.5 w-3.5"
