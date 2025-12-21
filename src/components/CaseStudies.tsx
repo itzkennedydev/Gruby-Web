@@ -154,6 +154,7 @@ function CaseStudyCard({
             display: "flex",
             flexDirection: "column",
             gap: "16px",
+            maxWidth: "400px",
           }}
         >
           {/* Glassmorphism badge */}
