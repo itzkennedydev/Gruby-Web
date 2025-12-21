@@ -155,7 +155,7 @@ export default function FAQPage() {
           <h1 className="font-semibold mb-4" style={{ fontSize: 'clamp(1.875rem, 4vw + 1rem, 3rem)' }}>Frequently Asked Questions</h1>
           
           <p className="mb-12 text-[#717171]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1.125rem)' }}>
-            Find answers to common questions about Gruby. Can&apos;t find what you&apos;re looking for? <a href="mailto:support@gruby.app" className="text-[#FF1E00] hover:underline">Contact our support team</a>.
+            Find answers to common questions about Gruby. Can&apos;t find what you&apos;re looking for? <a href="mailto:support@gruby.app" className="text-[#222222] hover:underline">Contact our support team</a>.
           </p>
 
           {faqs.map((category, categoryIndex) => (
@@ -186,7 +186,7 @@ export default function FAQPage() {
             <div className="space-y-4">
               <p className="text-[#222222]" style={{ fontSize: 'clamp(1rem, 1.25vw + 0.75rem, 1rem)' }}>
                 <strong>Email:</strong>{' '}
-                <a href="mailto:support@gruby.app" className="text-[#FF1E00] hover:underline">
+                <a href="mailto:support@gruby.app" className="text-[#222222] hover:underline">
                   support@gruby.app
                 </a>
               </p>

@@ -160,7 +160,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onProductAdded }) => {
         </div>
         <a 
           href="/home-cook-onboarding" 
-          className="inline-flex items-center px-6 py-3 bg-[#FF4D00] text-white rounded-lg hover:bg-[#E64500] transition-colors font-medium"
+          className="inline-flex items-center px-6 py-3 bg-ds-primary text-ds-primary-fg rounded-lg hover:bg-ds-primary-hover transition-colors font-medium"
         >
           Complete Onboarding
         </a>
@@ -188,7 +188,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onProductAdded }) => {
               <div className="mt-3 pt-3 border-t border-red-200">
                 <a 
                   href="/home-cook-onboarding" 
-                  className="inline-flex items-center px-4 py-2 bg-[#FF4D00] text-white rounded-lg hover:bg-[#E64500] transition-colors text-sm font-medium"
+                  className="inline-flex items-center px-4 py-2 bg-ds-primary text-ds-primary-fg rounded-lg hover:bg-ds-primary-hover transition-colors text-sm font-medium"
                 >
                   Subscribe Now
                 </a>
@@ -317,7 +317,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onProductAdded }) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-4 px-6 bg-[#FF4D00] text-white rounded-xl hover:bg-[#E64500] focus:outline-none focus:ring-2 focus:ring-[#FF4D00] focus:ring-offset-2 transition-colors font-semibold text-lg ${
+              className={`w-full py-4 px-6 bg-ds-primary text-ds-primary-fg rounded-xl hover:bg-ds-primary-hover focus:outline-none focus:ring-2 focus:ring-ds-focus-ring focus:ring-offset-2 transition-colors font-semibold text-lg ${
                 isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >

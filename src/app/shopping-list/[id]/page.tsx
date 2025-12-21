@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
-const BRAND_COLOR = '#fa2625';
+// Design System v2.0: Charcoal for primary, Olive for support/accents
+const BRAND_COLOR = '#222222'; // Primary - infrastructure color
 
 interface ShoppingListItem {
   name: string;

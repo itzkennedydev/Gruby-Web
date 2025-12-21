@@ -80,7 +80,7 @@ function OAuthCallbackContent() {
             style={{
               display: 'inline-block',
               padding: '12px 24px',
-              background: '#fa2625',
+              background: 'var(--gruby-primary)',
               color: 'white',
               textDecoration: 'none',
               borderRadius: '8px',

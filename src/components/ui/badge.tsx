@@ -4,17 +4,27 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-pill border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ds-focus-ring focus:ring-offset-2",
   {
     variants: {
       variant: {
+        // Default uses Support (Olive) for badges per design system
         default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+          "border-transparent bg-ds-badge text-ds-badge-text",
+        // Secondary: Muted background
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "border-transparent bg-ds-bg-subtle text-ds-text-muted",
+        // Destructive: Danger color
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+          "border-transparent bg-ds-danger-muted text-ds-danger",
+        // Outline: Border only
+        outline: "border-ds-border text-ds-text",
+        // Support: Olive filled (for nav/tab indicators)
+        support:
+          "border-transparent bg-ds-support text-ds-support-fg",
+        // Accent Warm: Burnt Umber for highlights
+        warm:
+          "border-transparent bg-ds-accent-warm-muted text-ds-accent-warm",
       },
     },
     defaultVariants: {

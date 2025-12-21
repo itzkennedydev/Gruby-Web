@@ -182,7 +182,7 @@ const SubscriptionBanner: React.FC = () => {
             <Button
               onClick={handleSubscribe}
               disabled={isSubscribing}
-              className="bg-[#FF4D00] hover:bg-[#E64500] text-white w-full"
+              className="bg-ds-primary hover:bg-ds-primary-hover text-ds-primary-fg w-full"
             >
               {isSubscribing ? 'Processing...' : 'Subscribe Now'}
             </Button>

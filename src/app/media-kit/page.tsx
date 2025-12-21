@@ -54,22 +54,22 @@ export default function MediaKitPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="rounded-lg p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-20 h-20 rounded-lg bg-[#FF1E00]"></div>
+                <div className="w-20 h-20 rounded-lg bg-[#222222]"></div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900">Gruby Red</h3>
-                  <p className="text-gray-600">#FF1E00</p>
-                  <p className="text-gray-600">RGB: 255, 30, 0</p>
+                  <h3 className="text-xl font-semibold text-gray-900">Gruby Charcoal</h3>
+                  <p className="text-gray-600">#222222</p>
+                  <p className="text-gray-600">RGB: 34, 34, 34</p>
                 </div>
               </div>
-              <p className="text-sm text-gray-500">Primary brand color for buttons, links, and key brand elements</p>
+              <p className="text-sm text-gray-500">Primary brand color for buttons, text, and key brand elements</p>
             </div>
             <div className="rounded-lg p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-20 h-20 rounded-lg bg-[#E01A00]"></div>
+                <div className="w-20 h-20 rounded-lg bg-[#5a5a3b]"></div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900">Gruby Red Dark</h3>
-                  <p className="text-gray-600">#E01A00</p>
-                  <p className="text-gray-600">RGB: 224, 26, 0</p>
+                  <h3 className="text-xl font-semibold text-gray-900">Gruby Olive Dark</h3>
+                  <p className="text-gray-600">#5a5a3b</p>
+                  <p className="text-gray-600">RGB: 90, 90, 59</p>
                 </div>
               </div>
               <p className="text-sm text-gray-500">Hover states and darker variants of primary actions</p>
@@ -181,7 +181,7 @@ export default function MediaKitPage() {
                       <a
                         href={logo.url}
                         download
-                        className="flex-1 bg-[#FF1E00] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#E01A00] transition-colors text-center"
+                        className="flex-1 bg-[var(--gruby-primary)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-colors text-center"
                       >
                         Download {logo.format}
                       </a>

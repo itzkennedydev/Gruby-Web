@@ -292,7 +292,7 @@ export default function CookiePolicyPage() {
                 href="https://tools.google.com/dlpage/gaoptout"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#FF1E00] hover:underline"
+                className="text-[#222222] hover:underline"
               >
                 Google Analytics Opt-out Browser Add-on
               </a>
@@ -388,7 +388,7 @@ export default function CookiePolicyPage() {
               Email:{" "}
               <a
                 href="mailto:privacy@gruby.app"
-                className="text-[#FF1E00] hover:underline"
+                className="text-[#222222] hover:underline"
               >
                 privacy@gruby.app
               </a>

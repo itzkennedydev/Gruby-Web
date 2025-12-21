@@ -58,13 +58,13 @@ export default function LogosPage() {
               key={index}
               className={`rounded-lg border-2 p-6 ${
                 logo.recommended
-                  ? "border-[#FF1E00] bg-red-50"
+                  ? "border-[#222222] bg-[#f5f5ef]"
                   : "border-gray-200 bg-white"
               }`}
             >
               {logo.recommended && (
                 <div className="mb-3">
-                  <span className="inline-block rounded bg-[#FF1E00] px-3 py-1 text-xs font-semibold text-white">
+                  <span className="inline-block rounded bg-[var(--gruby-primary)] px-3 py-1 text-xs font-semibold text-white">
                     RECOMMENDED
                   </span>
                 </div>

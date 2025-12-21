@@ -66,7 +66,7 @@ class ErrorBoundary extends Component<Props, State> {
                   this.setState({ hasError: false, error: undefined });
                   window.location.reload();
                 }}
-                className="font-semibold bg-[#FF1E00] hover:bg-[#E01A00] text-white shadow-md hover:shadow-lg rounded-full transition-colors duration-200"
+                className="font-semibold bg-[var(--gruby-primary)] hover:opacity-90 text-white shadow-md hover:shadow-lg rounded-full transition-colors duration-200"
                 style={{ 
                   fontSize: 'clamp(0.9375rem, 1.25vw + 0.75rem, 1rem)',
                   paddingLeft: 'clamp(1.5rem, 2vw, 2rem)',

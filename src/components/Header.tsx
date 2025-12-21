@@ -119,7 +119,7 @@ const Header = () => {
         style={{ containerType: "inline-size" }}
       >
         <div
-          className="rounded-full border border-gray-200 bg-white/95 shadow-lg backdrop-blur-sm"
+          className="rounded-[20px] border border-gray-200 bg-white/95 shadow-lg backdrop-blur-sm"
           style={{
             paddingLeft: "clamp(1rem, 2vw, 1.5rem)",
             paddingRight: "clamp(1rem, 2vw, 1.5rem)",
@@ -148,12 +148,8 @@ const Header = () => {
             {/* CTA Button */}
             <Button
               onClick={() => dispatch(setWaitlistModalOpen(true))}
-              className="rounded-full bg-[#FF1E00] font-semibold text-white shadow-md hover:bg-[#E01A00] hover:shadow-lg"
+              className="font-semibold"
               style={{
-                paddingLeft: "clamp(1rem, 2vw, 1.5rem)",
-                paddingRight: "clamp(1rem, 2vw, 1.5rem)",
-                paddingTop: "clamp(0.5rem, 0.75vw, 0.625rem)",
-                paddingBottom: "clamp(0.5rem, 0.75vw, 0.625rem)",
                 fontSize: "clamp(0.875rem, 1vw, 0.9375rem)",
               }}
             >

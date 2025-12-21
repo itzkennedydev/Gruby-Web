@@ -8,9 +8,9 @@ function UnsubscribedContent() {
       <div className="flex flex-grow items-center justify-center px-4">
         <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-lg">
           <div className="mb-6">
-            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#FF1E00]/10">
+            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gruby-primary)]/10">
               <svg
-                className="h-8 w-8 text-[#FF1E00]"
+                className="h-8 w-8 text-[var(--gruby-primary)]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -33,7 +33,7 @@ function UnsubscribedContent() {
           </div>
           <Link
             href="/"
-            className="inline-block rounded-full bg-[#FF1E00] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#E01A00]"
+            className="inline-flex items-center rounded-[13px] bg-[var(--gruby-primary)] px-4 py-3 font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
           >
             Return to Home
           </Link>

@@ -44,32 +44,20 @@ export default function GlobalError({
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Button 
-                onClick={reset} 
+              <Button
+                onClick={reset}
                 aria-label="Try again"
-                className="font-semibold bg-[#FF1E00] hover:bg-[#E01A00] text-white shadow-md hover:shadow-lg rounded-full transition-colors duration-200"
-                style={{ 
-                  fontSize: 'clamp(0.9375rem, 1.25vw + 0.75rem, 1rem)',
-                  paddingLeft: 'clamp(1.5rem, 2vw, 2rem)',
-                  paddingRight: 'clamp(1.5rem, 2vw, 2rem)',
-                  paddingTop: 'clamp(0.75rem, 1vw, 0.875rem)',
-                  paddingBottom: 'clamp(0.75rem, 1vw, 0.875rem)'
-                }}
+                className="font-semibold"
+                size="lg"
               >
                 Try again
               </Button>
               <Link href="/" passHref>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   aria-label="Go back to homepage"
-                  className="font-semibold bg-white hover:bg-gray-50 text-[#222222] border-2 border-gray-200 hover:border-gray-300 rounded-full transition-colors duration-200"
-                  style={{ 
-                    fontSize: 'clamp(0.9375rem, 1.25vw + 0.75rem, 1rem)',
-                    paddingLeft: 'clamp(1.5rem, 2vw, 2rem)',
-                    paddingRight: 'clamp(1.5rem, 2vw, 2rem)',
-                    paddingTop: 'clamp(0.75rem, 1vw, 0.875rem)',
-                    paddingBottom: 'clamp(0.75rem, 1vw, 0.875rem)'
-                  }}
+                  className="font-semibold"
+                  size="lg"
                 >
                   Go to homepage
                 </Button>

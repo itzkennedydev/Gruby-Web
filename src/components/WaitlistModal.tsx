@@ -60,7 +60,7 @@ export function WaitlistModal({
               <div className="bg-white border border-gray-200 rounded-2xl p-6 animate-fadeIn shadow-sm">
                 {/* Badge - Airbnb Guest Favorite Style */}
                 <div className="flex items-center justify-center gap-2 mb-4">
-                  <div className="flex items-center gap-1.5 bg-[#FF1E00] text-white px-3 py-1 rounded-full">
+                  <div className="flex items-center gap-1.5 bg-[var(--gruby-primary)] text-white px-3 py-1 rounded-[10px]">
                     <span className="text-xs font-semibold">Already a member</span>
                   </div>
                 </div>
@@ -88,8 +88,8 @@ export function WaitlistModal({
                 onChange={(e) => setLocalName(e.target.value)}
                 placeholder="Your name"
                 disabled={isSubmitting}
-                className="w-full px-5 py-4 rounded-full bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e] 
-                           focus:outline-none focus:ring-2 focus:ring-[#FF1E00] focus:border-[#FF1E00] 
+                className="w-full px-5 py-4 rounded-[13px] bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e]
+                           focus:outline-none focus:ring-2 focus:ring-[#222222] focus:border-[#222222]
                            transition-all duration-200 text-base shadow-sm"
               />
             </div>
@@ -106,8 +106,8 @@ export function WaitlistModal({
                 placeholder="you@example.com"
                 required
                 disabled={isSubmitting}
-                className="w-full px-5 py-4 rounded-full bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e] 
-                           focus:outline-none focus:ring-2 focus:ring-[#FF1E00] focus:border-[#FF1E00] 
+                className="w-full px-5 py-4 rounded-[13px] bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e]
+                           focus:outline-none focus:ring-2 focus:ring-[#222222] focus:border-[#222222]
                            transition-all duration-200 text-base shadow-sm"
               />
 
@@ -119,9 +119,7 @@ export function WaitlistModal({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-[#FF1E00] hover:bg-[#E01A00] text-white font-semibold rounded-full 
-                         transition-colors duration-200 disabled:opacity-50 transform active:scale-[0.98] 
-                         text-lg py-4 shadow-md"
+              className="w-full text-lg py-4 h-auto font-semibold"
             >
               {isSubmitting ? (
                 <>
@@ -171,7 +169,7 @@ function SuccessCard({ email, name, position }: { email: string; name: string; p
   return (
     <div className="mt-6 bg-[#fafafa] rounded-3xl p-8 text-center border border-gray-200 shadow-sm animate-fadeIn">
       {/* Exclusive Badge */}
-      <div className="inline-flex items-center gap-2 bg-white border border-gray-300 px-4 py-1.5 rounded-full 
+      <div className="inline-flex items-center gap-2 bg-white border border-gray-300 px-4 py-1.5 rounded-[10px]
                       text-sm font-medium text-[#444] shadow-sm mb-5 animate-fadeIn">
         Early Member No. {position || "—"}
       </div>

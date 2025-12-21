@@ -308,7 +308,7 @@ export default function CommunityGuidelinesPage() {
             </ul>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               If you believe your copyright has been infringed, see our{" "}
-              <a href="/dmca" className="text-[#FF1E00] hover:underline">
+              <a href="/dmca" className="text-[#222222] hover:underline">
                 DMCA Policy
               </a>
               .
@@ -347,7 +347,7 @@ export default function CommunityGuidelinesPage() {
                 For urgent safety concerns, email us at{" "}
                 <a
                   href="mailto:safety@gruby.app"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   safety@gruby.app
                 </a>
@@ -401,7 +401,7 @@ export default function CommunityGuidelinesPage() {
               in error, you may appeal the decision by emailing{" "}
               <a
                 href="mailto:appeals@gruby.app"
-                className="text-[#FF1E00] hover:underline"
+                className="text-[#222222] hover:underline"
               >
                 appeals@gruby.app
               </a>{" "}
@@ -445,7 +445,7 @@ export default function CommunityGuidelinesPage() {
               Email:{" "}
               <a
                 href="mailto:community@gruby.app"
-                className="text-[#FF1E00] hover:underline"
+                className="text-[#222222] hover:underline"
               >
                 community@gruby.app
               </a>

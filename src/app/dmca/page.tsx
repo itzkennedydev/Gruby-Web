@@ -164,7 +164,7 @@ export default function DMCAPage() {
                 Email:{" "}
                 <a
                   href="mailto:dmca@gruby.app"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   dmca@gruby.app
                 </a>
@@ -390,7 +390,7 @@ export default function DMCAPage() {
                 Email:{" "}
                 <a
                   href="mailto:dmca@gruby.app"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   dmca@gruby.app
                 </a>

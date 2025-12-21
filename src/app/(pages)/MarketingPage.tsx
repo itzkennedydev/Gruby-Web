@@ -9,72 +9,26 @@ import {
   setError,
 } from "@/store/slices/betaSlice";
 import { setWaitlistModalOpen } from "@/store/slices/uiSlice";
-import {
-  Loader2,
-  X,
-  Check,
-  ShoppingCart,
-  Users,
-  TrendingUp,
-  Sparkles,
-  Video,
-  ChefHat,
-  Camera,
-  Leaf,
-  Trophy,
-} from "lucide-react";
-import { useEffect, useState, useRef } from "react";
-import { calculateMealPrice } from "@/lib/kroger-api";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-// Features data
-const features = [
-  {
-    title: "TikTok to Table",
-    description:
-      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically.",
-    icon: Video,
-  },
-  {
-    title: "Real-Time Grocery Prices",
-    description:
-      "Grocery prices updated in real-time. See exactly what ingredients cost, compare options, and add everything to your cart in one tap.",
-    icon: ShoppingCart,
-  },
-  {
-    title: "Step-by-Step Cooking Mode",
-    description:
-      "Timers, video clips, voice instructions. Cook like a pro, even if you're not.",
-    icon: ChefHat,
-  },
-  {
-    title: "Stories",
-    description:
-      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks.",
-    icon: Camera,
-  },
-  {
-    title: "Gruby AI Budget Coach",
-    description:
-      "Ask anything. \"What can I make with chicken and rice?\" \"How do I reduce my cart total?\" Gruby AI has your back.",
-    icon: Sparkles,
-  },
-  {
-    title: "Zero Waste Pantry",
-    description:
-      "Track what's in your fridge. Get alerts before things expire. Gruby suggests recipes to use up ingredients before they go bad.",
-    icon: Leaf,
-  },
-];
+// Marketing components
+import CaseStudies from "@/components/CaseStudies";
+import Features from "@/components/Features";
+import Customers from "@/components/Customers";
+import UseCases from "@/components/UseCases";
+import Templates from "@/components/Templates";
+import Comparison from "@/components/Comparison";
 
-// App slides data
+// App slides data for phone mockup section
 const appSlides = [
   {
     title: "Import any recipe instantly",
     description:
-      "Paste a TikTok, YouTube, or Instagram link. Gruby AI extracts everything — ingredients, steps, nutrition, even timestamps for cooking videos.",
+      "Paste a TikTok, YouTube, or Instagram link. Gruby AI extracts everything.",
     features: [
       "AI-powered recipe import",
       "Works with any video platform",
@@ -84,7 +38,7 @@ const appSlides = [
   {
     title: "Cook with confidence",
     description:
-      "Step-by-step cooking mode with built-in timers, video clips for each step, and voice guidance. Even beginners cook like pros.",
+      "Step-by-step cooking mode with built-in timers, video clips, and voice guidance.",
     features: [
       "Guided cooking mode",
       "Video clips at each step",
@@ -94,720 +48,13 @@ const appSlides = [
   {
     title: "Track your wins",
     description:
-      "Every home-cooked meal saves money. Watch your savings grow daily, weekly, and yearly. Build streaks. Unlock achievements. Flex on DoorDash.",
+      "Every home-cooked meal saves money. Watch your savings grow daily.",
     features: ["Savings dashboard", "Cooking streaks", "Achievement badges"],
   },
 ];
 
-// Benefits data
-const benefits = [
-  {
-    title: "Keep Your Cash",
-    description:
-      "The average person spends $300/month on delivery fees and markups alone. That's $3,600/year. Cook at home and actually keep it.",
-    stats: "$3,600",
-    statLabel: "Yearly savings potential",
-  },
-  {
-    title: "Skip the Waste",
-    description:
-      "Every delivery order = foam containers, plastic bags, and carbon emissions. Cooking at home is the greener choice.",
-    stats: "Less",
-    statLabel: "Packaging waste",
-  },
-  {
-    title: "Level Up Your Skills",
-    description:
-      "Cooking streaks, achievement badges, and guided cooking mode help you go from microwave meals to actual chef-level. For real.",
-    stats: "100+",
-    statLabel: "Achievements to unlock",
-  },
-];
-
-// Comparison data with images
-interface MealComparison {
-  meal: string;
-  image: string;
-  delivery: {
-    price: number;
-    fees: number;
-    tip: number;
-    total: number;
-  };
-  homeCooked: {
-    ingredients: string[];
-    price: number;
-    servings: number;
-    perServing: number;
-    loading?: boolean;
-  };
-  savings: number;
-  savingsPercent: number;
-}
-
-const initialMealComparisons: MealComparison[] = [
-  {
-    meal: "Chicken Stir Fry",
-    image:
-      "https://images.pexels.com/photos/2673353/pexels-photo-2673353.jpeg?auto=compress&cs=tinysrgb&w=800",
-    delivery: {
-      price: 16.99,
-      fees: 3.5,
-      tip: 3.0,
-      total: 23.49,
-    },
-    homeCooked: {
-      ingredients: [
-        "Chicken breast",
-        "Bell pepper",
-        "Broccoli",
-        "Rice",
-        "Soy sauce",
-      ],
-      price: 0,
-      servings: 4,
-      perServing: 0,
-      loading: true,
-    },
-    savings: 0,
-    savingsPercent: 0,
-  },
-  {
-    meal: "Pasta Carbonara",
-    image:
-      "https://images.pexels.com/photos/4518843/pexels-photo-4518843.jpeg?auto=compress&cs=tinysrgb&w=800",
-    delivery: {
-      price: 15.99,
-      fees: 3.25,
-      tip: 2.75,
-      total: 21.99,
-    },
-    homeCooked: {
-      ingredients: ["Pasta", "Bacon", "Eggs", "Parmesan cheese", "Heavy cream"],
-      price: 0,
-      servings: 4,
-      perServing: 0,
-      loading: true,
-    },
-    savings: 0,
-    savingsPercent: 0,
-  },
-  {
-    meal: "Burger & Fries",
-    image:
-      "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=800",
-    delivery: {
-      price: 14.99,
-      fees: 3.0,
-      tip: 2.5,
-      total: 20.49,
-    },
-    homeCooked: {
-      ingredients: [
-        "Ground beef",
-        "Hamburger buns",
-        "Cheese",
-        "Potatoes",
-        "Lettuce",
-      ],
-      price: 0,
-      servings: 4,
-      perServing: 0,
-      loading: true,
-    },
-    savings: 0,
-    savingsPercent: 0,
-  },
-];
-
-// Footer data - removed social links for cleaner design
-
-// Phone Mockup Component
-function _PhoneMockup({
-  children,
-  className = "",
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={`relative ${className}`}>
-      <div className="relative mx-auto h-[420px] w-[200px] rounded-[2rem] bg-[#1a1a1a] p-2 shadow-2xl ring-1 ring-black/10 sm:h-[500px] sm:w-[240px] sm:rounded-[2.25rem] sm:p-2.5 md:h-[540px] md:w-[260px] md:rounded-[2.5rem]">
-        <div className="absolute left-1/2 top-0 z-10 h-5 w-20 -translate-x-1/2 rounded-b-xl bg-[#1a1a1a] sm:h-5 sm:w-24 sm:rounded-b-2xl md:h-6 md:w-28" />
-        <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-[1.5rem] bg-white sm:rounded-[1.75rem] md:rounded-[2rem]">
-          {children || (
-            <div className="p-4 text-center text-[#717171] sm:p-6">
-              <p className="text-xs font-medium sm:text-sm">Phone</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Tablet Mockup Component (Landscape iPad)
-// Animated App Preview Section Component
-function AppPreviewSectionAnimated({
-  currentSlide,
-  setCurrentSlide,
-}: {
-  currentSlide: number;
-  setCurrentSlide: (index: number) => void;
-}) {
-  return (
-    <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div
-          className="relative flex min-h-[720px] flex-col rounded-2xl bg-black px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40"
-          style={{ containerType: "inline-size" }}
-        >
-          <div className="flex h-full w-full flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-row lg:items-center lg:gap-16">
-            {/* Content and Progress Bar - Right side / Top on mobile */}
-            <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
-              {/* Heading and Description */}
-              <div className="mb-6 w-full text-left sm:mb-8">
-                <h2
-                  className="mb-4 whitespace-nowrap font-semibold text-white sm:mb-6"
-                  style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 3rem)" }}
-                >
-                  Your AI kitchen assistant
-                </h2>
-                <p
-                  className="leading-relaxed text-gray-300"
-                  style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
-                >
-                  Import recipes from anywhere. Get real prices. Cook like a pro.
-                </p>
-              </div>
-
-              {/* Rotating Bullet Points */}
-              <div className="relative mb-0 min-h-[200px] w-full overflow-hidden sm:min-h-[220px]">
-                {appSlides.map((slide, index) => (
-                  <ul
-                    key={index}
-                    className={`list-inside list-disc space-y-4 sm:space-y-5 ${
-                      currentSlide === index
-                        ? "translate-x-0 opacity-100"
-                        : "absolute left-0 right-0 top-0 translate-x-8 opacity-0"
-                    }`}
-                  >
-                    {slide.features.map((feature, i) => (
-                      <li
-                        key={i}
-                        className="text-base leading-relaxed text-white sm:text-lg"
-                      >
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                ))}
-              </div>
-
-              {/* Progress Bar */}
-              <div className="relative z-20 -mt-8 flex w-full items-center justify-between gap-2 sm:-mt-10">
-                {appSlides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-1.5 flex-1 cursor-pointer rounded-full transition-all duration-200 sm:h-2 ${
-                      currentSlide === index
-                        ? "bg-white"
-                        : "bg-white/30 hover:bg-white/50 active:bg-white/60"
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                    type="button"
-                  />
-                ))}
-              </div>
-
-              {/* App Store Links */}
-              <div className="mt-6 flex w-full flex-col gap-3 sm:mt-8 sm:flex-row sm:gap-4">
-                <a
-                  href="https://apps.apple.com/app/gruby"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-12 items-center justify-center rounded-xl bg-white px-4 text-black transition-colors duration-200 hover:bg-gray-100 sm:h-14 sm:rounded-2xl sm:px-6"
-                  aria-label="Download on the App Store"
-                >
-                  <svg
-                    className="mr-2 h-6 w-6 sm:h-7 sm:w-7"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-                  </svg>
-                  <div className="flex flex-col items-start">
-                    <span className="text-[10px] leading-tight sm:text-xs">
-                      Download on the
-                    </span>
-                    <span className="text-sm font-semibold leading-tight sm:text-base">
-                      App Store
-                    </span>
-                  </div>
-                </a>
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.gruby.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-12 items-center justify-center rounded-xl bg-white px-4 text-black transition-colors duration-200 hover:bg-gray-100 sm:h-14 sm:rounded-2xl sm:px-6"
-                  aria-label="Get it on Google Play"
-                >
-                  <svg
-                    className="mr-2 h-6 w-6 sm:h-7 sm:w-7"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
-                  </svg>
-                  <div className="flex flex-col items-start">
-                    <span className="text-[10px] leading-tight sm:text-xs">
-                      Get it on
-                    </span>
-                    <span className="text-sm font-semibold leading-tight sm:text-base">
-                      Google Play
-                    </span>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            {/* Image - Left side on desktop, bottom on mobile */}
-            <div className="absolute bottom-0 left-1/2 z-0 order-2 flex w-full flex-shrink-0 -translate-x-1/2 justify-center lg:absolute lg:bottom-0 lg:left-16 lg:w-auto lg:translate-x-0 lg:justify-start">
-              <Image
-                src="/Mobile phone.png"
-                alt="Gruby mobile app"
-                width={500}
-                height={1000}
-                className="h-auto w-[320px] max-w-[85vw] object-contain sm:w-[360px] sm:max-w-[70vw] md:w-[400px] md:max-w-[50vw] lg:w-[500px] lg:max-w-none xl:w-[600px] 2xl:w-[720px]"
-                priority
-                quality={100}
-                sizes="(max-width: 640px) 320px, (max-width: 768px) 360px, (max-width: 1024px) 400px, (max-width: 1280px) 500px, (max-width: 1536px) 600px, 720px"
-                loading="eager"
-                fetchPriority="high"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Feature Showcase Data with mockup images
-const featureShowcase = [
-  {
-    title: "TikTok to Table",
-    description:
-      "See a recipe you like? Paste the link. Gruby AI extracts ingredients, steps, and nutrition automatically.",
-    icon: Video,
-    bullets: [
-      "AI-powered recipe extraction",
-      "Works with any video platform",
-      "Automatic ingredient detection",
-      "Timestamps synced to cooking steps",
-    ],
-    mockupImage: "/mockups/recipe-import.png", // Placeholder - user will add
-  },
-  {
-    title: "Real-Time Grocery Prices",
-    description:
-      "Grocery prices updated in real-time. See exactly what ingredients cost, compare options, and add everything to your cart in one tap.",
-    icon: ShoppingCart,
-    bullets: [
-      "Live grocery prices",
-      "Per-serving cost breakdown",
-      "One-tap cart sync",
-      "Price comparison across brands",
-    ],
-    mockupImage: "/mockups/grocery-prices.png",
-  },
-  {
-    title: "Step-by-Step Cooking Mode",
-    description:
-      "Timers, video clips, voice instructions. Cook like a pro, even if you're not.",
-    icon: ChefHat,
-    bullets: [
-      "Built-in timers for each step",
-      "Video clips at key moments",
-      "Hands-free voice guidance",
-    ],
-    mockupImage: "/mockups/cooking-mode.png",
-  },
-  {
-    title: "Stories",
-    description:
-      "Share your kitchen wins. Post what you're cooking, see what your friends are making, and get inspo from real home cooks.",
-    icon: Camera,
-    bullets: [
-      "Photo and video stories",
-      "React and comment on posts",
-      "Build your cooking community",
-    ],
-    mockupImage: "/mockups/stories.png",
-  },
-  {
-    title: "Gruby AI Budget Coach",
-    description:
-      "Ask anything. \"What can I make with chicken and rice?\" \"How do I reduce my cart total?\" Gruby AI has your back.",
-    icon: Sparkles,
-    bullets: [
-      "Natural language chat",
-      "Meal suggestions from pantry",
-      "Budget optimization tips",
-      "Answers any cooking question",
-    ],
-    mockupImage: "/mockups/ai-coach.png",
-  },
-  {
-    title: "Zero Waste Pantry",
-    description:
-      "Track what's in your fridge. Get alerts before things expire. Gruby suggests recipes to use up ingredients before they go bad.",
-    icon: Leaf,
-    bullets: [
-      "Pantry inventory tracking",
-      "Expiration date alerts",
-      "Use-it-up recipe suggestions",
-      "Reduce food waste by 40%",
-    ],
-    mockupImage: "/mockups/pantry.png",
-  },
-];
-
-// Phone Mockup for Feature Showcase
-function FeatureMockup({
-  imageSrc,
-  alt,
-  icon: Icon,
-  title,
-}: {
-  imageSrc: string;
-  alt: string;
-  icon?: React.ComponentType<{ className?: string }>;
-  title?: string;
-}) {
-  const [imageError, setImageError] = useState(false);
-
-  return (
-    <div className="relative mx-auto w-[240px] sm:w-[280px] md:w-[300px]">
-      {/* Phone frame */}
-      <div className="relative rounded-[2.5rem] bg-[#1a1a1a] p-2 shadow-2xl ring-1 ring-black/10 sm:rounded-[3rem] sm:p-2.5">
-        {/* Notch */}
-        <div className="absolute left-1/2 top-0 z-10 h-5 w-20 -translate-x-1/2 rounded-b-xl bg-[#1a1a1a] sm:h-6 sm:w-24 sm:rounded-b-2xl" />
-        {/* Screen */}
-        <div className="relative aspect-[9/19] overflow-hidden rounded-[2rem] bg-gradient-to-b from-gray-50 to-gray-100 sm:rounded-[2.5rem]">
-          {!imageError ? (
-            <Image
-              src={imageSrc}
-              alt={alt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 240px, (max-width: 768px) 280px, 300px"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            // Placeholder when image is not available
-            <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
-              {Icon && (
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#FF1E00]/10">
-                  <Icon className="h-8 w-8 text-[#FF1E00]" />
-                </div>
-              )}
-              <p className="text-sm font-medium text-gray-500">
-                {title || "Screenshot coming soon"}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Feature Showcase Section with Rotating Mockups
-function FeatureShowcaseSectionAnimated() {
-  const [currentFeature, setCurrentFeature] = useState(0);
-
-  const feature = featureShowcase[currentFeature];
-  const Icon = feature?.icon || Video;
-
-  return (
-    <section id="features" className="bg-white pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-24 md:pt-24 lg:pb-32 lg:pt-32">
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="mb-12 text-center sm:mb-14 md:mb-16">
-          <h2
-            className="mb-3 font-semibold text-[#222222] sm:mb-4"
-            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
-          >
-            Features that actually matter
-          </h2>
-          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
-            AI-powered recipe import. Real-time grocery prices. Guided cooking mode.
-            Everything you need to cook better and spend less.
-          </p>
-        </div>
-
-        {/* Feature Showcase Container */}
-        <div className="flex flex-col items-stretch gap-8 lg:flex-row lg:gap-0">
-          {/* Phone Mockup Container - Left Side (50%) */}
-          <div className="flex w-full justify-center lg:w-1/2">
-            <div className="relative w-full overflow-hidden rounded-[2rem] bg-[#f5f5f7] sm:rounded-[2.5rem] lg:rounded-r-[2.5rem]" style={{ minHeight: '500px' }}>
-              {/* Phone Mockup - Positioned to show top half, centered horizontally */}
-              <div className="absolute left-1/2 top-[35%] -translate-x-1/2 scale-110 sm:top-[30%] sm:scale-125 md:scale-130">
-                <FeatureMockup
-                  imageSrc={feature?.mockupImage || ""}
-                  alt={`${feature?.title || "Feature"} screenshot`}
-                  icon={Icon}
-                  title={feature?.title}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Feature Content - Right Side (50%) */}
-          <div className="flex w-full flex-col justify-center px-4 sm:px-6 lg:w-1/2 lg:px-10 xl:px-16">
-            {/* Feature Title */}
-            <h3
-              className="mb-4 font-semibold text-[#222222] sm:mb-5"
-              style={{ fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.75rem)" }}
-            >
-              {feature?.title}
-            </h3>
-
-            {/* Description - Fixed height to prevent layout shift */}
-            <div className="mb-5 min-h-[72px] sm:mb-6 sm:min-h-[56px]">
-              <p className="text-base leading-relaxed text-[#717171] sm:text-lg">
-                {feature?.description}
-              </p>
-            </div>
-
-            {/* Bullet Points - Fixed height to prevent layout shift */}
-            <ul className="mb-8 min-h-[180px] space-y-3 sm:mb-10 sm:min-h-[160px] sm:space-y-4">
-              {feature?.bullets.map((bullet, bulletIndex) => (
-                <li key={bulletIndex} className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#FF1E00]/10">
-                    <Check className="h-3 w-3 text-[#FF1E00]" strokeWidth={3} />
-                  </div>
-                  <span className="text-sm text-[#222222] sm:text-base">
-                    {bullet}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Feature Navigation List */}
-            <div className="space-y-2 sm:space-y-3">
-              {featureShowcase.map((f, index) => {
-                const isActive = currentFeature === index;
-                return (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentFeature(index)}
-                    className={`w-full rounded-xl px-4 py-3 text-left transition-all duration-200 sm:rounded-2xl sm:px-5 sm:py-4 ${
-                      isActive
-                        ? "bg-white ring-2 ring-[#E5E5E5] shadow-sm"
-                        : "bg-transparent hover:bg-gray-50"
-                    }`}
-                    type="button"
-                  >
-                    <span className={`text-sm font-semibold sm:text-base ${
-                      isActive ? "text-[#222222]" : "text-[#717171]"
-                    }`}>
-                      {f.title}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Animated Features Section Component (Grid version - kept as backup)
-function FeaturesSectionAnimated() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      const containerWidth = container.clientWidth;
-      const cardWidth = containerWidth; // First card is full width
-      const otherCardWidth = containerWidth * 0.85; // Other cards are 85vw
-
-      // Calculate which card is currently in view
-      let currentIndex = 0;
-
-      if (scrollLeft < cardWidth * 0.5) {
-        currentIndex = 0;
-      } else {
-        currentIndex =
-          Math.round(
-            (scrollLeft - cardWidth + otherCardWidth * 0.5) /
-              (otherCardWidth + 16),
-          ) + 1;
-        currentIndex = Math.min(currentIndex, features.length - 1);
-      }
-
-      setActiveIndex(currentIndex);
-    };
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
-    <section className="pb-12 sm:pb-16 md:pb-20 lg:pb-28">
-      <div
-        className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8"
-        style={{ containerType: "inline-size" }}
-      >
-        <div className="mb-10 text-center sm:mb-12 md:mb-16">
-          <h2
-            className="mb-2 font-semibold text-[#222222] sm:mb-3"
-            style={{ fontSize: "clamp(1.25rem, 2vw + 0.75rem, 1.875rem)" }}
-          >
-            Features that actually matter
-          </h2>
-          <p className="mx-auto max-w-xl px-4 text-sm text-[#717171] sm:text-base">
-            AI-powered recipe import. Real-time grocery prices. Guided cooking mode.
-            Everything you need to cook better and spend less.
-          </p>
-        </div>
-
-        {/* Mobile: simple stacked list */}
-        <div className="space-y-4 sm:hidden">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={index}
-                className="rounded-2xl border border-[#E5E5E5] bg-white p-6"
-              >
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
-                    <Icon className="h-4 w-4 text-gray-700" />
-                  </div>
-                  <h3
-                    className="flex-1 text-lg font-semibold leading-tight text-[#222222]"
-                    style={{ fontSize: "clamp(1rem, 4vw, 1.125rem)" }}
-                  >
-                    {feature.title}
-                  </h3>
-                </div>
-                <p
-                  className="text-sm leading-relaxed text-[#717171]"
-                  style={{ fontSize: "clamp(0.875rem, 3.5vw, 0.9375rem)" }}
-                >
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Tablet and Desktop: Grid layout */}
-        <div className="hidden gap-6 sm:grid sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={index}
-                className="rounded-2xl border border-[#E5E5E5] bg-white p-6 sm:p-8"
-              >
-                <div className="mb-4 flex items-center gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-100">
-                    <Icon className="h-5 w-5 text-gray-700" />
-                  </div>
-                  <h3 className="flex-1 text-xl font-semibold leading-tight text-[#222222] sm:text-2xl">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p className="text-base leading-relaxed text-[#717171]">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Animated Tablet Preview Section
-function TabletPreviewSectionAnimated() {
-  return (
-    <section className="pb-16 sm:pb-20 md:pb-24 lg:pb-32">
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center sm:mb-12 md:mb-14">
-          <h2
-            className="mb-3 font-semibold text-[#222222] sm:mb-4"
-            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
-          >
-            Access Gruby wherever you go
-          </h2>
-          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
-            Available on all your devices
-          </p>
-        </div>
-
-        <div
-          className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl"
-          style={{ aspectRatio: "16/9", maxHeight: "650px" }}
-        >
-          <Image
-            src="/GrubyWatch.png"
-            alt="Gruby Watch"
-            fill
-            className="rounded-2xl object-cover sm:rounded-3xl"
-            priority
-            quality={100}
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 100vw, (max-width: 1920px) 1920px, 1920px"
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Animated Benefits Section
-function BenefitsSectionAnimated() {
-  return (
-    <section id="how-it-works" className="pb-16 sm:pb-20 md:pb-24 lg:pb-32">
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-3">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="px-4 text-center">
-              <p className="mb-2 text-3xl font-bold text-[#FF1E00] sm:text-4xl">
-                {benefit.stats}
-              </p>
-              <p className="mb-3 text-xs uppercase tracking-wide text-[#717171] sm:mb-4">
-                {benefit.statLabel}
-              </p>
-              <h3 className="mb-2 text-base font-semibold text-[#222222] sm:text-lg">
-                {benefit.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-[#717171]">
-                {benefit.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Animated CTA Section
-function CTASectionAnimated({
+// CTA Section
+function CTASection({
   localEmail,
   setLocalEmail,
   handleBetaSignup,
@@ -826,250 +73,170 @@ function CTASectionAnimated({
 }) {
   return (
     <section
-      id="beta-signup"
-      className="bg-[#1a1a1a] pt-12 sm:pt-16 md:pt-20 lg:pt-28"
+      id="download"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        padding: "100px 16px",
+        backgroundColor: "#1a1a1a",
+      }}
     >
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col items-center justify-between gap-8 sm:gap-12 lg:flex-col lg:items-center lg:gap-12">
-            {/* Content - Top on mobile, left on desktop */}
-            <div className="order-1 w-full flex-1 text-center lg:text-center">
-              <h2 className="mb-3 text-xl font-semibold text-white sm:mb-4 sm:text-2xl md:text-3xl">
-                Ready to cook smarter?
-              </h2>
-              <p className="mb-6 text-sm text-gray-400 sm:mb-8 sm:text-base">
-                Join thousands of home cooks who are saving money, eating better, and actually enjoying cooking.
-              </p>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "28px",
+          width: "100%",
+          maxWidth: "600px",
+          textAlign: "center",
+        }}
+      >
+        <h2
+          style={{
+            fontWeight: 600,
+            fontSize: "40px",
+            letterSpacing: "-0.03em",
+            lineHeight: "115%",
+            color: "#ffffff",
+            margin: 0,
+          }}
+        >
+          Ready to cook smarter?
+        </h2>
+        <p
+          style={{
+            fontWeight: 400,
+            fontSize: "18px",
+            lineHeight: "160%",
+            color: "rgba(255, 255, 255, 0.6)",
+            margin: 0,
+          }}
+        >
+          Join thousands of home cooks who are saving money, eating better, and
+          actually enjoying cooking.
+        </p>
 
-              {isSubmitted ? (
-                <div className="rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
-                  <p className="mb-2 font-medium text-white">
-                    You&apos;re on the list!
-                  </p>
-                  <p className="text-sm text-gray-400">
-                    We&apos;ll notify {email} when Gruby launches.
-                  </p>
-                </div>
-              ) : (
-                <form
-                  onSubmit={handleBetaSignup}
-                  className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
-                >
-                  <input
-                    type="email"
-                    value={localEmail}
-                    onChange={(e) => setLocalEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                    className="h-[42px] flex-1 rounded-full bg-white px-4 py-2.5 text-sm leading-normal text-[#222222] placeholder-[#717171] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#FF1E00] sm:h-[44px] sm:py-3 sm:text-base"
-                    disabled={isSubmitting}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="h-[42px] whitespace-nowrap rounded-full bg-[#FF1E00] px-6 py-2.5 text-sm font-medium leading-normal text-white transition-colors duration-200 hover:bg-[#E01A00] disabled:opacity-50 sm:h-[44px] sm:py-3 sm:text-base"
-                  >
-                    {isSubmitting ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      "Join"
-                    )}
-                  </Button>
-                </form>
-              )}
-              {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
-            </div>
-
-            {/* Image area - Bottom on mobile, right on desktop */}
-            <div className="order-2 flex w-full flex-shrink-0 justify-center lg:w-auto lg:justify-end">
-              {/* Image placeholder - will be positioned here if needed */}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Animated Comparison Section
-function ComparisonSectionAnimated({
-  comparisons,
-  isLoading: _isLoading,
-}: {
-  comparisons: MealComparison[];
-  isLoading: boolean;
-}) {
-  return (
-    <section
-      id="comparison"
-      className="bg-[#f5f5f7] pb-16 pt-16 sm:pb-20 sm:pt-20 md:pb-24 md:pt-24 lg:pb-32 lg:pt-32"
-    >
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="mb-12 text-center sm:mb-14 md:mb-16">
-          <h2
-            className="mb-3 font-semibold text-[#222222] sm:mb-4"
-            style={{ fontSize: "clamp(1.5rem, 2.5vw + 1rem, 2.5rem)" }}
+        {isSubmitted ? (
+          <div
+            style={{
+              padding: "24px 32px",
+              backgroundColor: "rgba(255, 255, 255, 0.05)",
+              borderRadius: "16px",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+            }}
           >
-            See what you&apos;re actually paying
-          </h2>
-          <p className="mx-auto max-w-2xl px-4 text-base text-[#717171] sm:text-lg">
-            Same meal. Different price. You decide.
-          </p>
-        </div>
-
-        <div className="space-y-4 sm:space-y-6">
-          {comparisons.map((comparison, index) => (
-            <div
-              key={index}
-              className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5 sm:rounded-2xl"
+            <p
+              style={{
+                fontWeight: 500,
+                fontSize: "16px",
+                color: "#ffffff",
+                marginBottom: "8px",
+              }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12">
-                {/* Image */}
-                <div className="relative h-40 sm:h-48 lg:col-span-3 lg:h-auto">
-                  <Image
-                    src={comparison.image}
-                    alt={comparison.meal}
-                    fill
-                    className="object-cover"
-                    loading={index < 2 ? "eager" : "lazy"}
-                    sizes="(max-width: 1024px) 100vw, 25vw"
-                    quality={100}
-                    fetchPriority={index < 2 ? "high" : "auto"}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent lg:bg-gradient-to-t" />
-                  <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 lg:bottom-6 lg:left-6">
-                    <h3 className="text-lg font-semibold text-white sm:text-xl">
-                      {comparison.meal}
-                    </h3>
-                  </div>
-                </div>
+              You&apos;re on the list!
+            </p>
+            <p style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.6)" }}>
+              We&apos;ll notify {email} when Gruby launches.
+            </p>
+          </div>
+        ) : (
+          <form
+            onSubmit={handleBetaSignup}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "12px",
+              width: "100%",
+              maxWidth: "480px",
+            }}
+            className="cta-form"
+          >
+            <input
+              type="email"
+              value={localEmail}
+              onChange={(e) => setLocalEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              disabled={isSubmitting}
+              style={{
+                flex: 1,
+                height: "52px",
+                padding: "0 20px",
+                borderRadius: "13px",
+                border: "none",
+                backgroundColor: "#ffffff",
+                fontSize: "16px",
+                fontWeight: 400,
+                color: "#1a1a1a",
+                outline: "none",
+              }}
+            />
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="h-[52px] border-0 bg-white text-base font-medium text-[#222222] hover:bg-[#f5f5f5]"
+            >
+              {isSubmitting ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                "Join Waitlist"
+              )}
+            </Button>
+          </form>
+        )}
+        {error && (
+          <p style={{ fontSize: "14px", color: "rgb(239, 68, 68)" }}>{error}</p>
+        )}
 
-                {/* Comparison Content */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:col-span-9">
-                  {/* Eating Out - The "bad" option */}
-                  <div className="border-b border-gray-200 bg-white p-4 sm:p-6 md:border-b-0 md:border-r md:p-8">
-                    <div className="mb-4 flex items-center justify-between sm:mb-6">
-                      <div className="min-w-0 flex-1 pr-2">
-                        <p className="mb-0.5 text-xs font-medium text-[#222222] sm:text-sm">
-                          Eating Out
-                        </p>
-                        <p className="text-[10px] leading-tight text-[#717171] sm:text-xs">
-                          1 serving
-                        </p>
-                      </div>
-                      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:h-8 sm:w-8">
-                        <X
-                          className="h-3.5 w-3.5 text-red-600 sm:h-4 sm:w-4"
-                          strokeWidth={2.5}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mb-3 space-y-1.5 text-xs sm:mb-4 sm:space-y-2 sm:text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-[#717171]">Food</span>
-                        <span className="text-[#222222]">
-                          ${comparison.delivery.price.toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#717171]">Fees & tip</span>
-                        <span className="text-[#222222]">
-                          ${(comparison.delivery.fees + comparison.delivery.tip).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-gray-200 pt-3 sm:pt-4">
-                      <div className="flex items-end justify-between">
-                        <span className="text-xs font-medium text-[#222222] sm:text-sm">
-                          Total
-                        </span>
-                        <span className="text-xl font-bold text-[#222222] sm:text-2xl">
-                          ${comparison.delivery.total.toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Home Cooking - The "good" option */}
-                  <div className="bg-white p-4 sm:p-6 md:p-8">
-                    <div className="mb-4 flex items-center justify-between sm:mb-6">
-                      <div className="min-w-0 flex-1 pr-2">
-                        <p className="mb-0.5 text-xs font-medium text-[#222222] sm:text-sm">
-                          Home Cooked
-                        </p>
-                        <p className="text-[10px] leading-tight text-[#717171] sm:text-xs">
-                          {comparison.homeCooked.servings} servings
-                        </p>
-                      </div>
-                      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:h-8 sm:w-8">
-                        <Check
-                          className="h-3.5 w-3.5 text-[#16A34A] sm:h-4 sm:w-4"
-                          strokeWidth={2.5}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mb-3 space-y-1.5 text-xs sm:mb-4 sm:space-y-2 sm:text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-[#717171]">Groceries</span>
-                        <span className="text-[#222222]">
-                          {comparison.homeCooked.loading ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin sm:h-4 sm:w-4" />
-                          ) : (
-                            `$${comparison.homeCooked.price.toFixed(2)}`
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#717171]">Fees</span>
-                        <span className="text-[#222222]">$0.00</span>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-gray-200 pt-3 sm:pt-4">
-                      <div className="flex items-end justify-between">
-                        <span className="text-xs font-medium text-[#222222] sm:text-sm">
-                          Per serving
-                        </span>
-                        <span className="text-xl font-bold text-[#16A34A] sm:text-2xl">
-                          {comparison.homeCooked.loading ? (
-                            <Loader2 className="h-4 w-4 animate-spin sm:h-5 sm:w-5" />
-                          ) : (
-                            `$${comparison.homeCooked.perServing.toFixed(2)}`
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Savings Strip */}
-              <div className="flex flex-col items-center justify-between gap-2 bg-[#222222] px-4 py-3 sm:flex-row sm:gap-3 sm:px-6 sm:py-4 md:px-8">
-                <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start sm:gap-4">
-                  <p className="text-xs text-white/70 sm:text-sm">You save</p>
-                  <p className="text-xl font-bold text-white sm:text-2xl">
-                    {comparison.homeCooked.loading ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-white sm:h-5 sm:w-5" />
-                    ) : (
-                      `$${comparison.savings.toFixed(2)}`
-                    )}
-                  </p>
-                  {!comparison.homeCooked.loading && (
-                    <span className="rounded bg-[#16A34A] px-1.5 py-0.5 text-[10px] font-semibold text-white sm:px-2 sm:text-xs">
-                      {comparison.savingsPercent}% less
-                    </span>
-                  )}
-                </div>
-                <p className="text-center text-xs text-white/70 sm:text-left sm:text-sm">
-                  + {comparison.homeCooked.servings - 1} extra servings
-                </p>
-              </div>
+        {/* App Store Links */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "16px",
+            marginTop: "8px",
+          }}
+          className="app-store-links"
+        >
+          <a
+            href="https://apps.apple.com/app/gruby"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
+          >
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+            </svg>
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] leading-tight text-[#717171]">
+                Download on the
+              </span>
+              <span className="text-sm font-semibold leading-tight">
+                App Store
+              </span>
             </div>
-          ))}
+          </a>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.gruby.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
+          >
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+            </svg>
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] leading-tight text-[#717171]">
+                Get it on
+              </span>
+              <span className="text-sm font-semibold leading-tight">
+                Google Play
+              </span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -1081,14 +248,7 @@ export default function MarketingPage() {
   const { email, isSubmitting, isSubmitted, error } = useAppSelector(
     (state) => state.beta,
   );
-  const _waitlistModalOpen = useAppSelector(
-    (state) => state.ui.waitlistModalOpen,
-  );
   const [localEmail, setLocalEmail] = useState("");
-  const [comparisons, setComparisons] = useState<MealComparison[]>(
-    initialMealComparisons,
-  );
-  const [isLoading, setIsLoading] = useState(true);
   const [footerEmail, setFooterEmail] = useState("");
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -1098,74 +258,6 @@ export default function MarketingPage() {
       setCurrentSlide((prev) => (prev + 1) % appSlides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    async function fetchPrices() {
-      setIsLoading(true);
-      const updatedComparisons = await Promise.all(
-        initialMealComparisons.map(async (comparison) => {
-          try {
-            const mealData = await calculateMealPrice(
-              comparison.homeCooked.ingredients,
-            );
-            const _perServing = mealData.perServing;
-            const total = mealData.total;
-
-            const finalTotal =
-              total > 0
-                ? total
-                : comparison.homeCooked.ingredients.length * 3.5;
-            const finalPerServing = finalTotal / 4;
-            const savings = comparison.delivery.total - finalPerServing;
-            const savingsPercent = Math.round(
-              (savings / comparison.delivery.total) * 100,
-            );
-
-            return {
-              ...comparison,
-              homeCooked: {
-                ...comparison.homeCooked,
-                price: finalTotal,
-                perServing: finalPerServing,
-                loading: false,
-              },
-              savings,
-              savingsPercent,
-            };
-          } catch (error) {
-            console.error(
-              `Error fetching prices for ${comparison.meal}:`,
-              error,
-            );
-            const estimatedPrice =
-              comparison.homeCooked.ingredients.length * 3.5;
-            const perServing = estimatedPrice / 4;
-            const savings = comparison.delivery.total - perServing;
-            const savingsPercent = Math.round(
-              (savings / comparison.delivery.total) * 100,
-            );
-
-            return {
-              ...comparison,
-              homeCooked: {
-                ...comparison.homeCooked,
-                price: estimatedPrice,
-                perServing,
-                loading: false,
-              },
-              savings,
-              savingsPercent,
-            };
-          }
-        }),
-      );
-
-      setComparisons(updatedComparisons);
-      setIsLoading(false);
-    }
-
-    fetchPrices();
   }, []);
 
   const handleBetaSignup = async (e: React.FormEvent) => {
@@ -1222,13 +314,15 @@ export default function MarketingPage() {
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
         :root {
-          --color-primary: #ff1e00;
-          --color-primary-hover: #e01a00;
+          /* Design System v2.0: Simplified palette */
+          --color-primary: #222222;
+          --color-primary-hover: #333333;
+          --color-support: #222222;
           --color-text: #222222;
-          --color-text-secondary: #717171;
-          --color-border: #e5e5e5;
-          --color-surface: #f5f5f7;
-          --color-success: #16a34a;
+          --color-text-secondary: #b8a89a;
+          --color-border: #d9d9d6;
+          --color-surface: #faf9f6;
+          --color-success: #222222;
         }
 
         * {
@@ -1241,6 +335,10 @@ export default function MarketingPage() {
             sans-serif;
         }
 
+        body {
+          color: var(--color-text);
+        }
+
         h1,
         h2,
         h3,
@@ -1248,106 +346,327 @@ export default function MarketingPage() {
         h5,
         h6 {
           font-family:
-            "Aeonik Pro",
+            "Inter",
             -apple-system,
             BlinkMacSystemFont,
             "Segoe UI",
             Roboto,
             sans-serif !important;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 640px) {
+          .cta-form {
+            flex-direction: column !important;
+          }
+          .app-store-links,
+          .app-store-buttons {
+            flex-direction: column !important;
+            width: 100%;
+          }
+          .app-store-links a,
+          .app-store-buttons a {
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .use-cases-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+          .use-cases-subtext {
+            align-items: flex-start !important;
+          }
+          .use-cases-subtext h5 {
+            text-align: left !important;
+          }
+          .use-cases-grid {
+            flex-direction: column !important;
+            height: auto !important;
+          }
+          .use-cases-grid > div:last-child {
+            flex-direction: row !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .use-cases-grid > div:last-child {
+            flex-direction: column !important;
+          }
+          .case-studies-grid {
+            flex-direction: column !important;
+          }
+          .case-study-card {
+            flex: none !important;
+          }
+          .customers-grid {
+            flex-direction: column !important;
+          }
+          .operations-content {
+            flex-direction: column !important;
+          }
+          .operations-left {
+            height: auto !important;
+          }
+          .operations-preview {
+            min-height: 400px !important;
+          }
+        }
+
+        /* Hide scrollbar for templates carousel */
+        .templates-carousel::-webkit-scrollbar {
+          display: none;
+        }
+
+        /* Features demo hover */
+        .features-video-overlay:hover {
+          backdrop-filter: blur(4px);
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+        .features-video-overlay:hover .features-center-controls {
+          opacity: 1 !important;
+        }
+        .features-video-overlay:hover .features-corner-button {
+          opacity: 0 !important;
         }
       `}</style>
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[680px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 min-h-[600px] overflow-hidden pt-32 sm:min-h-[650px] lg:min-h-[700px]">
+          {/* Background Image */}
           <div className="absolute inset-0">
             <Image
-              src="/HeroImage.jpg"
+              src="/HeroImagen.jpg"
               alt="Hero background"
               fill
               priority
               quality={100}
               className="object-cover"
-              style={{ filter: "brightness(0.7)" }}
+              style={{
+                filter: "brightness(0.7)",
+                objectPosition: "center 40%",
+              }}
               sizes="100vw"
               fetchPriority="high"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
-          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-16 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
-            {/* Mobile-only gradient under content */}
-            <div className="pointer-events-none absolute -bottom-16 left-0 right-0 h-[32rem] bg-gradient-to-t from-black/90 via-black/70 to-transparent sm:hidden" />
-            <div className="relative z-10">
-              <h1
-                className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
-                style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
-              >
-                Mom Was Right.
-              </h1>
-              <p
-                className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
-                style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
-              >
-                We got food at home. Paste any recipe link, get real grocery prices, and cook with AI-powered guidance.
-              </p>
-              <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dispatch(setWaitlistModalOpen(true));
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
+
+          {/* Hero Content Container */}
+          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-1 flex-col items-start justify-center pb-16 pt-16 sm:pb-24 sm:pt-24">
+              <div className="max-w-xl">
+                <h1
+                  className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
+                  style={{
+                    fontSize: "clamp(2rem, 4vw + 1rem, 3.5rem)",
+                    letterSpacing: "-0.03em",
                   }}
-                  className="inline-flex h-[42px] items-center justify-center rounded-full bg-[#FF1E00] px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[44px] sm:text-base"
                 >
-                  Get Early Access
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const element = document.getElementById("features");
-                    if (element) {
-                      element.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                    }
+                  Mom Was Right.
+                </h1>
+                <p
+                  className="mb-4 leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)",
+                    fontWeight: 400,
                   }}
-                  className="inline-flex h-[42px] items-center justify-center rounded-full border-2 border-white bg-transparent px-6 text-sm font-medium text-white transition-all duration-200 hover:border-white hover:bg-white/20 hover:text-white sm:h-[44px] sm:text-base"
                 >
-                  Explore Features
-                </button>
+                  We got food at home. Paste any recipe link, get real grocery
+                  prices, and cook with AI-powered guidance.
+                </p>
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      dispatch(setWaitlistModalOpen(true));
+                    }}
+                    className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-[var(--gruby-primary)] px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                  >
+                    Get Early Access
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const element = document.getElementById("recipes");
+                      if (element) {
+                        element.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }
+                    }}
+                    className="inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white bg-transparent px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/20 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                  >
+                    See Recipes
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* App Preview Section */}
-        <AppPreviewSectionAnimated
-          currentSlide={currentSlide}
-          setCurrentSlide={setCurrentSlide}
-        />
+        {/* App Preview Section - Phone mockup with content */}
+        <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
+          <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
+            <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#1a1a1a] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
+              {/* Content - Right side on desktop */}
+              <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
+                {/* Heading */}
+                <h2 className="mb-4 text-center text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-left">
+                  Your AI kitchen assistant
+                </h2>
+                <p className="mb-6 text-center text-base text-white/60 lg:text-left">
+                  Import recipes from anywhere. Get real prices. Cook like a
+                  pro.
+                </p>
 
-        {/* Features Section with Mockups */}
-        <FeatureShowcaseSectionAnimated />
+                {/* Rotating Bullet Points */}
+                <div className="mb-6 min-h-[100px] w-full">
+                  {appSlides.map((slide, index) => (
+                    <ul
+                      key={index}
+                      className="m-0 flex list-none flex-col gap-3 p-0"
+                      style={{
+                        display: currentSlide === index ? "flex" : "none",
+                      }}
+                    >
+                      {slide.features.map((feature, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center justify-center gap-3 text-sm font-medium text-white sm:text-base lg:justify-start"
+                        >
+                          <div className="h-2 w-2 flex-shrink-0 rounded-full bg-[var(--gruby-primary)]" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
 
-        {/* Tablet Preview Section */}
-        <TabletPreviewSectionAnimated />
+                {/* Progress Bar */}
+                <div className="mb-8 flex w-full max-w-[200px] gap-2">
+                  {appSlides.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className="h-1.5 flex-1 rounded-full border-none transition-colors"
+                      style={{
+                        backgroundColor:
+                          currentSlide === index
+                            ? "#ffffff"
+                            : "rgba(255, 255, 255, 0.3)",
+                        cursor: "pointer",
+                      }}
+                      aria-label={`Go to slide ${index + 1}`}
+                      type="button"
+                    />
+                  ))}
+                </div>
 
-        {/* Benefits Section */}
-        <BenefitsSectionAnimated />
+                {/* App Store Links */}
+                <div className="app-store-buttons flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href="https://apps.apple.com/app/gruby"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98] sm:justify-start"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                    </svg>
+                    <div className="flex flex-col items-start">
+                      <span className="text-[10px] leading-tight text-[#717171]">
+                        Download on the
+                      </span>
+                      <span className="text-sm font-semibold leading-tight">
+                        App Store
+                      </span>
+                    </div>
+                  </a>
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.gruby.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98] sm:justify-start"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+                    </svg>
+                    <div className="flex flex-col items-start">
+                      <span className="text-[10px] leading-tight text-[#717171]">
+                        Get it on
+                      </span>
+                      <span className="text-sm font-semibold leading-tight">
+                        Google Play
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
 
-        {/* Comparison Section - Redesigned */}
-        <ComparisonSectionAnimated
-          comparisons={comparisons}
-          isLoading={isLoading}
-        />
+              {/* Phone Image - Absolutely positioned at bottom-left */}
+              <div className="absolute bottom-0 left-1/2 z-0 order-2 flex w-full flex-shrink-0 -translate-x-1/2 justify-center lg:absolute lg:bottom-0 lg:left-16 lg:w-auto lg:translate-x-0 lg:justify-start">
+                <Image
+                  src="/Grubyphone.png"
+                  alt="Gruby mobile app"
+                  width={500}
+                  height={1000}
+                  className="h-auto w-[320px] max-w-[85vw] object-contain sm:w-[360px] sm:max-w-[70vw] md:w-[400px] md:max-w-[50vw] lg:w-[500px] lg:max-w-none xl:w-[600px] 2xl:w-[720px]"
+                  priority
+                  quality={100}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
 
+        {/*
+          MARKETING STORYLINE:
+          1. Templates - Visual hook showing exciting recipes (attention grabber)
+          2. Features - How it works (the app's core features)
+          3. Customers - Social proof with savings stats
+          4. UseCases - Who it's for
+          5. CaseStudies - Testimonials
+          6. CTA - Convert
+        */}
+
+        {/* Case Studies Section */}
+        <CaseStudies />
+
+        {/* Features Section */}
+        <Features />
+
+        {/* Price Comparison Section */}
+        <Comparison />
+
+        {/* Customers/Savings Section */}
+        <Customers />
+
+        {/* Use Cases Section */}
+        <UseCases />
+
+        {/* Templates/Recipes Section */}
+        <Templates />
 
         {/* CTA Section */}
-        <CTASectionAnimated
+        <CTASection
           localEmail={localEmail}
           setLocalEmail={setLocalEmail}
           handleBetaSignup={handleBetaSignup}
@@ -1358,31 +677,32 @@ export default function MarketingPage() {
         />
 
         {/* Footer */}
-        <footer className="border-t border-[#E5E5E5] bg-white">
-          <div className="mx-auto max-w-[1920px] px-4 py-8 sm:px-6 sm:py-10 md:py-12 lg:px-8">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 md:grid-cols-5">
+        <footer className="border-t border-[#e5e5e5] bg-white">
+          <div className="mx-auto max-w-[1920px] px-4 py-12 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-5">
               <div className="col-span-1 sm:col-span-2 md:col-span-1">
                 <Image
                   src="/GrubyLogo.svg"
                   alt="Gruby Logo"
                   width={100}
                   height={36}
-                  className="mb-3 sm:mb-4"
+                  className="mb-4"
                 />
-                <p className="text-xs text-[#717171] sm:text-sm">
-                  Your AI-powered kitchen companion. Import recipes, get real prices, cook like a pro.
+                <p className="text-sm leading-relaxed text-[#717171]">
+                  Your AI-powered kitchen companion. Import recipes, get real
+                  prices, cook like a pro.
                 </p>
               </div>
 
               <div>
-                <h3 className="mb-3 text-xs font-semibold text-[#222222] sm:mb-4 sm:text-sm">
+                <h3 className="mb-4 text-sm font-semibold text-[#1a1a1a]">
                   Support
                 </h3>
-                <ul className="space-y-2 text-xs sm:space-y-3 sm:text-sm">
+                <ul className="flex list-none flex-col gap-3 p-0">
                   <li>
                     <Link
                       href="/faq"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       FAQ
                     </Link>
@@ -1390,7 +710,7 @@ export default function MarketingPage() {
                   <li>
                     <Link
                       href="/media-kit"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Media Kit
                     </Link>
@@ -1398,7 +718,7 @@ export default function MarketingPage() {
                   <li>
                     <Link
                       href="/logos"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Logos & Assets
                     </Link>
@@ -1407,14 +727,14 @@ export default function MarketingPage() {
               </div>
 
               <div>
-                <h3 className="mb-3 text-xs font-semibold text-[#222222] sm:mb-4 sm:text-sm">
+                <h3 className="mb-4 text-sm font-semibold text-[#1a1a1a]">
                   Legal
                 </h3>
-                <ul className="space-y-2 text-xs sm:space-y-3 sm:text-sm">
+                <ul className="flex list-none flex-col gap-3 p-0">
                   <li>
                     <Link
                       href="/terms"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Terms of Service
                     </Link>
@@ -1422,7 +742,7 @@ export default function MarketingPage() {
                   <li>
                     <Link
                       href="/privacy"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Privacy Policy
                     </Link>
@@ -1430,7 +750,7 @@ export default function MarketingPage() {
                   <li>
                     <Link
                       href="/cookies"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Cookie Policy
                     </Link>
@@ -1438,7 +758,7 @@ export default function MarketingPage() {
                   <li>
                     <Link
                       href="/dmca"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       DMCA Policy
                     </Link>
@@ -1447,14 +767,14 @@ export default function MarketingPage() {
               </div>
 
               <div>
-                <h3 className="mb-3 text-xs font-semibold text-[#222222] sm:mb-4 sm:text-sm">
+                <h3 className="mb-4 text-sm font-semibold text-[#1a1a1a]">
                   Community
                 </h3>
-                <ul className="space-y-2 text-xs sm:space-y-3 sm:text-sm">
+                <ul className="flex list-none flex-col gap-3 p-0">
                   <li>
                     <Link
                       href="/community-guidelines"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Community Guidelines
                     </Link>
@@ -1462,7 +782,7 @@ export default function MarketingPage() {
                   <li>
                     <Link
                       href="/accessibility"
-                      className="text-[#717171] transition-colors hover:text-[#222222]"
+                      className="text-sm text-[#717171] no-underline hover:text-[#1a1a1a]"
                     >
                       Accessibility
                     </Link>
@@ -1471,21 +791,24 @@ export default function MarketingPage() {
               </div>
 
               <div>
-                <h3 className="mb-3 text-xs font-semibold text-[#222222] sm:mb-4 sm:text-sm">
+                <h3 className="mb-4 text-sm font-semibold text-[#1a1a1a]">
                   Newsletter
                 </h3>
-                <form onSubmit={handleNewsletterSubmit} className="space-y-2">
+                <form
+                  onSubmit={handleNewsletterSubmit}
+                  className="flex flex-col gap-3"
+                >
                   <input
                     type="email"
                     value={footerEmail}
                     onChange={(e) => setFooterEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full rounded-full border-0 bg-[#f5f5f7] px-3 py-2 text-xs transition-shadow focus:outline-none focus:ring-2 focus:ring-[#FF1E00] sm:px-4 sm:py-2.5 sm:text-sm md:py-3 md:text-base"
+                    className="w-full rounded-[13px] border-0 bg-[#fafafa] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#222222]"
                     required
                   />
                   <button
                     type="submit"
-                    className="h-[44px] w-full rounded-full bg-[#FF1E00] px-4 text-xs font-medium text-white transition-colors duration-200 hover:bg-[#E01A00] sm:h-[46px] sm:text-sm md:h-[48px] md:text-base"
+                    className="inline-flex w-full items-center justify-center rounded-[13px] bg-[#222222] px-4 py-3 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-[#333333] active:scale-[0.98]"
                   >
                     Subscribe
                   </button>
@@ -1494,9 +817,9 @@ export default function MarketingPage() {
             </div>
           </div>
 
-          <div className="border-t border-[#E5E5E5]">
-            <div className="mx-auto max-w-[1920px] px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-              <p className="text-center text-xs text-[#717171] sm:text-sm">
+          <div className="border-t border-[#e5e5e5]">
+            <div className="mx-auto max-w-[1920px] px-4 py-6 sm:px-6 lg:px-8">
+              <p className="text-center text-sm text-[#717171]">
                 © {new Date().getFullYear()} Gruby. All rights reserved.
               </p>
             </div>

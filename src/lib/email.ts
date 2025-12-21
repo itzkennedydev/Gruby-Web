@@ -112,7 +112,7 @@ export async function sendWaitlistConfirmation(email: string, name: string = "")
                           <table role="presentation" width="100percent">
                             <tr>
                               <td class="icon-col" width="36" valign="top">
-                                <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
+                                <div style="width: 32px; height: 32px; background-color: #222222; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
                                   ✓
             </div>
                               </td>
@@ -135,7 +135,7 @@ export async function sendWaitlistConfirmation(email: string, name: string = "")
                           <table role="presentation" width="100percent">
                             <tr>
                               <td class="icon-col" width="36" valign="top">
-                                <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
+                                <div style="width: 32px; height: 32px; background-color: #222222; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
                                   ✓
                 </div>
                               </td>
@@ -158,7 +158,7 @@ export async function sendWaitlistConfirmation(email: string, name: string = "")
                           <table role="presentation" width="100percent">
                             <tr>
                               <td class="icon-col" width="36" valign="top">
-                                <div style="width: 32px; height: 32px; background-color: #FF1E00; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
+                                <div style="width: 32px; height: 32px; background-color: #222222; border-radius: 50percent; color: #ffffff; text-align: center; line-height: 32px; font-weight: bold; font-size: 18px;">
                                   ✓
                 </div>
                               </td>
@@ -184,7 +184,7 @@ export async function sendWaitlistConfirmation(email: string, name: string = "")
                   <td style="padding: 0 48px 40px; text-align: center;">
                     <a href="https://gruby.app"
                       class="btn"
-                      style="display: inline-block; padding: 18px 48px; background-color: #FF1E00; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 17px; box-shadow: 0 4px 12px rgba(255, 30, 0, 0.3);">
+                      style="display: inline-block; padding: 18px 48px; background-color: #222222; color: #ffffff; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 17px; box-shadow: 0 4px 12px rgba(255, 30, 0, 0.3);">
                       Learn more about Gruby
                     </a>
                   </td>
@@ -293,21 +293,21 @@ export async function sendAdminNotification(email: string, name: string = "") {
 
                 <tr>
                   <td style="padding: 0 48px 40px;">
-                    <table role="presentation" width="100percent" style="background-color: #fff5f5; border: 2px solid #FF1E00; border-radius: 16px;">
+                    <table role="presentation" width="100percent" style="background-color: #fff5f5; border: 2px solid #222222; border-radius: 16px;">
                       <tr>
                         <td style="padding: 28px 32px;">
                           ${name ? `
                           <p style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: #1a1a1a;">
                             Name:
                           </p>
-                          <p style="margin: 0 0 24px; font-size: 22px; font-weight: 600; color: #FF1E00;">
+                          <p style="margin: 0 0 24px; font-size: 22px; font-weight: 600; color: #222222;">
                             ${name}
                           </p>
                           ` : ""}
                           <p style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: #1a1a1a;">
                             Email:
                           </p>
-                          <p style="margin: 0; font-size: 22px; font-weight: 600; color: #FF1E00; word-break: break-all;">
+                          <p style="margin: 0; font-size: 22px; font-weight: 600; color: #222222; word-break: break-all;">
                             ${email}
                           </p>
                         </td>

@@ -65,7 +65,7 @@ export default function AccessibilityPage() {
                 href="https://www.w3.org/WAI/WCAG21/quickref/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#FF1E00] hover:underline"
+                className="text-[#222222] hover:underline"
               >
                 Web Content Accessibility Guidelines (WCAG) 2.1
               </a>{" "}
@@ -464,7 +464,7 @@ export default function AccessibilityPage() {
                 Email:{" "}
                 <a
                   href="mailto:accessibility@gruby.app"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   accessibility@gruby.app
                 </a>
@@ -473,7 +473,7 @@ export default function AccessibilityPage() {
                 General Support:{" "}
                 <a
                   href="mailto:support@gruby.app"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   support@gruby.app
                 </a>
@@ -631,7 +631,7 @@ export default function AccessibilityPage() {
               the issue to{" "}
               <a
                 href="mailto:accessibility@gruby.app"
-                className="text-[#FF1E00] hover:underline"
+                className="text-[#222222] hover:underline"
               >
                 accessibility@gruby.app
               </a>{" "}
@@ -669,7 +669,7 @@ export default function AccessibilityPage() {
                   href="https://www.w3.org/WAI/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   W3C Web Accessibility Initiative (WAI)
                 </a>
@@ -679,7 +679,7 @@ export default function AccessibilityPage() {
                   href="https://www.ada.gov/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   Americans with Disabilities Act (ADA)
                 </a>
@@ -689,7 +689,7 @@ export default function AccessibilityPage() {
                   href="https://webaim.org/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   WebAIM (Web Accessibility In Mind)
                 </a>
@@ -699,7 +699,7 @@ export default function AccessibilityPage() {
                   href="https://www.access-board.gov/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#FF1E00] hover:underline"
+                  className="text-[#222222] hover:underline"
                 >
                   U.S. Access Board
                 </a>

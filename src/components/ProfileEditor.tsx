@@ -106,7 +106,7 @@ const ProfileEditor: React.FC = () => {
         </div>
         <button
           onClick={fetchProfile}
-          className="px-4 py-2 bg-[#FF4D00] text-white rounded-lg hover:bg-[#E64500] transition-colors"
+          className="px-4 py-2 bg-ds-primary text-ds-primary-fg rounded-lg hover:bg-ds-primary-hover transition-colors"
         >
           Try Again
         </button>
@@ -172,7 +172,7 @@ const ProfileEditor: React.FC = () => {
                   }}
                   disabled={uploading === 'avatar'}
                 />
-                <div className="bg-[#FF4D00] text-white p-1.5 rounded-full hover:bg-[#E64500] transition-colors">
+                <div className="bg-ds-primary text-ds-primary-fg p-1.5 rounded-full hover:bg-ds-primary-hover transition-colors">
                   {uploading === 'avatar' ? (
                     <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
                   ) : (
@@ -281,7 +281,7 @@ const ProfileEditor: React.FC = () => {
                   setError('Failed to save changes');
                 }
               }}
-              className="px-6 py-3 bg-[#FF4D00] text-white rounded-lg hover:bg-[#E64500] transition-colors font-medium"
+              className="px-6 py-3 bg-ds-primary text-ds-primary-fg rounded-lg hover:bg-ds-primary-hover transition-colors font-medium"
             >
               Save Changes
             </button>
