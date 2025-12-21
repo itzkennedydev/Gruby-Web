@@ -77,7 +77,7 @@ function CaseStudyCard({
         flex: isExpanded ? "6 0 0" : "1 0 0",
         placeContent: "flex-start",
         alignItems: "flex-start",
-        gap: "0px",
+        gap: "16px",
         width: "100%",
         height: "min-content",
         position: "relative",
@@ -88,7 +88,7 @@ function CaseStudyCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Video container */}
+      {/* Video container with overlay */}
       <div
         style={{
           width: "100%",
@@ -129,17 +129,63 @@ function CaseStudyCard({
             backgroundColor: "rgba(0, 0, 0, 0)",
           }}
         />
-        {/* Quote overlay - visible when expanded */}
-        {isExpanded && (
+
+        {/* Bottom gradient overlay */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "60%",
+            background:
+              "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Content overlay */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "24px",
+            left: "24px",
+            right: "24px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+        >
+          {/* Glassmorphism badge */}
           <div
             style={{
-              position: "absolute",
-              bottom: "0",
-              left: "0",
-              right: "0",
-              padding: "24px",
-              background:
-                "linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent)",
+              display: "inline-flex",
+              width: "fit-content",
+              padding: "6px 12px",
+              borderRadius: "8px",
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.25)",
+            }}
+          >
+            <p
+              style={{
+                fontWeight: 600,
+                fontSize: "14px",
+                lineHeight: "20px",
+                color: "rgb(255, 255, 255)",
+                margin: 0,
+              }}
+            >
+              {study.tagline}
+            </p>
+          </div>
+
+          {/* Name and quote */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
             }}
           >
             <h5
@@ -148,52 +194,26 @@ function CaseStudyCard({
                 fontSize: "18px",
                 lineHeight: "140%",
                 color: "rgb(255, 255, 255)",
+                margin: 0,
               }}
             >
-              {study.quote}
+              {study.name}
             </h5>
+            {isExpanded && (
+              <h5
+                style={{
+                  fontWeight: 600,
+                  fontSize: "18px",
+                  lineHeight: "140%",
+                  color: "rgba(255, 255, 255, 0.5)",
+                  margin: 0,
+                }}
+              >
+                {study.quote}
+              </h5>
+            )}
           </div>
-        )}
-      </div>
-
-      {/* Info */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: "none",
-          placeContent: "flex-start",
-          alignItems: "flex-start",
-          gap: "0px",
-          width: "100%",
-          height: "min-content",
-          padding: "12px 0 0",
-          position: "relative",
-          overflow: "visible",
-        }}
-      >
-        <p
-          style={{
-            fontWeight: 500,
-            fontSize: "16px",
-            letterSpacing: "-0.01em",
-            lineHeight: "24px",
-            color: "rgb(0, 0, 0)",
-          }}
-        >
-          {study.name}
-        </p>
-        <p
-          style={{
-            fontWeight: 500,
-            fontSize: "16px",
-            letterSpacing: "-0.01em",
-            lineHeight: "24px",
-            color: "rgb(171, 171, 171)",
-          }}
-        >
-          {study.tagline}
-        </p>
+        </div>
       </div>
     </div>
   );
