@@ -949,6 +949,15 @@ button.cta-submit-button {
     padding: 60px 16px !important;
   }
 
+  /* Fix headline and subtitle to prevent scroll glitch from viewport unit recalculation */
+  .customers-section h2 {
+    font-size: 1.75rem !important;
+  }
+
+  .customers-section > div > div:first-child p {
+    font-size: 0.875rem !important;
+  }
+
   /* Main grid stacks vertically */
   .customers-grid {
     flex-direction: column !important;
@@ -1071,3 +1080,4 @@ button.cta-submit-button {
     display: none !important;
   }
 }
+
