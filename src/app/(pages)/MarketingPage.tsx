@@ -463,12 +463,7 @@ export default function MarketingPage() {
                     e.stopPropagation();
                     const element = document.getElementById("features");
                     if (element) {
-                      const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, options?: { offset?: number }) => void } }).lenis;
-                      if (lenis) {
-                        lenis.scrollTo(element, { offset: -100 });
-                      } else {
-                        element.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }
+                      element.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
                   }}
                   className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
