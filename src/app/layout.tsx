@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ReduxProvider } from "@/components/ReduxProvider";
+import SmoothScroll from "@/components/SmoothScroll";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -67,8 +68,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <body className="flex min-h-screen flex-col bg-white">
           <ErrorBoundary>
             <ReduxProvider>
-              <Header />
-              <main className="flex-1">{children}</main>
+              <SmoothScroll>
+                <Header />
+                <main className="flex-1">{children}</main>
+              </SmoothScroll>
             </ReduxProvider>
           </ErrorBoundary>
         </body>
