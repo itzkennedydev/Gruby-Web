@@ -81,8 +81,23 @@ function CTASection({
         width: "100%",
         padding: "100px 16px",
         backgroundColor: "#1a1a1a",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Grain texture overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url(/GrubyGrain.png)",
+          backgroundSize: "200px 200px",
+          opacity: 0.22,
+          pointerEvents: "none",
+          mixBlendMode: "overlay",
+          zIndex: 0,
+        }}
+      />
       <div
         style={{
           display: "flex",
@@ -92,6 +107,8 @@ function CTASection({
           width: "100%",
           maxWidth: "600px",
           textAlign: "center",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <h2
@@ -177,7 +194,7 @@ function CTASection({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="h-[52px] border-0 bg-white text-base font-medium text-[#222222] hover:bg-[#f5f5f5]"
+              className="h-[52px] border-0 bg-[var(--gruby-primary)] text-base font-medium text-white hover:opacity-90"
             >
               {isSubmitting ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -264,18 +281,6 @@ export default function MarketingPage() {
       {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
-        :root {
-          /* Design System v2.0: Simplified palette */
-          --color-primary: #222222;
-          --color-primary-hover: #333333;
-          --color-support: #222222;
-          --color-text: #222222;
-          --color-text-secondary: #b8a89a;
-          --color-border: #d9d9d6;
-          --color-surface: #faf9f6;
-          --color-success: #222222;
-        }
 
         * {
           font-family:
@@ -410,7 +415,7 @@ export default function MarketingPage() {
 
           {/* Hero Content Container */}
           <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-1 flex-col items-start justify-center pb-16 pt-16 sm:pb-24 sm:pt-24">
+            <div className="flex flex-1 flex-col items-start justify-end pb-20 pt-16 sm:pb-28 sm:pt-24 lg:pb-32">
               <div className="max-w-xl">
                 <h1
                   className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
@@ -439,7 +444,7 @@ export default function MarketingPage() {
                       e.stopPropagation();
                       dispatch(setWaitlistModalOpen(true));
                     }}
-                    className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-[var(--gruby-primary)] px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                    className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-medium text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
                   >
                     Get Early Access
                   </button>
@@ -458,7 +463,7 @@ export default function MarketingPage() {
                     }}
                     className="inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white bg-transparent px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/20 active:scale-[0.98] sm:h-[48px] sm:text-base"
                   >
-                    See Recipes
+                    See How It Works
                   </button>
                 </div>
               </div>
@@ -470,23 +475,37 @@ export default function MarketingPage() {
         <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
           <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
             <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#1a1a1a] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
+              {/* Grain texture overlay */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  backgroundImage: "url(/GrubyGrain.png)",
+                  backgroundSize: "200px 200px",
+                  opacity: 0.22,
+                  pointerEvents: "none",
+                  borderRadius: "inherit",
+                  mixBlendMode: "overlay",
+                  zIndex: 0,
+                }}
+              />
               {/* Content - Right side on desktop */}
-              <div className="z-10 order-1 flex w-full max-w-md flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
+              <div className="z-10 order-1 flex w-full max-w-xl flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
                 {/* Heading */}
-                <h2 className="mb-4 text-center text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-left">
+                <h2 className="mb-5 text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-left">
                   Your AI kitchen assistant
                 </h2>
-                <p className="mb-6 text-center text-base text-white/60 lg:text-left">
-                  Import recipes from anywhere. Get real prices. Cook like a
-                  pro.
+                <p className="mb-8 text-center text-lg leading-relaxed text-white/60 sm:text-xl lg:text-left">
+                  Turn any recipe into a shopping list with real prices. Cook
+                  with AI guidance. Save money on every meal.
                 </p>
 
                 {/* Rotating Bullet Points */}
-                <div className="mb-6 min-h-[100px] w-full">
+                <div className="mb-8 min-h-[120px] w-full">
                   {appSlides.map((slide, index) => (
                     <ul
                       key={index}
-                      className="m-0 flex list-none flex-col gap-3 p-0"
+                      className="m-0 flex list-none flex-col gap-4 p-0"
                       style={{
                         display: currentSlide === index ? "flex" : "none",
                       }}
@@ -494,9 +513,9 @@ export default function MarketingPage() {
                       {slide.features.map((feature, i) => (
                         <li
                           key={i}
-                          className="flex items-center justify-center gap-3 text-sm font-medium text-white sm:text-base lg:justify-start"
+                          className="flex items-center justify-center gap-3 text-base font-medium text-white sm:text-lg lg:justify-start"
                         >
-                          <div className="h-2 w-2 flex-shrink-0 rounded-full bg-[var(--gruby-primary)]" />
+                          <div className="h-2.5 w-2.5 flex-shrink-0 rounded-full bg-white" />
                           {feature}
                         </li>
                       ))}
@@ -505,12 +524,12 @@ export default function MarketingPage() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="mb-8 flex w-full max-w-[200px] gap-2">
+                <div className="mb-10 flex w-full max-w-[340px] gap-2.5">
                   {appSlides.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setCurrentSlide(index)}
-                      className="h-1.5 flex-1 rounded-full border-none transition-colors"
+                      className="h-2 flex-1 rounded-full border-none transition-colors"
                       style={{
                         backgroundColor:
                           currentSlide === index
@@ -574,7 +593,7 @@ export default function MarketingPage() {
               </div>
 
               {/* Phone Image - Absolutely positioned at bottom-left */}
-              <div className="absolute bottom-0 left-1/2 z-0 order-2 flex w-full flex-shrink-0 -translate-x-1/2 justify-center lg:absolute lg:bottom-0 lg:left-16 lg:w-auto lg:translate-x-0 lg:justify-start">
+              <div className="absolute bottom-0 left-1/2 z-20 order-2 flex w-full flex-shrink-0 -translate-x-1/2 justify-center lg:absolute lg:bottom-0 lg:left-16 lg:w-auto lg:translate-x-0 lg:justify-start">
                 <Image
                   src="/Grubyphone.png"
                   alt="Gruby mobile app"
@@ -641,8 +660,9 @@ export default function MarketingPage() {
                   className="mb-4"
                 />
                 <p className="text-sm leading-relaxed text-[#717171]">
-                  Your AI-powered kitchen companion. Import recipes, get real
-                  prices, cook like a pro.
+                  Your AI-powered kitchen companion. Turn any recipe into a
+                  shopping list with real prices, cook with step-by-step AI
+                  guidance, and save money on every meal.
                 </p>
 
                 {/* App Store Download Links */}
@@ -651,7 +671,7 @@ export default function MarketingPage() {
                     href="https://apps.apple.com/app/gruby"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#504944] hover:text-[#504944] active:scale-[0.98]"
+                    className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#222222] hover:text-[#222222] active:scale-[0.98]"
                   >
                     <svg
                       className="h-3.5 w-3.5"
@@ -673,7 +693,7 @@ export default function MarketingPage() {
                     href="https://play.google.com/store/apps/details?id=com.gruby.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#504944] hover:text-[#504944] active:scale-[0.98]"
+                    className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#222222] hover:text-[#222222] active:scale-[0.98]"
                   >
                     <svg
                       className="h-3.5 w-3.5"

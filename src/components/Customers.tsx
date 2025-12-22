@@ -17,6 +17,19 @@ export default function Customers() {
       }}
       className="customers-section"
     >
+      {/* Grain overlay */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "url(/GrubyGrain.png)",
+          backgroundSize: "200px 200px",
+          opacity: 0.22,
+          pointerEvents: "none",
+          mixBlendMode: "overlay",
+          zIndex: 0,
+        }}
+      />
       {/* Inner container */}
       <div
         style={{
@@ -28,6 +41,7 @@ export default function Customers() {
           width: "100%",
           maxWidth: "1540px",
           position: "relative",
+          zIndex: 1,
         }}
       >
         {/* Header */}
