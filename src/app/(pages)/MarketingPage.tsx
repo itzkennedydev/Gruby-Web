@@ -399,18 +399,30 @@ export default function MarketingPage() {
               fetchPriority="high"
             />
           </div>
-          {/* Gradient overlay - clear at top, dark at bottom-left where content is */}
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-black/20 to-black/60" />
-          {/* Additional left-side gradient for content area */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
-          {/* Top blur gradient - starts at top of image */}
+          {/* Gradient overlay - only dark at bottom where content is, clear at top */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 30%, transparent 50%)",
+            }}
+          />
+          {/* Left-side gradient for content area - only bottom half */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 40%)",
+              maskImage: "linear-gradient(to top, black 0%, black 40%, transparent 60%)",
+              WebkitMaskImage: "linear-gradient(to top, black 0%, black 40%, transparent 60%)",
+            }}
+          />
+          {/* Top blur gradient - subtle, starts at top of image */}
           <div
             className="absolute left-0 right-0 top-0 pointer-events-none"
             style={{
-              height: "120px",
-              background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
+              height: "100px",
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
               maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
             }}
