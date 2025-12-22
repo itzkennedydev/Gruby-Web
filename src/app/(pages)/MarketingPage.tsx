@@ -434,7 +434,7 @@ export default function MarketingPage() {
                   }}
                 >
                   We got food at home. Paste any recipe link, get real grocery
-                  prices, and cook with AI-powered guidance.
+                  prices, and cook with step-by-step guidance.
                 </p>
                 <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
                   <button

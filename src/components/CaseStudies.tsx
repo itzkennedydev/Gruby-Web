@@ -8,10 +8,11 @@ const caseStudies = [
     tagline: "Gruby Founder/College Student",
     videoSrc:
       "https://framerusercontent.com/assets/FZPLFPptCKG59IZKD5USBywVzs8.mp4",
-    posterSrc:
-      "https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
+    posterSrc: "/KennedyHero.jpg",
+    posterPosition: "right",
     quote:
-      '"I built this because I was tired of paying $18 for a burrito bowl. Now I make the same recipes I see online for a fraction of the cost. If I can do it, trust me, anyone can."',
+      '"I built this because I kept paying $18 for a burrito bowl that costs $6 to make. We all know convenience costs extra, but 3x the price? I wanted people to see what that convenience is actually costing them."',
+    highlight: "3x the price?",
     ctaText: "Save on groceries",
   },
   {
@@ -19,10 +20,9 @@ const caseStudies = [
     tagline: "College Student",
     videoSrc:
       "https://framerusercontent.com/assets/tdYuQuj3hfC9WmQtuSzoIuzqZjA.mp4",
-    posterSrc:
-      "https://images.pexels.com/photos/3771120/pexels-photo-3771120.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
+    posterSrc: "",
     quote:
-      '"Delivery apps were bleeding me dry. Like $400+ some months. Started meal prepping Sundays with recipes from the app - now I\'m spending maybe $180/month total on groceries. Already paid off my credit card."',
+      '"I was spending like $400 a month on delivery apps. Started using this to meal prep on Sundays and now I spend maybe $180 total. Crazy how much you save when you actually cook."',
     ctaText: "Start meal prepping",
   },
   {
@@ -30,10 +30,9 @@ const caseStudies = [
     tagline: "Single Mom",
     videoSrc:
       "https://framerusercontent.com/assets/PhEaJ5dFs4rUIGQkAeHC3YvY.mp4",
-    posterSrc:
-      "https://images.pexels.com/photos/4259707/pexels-photo-4259707.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
+    posterSrc: "",
     quote:
-      '"Between work and two kids, cooking felt impossible. The price compare saved me so much money - found out one store was half the price for my weekly staples. That\'s $70 extra every week for their activities."',
+      '"With two kids and work, I thought I didn\'t have time to cook. But comparing prices showed me I was overpaying so much. Switching stores alone saves me like $70 a week. That adds up fast."',
     ctaText: "Compare prices",
   },
   {
@@ -41,10 +40,9 @@ const caseStudies = [
     tagline: "Never Cooked Before",
     videoSrc:
       "https://framerusercontent.com/assets/GbKzCOnk9Xq3skJhcQYX6cjn2o.mp4",
-    posterSrc:
-      "https://images.pexels.com/photos/4253311/pexels-photo-4253311.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop",
+    posterSrc: "",
     quote:
-      '"Literally never made anything beyond ramen. The step-by-step mode walks you through everything. Made chicken tikka masala that tasted better than takeout. My girlfriend keeps asking when I learned to cook lol."',
+      '"Honestly never cooked anything real before this. The instructions are so easy to follow. Made chicken tikka masala last week and it came out better than the restaurant version. My girlfriend was shocked."',
     ctaText: "Learn to cook",
   },
 ];
@@ -100,39 +98,28 @@ function CaseStudyCard({
           borderRadius: "16px",
           position: "relative",
           overflow: "hidden",
+          backgroundColor: study.posterSrc ? "transparent" : "#e5e5e5",
         }}
       >
         {/* Poster image as fallback */}
-        <img
-          src={study.posterSrc}
-          alt={study.name}
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-          }}
-        />
-        <video
-          ref={videoRef}
-          src={study.videoSrc}
-          poster={study.posterSrc}
-          loop
-          playsInline
-          muted
-          preload={isExpanded ? "auto" : "metadata"}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-            display: "block",
-            cursor: "auto",
-            borderRadius: "0px",
-            backgroundColor: "rgba(0, 0, 0, 0)",
-          }}
-        />
+        {study.posterSrc && (
+          <img
+            src={study.posterSrc}
+            alt={study.name}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition:
+                study.posterPosition === "right"
+                  ? "right center"
+                  : study.posterPosition === "left"
+                    ? "left center"
+                    : "center",
+            }}
+          />
+        )}
 
         {/* Bottom gradient overlay */}
         <div
@@ -215,7 +202,22 @@ function CaseStudyCard({
                   margin: 0,
                 }}
               >
-                {study.quote}
+                {study.highlight ? (
+                  <>
+                    {study.quote.split(study.highlight).map((part, i, arr) => (
+                      <span key={i}>
+                        {part}
+                        {i < arr.length - 1 && (
+                          <span style={{ color: "rgb(255, 255, 255)" }}>
+                            {study.highlight}
+                          </span>
+                        )}
+                      </span>
+                    ))}
+                  </>
+                ) : (
+                  study.quote
+                )}
               </h5>
             )}
           </div>
