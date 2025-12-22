@@ -375,7 +375,7 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[680px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 h-[780px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           {/* Background Image */}
           <div className="absolute inset-0">
             {/* Mobile Background - using div with background-image */}
@@ -429,7 +429,7 @@ export default function MarketingPage() {
           />
 
           {/* Hero Content Container */}
-          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-16 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
+          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-8 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
             {/* Mobile-only gradient under content */}
             <div className="pointer-events-none absolute -bottom-16 left-0 right-0 h-[32rem] bg-gradient-to-t from-black/90 via-black/70 to-transparent sm:hidden" />
             <div className="relative z-10">
