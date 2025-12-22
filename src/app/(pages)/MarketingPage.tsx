@@ -657,7 +657,11 @@ export default function MarketingPage() {
                   alt="Gruby Logo"
                   width={100}
                   height={36}
-                  className="mb-4"
+                  className="mb-4 transition-opacity hover:opacity-80"
+                  style={{
+                    filter:
+                      "brightness(0) saturate(100%) invert(27%) sepia(8%) saturate(1089%) hue-rotate(334deg) brightness(95%) contrast(88%)",
+                  }}
                 />
                 <p className="text-sm leading-relaxed text-[#717171]">
                   Your AI-powered kitchen companion. Turn any recipe into a
@@ -828,7 +832,7 @@ export default function MarketingPage() {
                   />
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center rounded-[13px] bg-[#222222] px-4 py-3 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-[#333333] active:scale-[0.98]"
+                    className="inline-flex w-full items-center justify-center rounded-[13px] bg-[var(--gruby-primary)] px-4 py-3 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
                   >
                     Subscribe
                   </button>
