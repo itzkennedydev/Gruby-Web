@@ -71,11 +71,11 @@ export default function Customers() {
                 fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
                 letterSpacing: "-0.01em",
                 lineHeight: "24px",
-                color: "#717171",
+                color: "rgba(255, 255, 255, 0.5)",
                 textAlign: "center",
               }}
             >
-              Real savings, real results
+              The real cost of convenience
             </p>
           </div>
 
@@ -154,7 +154,7 @@ export default function Customers() {
                       color: "rgb(0, 0, 0)",
                     }}
                   >
-                    Average monthly savings
+                    Save up to
                   </h5>
                   <h1
                     style={{
@@ -162,10 +162,11 @@ export default function Customers() {
                       fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
-                      color: "rgba(0, 0, 0, 0.25)",
+                      color: "#16A34A",
+                      marginLeft: "-6px",
                     }}
                   >
-                    $247
+                    $30
                   </h1>
                 </div>
                 <div
@@ -184,10 +185,10 @@ export default function Customers() {
                       color: "rgb(0, 0, 0)",
                     }}
                   >
-                    Compared to delivery apps
+                    Per meal vs delivery
                     <br />
-                    <span style={{ color: "rgba(0, 0, 0, 0.25)" }}>
-                      That&apos;s real money back in your pocket
+                    <span style={{ color: "#717171" }}>
+                      $35 delivered vs ~$5 home cooked
                     </span>
                   </h5>
                 </div>
@@ -202,12 +203,11 @@ export default function Customers() {
                   flexShrink: 0,
                   borderRadius: "16px",
                   overflow: "hidden",
+                  aspectRatio: "1 / 1",
                 }}
               >
                 <img
-                  src="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024"
-                  srcSet="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=512 512w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024 1024w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg 1280w"
-                  sizes="284px"
+                  src="/savings-cooking-1.jpg"
                   alt="Home cooking savings"
                   style={{
                     display: "block",
@@ -271,15 +271,16 @@ export default function Customers() {
                     color: "rgb(255, 255, 255)",
                   }}
                 >
-                  That&apos;s over
+                  That adds up to
                 </h5>
                 <h1
                   style={{
                     fontWeight: 600,
-                    fontSize: "clamp(3.5rem, 5vw + 1.5rem, 5rem)",
+                    fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                     letterSpacing: "-0.05em",
                     lineHeight: "110%",
                     color: "rgb(255, 255, 255)",
+                    marginLeft: "-6px",
                   }}
                 >
                   $3,600
@@ -309,10 +310,10 @@ export default function Customers() {
                     fontSize: "18px",
                     letterSpacing: "-0.01em",
                     lineHeight: "140%",
-                    color: "rgb(105, 105, 105)",
+                    color: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
-                  That&apos;s a vacation, a new phone, or just peace of mind
+                  A vacation, a new phone, or just peace of mind
                 </h5>
               </div>
             </div>
@@ -366,7 +367,7 @@ export default function Customers() {
                       color: "rgb(0, 0, 0)",
                     }}
                   >
-                    Users cook
+                    Save up to
                   </h5>
                   <h1
                     style={{
@@ -374,10 +375,11 @@ export default function Customers() {
                       fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
-                      color: "rgba(0, 0, 0, 0.25)",
+                      color: "#16A34A",
+                      marginLeft: "-6px",
                     }}
                   >
-                    4.2x
+                    $250
                   </h1>
                 </div>
                 <div
@@ -396,10 +398,10 @@ export default function Customers() {
                       color: "rgb(0, 0, 0)",
                     }}
                   >
-                    More home-cooked meals
+                    Per month vs delivery apps
                     <br />
-                    <span style={{ color: "rgba(0, 0, 0, 0.25)" }}>
-                      after their first month with Gruby
+                    <span style={{ color: "#717171" }}>
+                      Cook just 8 meals at home instead
                     </span>
                   </h5>
                 </div>
@@ -414,12 +416,11 @@ export default function Customers() {
                   flexShrink: 0,
                   borderRadius: "16px",
                   overflow: "hidden",
+                  aspectRatio: "1 / 1",
                 }}
               >
                 <img
-                  src="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024"
-                  srcSet="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=512 512w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024 1024w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg 1280w"
-                  sizes="284px"
+                  src="/savings-cooking-2.jpg"
                   alt="Home cooking"
                   style={{
                     display: "block",
@@ -451,12 +452,11 @@ export default function Customers() {
                   flexShrink: 0,
                   borderRadius: "16px",
                   overflow: "hidden",
+                  aspectRatio: "1 / 1",
                 }}
               >
                 <img
-                  src="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024"
-                  srcSet="https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=512 512w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg?scale-down-to=1024 1024w, https://framerusercontent.com/images/rCSjZfcXPaGKQFYFzT84Zgg9aA.jpg 1280w"
-                  sizes="284px"
+                  src="/savings-cooking-3.jpg"
                   alt="Cooking at home"
                   style={{
                     display: "block",
@@ -496,7 +496,7 @@ export default function Customers() {
                       color: "rgb(0, 0, 0)",
                     }}
                   >
-                    Food waste reduced by
+                    Save up to
                   </h5>
                   <h1
                     style={{
@@ -504,10 +504,11 @@ export default function Customers() {
                       fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
-                      color: "rgba(0, 0, 0, 0.25)",
+                      color: "#16A34A",
+                      marginLeft: "-6px",
                     }}
                   >
-                    40%
+                    $60
                   </h1>
                 </div>
                 <div
@@ -526,10 +527,10 @@ export default function Customers() {
                       color: "rgb(0, 0, 0)",
                     }}
                   >
-                    With smart pantry tracking
+                    Per week cooking at home
                     <br />
-                    <span style={{ color: "rgba(0, 0, 0, 0.25)" }}>
-                      Know what you have, use what you buy
+                    <span style={{ color: "#717171" }}>
+                      Just 2 home-cooked meals instead of delivery
                     </span>
                   </h5>
                 </div>

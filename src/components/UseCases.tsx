@@ -75,7 +75,7 @@ export default function UseCases() {
               textAlign: "left",
             }}
           >
-            Whether you&apos;re learning to cook or leveling up
+            From ramen packets to restaurant-worthy
           </h2>
         </div>
 
@@ -177,7 +177,7 @@ export default function UseCases() {
                     color: "rgb(0, 0, 0)",
                   }}
                 >
-                  Quick weeknight dinners
+                  Weeknight wins in 30 minutes
                 </h5>
                 <h5
                   style={{
@@ -187,7 +187,7 @@ export default function UseCases() {
                     color: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
-                  30-minute meals that don&apos;t sacrifice flavor or nutrition
+                  Real food, real fast. No shortcuts on flavor.
                 </h5>
               </div>
             </div>
@@ -252,7 +252,7 @@ export default function UseCases() {
                     color: "rgb(0, 0, 0)",
                   }}
                 >
-                  Stretch every dollar
+                  Make every dollar count
                 </h5>
                 <h5
                   style={{
@@ -262,7 +262,7 @@ export default function UseCases() {
                     color: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
-                  See real prices, plan smarter, and waste nothing
+                  Real prices. Smart planning. Zero waste.
                 </h5>
               </div>
             </div>
@@ -333,7 +333,7 @@ export default function UseCases() {
                     color: "rgb(0, 0, 0)",
                   }}
                 >
-                  Kid-friendly meals everyone will eat
+                  Meals even picky eaters love
                 </h5>
                 <h5
                   style={{
@@ -343,7 +343,7 @@ export default function UseCases() {
                     color: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
-                  Recipes designed to please picky eaters and adventurous kids
+                  Kid-tested. Parent-approved. Wallet-friendly.
                 </h5>
               </div>
             </div>
@@ -404,7 +404,7 @@ export default function UseCases() {
                     color: "rgb(0, 0, 0)",
                   }}
                 >
-                  Learn to cook with video guidance
+                  Your first meal won&apos;t be your last
                 </h5>
                 <h5
                   style={{
@@ -414,8 +414,7 @@ export default function UseCases() {
                     color: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
-                  Step-by-step instructions that build your confidence in the
-                  kitchen
+                  Video guidance that builds real confidence.
                 </h5>
               </div>
             </div>

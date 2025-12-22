@@ -15,6 +15,27 @@ export const metadata: Metadata = {
     icon: "/favicon-white.svg",
     apple: "/favicon-white.svg",
   },
+  openGraph: {
+    title: "Gruby - Budgeting-Focused Cooking Companion",
+    description:
+      "Gruby is a financial-minded cooking companion that guides you through recipes while showing exactly how much money you save by cooking at home.",
+    images: [
+      {
+        url: "/HeroImagen.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Gruby - Cook smarter, save more",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gruby - Budgeting-Focused Cooking Companion",
+    description:
+      "Gruby is a financial-minded cooking companion that guides you through recipes while showing exactly how much money you save by cooking at home.",
+    images: ["/HeroImagen.jpg"],
+  },
   other: {
     "preload-hero": "/HeroImage.jpg",
     "preload-mobile": "/Mobile phone.png",

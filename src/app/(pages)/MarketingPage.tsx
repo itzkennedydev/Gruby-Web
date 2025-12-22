@@ -121,7 +121,7 @@ function CTASection({
             margin: 0,
           }}
         >
-          Ready to cook smarter?
+          Stop overpaying. Start cooking.
         </h2>
         <p
           style={{
@@ -132,8 +132,7 @@ function CTASection({
             margin: 0,
           }}
         >
-          Join the people who are choosing to eat better and spend less on
-          groceries.
+          Eat better. Spend less. It&apos;s that simple.
         </p>
 
         {isSubmitted ? (
@@ -397,6 +396,7 @@ export default function MarketingPage() {
               className="hero-image hidden object-cover sm:block"
               sizes="100vw"
               fetchPriority="high"
+              style={{ transform: "scale(1.15)", transformOrigin: "center bottom", objectPosition: "center top" }}
             />
           </div>
           {/* Gradient overlay - mobile: dark at bottom, desktop: dark on left */}
@@ -410,7 +410,7 @@ export default function MarketingPage() {
           <div
             className="absolute inset-0 hidden sm:block"
             style={{
-              background: "linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0.2) 50%, transparent 70%)",
+              background: "linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 25%, rgba(0,0,0,0.35) 50%, transparent 70%)",
             }}
           />
           {/* Top blur gradient - subtle, starts at top of image */}
@@ -500,11 +500,10 @@ export default function MarketingPage() {
               <div className="phone-mockup-content z-10 order-1 flex w-full max-w-xl flex-shrink-0 flex-col items-start justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:pb-0 xl:ml-[54%]">
                 {/* Heading */}
                 <h2 className="mb-5 text-left text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                  Your kitchen assistant
+                  Cook smarter, not harder
                 </h2>
                 <p className="mb-8 text-left text-lg leading-relaxed text-white/60 sm:text-xl">
-                  Turn any recipe into a shopping list with real prices. Cook
-                  with step-by-step guidance. Save money on every meal.
+                  Real grocery prices. Step-by-step guidance. Money saved on every meal.
                 </p>
 
                 {/* Rotating Bullet Points */}
@@ -671,9 +670,7 @@ export default function MarketingPage() {
                   }}
                 />
                 <p className="text-sm leading-relaxed text-[#717171]">
-                  Your kitchen companion. Turn any recipe into a shopping list
-                  with real prices, cook with step-by-step guidance, and save
-                  money on every meal.
+                  Cook smarter. Save more. Eat better.
                 </p>
 
                 {/* App Store Download Links */}
