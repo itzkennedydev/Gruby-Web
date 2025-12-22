@@ -42,8 +42,8 @@ export function Footer() {
               className="text-[#717171]"
               style={{ fontSize: "clamp(0.75rem, 1vw + 0.25rem, 0.875rem)" }}
             >
-              Join thousands of home cooks who are saving money, eating better,
-              and actually enjoying cooking.
+              Join the people who are choosing to eat better and spend less on
+              groceries.
             </p>
 
             {/* App Store Download Links */}

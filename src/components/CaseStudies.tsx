@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const caseStudies = [
   {
@@ -8,10 +8,10 @@ const caseStudies = [
     tagline: "Gruby Founder/College Student",
     videoSrc:
       "https://framerusercontent.com/assets/FZPLFPptCKG59IZKD5USBywVzs8.mp4",
-    posterSrc: "/KennedyHero.jpg",
+    posterSrc: "/KennedyHero2.png",
     posterPosition: "right",
     quote:
-      '"I built this because I kept paying $18 for a burrito bowl that costs $6 to make. We all know convenience costs extra, but 3x the price? I wanted people to see what that convenience is actually costing them."',
+      '"I built this because I kept paying $18 for a burrito bowl that costs $6 to make. We all know convenience costs extra, but 3x the price? I want people to see what that convenience is actually costing them."',
     highlight: "3x the price?",
     ctaText: "Save on groceries",
   },
@@ -106,17 +106,12 @@ function CaseStudyCard({
           <img
             src={study.posterSrc}
             alt={study.name}
+            className="case-study-image"
             style={{
               position: "absolute",
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              objectPosition:
-                study.posterPosition === "right"
-                  ? "right center"
-                  : study.posterPosition === "left"
-                    ? "left center"
-                    : "center",
             }}
           />
         )}
@@ -170,7 +165,7 @@ function CaseStudyCard({
               <h5
                 style={{
                   fontWeight: 600,
-                  fontSize: "18px",
+                  fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                   lineHeight: "140%",
                   color: "rgb(255, 255, 255)",
                   margin: 0,
@@ -181,7 +176,7 @@ function CaseStudyCard({
               <p
                 style={{
                   fontWeight: 500,
-                  fontSize: "14px",
+                  fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
                   lineHeight: "20px",
                   color: "rgba(255, 255, 255, 0.7)",
                   margin: 0,
@@ -196,7 +191,7 @@ function CaseStudyCard({
               <h5
                 style={{
                   fontWeight: 600,
-                  fontSize: "18px",
+                  fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                   lineHeight: "140%",
                   color: "rgba(255, 255, 255, 0.5)",
                   margin: 0,
@@ -225,6 +220,7 @@ function CaseStudyCard({
           {/* Right side: CTA Button */}
           {isExpanded && (
             <button
+              className="case-study-cta-button"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -255,7 +251,7 @@ function CaseStudyCard({
               <span
                 style={{
                   fontWeight: 500,
-                  fontSize: "14px",
+                  fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
                   lineHeight: "24px",
                   letterSpacing: "-0.01em",
                   color: "rgb(0, 0, 0)",
@@ -288,6 +284,17 @@ function CaseStudyCard({
 
 export default function CaseStudies() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   return (
     <section className="case-studies-section py-20">
@@ -329,7 +336,7 @@ export default function CaseStudies() {
               <p
                 style={{
                   fontWeight: 500,
-                  fontSize: "14px",
+                  fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
                   letterSpacing: "-0.01em",
                   lineHeight: "24px",
                   color: "#717171",
@@ -344,7 +351,7 @@ export default function CaseStudies() {
             <h2
               style={{
                 fontWeight: 600,
-                fontSize: "40px",
+                fontSize: "clamp(1.75rem, 2.5vw + 1rem, 2.5rem)",
                 letterSpacing: "-0.04em",
                 lineHeight: "120%",
                 color: "rgb(0, 0, 0)",
@@ -359,10 +366,10 @@ export default function CaseStudies() {
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: isMobile ? "column" : "row",
               placeContent: "flex-start",
               alignItems: "flex-start",
-              gap: "24px",
+              gap: isMobile ? "16px" : "24px",
               width: "100%",
             }}
             className="case-studies-grid"
@@ -372,7 +379,7 @@ export default function CaseStudies() {
               <CaseStudyCard
                 key={study.name}
                 study={study}
-                isExpanded={hoveredIndex === index}
+                isExpanded={isMobile ? true : hoveredIndex === index}
                 onHover={() => setHoveredIndex(index)}
               />
             ))}

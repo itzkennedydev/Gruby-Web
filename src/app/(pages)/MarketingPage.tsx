@@ -114,7 +114,7 @@ function CTASection({
         <h2
           style={{
             fontWeight: 600,
-            fontSize: "40px",
+            fontSize: "clamp(1.75rem, 2.5vw + 1rem, 2.5rem)",
             letterSpacing: "-0.03em",
             lineHeight: "115%",
             color: "#ffffff",
@@ -126,14 +126,14 @@ function CTASection({
         <p
           style={{
             fontWeight: 400,
-            fontSize: "18px",
+            fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
             lineHeight: "160%",
             color: "rgba(255, 255, 255, 0.6)",
             margin: 0,
           }}
         >
-          Join thousands of home cooks who are saving money, eating better, and
-          actually enjoying cooking.
+          Join the people who are choosing to eat better and spend less on
+          groceries.
         </p>
 
         {isSubmitted ? (
@@ -162,14 +162,7 @@ function CTASection({
         ) : (
           <form
             onSubmit={handleBetaSignup}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "12px",
-              width: "100%",
-              maxWidth: "480px",
-            }}
-            className="cta-form"
+            className="flex w-full max-w-[480px] flex-col gap-3"
           >
             <input
               type="email"
@@ -178,30 +171,19 @@ function CTASection({
               placeholder="Enter your email"
               required
               disabled={isSubmitting}
-              style={{
-                flex: 1,
-                height: "52px",
-                padding: "0 20px",
-                borderRadius: "13px",
-                border: "none",
-                backgroundColor: "#ffffff",
-                fontSize: "16px",
-                fontWeight: 400,
-                color: "#1a1a1a",
-                outline: "none",
-              }}
+              className="w-full rounded-[13px] border-0 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-white/50"
             />
-            <Button
+            <button
               type="submit"
               disabled={isSubmitting}
-              className="h-[52px] border-0 bg-[var(--gruby-primary)] text-base font-medium text-white hover:opacity-90"
+              className="inline-flex w-full items-center justify-center rounded-[13px] bg-[var(--gruby-primary)] px-4 py-3 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
             >
               {isSubmitting ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
                 "Join Waitlist"
               )}
-            </Button>
+            </button>
           </form>
         )}
         {error && (
@@ -393,79 +375,83 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 min-h-[600px] overflow-hidden pt-32 sm:min-h-[650px] lg:min-h-[700px]">
+        <div className="relative -mt-32 h-[680px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           {/* Background Image */}
           <div className="absolute inset-0">
+            {/* Mobile Background - using div with background-image */}
+            <div
+              className="absolute inset-0 sm:hidden"
+              style={{
+                backgroundImage: "url(/HeroMobileNew.JPG)",
+                backgroundSize: "cover",
+                backgroundPosition: "center top",
+                filter: "brightness(0.7)",
+              }}
+            />
+            {/* Desktop Image */}
             <Image
               src="/HeroImagen.jpg"
               alt="Hero background"
               fill
               priority
               quality={100}
-              className="object-cover"
+              className="hero-image hidden object-cover sm:block"
               style={{
                 filter: "brightness(0.7)",
-                objectPosition: "center 40%",
               }}
               sizes="100vw"
               fetchPriority="high"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/50" />
 
           {/* Hero Content Container */}
-          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-1 flex-col items-start justify-end pb-20 pt-16 sm:pb-28 sm:pt-24 lg:pb-32">
-              <div className="max-w-xl">
-                <h1
-                  className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
-                  style={{
-                    fontSize: "clamp(2rem, 4vw + 1rem, 3.5rem)",
-                    letterSpacing: "-0.03em",
+          <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-16 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
+            {/* Mobile-only gradient under content */}
+            <div className="pointer-events-none absolute -bottom-16 left-0 right-0 h-[32rem] bg-gradient-to-t from-black/90 via-black/70 to-transparent sm:hidden" />
+            <div className="relative z-10">
+              <h1
+                className="mb-3 font-bold leading-tight text-white sm:mb-4 md:mb-6"
+                style={{ fontSize: "clamp(1.5rem, 3vw + 1rem, 3rem)" }}
+              >
+                Mom Was Right.
+              </h1>
+              <p
+                className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
+                style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
+              >
+                We got food at home. Paste any recipe link, get live grocery
+                prices, and cook with step-by-step guidance.
+              </p>
+              <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dispatch(setWaitlistModalOpen(true));
                   }}
+                  className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-medium text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
-                  Mom Was Right.
-                </h1>
-                <p
-                  className="mb-4 leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
-                  style={{
-                    fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)",
-                    fontWeight: 400,
+                  Get Early Access
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const element = document.getElementById("recipes");
+                    if (element) {
+                      element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }
                   }}
+                  className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
-                  We got food at home. Paste any recipe link, get real grocery
-                  prices, and cook with step-by-step guidance.
-                </p>
-                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      dispatch(setWaitlistModalOpen(true));
-                    }}
-                    className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-medium text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
-                  >
-                    Get Early Access
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      const element = document.getElementById("recipes");
-                      if (element) {
-                        element.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                      }
-                    }}
-                    className="inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white bg-transparent px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/20 active:scale-[0.98] sm:h-[48px] sm:text-base"
-                  >
-                    See How It Works
-                  </button>
-                </div>
+                  See How It Works
+                </button>
               </div>
             </div>
           </div>
@@ -474,7 +460,7 @@ export default function MarketingPage() {
         {/* App Preview Section - Phone mockup with content */}
         <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
           <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
-            <div className="relative flex min-h-[720px] flex-col rounded-2xl bg-[#1a1a1a] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
+            <div className="phone-mockup-section relative flex min-h-[720px] flex-col rounded-2xl bg-[#1a1a1a] px-6 pb-20 pt-12 sm:min-h-[780px] sm:rounded-3xl sm:px-8 sm:pb-24 sm:pt-16 md:min-h-[820px] md:px-12 md:pb-12 md:pt-36 lg:min-h-[600px] lg:flex-row lg:items-center lg:px-16 lg:pb-16 lg:pt-40">
               {/* Grain texture overlay */}
               <div
                 style={{
@@ -490,14 +476,14 @@ export default function MarketingPage() {
                 }}
               />
               {/* Content - Right side on desktop */}
-              <div className="z-10 order-1 flex w-full max-w-xl flex-shrink-0 flex-col items-center justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:items-start lg:pb-0 xl:ml-[54%]">
+              <div className="phone-mockup-content z-10 order-1 flex w-full max-w-xl flex-shrink-0 flex-col items-start justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:pb-0 xl:ml-[54%]">
                 {/* Heading */}
-                <h2 className="mb-5 text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-left">
-                  Your AI kitchen assistant
+                <h2 className="mb-5 text-left text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+                  Your kitchen assistant
                 </h2>
-                <p className="mb-8 text-center text-lg leading-relaxed text-white/60 sm:text-xl lg:text-left">
+                <p className="mb-8 text-left text-lg leading-relaxed text-white/60 sm:text-xl">
                   Turn any recipe into a shopping list with real prices. Cook
-                  with AI guidance. Save money on every meal.
+                  with step-by-step guidance. Save money on every meal.
                 </p>
 
                 {/* Rotating Bullet Points */}
@@ -513,7 +499,7 @@ export default function MarketingPage() {
                       {slide.features.map((feature, i) => (
                         <li
                           key={i}
-                          className="flex items-center justify-center gap-3 text-base font-medium text-white sm:text-lg lg:justify-start"
+                          className="flex items-center justify-start gap-3 text-base font-medium text-white sm:text-lg"
                         >
                           <div className="h-2.5 w-2.5 flex-shrink-0 rounded-full bg-white" />
                           {feature}
@@ -524,7 +510,7 @@ export default function MarketingPage() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="mb-10 flex w-full max-w-[340px] gap-2.5">
+                <div className="mb-10 flex w-full gap-2.5 sm:max-w-[340px]">
                   {appSlides.map((_, index) => (
                     <button
                       key={index}
@@ -544,25 +530,25 @@ export default function MarketingPage() {
                 </div>
 
                 {/* App Store Links */}
-                <div className="app-store-buttons flex flex-col gap-3 sm:flex-row">
+                <div className="app-store-buttons flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                   <a
                     href="https://apps.apple.com/app/gruby"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98] sm:justify-start"
+                    className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-4 text-black transition-colors duration-200 hover:bg-gray-100 sm:h-14 sm:w-auto sm:px-6"
                   >
                     <svg
-                      className="h-6 w-6"
+                      className="mr-2 h-6 w-6 sm:h-7 sm:w-7"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
                       <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C1.79 15.25 2.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
                     </svg>
                     <div className="flex flex-col items-start">
-                      <span className="text-[10px] leading-tight text-[#717171]">
+                      <span className="text-[10px] leading-tight sm:text-xs">
                         Download on the
                       </span>
-                      <span className="text-sm font-semibold leading-tight">
+                      <span className="text-sm font-semibold leading-tight sm:text-base">
                         App Store
                       </span>
                     </div>
@@ -571,20 +557,20 @@ export default function MarketingPage() {
                     href="https://play.google.com/store/apps/details?id=com.gruby.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2.5 rounded-[13px] bg-white px-5 py-3 text-[#1a1a1a] no-underline shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98] sm:justify-start"
+                    className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-4 text-black transition-colors duration-200 hover:bg-gray-100 sm:h-14 sm:w-auto sm:px-6"
                   >
                     <svg
-                      className="h-6 w-6"
+                      className="mr-2 h-6 w-6 sm:h-7 sm:w-7"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
                       <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
                     </svg>
                     <div className="flex flex-col items-start">
-                      <span className="text-[10px] leading-tight text-[#717171]">
+                      <span className="text-[10px] leading-tight sm:text-xs">
                         Get it on
                       </span>
-                      <span className="text-sm font-semibold leading-tight">
+                      <span className="text-sm font-semibold leading-tight sm:text-base">
                         Google Play
                       </span>
                     </div>
@@ -595,7 +581,7 @@ export default function MarketingPage() {
               {/* Phone Image - Absolutely positioned at bottom-left */}
               <div className="absolute bottom-0 left-1/2 z-20 order-2 flex w-full flex-shrink-0 -translate-x-1/2 justify-center lg:absolute lg:bottom-0 lg:left-16 lg:w-auto lg:translate-x-0 lg:justify-start">
                 <Image
-                  src="/Grubyphone.png"
+                  src="/Grubyphone3.png"
                   alt="Gruby mobile app"
                   width={500}
                   height={1000}
@@ -664,9 +650,9 @@ export default function MarketingPage() {
                   }}
                 />
                 <p className="text-sm leading-relaxed text-[#717171]">
-                  Your AI-powered kitchen companion. Turn any recipe into a
-                  shopping list with real prices, cook with step-by-step AI
-                  guidance, and save money on every meal.
+                  Your kitchen companion. Turn any recipe into a shopping list
+                  with real prices, cook with step-by-step guidance, and save
+                  money on every meal.
                 </p>
 
                 {/* App Store Download Links */}
@@ -827,7 +813,7 @@ export default function MarketingPage() {
                     value={footerEmail}
                     onChange={(e) => setFooterEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full rounded-[13px] border-0 bg-[#fafafa] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#222222]"
+                    className="w-full rounded-[13px] border border-[#e5e5e5] bg-[#fafafa] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#222222]"
                     required
                   />
                   <button

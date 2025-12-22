@@ -54,7 +54,7 @@ export default function UseCases() {
             <p
               style={{
                 fontWeight: 500,
-                fontSize: "14px",
+                fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
                 letterSpacing: "-0.01em",
                 lineHeight: "24px",
                 color: "#717171",
@@ -68,7 +68,7 @@ export default function UseCases() {
           <h2
             style={{
               fontWeight: 600,
-              fontSize: "40px",
+              fontSize: "clamp(1.75rem, 2.5vw + 1rem, 2.5rem)",
               letterSpacing: "-0.04em",
               lineHeight: "120%",
               color: "rgb(0, 0, 0)",
@@ -91,7 +91,7 @@ export default function UseCases() {
           <h5
             style={{
               fontWeight: 600,
-              fontSize: "18px",
+              fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
               letterSpacing: "-0.01em",
               lineHeight: "140%",
               color: "rgb(0, 0, 0)",
@@ -126,28 +126,17 @@ export default function UseCases() {
             borderRadius: "16px",
             overflow: "hidden",
             position: "relative",
+            backgroundColor: "rgb(230, 230, 230)",
           }}
         >
-          <img
-            src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1200&fit=crop"
-            alt="Busy professionals"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-            }}
-          />
-          {/* Gradient overlay */}
+          {/* Content overlay */}
           <div
             style={{
               position: "absolute",
               bottom: 0,
               left: 0,
               right: 0,
-              height: "60%",
-              background:
-                "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)",
+              height: "100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-end",
@@ -163,16 +152,15 @@ export default function UseCases() {
                   display: "inline-flex",
                   alignSelf: "flex-start",
                   padding: "6px 12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.25)",
-                  backdropFilter: "blur(10px)",
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
                   borderRadius: "8px",
                 }}
               >
                 <p
                   style={{
                     fontWeight: 500,
-                    fontSize: "14px",
-                    color: "rgb(255, 255, 255)",
+                    fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+                    color: "rgb(0, 0, 0)",
                   }}
                 >
                   Busy professionals
@@ -184,9 +172,9 @@ export default function UseCases() {
                 <h5
                   style={{
                     fontWeight: 600,
-                    fontSize: "18px",
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                     lineHeight: "140%",
-                    color: "rgb(255, 255, 255)",
+                    color: "rgb(0, 0, 0)",
                   }}
                 >
                   Quick weeknight dinners
@@ -194,9 +182,9 @@ export default function UseCases() {
                 <h5
                   style={{
                     fontWeight: 600,
-                    fontSize: "18px",
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                     lineHeight: "140%",
-                    color: "rgba(255, 255, 255, 0.5)",
+                    color: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
                   30-minute meals that don&apos;t sacrifice flavor or nutrition
@@ -213,29 +201,17 @@ export default function UseCases() {
             borderRadius: "16px",
             overflow: "hidden",
             position: "relative",
-            backgroundColor: "rgb(247, 247, 247)",
+            backgroundColor: "rgb(230, 230, 230)",
           }}
         >
-          <img
-            src="https://images.pexels.com/photos/4551832/pexels-photo-4551832.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1200&fit=crop"
-            alt="Budget cooking"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-            }}
-          />
-          {/* Gradient overlay */}
+          {/* Content overlay */}
           <div
             style={{
               position: "absolute",
               bottom: 0,
               left: 0,
               right: 0,
-              height: "60%",
-              background:
-                "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)",
+              height: "100%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-end",
@@ -243,52 +219,37 @@ export default function UseCases() {
               gap: "16px",
             }}
           >
-            {/* Content */}
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-              }}
+              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
             >
-              {/* Tag */}
               <div
                 style={{
                   display: "inline-flex",
                   alignSelf: "flex-start",
                   padding: "6px 12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.25)",
-                  backdropFilter: "blur(10px)",
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
                   borderRadius: "8px",
                 }}
               >
                 <p
                   style={{
                     fontWeight: 500,
-                    fontSize: "14px",
-                    letterSpacing: "-0.01em",
-                    lineHeight: "24px",
-                    color: "rgb(255, 255, 255)",
+                    fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+                    color: "rgb(0, 0, 0)",
                   }}
                 >
                   Budget-conscious cooks
                 </p>
               </div>
-              {/* Text */}
               <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "4px",
-                }}
+                style={{ display: "flex", flexDirection: "column", gap: "4px" }}
               >
                 <h5
                   style={{
                     fontWeight: 600,
-                    fontSize: "18px",
-                    letterSpacing: "-0.01em",
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                     lineHeight: "140%",
-                    color: "rgb(255, 255, 255)",
+                    color: "rgb(0, 0, 0)",
                   }}
                 >
                   Stretch every dollar
@@ -296,66 +257,15 @@ export default function UseCases() {
                 <h5
                   style={{
                     fontWeight: 600,
-                    fontSize: "18px",
-                    letterSpacing: "-0.01em",
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                     lineHeight: "140%",
-                    color: "rgba(255, 255, 255, 0.5)",
+                    color: "rgba(0, 0, 0, 0.5)",
                   }}
                 >
                   See real prices, plan smarter, and waste nothing
                 </h5>
               </div>
             </div>
-            {/* Button */}
-            <Link
-              href="#download"
-              style={{
-                display: "inline-flex",
-                alignSelf: "flex-start",
-                alignItems: "center",
-                gap: "8px",
-                padding: "12px 20px",
-                backgroundColor: "rgb(255, 255, 255)",
-                borderRadius: "13px",
-                boxShadow:
-                  "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 8px 0px rgba(0, 0, 0, 0.04)",
-                textDecoration: "none",
-              }}
-            >
-              <p
-                style={{
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  letterSpacing: "-0.01em",
-                  lineHeight: "24px",
-                  color: "rgb(0, 0, 0)",
-                }}
-              >
-                Start saving
-              </p>
-              <svg
-                width="20"
-                height="21"
-                viewBox="0 0 20 21"
-                fill="none"
-                style={{ flexShrink: 0 }}
-              >
-                <path
-                  d="M4.16667 10.5H15.8333"
-                  stroke="rgb(0, 0, 0)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M10 4.66667L15.8333 10.5L10 16.3333"
-                  stroke="rgb(0, 0, 0)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
           </div>
         </div>
 
@@ -375,33 +285,22 @@ export default function UseCases() {
               borderRadius: "16px",
               overflow: "hidden",
               position: "relative",
-              backgroundColor: "rgb(247, 247, 247)",
+              backgroundColor: "rgb(230, 230, 230)",
             }}
           >
-            <img
-              src="https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1200&fit=crop"
-              alt="Family cooking"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
-            />
-            {/* Gradient overlay */}
+            {/* Content overlay */}
             <div
               style={{
                 position: "absolute",
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: "70%",
-                background:
-                  "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)",
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
-                padding: "20px",
+                padding: "24px",
+                gap: "12px",
               }}
             >
               <div
@@ -409,31 +308,44 @@ export default function UseCases() {
                   display: "inline-flex",
                   alignSelf: "flex-start",
                   padding: "6px 12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.25)",
-                  backdropFilter: "blur(10px)",
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
                   borderRadius: "8px",
-                  marginBottom: "8px",
                 }}
               >
                 <p
                   style={{
                     fontWeight: 500,
-                    fontSize: "14px",
-                    color: "rgb(255, 255, 255)",
+                    fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+                    color: "rgb(0, 0, 0)",
                   }}
                 >
                   Families
                 </p>
               </div>
-              <h5
-                style={{
-                  fontWeight: 600,
-                  fontSize: "16px",
-                  color: "rgb(255, 255, 255)",
-                }}
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "4px" }}
               >
-                Kid-friendly meals everyone will eat
-              </h5>
+                <h5
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
+                    lineHeight: "140%",
+                    color: "rgb(0, 0, 0)",
+                  }}
+                >
+                  Kid-friendly meals everyone will eat
+                </h5>
+                <h5
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
+                    lineHeight: "140%",
+                    color: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  Recipes designed to please picky eaters and adventurous kids
+                </h5>
+              </div>
             </div>
           </div>
 
@@ -444,33 +356,22 @@ export default function UseCases() {
               borderRadius: "16px",
               overflow: "hidden",
               position: "relative",
-              backgroundColor: "rgb(247, 247, 247)",
+              backgroundColor: "rgb(230, 230, 230)",
             }}
           >
-            <img
-              src="https://images.pexels.com/photos/4252138/pexels-photo-4252138.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1200&fit=crop"
-              alt="Learning to cook"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
-            />
-            {/* Gradient overlay */}
+            {/* Content overlay */}
             <div
               style={{
                 position: "absolute",
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: "70%",
-                background:
-                  "linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)",
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-end",
-                padding: "20px",
+                padding: "24px",
+                gap: "12px",
               }}
             >
               <div
@@ -478,31 +379,45 @@ export default function UseCases() {
                   display: "inline-flex",
                   alignSelf: "flex-start",
                   padding: "6px 12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.25)",
-                  backdropFilter: "blur(10px)",
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
                   borderRadius: "8px",
-                  marginBottom: "8px",
                 }}
               >
                 <p
                   style={{
                     fontWeight: 500,
-                    fontSize: "14px",
-                    color: "rgb(255, 255, 255)",
+                    fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+                    color: "rgb(0, 0, 0)",
                   }}
                 >
                   Beginners
                 </p>
               </div>
-              <h5
-                style={{
-                  fontWeight: 600,
-                  fontSize: "16px",
-                  color: "rgb(255, 255, 255)",
-                }}
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "4px" }}
               >
-                Learn to cook with video guidance
-              </h5>
+                <h5
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
+                    lineHeight: "140%",
+                    color: "rgb(0, 0, 0)",
+                  }}
+                >
+                  Learn to cook with video guidance
+                </h5>
+                <h5
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
+                    lineHeight: "140%",
+                    color: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  Step-by-step instructions that build your confidence in the
+                  kitchen
+                </h5>
+              </div>
             </div>
           </div>
         </div>

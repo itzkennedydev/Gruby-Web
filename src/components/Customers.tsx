@@ -68,7 +68,7 @@ export default function Customers() {
             <p
               style={{
                 fontWeight: 500,
-                fontSize: "14px",
+                fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
                 letterSpacing: "-0.01em",
                 lineHeight: "24px",
                 color: "#717171",
@@ -83,14 +83,14 @@ export default function Customers() {
           <h2
             style={{
               fontWeight: 600,
-              fontSize: "40px",
+              fontSize: "clamp(1.75rem, 2.5vw + 1rem, 2.5rem)",
               letterSpacing: "-0.04em",
               lineHeight: "120%",
               color: "rgb(255, 255, 255)",
               textAlign: "center",
             }}
           >
-            They monetize our hunger.
+            They monetized our hunger.
             <br />
             We&apos;re done feeding it.
           </h2>
@@ -114,6 +114,7 @@ export default function Customers() {
               gap: "24px",
               flex: "1 0 0",
             }}
+            className="customers-column"
           >
             {/* Average Savings Row */}
             <div
@@ -123,6 +124,7 @@ export default function Customers() {
                 gap: "24px",
                 flex: "1 0 0",
               }}
+              className="customers-row"
             >
               {/* Stats Card */}
               <div
@@ -146,7 +148,7 @@ export default function Customers() {
                   <h5
                     style={{
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
                       color: "rgb(0, 0, 0)",
@@ -157,7 +159,7 @@ export default function Customers() {
                   <h1
                     style={{
                       fontWeight: 600,
-                      fontSize: "96px",
+                      fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
                       color: "rgba(0, 0, 0, 0.25)",
@@ -176,7 +178,7 @@ export default function Customers() {
                   <h5
                     style={{
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
                       color: "rgb(0, 0, 0)",
@@ -231,6 +233,7 @@ export default function Customers() {
                 position: "relative",
                 overflow: "hidden",
               }}
+              className="yearly-savings-card"
             >
               {/* Gruby Icon Background Silhouette */}
               <svg
@@ -273,7 +276,7 @@ export default function Customers() {
                 <h1
                   style={{
                     fontWeight: 600,
-                    fontSize: "80px",
+                    fontSize: "clamp(3.5rem, 5vw + 1.5rem, 5rem)",
                     letterSpacing: "-0.05em",
                     lineHeight: "110%",
                     color: "rgb(255, 255, 255)",
@@ -323,6 +326,7 @@ export default function Customers() {
               gap: "24px",
               flex: "1 0 0",
             }}
+            className="customers-column"
           >
             {/* Meals Cooked Row */}
             <div
@@ -332,6 +336,7 @@ export default function Customers() {
                 gap: "24px",
                 flex: "1 0 0",
               }}
+              className="customers-row"
             >
               {/* Stats Card */}
               <div
@@ -355,7 +360,7 @@ export default function Customers() {
                   <h5
                     style={{
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
                       color: "rgb(0, 0, 0)",
@@ -366,7 +371,7 @@ export default function Customers() {
                   <h1
                     style={{
                       fontWeight: 600,
-                      fontSize: "96px",
+                      fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
                       color: "rgba(0, 0, 0, 0.25)",
@@ -385,7 +390,7 @@ export default function Customers() {
                   <h5
                     style={{
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
                       color: "rgb(0, 0, 0)",
@@ -435,6 +440,7 @@ export default function Customers() {
                 gap: "24px",
                 flex: "1 0 0",
               }}
+              className="customers-row"
             >
               {/* Image Column */}
               <div
@@ -484,7 +490,7 @@ export default function Customers() {
                   <h5
                     style={{
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
                       color: "rgb(0, 0, 0)",
@@ -495,7 +501,7 @@ export default function Customers() {
                   <h1
                     style={{
                       fontWeight: 600,
-                      fontSize: "96px",
+                      fontSize: "clamp(4rem, 6vw + 2rem, 6rem)",
                       letterSpacing: "-0.05em",
                       lineHeight: "110%",
                       color: "rgba(0, 0, 0, 0.25)",
@@ -514,7 +520,7 @@ export default function Customers() {
                   <h5
                     style={{
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.125rem)",
                       letterSpacing: "-0.01em",
                       lineHeight: "140%",
                       color: "rgb(0, 0, 0)",

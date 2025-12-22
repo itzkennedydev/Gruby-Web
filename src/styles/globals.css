@@ -698,3 +698,376 @@ html {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
+
+/* Case Studies - Responsive Image Positioning */
+.case-study-image {
+  object-position: center !important;
+}
+
+@media (min-width: 1024px) {
+  .case-study-image {
+    object-position: right center !important;
+  }
+}
+
+/* Case Studies - Hide CTA buttons on mobile */
+.case-study-cta-button {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  .case-study-cta-button {
+    display: inline-flex !important;
+  }
+}
+
+/* Case Studies - Responsive Grid */
+.case-studies-grid {
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+@media (min-width: 1024px) {
+  .case-studies-grid {
+    flex-direction: row !important;
+    gap: 24px !important;
+  }
+}
+
+/* Case Studies - Mobile Card Styling */
+@media (max-width: 1023px) {
+  /* All cards should be full width and expanded on mobile */
+  .case-study-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+  }
+
+  /* Adjust card container height for mobile */
+  .case-study-card > div:first-child {
+    height: 480px !important;
+    min-height: 480px !important;
+  }
+
+  /* Ensure proper spacing */
+  .case-studies-section {
+    padding: 48px 0 !important;
+  }
+
+  /* Adjust headline size for mobile */
+  .case-studies-section h2 {
+    font-size: 32px !important;
+  }
+}
+
+/* Hero Section - Transparent outline button */
+.hero-outline-button {
+  background-color: transparent !important;
+}
+
+.hero-outline-button:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Hero Section - Image positioning */
+.hero-image {
+  object-position: center 40% !important;
+}
+
+.hero-image-mobile {
+  object-position: center 30% !important;
+}
+
+/* Use Cases Section - Mobile Responsive */
+@media (max-width: 1023px) {
+  /* Reduce section padding on mobile but add massive bottom padding to prevent overlap */
+  .use-cases-section {
+    padding: 48px 16px 120px 16px !important;
+    margin-bottom: 40px !important;
+    position: relative !important;
+  }
+
+  /* Header should stack vertically on mobile */
+  .use-cases-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 24px !important;
+  }
+
+  /* Right side subtext should align left on mobile */
+  .use-cases-subtext {
+    align-items: flex-start !important;
+  }
+
+  .use-cases-subtext h5 {
+    text-align: left !important;
+  }
+
+  /* Grid should stack vertically on mobile */
+  .use-cases-grid {
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 16px !important;
+    margin-bottom: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* All cards should be full width */
+  .use-cases-grid > div {
+    width: 100% !important;
+    flex: none !important;
+    height: 400px !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* Right column should not stack differently */
+  .use-cases-grid > div:last-child {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  /* Cards in the right column */
+  .use-cases-grid > div:last-child > div {
+    height: 300px !important;
+    flex: none !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Ensure last card in the last column has extra bottom margin */
+  .use-cases-grid > div:last-child > div:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Templates Section - Add massive top padding on mobile to prevent overlap */
+@media (max-width: 1023px) {
+  .templates-section {
+    padding-top: 100px !important;
+    margin-top: 40px !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+}
+
+/* Phone Mockup Section - Mobile Responsiveness */
+@media (max-width: 1023px) {
+  /* Phone mockup section - increase height for larger phone and full-width buttons on mobile */
+  .phone-mockup-section {
+    min-height: 850px !important;
+  }
+
+  .phone-mockup-content {
+    padding-bottom: 480px !important;
+    align-items: flex-start !important;
+  }
+
+  /* Left-align text on mobile */
+  .phone-mockup-content h2,
+  .phone-mockup-content p {
+    text-align: left !important;
+  }
+
+  .phone-mockup-content .flex-col {
+    align-items: flex-start !important;
+  }
+
+  /* Enlarge phone mockup on mobile */
+  .phone-mockup-section img {
+    width: 400px !important;
+    max-width: 90vw !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet sizing */
+  .phone-mockup-section {
+    min-height: 780px !important;
+  }
+
+  .phone-mockup-content {
+    padding-bottom: 420px !important;
+  }
+
+  /* Reset phone size for tablet */
+  .phone-mockup-section img {
+    width: 360px !important;
+    max-width: 70vw !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .phone-mockup-section {
+    min-height: 820px !important;
+  }
+
+  .phone-mockup-content {
+    padding-bottom: 480px !important;
+  }
+
+  .phone-mockup-section img {
+    width: 400px !important;
+    max-width: 50vw !important;
+  }
+}
+
+/* Customers Section - Responsive Grid */
+.customers-grid {
+  flex-direction: column !important;
+}
+
+@media (min-width: 1024px) {
+  .customers-grid {
+    flex-direction: row !important;
+  }
+}
+
+/* CTA Email Input - Base Desktop styles */
+input.cta-email-input {
+  flex: 1;
+  height: 52px !important;
+  padding: 0 20px !important;
+  border-radius: 13px;
+  border: none;
+  background-color: #ffffff;
+  font-size: 16px !important;
+  font-weight: 400;
+  color: #1a1a1a;
+  outline: none;
+  width: auto;
+}
+
+button.cta-submit-button {
+  height: 52px !important;
+}
+
+/* Customers Section - Mobile Responsive Cards */
+@media (max-width: 1023px) {
+  /* Reduce section padding slightly on mobile */
+  .customers-section {
+    padding: 60px 16px !important;
+  }
+
+  /* Main grid stacks vertically */
+  .customers-grid {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  /* Left and Right columns stack vertically and take full width */
+  .customers-column {
+    flex-direction: column !important;
+    width: 100% !important;
+    flex: none !important;
+    gap: 16px !important;
+  }
+
+  /* Rows within columns also stack vertically on mobile */
+  .customers-row {
+    flex-direction: column !important;
+    width: 100% !important;
+    flex: none !important;
+    gap: 16px !important;
+  }
+
+  /* All direct children of rows should be full width */
+  .customers-row > div {
+    width: 100% !important;
+    flex: none !important;
+  }
+
+  /* Yearly savings card needs minimum height to show all content */
+  .yearly-savings-card {
+    min-height: 320px !important;
+    height: auto !important;
+  }
+
+  /* Reduce padding on all cards for mobile */
+  .customers-grid div[style*="padding: 32px"] {
+    padding: 24px !important;
+  }
+
+  /* Image containers - make responsive */
+  .customers-grid div[style*="width: 284px"] {
+    width: 100% !important;
+    height: 220px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Ensure images fill their containers properly */
+  .customers-grid img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* Scale down the large numbers for mobile readability */
+  .customers-grid h1 {
+    font-size: 64px !important;
+  }
+
+  /* Keep the Gruby logo but scale it for mobile */
+  .customers-grid svg[width="750"] {
+    width: 500px !important;
+    height: 500px !important;
+    bottom: -100px !important;
+    right: -60px !important;
+  }
+
+  /* Adjust heading sizes for mobile */
+  .customers-grid h5 {
+    font-size: 16px !important;
+  }
+
+  /* Ensure proper box-sizing for all elements */
+  .customers-grid * {
+    box-sizing: border-box !important;
+  }
+
+  /* CTA Form - Stack vertically and increase size on mobile */
+  .cta-form {
+    flex-direction: column !important;
+    gap: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .cta-form input[type="email"],
+  input.cta-email-input {
+    height: 72px !important;
+    font-size: 18px !important;
+    padding: 0 24px !important;
+    width: 100% !important;
+  }
+
+  .cta-form button,
+  button.cta-submit-button {
+    height: 72px !important;
+    width: 100% !important;
+    font-size: 18px !important;
+  }
+
+  /* Features tabs - Show dropdown on mobile, hide desktop tabs */
+  .features-tabs-desktop {
+    display: none !important;
+  }
+
+  .features-tabs-mobile {
+    display: block !important;
+  }
+
+  .features-tabs-container {
+    padding: 16px !important;
+  }
+}
+
+/* Desktop - Show tabs, hide dropdown */
+@media (min-width: 1024px) {
+  .features-tabs-desktop {
+    display: flex !important;
+  }
+
+  .features-tabs-mobile {
+    display: none !important;
+  }
+}

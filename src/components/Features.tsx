@@ -114,37 +114,6 @@ export default function Features() {
           overflow: "hidden",
         }}
       >
-        {/* Badge */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flex: "none",
-            placeContent: "center",
-            alignItems: "center",
-            gap: "8px",
-            width: "min-content",
-            height: "min-content",
-            padding: "4px 8px",
-            borderRadius: "8px",
-            position: "relative",
-            overflow: "visible",
-          }}
-        >
-          <p
-            style={{
-              fontWeight: 500,
-              fontSize: "14px",
-              letterSpacing: "-0.01em",
-              lineHeight: "24px",
-              color: "#717171",
-              whiteSpace: "pre",
-            }}
-          >
-            AI-powered cooking
-          </p>
-        </div>
-
         {/* Headline */}
         <div
           className="features-headline"
@@ -157,7 +126,7 @@ export default function Features() {
             className="features-headline-text"
             style={{
               fontWeight: 600,
-              fontSize: "48px",
+              fontSize: "clamp(1.75rem, 2.5vw + 1rem, 3rem)",
               letterSpacing: "-0.04em",
               lineHeight: "110%",
               color: "#1c1b17",
@@ -181,7 +150,7 @@ export default function Features() {
           <h6
             style={{
               fontWeight: 500,
-              fontSize: "16px",
+              fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
               letterSpacing: "-0.01em",
               lineHeight: "1.4em",
               color: "rgb(105, 105, 105)",
@@ -241,48 +210,6 @@ export default function Features() {
             >
               Get Early Access
             </p>
-          </div>
-        </Link>
-
-        {/* See How It Works - Gray */}
-        <Link
-          href="#download"
-          className="transition-all hover:opacity-90 active:scale-[0.98]"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            placeContent: "center",
-            alignItems: "center",
-            width: "min-content",
-            height: "min-content",
-            padding: "8px 16px",
-            textDecoration: "none",
-            backgroundColor: "#222222",
-            borderRadius: "13px",
-            boxShadow:
-              "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 8px 0px rgba(0, 0, 0, 0.04)",
-          }}
-        >
-          <div style={{ whiteSpace: "pre", flex: "none" }}>
-            <p
-              style={{
-                letterSpacing: "-0.01em",
-                lineHeight: "24px",
-                color: "rgb(0, 0, 0)",
-              }}
-            >
-              See how it works
-            </p>
-          </div>
-          <div
-            style={{
-              flex: "none",
-              width: "24px",
-              height: "24px",
-              color: "black",
-            }}
-          >
-            <ChevronIcon />
           </div>
         </Link>
       </div>
@@ -446,36 +373,6 @@ export default function Features() {
                 </div>
               </button>
             </div>
-
-            {/* Corner play button with time - always visible */}
-            <div
-              className="features-corner-button"
-              style={{
-                position: "absolute",
-                top: "24px",
-                left: "24px",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                backgroundColor: "rgba(0, 0, 0, 0.15)",
-                borderRadius: "10px",
-                padding: "8px 12px",
-                transition: "opacity 0.3s ease",
-              }}
-            >
-              <PlayIconSmall />
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  letterSpacing: "-0.01em",
-                  lineHeight: "24px",
-                  color: "rgb(255, 255, 255)",
-                }}
-              >
-                2:30
-              </p>
-            </div>
           </div>
 
           {/* Tabs bar container */}
@@ -494,8 +391,9 @@ export default function Features() {
               width: "100%",
             }}
           >
+            {/* Desktop tabs */}
             <div
-              className="features-tabs"
+              className="features-tabs features-tabs-desktop"
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -536,7 +434,7 @@ export default function Features() {
                     <p
                       style={{
                         fontWeight: 600,
-                        fontSize: "16px",
+                        fontSize: "clamp(0.8125rem, 0.75rem + 0.3vw, 1rem)",
                         color: "rgb(255, 255, 255)",
                         opacity: activeTab === tab.id ? 1 : 0.5,
                         textAlign: "center",
@@ -547,7 +445,7 @@ export default function Features() {
                     <p
                       style={{
                         fontWeight: 600,
-                        fontSize: "14px",
+                        fontSize: "clamp(0.6875rem, 0.65rem + 0.2vw, 0.875rem)",
                         color: "rgba(255, 255, 255, 0.5)",
                         opacity: activeTab === tab.id ? 1 : 0.5,
                         textAlign: "center",
@@ -558,6 +456,40 @@ export default function Features() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile dropdown */}
+            <div
+              className="features-tabs-mobile"
+              style={{ display: "none", width: "100%" }}
+            >
+              <select
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "14px 16px",
+                  backgroundColor: "rgb(0, 0, 0)",
+                  color: "rgb(255, 255, 255)",
+                  border: "none",
+                  borderRadius: "16px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  appearance: "none",
+                  backgroundImage:
+                    "url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 16px center",
+                  paddingRight: "40px",
+                }}
+              >
+                {tabs.map((tab) => (
+                  <option key={tab.id} value={tab.id}>
+                    {tab.label} - {tab.subtitle}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

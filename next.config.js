@@ -3,10 +3,10 @@
  * for Docker builds.
  */
 // Import env.js using dynamic import
-import('./src/env.js');
+import("./src/env.js");
 
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,58 +26,81 @@ const config = {
   },
   // Headers for Universal Links and App Links
   async headers() {
-    return [
+    const headers = [
       {
         // apple-app-site-association for iOS Universal Links
-        source: '/.well-known/apple-app-site-association',
+        source: "/.well-known/apple-app-site-association",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/json',
+            key: "Content-Type",
+            value: "application/json",
           },
         ],
       },
       {
         // assetlinks.json for Android App Links
-        source: '/.well-known/assetlinks.json',
+        source: "/.well-known/assetlinks.json",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/json',
+            key: "Content-Type",
+            value: "application/json",
           },
         ],
       },
     ];
+
+    // In development, disable caching for images and static assets
+    if (process.env.NODE_ENV !== "production") {
+      headers.push({
+        source: "/:path*.(jpg|jpeg|png|gif|svg|webp|avif)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+        ],
+      });
+    }
+
+    return headers;
   },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
+        protocol: "https",
+        hostname: "**",
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000,
-    loader: 'default',
+    // Development: cache for 60 seconds, Production: cache for 1 year
+    minimumCacheTTL: process.env.NODE_ENV === "production" ? 31536000 : 60,
+    loader: "default",
     dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
+    contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   experimental: {
     serverComponentsExternalPackages: [
-      'firebase-admin',
-      '@google-cloud/firestore',
-      '@opentelemetry/api',
-      '@opentelemetry/instrumentation',
-      '@opentelemetry/sdk-trace-base'
+      "firebase-admin",
+      "@google-cloud/firestore",
+      "@opentelemetry/api",
+      "@opentelemetry/instrumentation",
+      "@opentelemetry/sdk-trace-base",
     ],
   },
-  transpilePackages: ["geist", '@mui/x-date-pickers', '@mui/material', '@mui/system', '@emotion/react', '@emotion/styled'],
+  transpilePackages: [
+    "geist",
+    "@mui/x-date-pickers",
+    "@mui/material",
+    "@mui/system",
+    "@emotion/react",
+    "@emotion/styled",
+  ],
   webpack: (config) => {
     if (config.resolve && config.resolve.alias) {
-      config.resolve.alias['~'] = path.join(__dirname, 'src');
+      config.resolve.alias["~"] = path.join(__dirname, "src");
     }
     return config;
   },
