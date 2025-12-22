@@ -410,7 +410,7 @@ export default function MarketingPage() {
           <div
             className="absolute inset-0 hidden sm:block"
             style={{
-              background: "linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
+              background: "linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0.2) 50%, transparent 70%)",
             }}
           />
           {/* Top blur gradient - subtle, starts at top of image */}
@@ -441,8 +441,8 @@ export default function MarketingPage() {
                 className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
                 style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
               >
-                We got food at home. Save money, skip delivery, actually enjoy
-                cooking.
+                We got food at home. Paste any recipe link, get live grocery
+                prices, and cook with step-by-step guidance.
               </p>
               <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
                 <button
