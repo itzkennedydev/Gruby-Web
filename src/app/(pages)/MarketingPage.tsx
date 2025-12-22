@@ -403,10 +403,10 @@ export default function MarketingPage() {
               fetchPriority="high"
             />
           </div>
-          {/* Desktop gradient - focused on left side where content is */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-          {/* Additional bottom gradient for depth */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+          {/* Gradient overlay - clear at top, dark at bottom-left where content is */}
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-black/20 to-black/60" />
+          {/* Additional left-side gradient for content area */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
 
           {/* Hero Content Container */}
           <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-16 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
