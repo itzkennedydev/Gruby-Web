@@ -403,6 +403,18 @@ export default function MarketingPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-black/20 to-black/60" />
           {/* Additional left-side gradient for content area */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+          {/* Top blur gradient - starts at top of image */}
+          <div
+            className="absolute left-0 right-0 top-0 pointer-events-none"
+            style={{
+              height: "120px",
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+            }}
+          />
 
           {/* Hero Content Container */}
           <div className="relative z-10 mx-auto flex h-full max-w-[1920px] flex-col items-start justify-end px-4 pb-16 sm:justify-center sm:px-6 sm:pb-0 lg:px-8">
