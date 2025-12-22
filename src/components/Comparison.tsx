@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Loader2 } from 'lucide-react'
-import { calculateMealPrice } from '@/lib/kroger-api'
 
 interface MealComparison {
   meal: string
@@ -110,16 +109,27 @@ export default function Comparison() {
       const updatedComparisons = await Promise.all(
         initialMealComparisons.map(async (comparison) => {
           try {
-            const mealData = await calculateMealPrice(
-              comparison.homeCooked.ingredients,
-            )
-            const total = mealData.total
+            // Call the server-side API route to get real Kroger prices
+            const response = await fetch('/api/kroger/price', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                ingredients: comparison.homeCooked.ingredients,
+              }),
+            })
 
-            const finalTotal =
-              total > 0
-                ? total
-                : comparison.homeCooked.ingredients.length * 3.5
-            const finalPerServing = finalTotal / 4
+            const data = await response.json()
+
+            // Use real prices if found, otherwise fall back to estimates
+            let total = data.total
+            if (!total || total === 0 || data.foundPrices === 0) {
+              // Fall back to $3.50 estimate per ingredient if no prices found
+              total = comparison.homeCooked.ingredients.length * 3.5
+            }
+
+            const finalPerServing = total / 4
 
             const savings = comparison.delivery.total - finalPerServing
             const savingsPercent = Math.round(
@@ -130,7 +140,7 @@ export default function Comparison() {
               ...comparison,
               homeCooked: {
                 ...comparison.homeCooked,
-                price: finalTotal,
+                price: total,
                 perServing: finalPerServing,
                 loading: false,
               },
