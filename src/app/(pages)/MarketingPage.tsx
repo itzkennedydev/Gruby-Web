@@ -399,20 +399,18 @@ export default function MarketingPage() {
               fetchPriority="high"
             />
           </div>
-          {/* Gradient overlay - only dark at bottom where content is, clear at top */}
+          {/* Gradient overlay - mobile: dark at bottom, desktop: dark on left */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 sm:hidden"
             style={{
               background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 30%, transparent 50%)",
             }}
           />
-          {/* Left-side gradient for content area - only bottom half */}
+          {/* Desktop: left-side gradient for content area */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 hidden sm:block"
             style={{
-              background: "linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 40%)",
-              maskImage: "linear-gradient(to top, black 0%, black 40%, transparent 60%)",
-              WebkitMaskImage: "linear-gradient(to top, black 0%, black 40%, transparent 60%)",
+              background: "linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
             }}
           />
           {/* Top blur gradient - subtle, starts at top of image */}
@@ -443,8 +441,8 @@ export default function MarketingPage() {
                 className="mb-4 max-w-xl leading-relaxed text-gray-200 sm:mb-6 md:mb-8"
                 style={{ fontSize: "clamp(1rem, 1.25vw + 0.75rem, 1.25rem)" }}
               >
-                We got food at home. Paste any recipe link, get live grocery
-                prices, and cook with step-by-step guidance.
+                We got food at home. Save money, skip delivery, actually enjoy
+                cooking.
               </p>
               <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
                 <button
