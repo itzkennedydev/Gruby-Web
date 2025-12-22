@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Optimize rendering */
 body {
   -webkit-font-smoothing: antialiased;
