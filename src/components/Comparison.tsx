@@ -210,15 +210,15 @@ export default function Comparison() {
               </div>
 
               {/* Comparison Section */}
-              <div className="p-4">
-                <div className="grid grid-cols-[1fr_1px_1fr] gap-4">
+              <div className="p-5">
+                <div className="grid grid-cols-[1fr_1px_1fr] gap-5">
                   {/* Eating Out */}
                   <div>
-                    <div className="mb-3">
+                    <div className="mb-4">
                       <p className="text-sm font-medium text-[#222]">Eating Out</p>
-                      <p className="text-xs text-[#717171]">1 serving</p>
+                      <p className="text-xs text-[#717171] mt-0.5">1 serving</p>
                     </div>
-                    <div className="space-y-1.5 text-sm">
+                    <div className="space-y-2.5 text-sm">
                       <div className="flex justify-between">
                         <span className="text-[#717171]">Food</span>
                         <span>${comparison.delivery.price.toFixed(2)}</span>
@@ -228,7 +228,7 @@ export default function Comparison() {
                         <span>${(comparison.delivery.fees + comparison.delivery.tip).toFixed(2)}</span>
                       </div>
                     </div>
-                    <div className="mt-3 pt-3 border-t border-[#F0F0F0]">
+                    <div className="mt-4 pt-4 border-t border-[#F0F0F0]">
                       <div className="flex justify-between items-baseline">
                         <span className="text-sm text-[#717171]">Total</span>
                         <span className="text-xl font-semibold text-[#DC2626]">${comparison.delivery.total.toFixed(2)}</span>
@@ -241,11 +241,11 @@ export default function Comparison() {
 
                   {/* Home Cooked */}
                   <div>
-                    <div className="mb-3">
+                    <div className="mb-4">
                       <p className="text-sm font-medium text-[#222]">Home Cooked</p>
-                      <p className="text-xs text-[#717171]">{comparison.homeCooked.servings} servings</p>
+                      <p className="text-xs text-[#717171] mt-0.5">{comparison.homeCooked.servings} servings</p>
                     </div>
-                    <div className="space-y-1.5 text-sm">
+                    <div className="space-y-2.5 text-sm">
                       <div className="flex justify-between">
                         <span className="text-[#717171]">Groceries</span>
                         <span>
@@ -261,7 +261,7 @@ export default function Comparison() {
                         <span>$0.00</span>
                       </div>
                     </div>
-                    <div className="mt-3 pt-3 border-t border-[#F0F0F0]">
+                    <div className="mt-4 pt-4 border-t border-[#F0F0F0]">
                       <div className="flex justify-between items-baseline">
                         <span className="text-sm text-[#717171]">Per serving</span>
                         <span className="text-xl font-semibold text-[#16A34A]">

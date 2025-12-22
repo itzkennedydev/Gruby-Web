@@ -2,14 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-
-// Sparkle icon for AI
-const SparkleIcon = () => (
-  <svg viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4">
-    <path d="M8 0L9.5 5.5L15 7L9.5 8.5L8 14L6.5 8.5L1 7L6.5 5.5L8 0Z" />
-  </svg>
-);
 
 // Chevron icon for explore button
 const ChevronIcon = () => (
@@ -97,123 +89,6 @@ export default function Features() {
         overflow: "visible",
       }}
     >
-      {/* Header content */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: "none",
-          placeContent: "center",
-          alignItems: "center",
-          gap: "24px",
-          width: "100%",
-          maxWidth: "1540px",
-          height: "min-content",
-          padding: "0 16px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Headline */}
-        <div
-          className="features-headline"
-          style={{
-            width: "80%",
-            maxWidth: "800px",
-          }}
-        >
-          <h2
-            className="features-headline-text"
-            style={{
-              fontWeight: 600,
-              fontSize: "clamp(1.75rem, 2.5vw + 1rem, 3rem)",
-              letterSpacing: "-0.04em",
-              lineHeight: "110%",
-              color: "#1c1b17",
-              textAlign: "center",
-            }}
-          >
-            From TikTok to table.
-            <br />
-            Cook smarter, spend less.
-          </h2>
-        </div>
-
-        {/* Subtitle */}
-        <div
-          className="features-subtitle"
-          style={{
-            width: "570px",
-            maxWidth: "100%",
-          }}
-        >
-          <h6
-            style={{
-              fontWeight: 500,
-              fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
-              letterSpacing: "-0.01em",
-              lineHeight: "1.4em",
-              color: "rgb(105, 105, 105)",
-              textAlign: "center",
-            }}
-          >
-            Paste any recipe link. Get real grocery prices. Cook with AI-powered
-            guidance. Save money on every meal.
-          </h6>
-        </div>
-      </div>
-
-      {/* Buttons */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flex: "none",
-          placeContent: "center",
-          alignItems: "center",
-          gap: "10px",
-          width: "100%",
-          maxWidth: "1540px",
-          height: "min-content",
-          padding: "0 16px",
-          position: "relative",
-          overflow: "visible",
-        }}
-      >
-        {/* Download Now - Primary */}
-        <Link
-          href="#download"
-          rel="noopener"
-          className="transition-colors hover:opacity-90"
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            placeContent: "center",
-            alignItems: "center",
-            width: "min-content",
-            height: "min-content",
-            padding: "8px 16px",
-            textDecoration: "none",
-            backgroundColor: "var(--gruby-primary)",
-            borderRadius: "13px",
-            boxShadow:
-              "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 8px 0px rgba(0, 0, 0, 0.04)",
-          }}
-        >
-          <div style={{ whiteSpace: "pre", flex: "none" }}>
-            <p
-              style={{
-                letterSpacing: "-0.01em",
-                lineHeight: "24px",
-                color: "rgb(255, 255, 255)",
-              }}
-            >
-              Get Early Access
-            </p>
-          </div>
-        </Link>
-      </div>
-
       {/* Interactive Demo - wrapper for consistent padding */}
       <div
         style={{
@@ -263,36 +138,6 @@ export default function Features() {
                 target.style.display = "none";
               }}
             />
-            {/* Fallback content */}
-            <div
-              style={{
-                position: "absolute",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "16px",
-                color: "#717171",
-                zIndex: 0,
-              }}
-            >
-              <div
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  borderRadius: "20px",
-                  backgroundColor: "rgba(107, 106, 70, 0.1)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <SparkleIcon />
-              </div>
-              <p style={{ fontSize: "16px", fontWeight: 500 }}>
-                {tabs.find((t) => t.id === activeTab)?.label}
-              </p>
-            </div>
           </div>
 
           {/* Video overlay with hover state */}
