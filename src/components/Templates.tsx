@@ -62,9 +62,9 @@ function RecipeCard({ recipe }: { recipe: typeof recipes[0] }) {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         flexShrink: 0,
-        width: '360px',
-        height: '480px',
-        borderRadius: '16px',
+        width: '420px',
+        height: '560px',
+        borderRadius: '20px',
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -100,8 +100,8 @@ function RecipeCard({ recipe }: { recipe: typeof recipes[0] }) {
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
-          padding: '24px',
+          gap: '20px',
+          padding: '32px',
         }}
       >
         {/* Category tag */}
@@ -109,16 +109,16 @@ function RecipeCard({ recipe }: { recipe: typeof recipes[0] }) {
           style={{
             display: 'inline-flex',
             alignSelf: 'flex-start',
-            padding: '6px 12px',
+            padding: '8px 16px',
             backgroundColor: 'rgba(255, 255, 255, 0.25)',
             backdropFilter: 'blur(10px)',
-            borderRadius: '8px',
+            borderRadius: '10px',
           }}
         >
           <p
             style={{
               fontWeight: 500,
-              fontSize: '14px',
+              fontSize: '15px',
               letterSpacing: '-0.01em',
               lineHeight: '24px',
               color: 'rgb(255, 255, 255)',
@@ -131,8 +131,8 @@ function RecipeCard({ recipe }: { recipe: typeof recipes[0] }) {
         <h5
           style={{
             fontWeight: 600,
-            fontSize: '18px',
-            letterSpacing: '-0.01em',
+            fontSize: '22px',
+            letterSpacing: '-0.02em',
             lineHeight: '140%',
             color: 'rgb(255, 255, 255)',
           }}
@@ -142,12 +142,13 @@ function RecipeCard({ recipe }: { recipe: typeof recipes[0] }) {
         {/* Button */}
         <Link
           href={recipe.href}
+          className="transition-all hover:opacity-90 active:scale-[0.98]"
           style={{
             display: 'inline-flex',
             alignSelf: 'flex-start',
             alignItems: 'center',
             gap: '8px',
-            padding: '12px 20px',
+            padding: '14px 24px',
             backgroundColor: 'rgb(255, 255, 255)',
             borderRadius: '13px',
             boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
@@ -157,7 +158,7 @@ function RecipeCard({ recipe }: { recipe: typeof recipes[0] }) {
           <p
             style={{
               fontWeight: 500,
-              fontSize: '16px',
+              fontSize: '17px',
               letterSpacing: '-0.01em',
               lineHeight: '24px',
               color: 'rgb(0, 0, 0)',
@@ -328,7 +329,7 @@ export default function Templates() {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          gap: '24px',
+          gap: '32px',
           width: '100%',
           overflowX: 'auto',
           padding: '0 16px',
