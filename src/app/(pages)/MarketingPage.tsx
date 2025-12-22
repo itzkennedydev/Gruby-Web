@@ -385,7 +385,6 @@ export default function MarketingPage() {
                 backgroundImage: "url(/HeroMobileNew.JPG)",
                 backgroundSize: "cover",
                 backgroundPosition: "center -100px",
-                filter: "brightness(0.7)",
               }}
             />
             {/* Desktop Image */}
@@ -396,9 +395,6 @@ export default function MarketingPage() {
               priority
               quality={100}
               className="hero-image hidden object-cover sm:block"
-              style={{
-                filter: "brightness(0.7)",
-              }}
               sizes="100vw"
               fetchPriority="high"
             />
