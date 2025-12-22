@@ -384,7 +384,7 @@ export default function MarketingPage() {
               style={{
                 backgroundImage: "url(/HeroMobileNew.JPG)",
                 backgroundSize: "cover",
-                backgroundPosition: "center top",
+                backgroundPosition: "center 20%",
                 filter: "brightness(0.7)",
               }}
             />
