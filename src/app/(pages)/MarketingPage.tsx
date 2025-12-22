@@ -375,7 +375,7 @@ export default function MarketingPage() {
 
       <div className="flex min-h-screen flex-col bg-white">
         {/* Hero Section */}
-        <div className="relative -mt-32 h-[780px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
+        <div className="relative -mt-32 h-[720px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           {/* Background Image */}
           <div className="absolute inset-0">
             {/* Mobile Background - using div with background-image */}
