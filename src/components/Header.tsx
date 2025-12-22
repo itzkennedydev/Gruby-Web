@@ -159,23 +159,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Blur gradient under header */}
-      <div
-        className="pointer-events-none"
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: "100%",
-          height: "80px",
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0) 100%)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-        }}
-      />
-
       {/* Join Waitlist Modal */}
       <WaitlistModal
         waitlistModalOpen={waitlistModalOpen}
