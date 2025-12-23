@@ -54,7 +54,7 @@ export default function UseCases() {
             <p
               style={{
                 fontWeight: 500,
-                fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+                fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
                 letterSpacing: "-0.01em",
                 lineHeight: "24px",
                 color: "#717171",

@@ -10,9 +10,9 @@
  */
 
 export const typography = {
-  // Label/Eyebrow - Small muted text above headlines
+  // Label/Eyebrow - Muted text above headlines
   label: {
-    fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+    fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
     fontWeight: 500,
     letterSpacing: "-0.01em",
     lineHeight: "1.5",
@@ -80,7 +80,7 @@ export const typography = {
 
 // Tailwind-compatible class strings for common patterns
 export const typographyClasses = {
-  label: "text-sm font-medium tracking-tight text-[#717171]",
+  label: "text-base font-medium tracking-tight text-[#717171]",
   headline: "text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] font-semibold tracking-tight leading-tight",
   subheadline: "text-[clamp(1rem,0.9rem+0.5vw,1.25rem)] font-normal leading-relaxed text-[#717171]",
   title: "text-[clamp(1.25rem,1.5vw+0.75rem,1.5rem)] font-semibold tracking-tight leading-snug",

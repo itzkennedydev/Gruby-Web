@@ -183,7 +183,7 @@ export default function Comparison() {
       <div className="max-w-[1540px] mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-sm text-[#717171] mb-2">
+          <p className="text-base text-[#717171] mb-2">
             The real cost breakdown
           </p>
           <h2 className="text-[clamp(1.75rem,2.5vw+1rem,2.5rem)] font-semibold text-[#222] tracking-tight leading-tight">
