@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setWaitlistModalOpen } from "@/store/slices/uiSlice";
 import {
@@ -15,7 +16,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { WaitlistModal } from "@/components/WaitlistModal";
 
+// Routes where header should be hidden
+const HIDDEN_HEADER_ROUTES = [
+  '/faq',
+  '/privacy',
+  '/terms',
+  '/cookies',
+  '/eula',
+  '/community-guidelines',
+  '/data-retention',
+  '/acceptable-use',
+  '/third-party-services',
+  '/messaging-policy',
+  '/content-licensing',
+  '/gatherings-terms',
+  '/location-services',
+  '/dmca',
+  '/accessibility',
+];
+
 const Header = () => {
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const waitlistModalOpen = useAppSelector(
     (state) => state.ui.waitlistModalOpen,
@@ -29,7 +50,13 @@ const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
+  // Hide header on certain routes
+  const shouldHideHeader = HIDDEN_HEADER_ROUTES.includes(pathname);
+
   useEffect(() => {
+    // Skip scroll handling if header is hidden
+    if (shouldHideHeader) return;
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
@@ -102,6 +129,11 @@ const Header = () => {
       dispatch(setSubmitting(false));
     }
   };
+
+  // Don't render header on hidden routes
+  if (shouldHideHeader) {
+    return null;
+  }
 
   return (
     <header

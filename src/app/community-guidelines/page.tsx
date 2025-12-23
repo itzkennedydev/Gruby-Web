@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
+import { DocsLayout } from "@/components/DocsLayout";
 
 export const metadata: Metadata = {
   title: "Community Guidelines | Gruby",
@@ -8,14 +8,7 @@ export const metadata: Metadata = {
 
 export default function CommunityGuidelinesPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
-      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-16">
-        <div
-          className="prose prose-lg max-w-none"
-          style={{
-            lineHeight: "1.75",
-          }}
-        >
+    <DocsLayout title="Community Guidelines" currentPath="/community-guidelines">
           <h1
             className="mb-6 font-semibold sm:mb-4"
             style={{
@@ -86,6 +79,9 @@ export default function CommunityGuidelinesPage() {
                 Constructive criticism is welcome; mean-spirited comments are
                 not
               </li>
+              <li className="mb-2">
+                Be patient with beginners and welcoming to new community members
+              </li>
             </ul>
           </section>
 
@@ -97,7 +93,270 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              2. SHARE AUTHENTIC CONTENT
+              2. CIRCLES AND SOCIAL GROUPS
+            </h2>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              Circles are private groups for friends and family to share
+              recipes, coordinate meals, and stay connected through cooking.
+              Please respect the trust that comes with Circle membership.
+            </p>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              2.1 Circle Etiquette
+            </h3>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                Respect Circle privacy - don&apos;t share Circle content outside
+                the group without permission
+              </li>
+              <li className="mb-2">
+                Only invite people you know and trust to your Circles
+              </li>
+              <li className="mb-2">
+                Circle admins are responsible for maintaining a positive
+                environment
+              </li>
+              <li className="mb-2">
+                If you leave a Circle, respect that you no longer have access to
+                shared content
+              </li>
+              <li className="mb-2">
+                Don&apos;t create Circles to circumvent blocks or bans
+              </li>
+            </ul>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              2.2 Following and Followers
+            </h3>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                Respect users&apos; follow request settings (public vs. approval
+                required)
+              </li>
+              <li className="mb-2">
+                Don&apos;t follow/unfollow repeatedly to get attention
+              </li>
+              <li className="mb-2">
+                Respect when someone unfollows you or declines your follow
+                request
+              </li>
+              <li className="mb-2">
+                Don&apos;t use automation to artificially grow followers
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-10 sm:mb-8">
+            <h2
+              className="mb-6 mt-10 font-semibold sm:mb-4 sm:mt-8"
+              style={{
+                fontSize: "clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)",
+                lineHeight: "1.3",
+              }}
+            >
+              3. DIRECT MESSAGING
+            </h2>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              Gruby offers end-to-end encrypted messaging to protect your
+              conversations. With this privacy comes responsibility.
+            </p>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              3.1 Messaging Guidelines
+            </h3>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                Only message people who want to hear from you
+              </li>
+              <li className="mb-2">
+                Respect when someone doesn&apos;t respond or asks you to stop
+                messaging
+              </li>
+              <li className="mb-2">
+                Don&apos;t send unsolicited promotional messages or spam
+              </li>
+              <li className="mb-2">
+                Don&apos;t use messages to harass, threaten, or intimidate
+              </li>
+              <li className="mb-2">
+                Don&apos;t share sexually explicit or inappropriate content
+              </li>
+              <li className="mb-2">
+                Don&apos;t screenshot or share private messages without consent
+              </li>
+            </ul>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              3.2 Message Requests
+            </h3>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              Messages from people you don&apos;t follow go to Message Requests.
+              You can accept, decline, or report these messages. Declining a
+              message request does not notify the sender.
+            </p>
+          </section>
+
+          <section className="mb-10 sm:mb-8">
+            <h2
+              className="mb-6 mt-10 font-semibold sm:mb-4 sm:mt-8"
+              style={{
+                fontSize: "clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)",
+                lineHeight: "1.3",
+              }}
+            >
+              4. GATHERINGS
+            </h2>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              Gatherings are in-person or virtual cooking events. Whether
+              you&apos;re hosting or attending, please follow these guidelines
+              for safe and enjoyable experiences.
+            </p>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              4.1 For Hosts
+            </h3>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                Provide accurate information about your Gathering (date, time,
+                location, menu)
+              </li>
+              <li className="mb-2">
+                Clearly communicate any costs, dietary restrictions, or
+                requirements
+              </li>
+              <li className="mb-2">
+                Vet participants before sharing your exact address
+              </li>
+              <li className="mb-2">
+                Be inclusive and welcoming to all approved participants
+              </li>
+              <li className="mb-2">
+                Follow food safety guidelines when preparing and serving food
+              </li>
+              <li className="mb-2">
+                Communicate promptly about any changes or cancellations
+              </li>
+              <li className="mb-2">
+                Handle cost-splitting fairly and transparently
+              </li>
+            </ul>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              4.2 For Attendees
+            </h3>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">RSVP honestly and show up if you commit</li>
+              <li className="mb-2">
+                Communicate dietary restrictions or allergies in advance
+              </li>
+              <li className="mb-2">
+                Contribute as agreed (ingredients, cooking tasks, cost-sharing)
+              </li>
+              <li className="mb-2">
+                Respect the host&apos;s home and other participants
+              </li>
+              <li className="mb-2">
+                Don&apos;t share the host&apos;s address with others without
+                permission
+              </li>
+              <li className="mb-2">
+                Cancel with adequate notice if you can&apos;t attend
+              </li>
+              <li className="mb-2">
+                Pay your share of costs promptly and fairly
+              </li>
+            </ul>
+
+            <h3
+              className="mb-4 mt-8 font-semibold sm:mb-3 sm:mt-6"
+              style={{
+                fontSize: "clamp(1.25rem, 2vw + 0.5rem, 1.5rem)",
+                lineHeight: "1.4",
+              }}
+            >
+              4.3 Safety at Gatherings
+            </h3>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                Meet in public first if you don&apos;t know other participants
+              </li>
+              <li className="mb-2">
+                Trust your instincts - if something feels wrong, leave
+              </li>
+              <li className="mb-2">Tell someone where you&apos;re going</li>
+              <li className="mb-2">
+                Report any unsafe behavior to Gruby immediately
+              </li>
+              <li className="mb-2">
+                Gruby is not responsible for what happens at in-person
+                Gatherings
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-10 sm:mb-8">
+            <h2
+              className="mb-6 mt-10 font-semibold sm:mb-4 sm:mt-8"
+              style={{
+                fontSize: "clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)",
+                lineHeight: "1.3",
+              }}
+            >
+              5. SHARE AUTHENTIC CONTENT
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Post content that you&apos;ve created or have permission to share.
@@ -124,6 +383,9 @@ export default function CommunityGuidelinesPage() {
                 sources without permission
               </li>
               <li className="mb-2">Be honest in your reviews and ratings</li>
+              <li className="mb-2">
+                Don&apos;t use AI to generate fake reviews or ratings
+              </li>
             </ul>
           </section>
 
@@ -135,23 +397,24 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              3. KEEP IT SAFE
+              6. FOOD SAFETY
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Food safety matters. When sharing recipes, include important
-              safety information and allergen warnings.
+              safety information and allergen warnings. Unsafe recipes can cause
+              real harm.
             </p>
             <ul
               className="mb-6 list-disc pl-6 sm:mb-4"
               style={{ lineHeight: "1.75" }}
             >
               <li className="mb-2">
-                Include cooking temperatures and times for meat, poultry, and
-                eggs
+                Include cooking temperatures and times for meat, poultry, eggs,
+                and seafood
               </li>
               <li className="mb-2">
-                Warn about common allergens (nuts, dairy, gluten, shellfish,
-                etc.)
+                Clearly label common allergens (nuts, dairy, gluten, shellfish,
+                eggs, soy, etc.)
               </li>
               <li className="mb-2">
                 Don&apos;t share recipes that could be dangerous if prepared
@@ -161,6 +424,13 @@ export default function CommunityGuidelinesPage() {
                 If you modify a recipe, note the changes so others can follow
                 safely
               </li>
+              <li className="mb-2">
+                Include proper food storage and handling instructions
+              </li>
+              <li className="mb-2">
+                Be especially careful with recipes involving raw eggs, raw meat,
+                or home canning
+              </li>
             </ul>
           </section>
 
@@ -172,7 +442,48 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              4. NO SPAM OR SELF-PROMOTION
+              7. AI FEATURES
+            </h2>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              Gruby uses AI to help with recipe suggestions, ingredient
+              scanning, and other features. Please use these features
+              responsibly.
+            </p>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                AI suggestions are starting points, not guarantees - always
+                verify cooking times and temperatures
+              </li>
+              <li className="mb-2">
+                Don&apos;t try to manipulate AI features to generate harmful or
+                inappropriate content
+              </li>
+              <li className="mb-2">
+                If you share an AI-generated recipe, note that it was
+                AI-assisted
+              </li>
+              <li className="mb-2">
+                Report AI suggestions that seem unsafe or incorrect
+              </li>
+              <li className="mb-2">
+                AI ingredient scanning may have errors - always double-check
+                identified ingredients
+              </li>
+            </ul>
+          </section>
+
+          <section className="mb-10 sm:mb-8">
+            <h2
+              className="mb-6 mt-10 font-semibold sm:mb-4 sm:mt-8"
+              style={{
+                fontSize: "clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)",
+                lineHeight: "1.3",
+              }}
+            >
+              8. NO SPAM OR SELF-PROMOTION
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Gruby is for sharing recipes and connecting with other home cooks,
@@ -190,7 +501,8 @@ export default function CommunityGuidelinesPage() {
                 services
               </li>
               <li className="mb-2">
-                Don&apos;t include affiliate links or promotional codes
+                Don&apos;t include affiliate links or promotional codes in
+                recipes
               </li>
               <li className="mb-2">
                 Don&apos;t direct users to external sites for commercial
@@ -199,6 +511,9 @@ export default function CommunityGuidelinesPage() {
               <li className="mb-2">
                 Don&apos;t create multiple accounts to manipulate ratings or
                 visibility
+              </li>
+              <li className="mb-2">
+                Don&apos;t use automated tools to post, like, or comment
               </li>
             </ul>
           </section>
@@ -211,7 +526,7 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              5. APPROPRIATE CONTENT ONLY
+              9. APPROPRIATE CONTENT ONLY
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Keep content family-friendly and appropriate for all ages. Gruby
@@ -234,6 +549,12 @@ export default function CommunityGuidelinesPage() {
                 Content that promotes eating disorders or unhealthy
                 relationships with food
               </li>
+              <li className="mb-2">
+                Content glorifying dangerous &quot;challenges&quot; or trends
+              </li>
+              <li className="mb-2">
+                Recipes for illegal substances or controlled substances
+              </li>
             </ul>
           </section>
 
@@ -245,7 +566,7 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              6. RESPECT PRIVACY
+              10. RESPECT PRIVACY
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Protect your privacy and the privacy of others. Don&apos;t share
@@ -270,6 +591,14 @@ export default function CommunityGuidelinesPage() {
                 Respect private messages and don&apos;t share them publicly
                 without consent
               </li>
+              <li className="mb-2">
+                Don&apos;t share Gathering locations with people who
+                weren&apos;t invited
+              </li>
+              <li className="mb-2">
+                Respect Circle privacy and don&apos;t share Circle content
+                externally
+              </li>
             </ul>
           </section>
 
@@ -281,7 +610,7 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              7. INTELLECTUAL PROPERTY
+              11. INTELLECTUAL PROPERTY
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Respect copyright, trademarks, and other intellectual property
@@ -305,6 +634,9 @@ export default function CommunityGuidelinesPage() {
               <li className="mb-2">
                 Don&apos;t use copyrighted music in videos without permission
               </li>
+              <li className="mb-2">
+                Don&apos;t post content that infringes on trademarks
+              </li>
             </ul>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               If you believe your copyright has been infringed, see our{" "}
@@ -323,7 +655,44 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              8. REPORTING VIOLATIONS
+              12. BLOCKING AND MUTING
+            </h2>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              You have the power to control your Gruby experience:
+            </p>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                <strong>Block:</strong> Prevents someone from viewing your
+                profile, recipes, or contacting you. They won&apos;t be notified
+                they&apos;ve been blocked.
+              </li>
+              <li className="mb-2">
+                <strong>Mute:</strong> Hides someone&apos;s content from your
+                feed without unfollowing them.
+              </li>
+              <li className="mb-2">
+                <strong>Report:</strong> Flags content or behavior that violates
+                these guidelines.
+              </li>
+            </ul>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              Don&apos;t try to circumvent blocks by creating new accounts or
+              using other users&apos; accounts.
+            </p>
+          </section>
+
+          <section className="mb-10 sm:mb-8">
+            <h2
+              className="mb-6 mt-10 font-semibold sm:mb-4 sm:mt-8"
+              style={{
+                fontSize: "clamp(1.5rem, 2.5vw + 0.75rem, 1.875rem)",
+                lineHeight: "1.3",
+              }}
+            >
+              13. REPORTING VIOLATIONS
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               If you see content that violates these guidelines, please report
@@ -337,8 +706,11 @@ export default function CommunityGuidelinesPage() {
               style={{ lineHeight: "1.75" }}
             >
               <li className="mb-2">
-                Use the &quot;Report&quot; button on any post, comment, or
-                profile
+                Use the &quot;Report&quot; button on any post, comment, message,
+                or profile
+              </li>
+              <li className="mb-2">
+                Select the reason that best describes the violation
               </li>
               <li className="mb-2">
                 Provide specific details about the violation
@@ -353,6 +725,27 @@ export default function CommunityGuidelinesPage() {
                 </a>
               </li>
             </ul>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              <strong>What happens after you report:</strong>
+            </p>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                Our moderation team reviews reports, typically within 24-48
+                hours
+              </li>
+              <li className="mb-2">
+                We may contact you for additional information
+              </li>
+              <li className="mb-2">
+                The reported user is not told who reported them
+              </li>
+              <li className="mb-2">
+                We&apos;ll notify you when we&apos;ve taken action
+              </li>
+            </ul>
           </section>
 
           <section className="mb-10 sm:mb-8">
@@ -363,7 +756,7 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              9. CONSEQUENCES OF VIOLATIONS
+              14. CONSEQUENCES OF VIOLATIONS
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Violations of these Community Guidelines may result in:
@@ -372,11 +765,18 @@ export default function CommunityGuidelinesPage() {
               className="mb-6 list-disc pl-6 sm:mb-4"
               style={{ lineHeight: "1.75" }}
             >
-              <li className="mb-2">Content removal</li>
-              <li className="mb-2">Temporary suspension of account features</li>
+              <li className="mb-2">Warning and content removal</li>
+              <li className="mb-2">
+                Temporary restrictions on posting, messaging, or social features
+              </li>
+              <li className="mb-2">
+                Removal from Circles or banning from Gatherings
+              </li>
+              <li className="mb-2">Temporary account suspension (1-30 days)</li>
               <li className="mb-2">Permanent account termination</li>
               <li className="mb-2">
-                Reporting to law enforcement (for illegal activities)
+                Reporting to law enforcement (for illegal activities or safety
+                threats)
               </li>
             </ul>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
@@ -394,7 +794,7 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              10. APPEALS
+              15. APPEALS
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               If you believe content was removed or your account was restricted
@@ -405,8 +805,24 @@ export default function CommunityGuidelinesPage() {
               >
                 appeals@gruby.app
               </a>{" "}
-              within 30 days. Include your username and a clear explanation of
-              why you believe the action was incorrect.
+              within 30 days. Include:
+            </p>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">Your username</li>
+              <li className="mb-2">
+                The content or action you&apos;re appealing
+              </li>
+              <li className="mb-2">
+                A clear explanation of why you believe the action was incorrect
+              </li>
+              <li className="mb-2">Any supporting context or information</li>
+            </ul>
+            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
+              We review appeals carefully and will respond within 7 business
+              days.
             </p>
           </section>
 
@@ -418,13 +834,14 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              11. UPDATES TO THESE GUIDELINES
+              16. UPDATES TO THESE GUIDELINES
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               We may update these Community Guidelines from time to time to
               reflect changes in our community, features, or legal requirements.
-              Continued use of Gruby after updates constitutes acceptance of the
-              revised guidelines.
+              We&apos;ll notify you of significant changes through the app or
+              email. Continued use of Gruby after updates constitutes acceptance
+              of the revised guidelines.
             </p>
           </section>
 
@@ -436,20 +853,43 @@ export default function CommunityGuidelinesPage() {
                 lineHeight: "1.3",
               }}
             >
-              12. CONTACT US
+              17. CONTACT US
             </h2>
             <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
               Questions about these Community Guidelines? Reach out to us at:
             </p>
-            <p className="mb-6 sm:mb-4" style={{ lineHeight: "1.75" }}>
-              Email:{" "}
-              <a
-                href="mailto:community@gruby.app"
-                className="text-[#222222] hover:underline"
-              >
-                community@gruby.app
-              </a>
-            </p>
+            <ul
+              className="mb-6 list-disc pl-6 sm:mb-4"
+              style={{ lineHeight: "1.75" }}
+            >
+              <li className="mb-2">
+                General inquiries:{" "}
+                <a
+                  href="mailto:community@gruby.app"
+                  className="text-[#222222] hover:underline"
+                >
+                  community@gruby.app
+                </a>
+              </li>
+              <li className="mb-2">
+                Safety concerns:{" "}
+                <a
+                  href="mailto:safety@gruby.app"
+                  className="text-[#222222] hover:underline"
+                >
+                  safety@gruby.app
+                </a>
+              </li>
+              <li className="mb-2">
+                Appeals:{" "}
+                <a
+                  href="mailto:appeals@gruby.app"
+                  className="text-[#222222] hover:underline"
+                >
+                  appeals@gruby.app
+                </a>
+              </li>
+            </ul>
           </section>
 
           <div
@@ -464,13 +904,12 @@ export default function CommunityGuidelinesPage() {
             </p>
             <p style={{ fontSize: "clamp(0.875rem, 1vw + 0.5rem, 1rem)" }}>
               Together, we&apos;re making home cooking more accessible,
-              affordable, and enjoyable for everyone. Let&apos;s cook, share,
-              and save money together.
+              affordable, and enjoyable for everyone. Whether you&apos;re
+              sharing recipes, hosting Gatherings, or connecting with your
+              Circles, you&apos;re helping build something special. Let&apos;s
+              cook, share, and save money together.
             </p>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
+    </DocsLayout>
   );
 }

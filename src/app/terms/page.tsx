@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from 'next';
-import { Footer } from '@/components/Footer';
+import { DocsLayout } from '@/components/DocsLayout';
 
 export const metadata: Metadata = {
   title: 'Terms of Service | Gruby',
@@ -9,11 +9,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16">
-        <div className="prose prose-lg max-w-none" style={{
-          lineHeight: '1.75',
-        }}>
+    <DocsLayout title="Terms of Service" currentPath="/terms">
           <h1 className="font-semibold mb-6 sm:mb-4" style={{ fontSize: 'clamp(1.875rem, 4vw + 1rem, 3rem)', lineHeight: '1.2' }}>GRUBY TERMS OF SERVICE</h1>
           
           <p className="text-gray-600 mb-8 sm:mb-6" style={{ fontSize: 'clamp(0.875rem, 1vw + 0.5rem, 0.875rem)', lineHeight: '1.6' }}>
@@ -270,9 +266,6 @@ export default function TermsPage() {
               Email: <a href="mailto:legal@gruby.app" className="text-blue-600 hover:underline">legal@gruby.app</a>
             </p>
           </section>
-        </div>
-      </div>
-      <Footer />
-    </div>
+    </DocsLayout>
   );
 }

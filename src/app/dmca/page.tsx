@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
+import { DocsLayout } from "@/components/DocsLayout";
 
 export const metadata: Metadata = {
   title: "DMCA Policy | Gruby",
@@ -8,14 +8,7 @@ export const metadata: Metadata = {
 
 export default function DMCAPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
-      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-16">
-        <div
-          className="prose prose-lg max-w-none"
-          style={{
-            lineHeight: "1.75",
-          }}
-        >
+    <DocsLayout title="DMCA" currentPath="/dmca">
           <h1
             className="mb-6 font-semibold sm:mb-4"
             style={{
@@ -423,9 +416,6 @@ export default function DMCAPage() {
               recommend consulting with an attorney before submitting a notice.
             </p>
           </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
+    </DocsLayout>
   );
 }
