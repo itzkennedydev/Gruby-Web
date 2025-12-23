@@ -12,7 +12,7 @@ const caseStudies = [
     posterPosition: "right",
     quote:
       '"I built this because I kept paying $18 for a burrito bowl that costs $6 to make. We all know convenience costs extra, but 3x the price? I want people to see what that convenience is actually costing them."',
-    highlight: "3x the price?",
+    highlight: "We all know convenience costs extra, but 3x the price?",
     ctaText: "Save on groceries",
   },
   {
