@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setEmail,
@@ -598,7 +597,7 @@ export default function MarketingPage() {
               {/* Phone Image - Absolutely positioned at bottom-left */}
               <div className="absolute bottom-0 left-1/2 z-20 order-2 flex w-full flex-shrink-0 -translate-x-1/2 justify-center lg:absolute lg:bottom-0 lg:left-16 lg:w-auto lg:translate-x-0 lg:justify-start">
                 <Image
-                  src="/Grubyphone3.png"
+                  src="/GrubyMobile.png"
                   alt="Gruby mobile app"
                   width={500}
                   height={1000}
