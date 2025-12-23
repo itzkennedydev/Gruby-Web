@@ -452,7 +452,7 @@ export default function MarketingPage() {
                     e.stopPropagation();
                     dispatch(setWaitlistModalOpen(true));
                   }}
-                  className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-medium text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                  className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-semibold text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
                   Get Early Access
                 </button>
@@ -466,7 +466,7 @@ export default function MarketingPage() {
                       element.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
                   }}
-                  className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white px-4 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                  className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white px-4 text-sm font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
                   See How It Works
                 </button>
