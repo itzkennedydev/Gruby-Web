@@ -198,22 +198,47 @@ function CaseStudyCard({
                   margin: 0,
                 }}
               >
-                {study.highlight ? (
-                  <>
-                    {study.quote.split(study.highlight).map((part, i, arr) => (
-                      <span key={i}>
-                        {part}
-                        {i < arr.length - 1 && (
+                {study.quote.split(/(?<=[.!?])\s+/).map((sentence, i) => {
+                  const isHighlighted = study.highlight && sentence.includes(study.highlight);
+                  const highlightParts = isHighlighted
+                    ? sentence.split(study.highlight)
+                    : null;
+
+                  return (
+                    <span
+                      key={i}
+                      style={{
+                        display: "inline",
+                        opacity: 0,
+                        animation: `slideDownLine 0.5s ease ${i * 0.15}s forwards`,
+                      }}
+                    >
+                      {highlightParts ? (
+                        <>
+                          {highlightParts[0]}
                           <span style={{ color: "rgb(255, 255, 255)" }}>
                             {study.highlight}
                           </span>
-                        )}
-                      </span>
-                    ))}
-                  </>
-                ) : (
-                  study.quote
-                )}
+                          {highlightParts[1] || ""}
+                        </>
+                      ) : (
+                        sentence
+                      )}{" "}
+                      <style jsx>{`
+                        @keyframes slideDownLine {
+                          from {
+                            opacity: 0;
+                            transform: translateY(-16px);
+                          }
+                          to {
+                            opacity: 1;
+                            transform: translateY(0);
+                          }
+                        }
+                      `}</style>
+                    </span>
+                  );
+                })}
               </h5>
             )}
           </div>
