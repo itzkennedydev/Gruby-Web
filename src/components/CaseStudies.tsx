@@ -28,7 +28,7 @@ const caseStudies = [
   },
   {
     name: "Maria S.",
-    tagline: "Single Mom",
+    tagline: "Single Parent",
     videoSrc:
       "https://framerusercontent.com/assets/PhEaJ5dFs4rUIGQkAeHC3YvY.mp4",
     posterSrc: "",
