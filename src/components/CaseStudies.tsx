@@ -8,7 +8,7 @@ const caseStudies = [
     tagline: "Gruby Founder/College Student",
     videoSrc:
       "https://framerusercontent.com/assets/FZPLFPptCKG59IZKD5USBywVzs8.mp4",
-    posterSrc: "/KennedyHero2.png",
+    posterSrc: "/KennedyHero2.webp",
     posterPosition: "right",
     quote:
       '"I built this because I kept paying $18 for a burrito bowl that costs $6 to make. We all know convenience costs extra, but 3x the price? I want people to see what that convenience is actually costing them."',
@@ -20,7 +20,7 @@ const caseStudies = [
     tagline: "College Student",
     videoSrc:
       "https://framerusercontent.com/assets/tdYuQuj3hfC9WmQtuSzoIuzqZjA.mp4",
-    posterSrc: "/CarsonK.png",
+    posterSrc: "/CarsonK.webp",
     quote:
       '"I was spending like $400 a month on delivery apps. Started using this to meal prep on Sundays and now I spend maybe $180 total. Crazy how much you save when you actually cook."',
     highlight: "Crazy how much you save when you actually cook.",

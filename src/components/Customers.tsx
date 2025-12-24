@@ -22,7 +22,7 @@ export default function Customers() {
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "url(/GrubyGrain.png)",
+          backgroundImage: "url(/GrubyGrain.webp)",
           backgroundSize: "200px 200px",
           opacity: 0.22,
           pointerEvents: "none",
