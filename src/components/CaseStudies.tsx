@@ -16,11 +16,11 @@ const caseStudies = [
     ctaText: "Save on groceries",
   },
   {
-    name: "Tyler K.",
+    name: "Carson K.",
     tagline: "College Student",
     videoSrc:
       "https://framerusercontent.com/assets/tdYuQuj3hfC9WmQtuSzoIuzqZjA.mp4",
-    posterSrc: "",
+    posterSrc: "/CarsonK.png",
     quote:
       '"I was spending like $400 a month on delivery apps. Started using this to meal prep on Sundays and now I spend maybe $180 total. Crazy how much you save when you actually cook."',
     ctaText: "Start meal prepping",
