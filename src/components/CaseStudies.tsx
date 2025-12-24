@@ -23,6 +23,7 @@ const caseStudies = [
     posterSrc: "/CarsonK.png",
     quote:
       '"I was spending like $400 a month on delivery apps. Started using this to meal prep on Sundays and now I spend maybe $180 total. Crazy how much you save when you actually cook."',
+    highlight: "Crazy how much you save when you actually cook.",
     ctaText: "Start meal prepping",
   },
   {
