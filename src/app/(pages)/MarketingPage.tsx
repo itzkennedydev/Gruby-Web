@@ -387,15 +387,15 @@ export default function MarketingPage() {
             />
             {/* Desktop Image */}
             <Image
-              src="/HeroImagen.jpg"
-              alt="Hero background"
+              src="/GrubyHeroDesktop.jpg"
+              alt="Woman cooking homemade burgers in kitchen"
               fill
               priority
-              quality={100}
+              quality={90}
               className="hero-image hidden object-cover sm:block"
               sizes="100vw"
               fetchPriority="high"
-              style={{ transform: "scale(1.15)", transformOrigin: "center bottom", objectPosition: "center top" }}
+              style={{ objectPosition: "center 30%" }}
             />
           </div>
           {/* Gradient overlay - mobile: dark at bottom, desktop: dark on left */}
