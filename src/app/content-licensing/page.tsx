@@ -130,7 +130,7 @@ export default function ContentLicensingPage() {
             >
               <li className="mb-2"><strong>Non-exclusive:</strong> You can still use, license, and share your content elsewhere</li>
               <li className="mb-2"><strong>Worldwide:</strong> Applies globally to match our service availability</li>
-              <li className="mb-2"><strong>Royalty-free:</strong> We don&apos;t pay you for this license (the platform is free to use)</li>
+              <li className="mb-2"><strong>Royalty-free:</strong> No payment is required for this license</li>
               <li className="mb-2"><strong>Sublicensable:</strong> We can authorize service providers to help us display your content</li>
               <li className="mb-2"><strong>Transferable:</strong> In the event of a business transfer, this license transfers with the business</li>
             </ul>

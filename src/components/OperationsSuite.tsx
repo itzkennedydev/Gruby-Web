@@ -234,7 +234,7 @@ export default function OperationsSuite() {
               lineHeight: '24px',
             }}
           >
-            Download Free
+            Download Now
           </Link>
           <Link
             href="#features"

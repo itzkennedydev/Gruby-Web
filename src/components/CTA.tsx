@@ -38,13 +38,13 @@ export default function CTA() {
               href="/demo"
               className="inline-flex h-12 items-center justify-center rounded-full bg-white px-8 font-medium text-black transition-colors hover:bg-gray-100"
             >
-              Get Started Free
+              Get Started
             </Link>
             <Link
-              href="/pricing"
+              href="/faq"
               className="inline-flex h-12 items-center justify-center rounded-full bg-white/10 px-8 font-medium text-white transition-colors hover:bg-white/20"
             >
-              View pricing
+              Learn More
             </Link>
           </div>
         </motion.div>

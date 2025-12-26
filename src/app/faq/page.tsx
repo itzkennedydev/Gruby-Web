@@ -22,9 +22,9 @@ const faqs = [
         answer: 'Download the Gruby app from the App Store or Google Play, create an account, and start importing recipes. Paste any recipe link (TikTok, YouTube, Instagram, or websites) and Gruby AI will extract the ingredients, steps, and nutrition automatically. Set your dietary preferences and budget to get personalized recommendations.',
       },
       {
-        id: 'is-gruby-free',
-        question: 'Is Gruby free to use?',
-        answer: 'Yes! Gruby is completely free. You get full access to recipe import, cooking mode, real grocery prices, meal planning, and our community — no subscriptions or hidden costs.',
+        id: 'what-can-i-do',
+        question: 'What can I do with Gruby?',
+        answer: 'Gruby gives you recipe import from any video or website, step-by-step cooking mode, real grocery prices, meal planning, pantry tracking, and access to our cooking community.',
       },
     ],
   },
@@ -155,18 +155,13 @@ const faqs = [
     ],
   },
   {
-    id: 'pricing',
-    category: 'Pricing',
+    id: 'ai-features',
+    category: 'AI Features',
     questions: [
-      {
-        id: 'free-features',
-        question: 'Is Gruby really free?',
-        answer: 'Yes! Gruby is completely free. We believe saving money shouldn\'t cost money. All features are available to everyone — recipe import, cooking mode, meal planning, grocery price lookup, savings tracking, pantry management, and community access.',
-      },
       {
         id: 'ai-limits',
         question: 'Are there any limits on AI features?',
-        answer: 'To keep our AI sustainable, we have generous daily limits on AI-powered features like recipe generation and post creation. Basic features like meal suggestions, ingredient substitutions, and recipe adjustments are unlimited. Limits reset every day at midnight.',
+        answer: 'To keep our AI sustainable, we have daily limits on AI-powered features like recipe generation and post creation. Basic features like meal suggestions, ingredient substitutions, and recipe adjustments are unlimited. Limits reset every day at midnight.',
       },
     ],
   },
