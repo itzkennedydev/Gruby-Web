@@ -24,7 +24,7 @@ const faqs = [
       {
         id: 'is-gruby-free',
         question: 'Is Gruby free to use?',
-        answer: 'Gruby offers a generous free tier including recipe import, cooking mode, grocery prices, and community access. Advanced AI features are available with Gruby Pro.',
+        answer: 'Yes! Gruby is completely free. You get full access to recipe import, cooking mode, real grocery prices, meal planning, and our community — no subscriptions or hidden costs.',
       },
     ],
   },
