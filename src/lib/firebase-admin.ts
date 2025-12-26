@@ -68,6 +68,14 @@ export function getStorage() {
   return admin.storage();
 }
 
+/**
+ * Get Messaging instance for FCM push notifications (initializes Firebase if needed)
+ */
+export function getMessaging() {
+  initializeFirebaseAdmin();
+  return admin.messaging();
+}
+
 // Legacy exports for backward compatibility
 export const db = new Proxy({} as admin.firestore.Firestore, {
   get(_target, prop) {

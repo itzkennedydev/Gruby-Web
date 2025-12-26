@@ -1,10 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
@@ -79,21 +76,21 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
     switch (status) {
       case 'pending':
         return (
-          <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-            <Clock className="w-3 h-3 mr-1" /> Pending
-          </Badge>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+            <Clock className="w-3 h-3" /> Pending
+          </span>
         );
       case 'approved':
         return (
-          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-            <Check className="w-3 h-3 mr-1" /> Approved
-          </Badge>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-900 text-white">
+            <Check className="w-3 h-3" /> Approved
+          </span>
         );
       case 'rejected':
         return (
-          <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-            <X className="w-3 h-3 mr-1" /> Rejected
-          </Badge>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-600">
+            <X className="w-3 h-3" /> Rejected
+          </span>
         );
       default:
         return null;
@@ -113,27 +110,38 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
     <>
       <div className="space-y-4">
         {applications.map((app) => (
-          <Card key={app.id} className="overflow-hidden">
-            <CardHeader className="pb-2">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage src={app.userPhotoURL} />
-                    <AvatarFallback className="bg-orange-100 text-orange-600">
+          <div
+            key={app.id}
+            className="bg-white border border-gray-200 rounded-xl p-5 hover:border-gray-300 transition-colors"
+          >
+            {/* Header */}
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                {app.userPhotoURL ? (
+                  <img
+                    src={app.userPhotoURL}
+                    alt={app.userDisplayName}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-semibold text-gray-600">
                       {getInitials(app.userDisplayName)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {app.userDisplayName}
-                    </h3>
-                    <p className="text-sm text-gray-500">{app.userEmail}</p>
+                    </span>
                   </div>
+                )}
+                <div>
+                  <h3 className="font-medium text-gray-900">
+                    {app.userDisplayName}
+                  </h3>
+                  <p className="text-sm text-gray-500">{app.userEmail}</p>
                 </div>
-                {getStatusBadge(app.status)}
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              {getStatusBadge(app.status)}
+            </div>
+
+            {/* Content */}
+            <div className="space-y-4">
               {/* Experience */}
               <div className="flex items-center gap-2 text-sm">
                 <ChefHat className="w-4 h-4 text-gray-400" />
@@ -160,9 +168,12 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {app.specialties.map((specialty) => (
-                      <Badge key={specialty} variant="secondary">
+                      <span
+                        key={specialty}
+                        className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium"
+                      >
                         {CUISINE_SPECIALTY_LABELS[specialty]}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -174,7 +185,7 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
                   <p className="text-sm font-medium text-gray-700 mb-2">
                     Social Links:
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-3">
                     {app.socialLinks
                       .filter((link) => link.trim())
                       .map((link, index) => (
@@ -183,7 +194,7 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
                           href={link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                          className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 underline"
                         >
                           <ExternalLink className="w-3 h-3" />
                           {new URL(link).hostname}
@@ -194,7 +205,7 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
               )}
 
               {/* Timestamps */}
-              <div className="text-xs text-gray-400 pt-2 border-t">
+              <div className="text-xs text-gray-400 pt-3 border-t border-gray-100">
                 Applied: {new Date(app.createdAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
@@ -211,42 +222,41 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
 
               {/* Rejection Reason (if rejected) */}
               {app.status === 'rejected' && app.rejectionReason && (
-                <div className="bg-red-50 p-3 rounded-lg border border-red-100">
-                  <p className="text-sm font-medium text-red-700 mb-1">
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  <p className="text-sm font-medium text-gray-700 mb-1">
                     Rejection Reason:
                   </p>
-                  <p className="text-sm text-red-600">{app.rejectionReason}</p>
+                  <p className="text-sm text-gray-600">{app.rejectionReason}</p>
                 </div>
               )}
 
               {/* Action Buttons (only for pending) */}
               {app.status === 'pending' && (
-                <div className="flex gap-2 pt-2">
-                  <Button
-                    variant="outline"
-                    className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                <div className="flex gap-3 pt-2">
+                  <button
                     onClick={() => openRejectModal(app)}
                     disabled={processingId === app.id}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
                   >
-                    <X className="w-4 h-4 mr-2" />
+                    <X className="w-4 h-4" />
                     Reject
-                  </Button>
-                  <Button
-                    className="flex-1 bg-green-600 hover:bg-green-700"
+                  </button>
+                  <button
                     onClick={() => onApprove(app)}
                     disabled={processingId === app.id}
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
                   >
                     {processingId === app.id ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
-                      <Check className="w-4 h-4 mr-2" />
+                      <Check className="w-4 h-4" />
                     )}
                     Approve
-                  </Button>
+                  </button>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
 
@@ -275,9 +285,9 @@ export function ApplicationsList({ applications }: ApplicationsListProps) {
               Cancel
             </Button>
             <Button
-              variant="destructive"
               onClick={onReject}
               disabled={!rejectionReason.trim() || processingId !== null}
+              className="bg-gray-900 hover:bg-gray-800"
             >
               {processingId !== null ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />

@@ -160,18 +160,13 @@ const faqs = [
     questions: [
       {
         id: 'free-features',
-        question: 'What features are free?',
-        answer: 'Gruby offers a generous free tier including recipe import from any website, cooking mode with step-by-step guidance, grocery price lookup, savings tracking, and access to the community. We want everyone to be able to cook smarter and save money.',
+        question: 'Is Gruby really free?',
+        answer: 'Yes! Gruby is completely free. We believe saving money shouldn\'t cost money. All features are available to everyone — recipe import, cooking mode, meal planning, grocery price lookup, savings tracking, pantry management, and community access.',
       },
       {
-        id: 'premium-features',
-        question: 'What features require a subscription?',
-        answer: 'Gruby AI features — including the AI Budget Coach, smart meal planning, and unlimited AI-powered recipe recommendations — are available with a Gruby Pro subscription. This helps us cover the costs of providing advanced AI capabilities.',
-      },
-      {
-        id: 'pricing-details',
-        question: 'How much does Gruby Pro cost?',
-        answer: "We're finalizing our pricing structure. Join the waitlist to be notified when Gruby launches and to receive early-bird pricing offers.",
+        id: 'ai-limits',
+        question: 'Are there any limits on AI features?',
+        answer: 'To keep our AI sustainable, we have generous daily limits on AI-powered features like recipe generation and post creation. Basic features like meal suggestions, ingredient substitutions, and recipe adjustments are unlimited. Limits reset every day at midnight.',
       },
     ],
   },

@@ -387,7 +387,7 @@ export default function MarketingPage() {
             />
             {/* Desktop Image */}
             <Image
-              src="/GrubyHeroDesktop.jpg"
+              src="/GrubyHeroDesktop.webp"
               alt="Woman cooking homemade burgers in kitchen"
               fill
               priority

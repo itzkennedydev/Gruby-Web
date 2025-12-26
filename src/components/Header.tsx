@@ -33,7 +33,11 @@ const HIDDEN_HEADER_ROUTES = [
   '/location-services',
   '/dmca',
   '/accessibility',
+  '/admin',
 ];
+
+// Routes that start with these prefixes should also be hidden
+const HIDDEN_HEADER_PREFIXES = ['/admin'];
 
 const Header = () => {
   const pathname = usePathname();
@@ -50,8 +54,9 @@ const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Hide header on certain routes
-  const shouldHideHeader = HIDDEN_HEADER_ROUTES.includes(pathname);
+  // Hide header on certain routes or prefixes
+  const shouldHideHeader = HIDDEN_HEADER_ROUTES.includes(pathname) ||
+    HIDDEN_HEADER_PREFIXES.some(prefix => pathname?.startsWith(prefix));
 
   useEffect(() => {
     // Skip scroll handling if header is hidden
