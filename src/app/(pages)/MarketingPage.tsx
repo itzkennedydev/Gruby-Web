@@ -395,7 +395,7 @@ export default function MarketingPage() {
               className="hero-image hidden object-cover sm:block"
               sizes="100vw"
               fetchPriority="high"
-              style={{ objectPosition: "center 30%" }}
+              style={{ objectPosition: "center 15%" }}
             />
           </div>
           {/* Gradient overlay - mobile: dark at bottom, desktop: dark on left */}
