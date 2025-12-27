@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { useEffect, useRef, memo } from "react";
 
 const recipes = [
   {
@@ -62,7 +63,7 @@ const recipes = [
   },
 ];
 
-function RecipeCard({ recipe }: { recipe: (typeof recipes)[0] }) {
+const RecipeCard = memo(function RecipeCard({ recipe }: { recipe: (typeof recipes)[0] }) {
   return (
     <div
       style={{
@@ -78,18 +79,13 @@ function RecipeCard({ recipe }: { recipe: (typeof recipes)[0] }) {
       }}
     >
       {/* Background image */}
-      <img
+      <Image
         src={recipe.image}
         alt={recipe.title}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center",
-        }}
+        fill
+        sizes="360px"
+        className="object-cover object-center"
+        loading="lazy"
       />
       {/* Gradient overlay */}
       <div
@@ -179,7 +175,7 @@ function RecipeCard({ recipe }: { recipe: (typeof recipes)[0] }) {
       </div>
     </div>
   );
-}
+});
 
 export default function Templates() {
   const carouselRef = useRef<HTMLDivElement>(null);

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function Customers() {
   return (
     <section
@@ -204,18 +206,16 @@ export default function Customers() {
                   borderRadius: "16px",
                   overflow: "hidden",
                   aspectRatio: "1 / 1",
+                  position: "relative",
                 }}
               >
-                <img
+                <Image
                   src="/savings-cooking-1.jpg"
                   alt="Home cooking savings"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
+                  fill
+                  sizes="284px"
+                  className="object-cover object-center"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -417,18 +417,16 @@ export default function Customers() {
                   borderRadius: "16px",
                   overflow: "hidden",
                   aspectRatio: "1 / 1",
+                  position: "relative",
                 }}
               >
-                <img
+                <Image
                   src="/savings-cooking-2.jpg"
                   alt="Home cooking"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
+                  fill
+                  sizes="284px"
+                  className="object-cover object-center"
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -453,18 +451,16 @@ export default function Customers() {
                   borderRadius: "16px",
                   overflow: "hidden",
                   aspectRatio: "1 / 1",
+                  position: "relative",
                 }}
               >
-                <img
+                <Image
                   src="/savings-cooking-3.jpg"
                   alt="Cooking at home"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
+                  fill
+                  sizes="284px"
+                  className="object-cover object-center"
+                  loading="lazy"
                 />
               </div>
 

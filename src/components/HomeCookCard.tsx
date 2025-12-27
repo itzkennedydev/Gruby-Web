@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react';
+import React, { memo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star } from 'lucide-react';
 
 interface HomeCook {
@@ -26,7 +27,7 @@ interface HomeCookCardProps {
   className?: string;
 }
 
-const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, className = '' }) => {
+const HomeCookCard: React.FC<HomeCookCardProps> = memo(function HomeCookCard({ homeCook, className = '' }) {
   // For demo, stub distance and time
   const distance = '7.7 mi';
   const time = '37 min';
@@ -41,10 +42,13 @@ const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, className = '' })
       {/* Card: only the image is inside the rounded container */}
       <div className="rounded-2xl overflow-hidden bg-white border border-gray-100">
         <div className="relative w-full aspect-[21/9] bg-gray-100">
-          <img
+          <Image
             src={images[currentImageIndex]}
             alt={homeCook.name}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+            loading="lazy"
           />
           {/* Carousel dots */}
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
@@ -76,6 +80,6 @@ const HomeCookCard: React.FC<HomeCookCardProps> = ({ homeCook, className = '' })
       </div>
     </Link>
   );
-};
+});
 
 export default HomeCookCard;

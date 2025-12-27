@@ -558,6 +558,12 @@ img {
   content-visibility: auto;
 }
 
+/* Content visibility optimization for below-the-fold sections */
+section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

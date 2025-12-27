@@ -4,9 +4,12 @@ import { Pool } from "pg";
 // This route relies on query params; force dynamic rendering to avoid static errors
 export const dynamic = "force-dynamic";
 
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is required");
+}
+
 const pool = new Pool({
-  connectionString:
-    "postgres://74b017d6a8db709aaeb335032f78ad5b1e35f82ebb2137ddc59744c7ea18406b:sk_AtedbOlZMmSa-TTeiqs-y@db.prisma.io:5432/postgres?sslmode=require",
+  connectionString: process.env.DATABASE_URL,
 });
 
 export async function GET(request: NextRequest) {

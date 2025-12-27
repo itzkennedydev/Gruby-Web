@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/firebase-admin';
+import { withAdminAuth, AdminContext } from '@/lib/admin-middleware';
 
 interface Gathering {
   id: string;
@@ -29,7 +30,7 @@ interface Gathering {
 }
 
 // GET - List all gatherings with pagination
-export async function GET(request: NextRequest) {
+async function handleGet(request: NextRequest, _context: AdminContext) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '25');
@@ -138,7 +139,7 @@ export async function GET(request: NextRequest) {
 }
 
 // PATCH - Update gathering status
-export async function PATCH(request: NextRequest) {
+async function handlePatch(request: NextRequest, _context: AdminContext) {
   try {
     const body = await request.json();
     const { gatheringId, updates } = body;
@@ -186,7 +187,7 @@ export async function PATCH(request: NextRequest) {
 }
 
 // DELETE - Delete gathering
-export async function DELETE(request: NextRequest) {
+async function handleDelete(request: NextRequest, _context: AdminContext) {
   try {
     const { searchParams } = new URL(request.url);
     const gatheringId = searchParams.get('gatheringId');
@@ -237,3 +238,8 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
+
+// Export wrapped handlers with admin authentication
+export const GET = withAdminAuth(handleGet);
+export const PATCH = withAdminAuth(handlePatch);
+export const DELETE = withAdminAuth(handleDelete);

@@ -2,9 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import { sendWaitlistConfirmation, sendAdminNotification } from "@/lib/email";
 
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is required");
+}
+
 const pool = new Pool({
-  connectionString:
-    "postgres://74b017d6a8db709aaeb335032f78ad5b1e35f82ebb2137ddc59744c7ea18406b:sk_AtedbOlZMmSa-TTeiqs-y@db.prisma.io:5432/postgres?sslmode=require",
+  connectionString: process.env.DATABASE_URL,
 });
 
 export async function POST(request: NextRequest) {

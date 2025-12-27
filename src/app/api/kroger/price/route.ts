@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const KROGER_CLIENT_ID = process.env.KROGER_CLIENT_ID || process.env.NEXT_PUBLIC_KROGER_CLIENT_ID || 'gruby-bbc94mcp';
-const KROGER_CLIENT_SECRET = process.env.KROGER_CLIENT_SECRET || 'BGzjxxeOmggxu6gE0qOczAZo7nFwexCsfSTaAmxF';
+const KROGER_CLIENT_ID = process.env.KROGER_CLIENT_ID || process.env.NEXT_PUBLIC_KROGER_CLIENT_ID;
+const KROGER_CLIENT_SECRET = process.env.KROGER_CLIENT_SECRET;
+
+if (!KROGER_CLIENT_ID || !KROGER_CLIENT_SECRET) {
+  console.warn('Kroger API credentials not configured. Price lookups will use fallback pricing.');
+}
 
 const API_BASE = 'https://api.kroger.com/v1';
 const AUTH_URL = 'https://api.kroger.com/v1/connect/oauth2/token';
@@ -9,10 +13,32 @@ const AUTH_URL = 'https://api.kroger.com/v1/connect/oauth2/token';
 // Token cache (in-memory for server)
 let tokenCache: { token: string; expiresAt: number } | null = null;
 
+// Price cache with TTL of 1 hour (prices don't change that frequently)
+const PRICE_CACHE_TTL = 60 * 60 * 1000; // 1 hour in milliseconds
+const priceCache = new Map<string, { data: any; expiresAt: number }>();
+
+function getCachedPrice(key: string) {
+  const cached = priceCache.get(key);
+  if (cached && Date.now() < cached.expiresAt) {
+    return cached.data;
+  }
+  priceCache.delete(key);
+  return null;
+}
+
+function setCachedPrice(key: string, data: any) {
+  priceCache.set(key, { data, expiresAt: Date.now() + PRICE_CACHE_TTL });
+}
+
 /**
  * Get OAuth access token
  */
 async function getAccessToken(): Promise<string | null> {
+  // Check if credentials are configured
+  if (!KROGER_CLIENT_ID || !KROGER_CLIENT_SECRET) {
+    return null;
+  }
+
   // Check cache
   if (tokenCache && Date.now() < tokenCache.expiresAt - 60000) {
     return tokenCache.token;
@@ -58,11 +84,20 @@ async function getAccessToken(): Promise<string | null> {
 }
 
 /**
- * Search for a product in Kroger
+ * Search for a product in Kroger with caching
  */
-async function searchKrogerProduct(query: string, storeId: string = '01400929') {
+const DEFAULT_STORE_ID = process.env.DEFAULT_STORE_LOCATION_ID || '01400929';
+
+async function searchKrogerProduct(query: string, storeId: string = DEFAULT_STORE_ID) {
+  // Check cache first
+  const cacheKey = `${query.toLowerCase().trim()}-${storeId}`;
+  const cachedResult = getCachedPrice(cacheKey);
+  if (cachedResult !== null) {
+    return cachedResult;
+  }
+
   const token = await getAccessToken();
-  
+
   if (!token) {
     // Authentication failed, return null to allow fallback
     return null;
@@ -92,25 +127,31 @@ async function searchKrogerProduct(query: string, storeId: string = '01400929') 
   const data = await response.json();
 
   if (!data.data || data.data.length === 0) {
+    setCachedPrice(cacheKey, null);
     return null;
   }
 
   // Find first product with price
-  const productWithPrice = data.data.find((p: any) => 
+  const productWithPrice = data.data.find((p: any) =>
     p.items?.[0]?.price?.regular
   );
 
   if (!productWithPrice) {
+    setCachedPrice(cacheKey, null);
     return null;
   }
 
   const item = productWithPrice.items[0];
-  return {
+  const result = {
     name: productWithPrice.description,
     price: item.price.regular,
     promoPrice: item.price.promo,
     brand: productWithPrice.brand,
   };
+
+  // Cache the result
+  setCachedPrice(cacheKey, result);
+  return result;
 }
 
 export async function POST(request: NextRequest) {
@@ -131,7 +172,7 @@ export async function POST(request: NextRequest) {
     // Search for each ingredient
     for (const ingredient of ingredients) {
       try {
-        const product = await searchKrogerProduct(ingredient, storeId || '01400929');
+        const product = await searchKrogerProduct(ingredient, storeId || DEFAULT_STORE_ID);
         if (product && product.price) {
           prices[ingredient] = product.price;
           foundProducts[ingredient] = product;
@@ -169,6 +210,11 @@ export async function POST(request: NextRequest) {
       foundPrices,
       totalIngredients: ingredients.length,
       ingredientPrices: validPrices,
+    }, {
+      headers: {
+        // Cache for 30 minutes on client, allow stale for 1 hour
+        'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=3600',
+      },
     });
   } catch (error: any) {
     console.error('Kroger API route error:', error);

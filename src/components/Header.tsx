@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -54,9 +54,12 @@ const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Hide header on certain routes or prefixes
-  const shouldHideHeader = HIDDEN_HEADER_ROUTES.includes(pathname) ||
-    HIDDEN_HEADER_PREFIXES.some(prefix => pathname?.startsWith(prefix));
+  // Hide header on certain routes or prefixes - memoized
+  const shouldHideHeader = useMemo(() =>
+    HIDDEN_HEADER_ROUTES.includes(pathname) ||
+    HIDDEN_HEADER_PREFIXES.some(prefix => pathname?.startsWith(prefix)),
+    [pathname]
+  );
 
   useEffect(() => {
     // Skip scroll handling if header is hidden
@@ -83,7 +86,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const handleBetaSignup = async (e: React.FormEvent) => {
+  const handleBetaSignup = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!localEmail.trim()) return;
 
@@ -96,7 +99,7 @@ const Header = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           email: localEmail.trim(),
           name: localName.trim() || "",
         }),
@@ -133,7 +136,15 @@ const Header = () => {
     } finally {
       dispatch(setSubmitting(false));
     }
-  };
+  }, [dispatch, localEmail, localName]);
+
+  const handleOpenWaitlistModal = useCallback(() => {
+    dispatch(setWaitlistModalOpen(true));
+  }, [dispatch]);
+
+  const handleSetWaitlistModalOpen = useCallback((open: boolean) => {
+    dispatch(setWaitlistModalOpen(open));
+  }, [dispatch]);
 
   // Don't render header on hidden routes
   if (shouldHideHeader) {
@@ -184,7 +195,7 @@ const Header = () => {
 
             {/* CTA Button */}
             <Button
-              onClick={() => dispatch(setWaitlistModalOpen(true))}
+              onClick={handleOpenWaitlistModal}
               className="font-semibold"
               style={{
                 fontSize: "clamp(0.875rem, 1vw, 0.9375rem)",
@@ -199,7 +210,7 @@ const Header = () => {
       {/* Join Waitlist Modal */}
       <WaitlistModal
         waitlistModalOpen={waitlistModalOpen}
-        setWaitlistModalOpen={(open) => dispatch(setWaitlistModalOpen(open))}
+        setWaitlistModalOpen={handleSetWaitlistModalOpen}
         isSubmitted={isSubmitted}
         isSubmitting={isSubmitting}
         email={email}

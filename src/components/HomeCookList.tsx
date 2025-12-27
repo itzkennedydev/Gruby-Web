@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { HomeCook } from '@/types';
@@ -12,10 +12,10 @@ interface HomeCookCardProps {
   homeCook: HomeCook;
 }
 
-const HomeCookCard: FC<HomeCookCardProps> = ({ homeCook }) => {
-  const homeCookImage = homeCook.image ?? DEFAULT_IMAGE; 
-  const homeCookName = homeCook.name ?? 'Unknown Home Cook'; 
-  const homeCookDescription = homeCook.bio ?? NO_DESCRIPTION; 
+const HomeCookCard: FC<HomeCookCardProps> = memo(function HomeCookCard({ homeCook }) {
+  const homeCookImage = homeCook.image ?? DEFAULT_IMAGE;
+  const homeCookName = homeCook.name ?? 'Unknown Home Cook';
+  const homeCookDescription = homeCook.bio ?? NO_DESCRIPTION;
 
   return (
     <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
@@ -24,9 +24,10 @@ const HomeCookCard: FC<HomeCookCardProps> = ({ homeCook }) => {
           <Image
             src={homeCookImage}
             alt={homeCookName}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-t-lg"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="rounded-t-lg object-cover"
+            loading="lazy"
           />
         </div>
         <div className="p-4">
@@ -38,7 +39,7 @@ const HomeCookCard: FC<HomeCookCardProps> = ({ homeCook }) => {
       </Link>
     </div>
   );
-};
+});
 
 // Main HomeCookList component
 interface HomeCookListProps {

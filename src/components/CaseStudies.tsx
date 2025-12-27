@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, memo } from "react";
+import Image from "next/image";
 
 const caseStudies = [
   {
@@ -48,7 +49,7 @@ const caseStudies = [
   },
 ];
 
-function CaseStudyCard({
+const CaseStudyCard = memo(function CaseStudyCard({
   study,
   isExpanded,
   onHover,
@@ -104,16 +105,13 @@ function CaseStudyCard({
       >
         {/* Poster image as fallback */}
         {study.posterSrc && (
-          <img
+          <Image
             src={study.posterSrc}
             alt={study.name}
-            className="case-study-image"
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+            loading="lazy"
           />
         )}
 
@@ -306,7 +304,7 @@ function CaseStudyCard({
       </div>
     </div>
   );
-}
+});
 
 export default function CaseStudies() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
