@@ -28,41 +28,70 @@ async function handler(req: NextRequest, context: AdminContext) {
   const db = getDb();
 
   try {
-    // Build query
-    let query = db.collection('adminLogs')
-      .orderBy('timestamp', 'desc')
-      .limit(limit);
+    // Build query - try with timestamp ordering first, fallback to createdAt
+    let snapshot;
+    try {
+      let query = db.collection('adminLogs')
+        .orderBy('timestamp', 'desc')
+        .limit(limit);
 
-    if (level && ['info', 'warn', 'error', 'debug'].includes(level)) {
-      query = query.where('level', '==', level);
-    }
+      if (level && ['info', 'warn', 'error', 'debug'].includes(level)) {
+        query = query.where('level', '==', level);
+      }
 
-    if (source) {
-      query = query.where('source', '==', source);
-    }
+      if (source) {
+        query = query.where('source', '==', source);
+      }
 
-    if (startAfter) {
-      const startAfterDoc = await db.collection('adminLogs').doc(startAfter).get();
-      if (startAfterDoc.exists) {
-        query = query.startAfter(startAfterDoc);
+      if (startAfter) {
+        const startAfterDoc = await db.collection('adminLogs').doc(startAfter).get();
+        if (startAfterDoc.exists) {
+          query = query.startAfter(startAfterDoc);
+        }
+      }
+
+      snapshot = await query.get();
+    } catch (orderError) {
+      // Fallback: try with createdAt field or no ordering
+      console.log('Falling back to createdAt ordering or no order');
+      try {
+        let query = db.collection('adminLogs')
+          .orderBy('createdAt', 'desc')
+          .limit(limit);
+        snapshot = await query.get();
+      } catch {
+        // Last resort: no ordering
+        let query = db.collection('adminLogs').limit(limit);
+        snapshot = await query.get();
       }
     }
 
-    const snapshot = await query.get();
-
-    const logs: LogEntry[] = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      timestamp: doc.data().timestamp?.toDate?.()?.toISOString() || doc.data().timestamp,
-    })) as LogEntry[];
+    const logs: LogEntry[] = snapshot.docs.map(doc => {
+      const data = doc.data();
+      // Handle various timestamp field names
+      const ts = data.timestamp || data.createdAt || data.time || data.date;
+      return {
+        id: doc.id,
+        level: data.level || data.type || 'info',
+        message: data.message || data.msg || data.text || data.description || 'No message',
+        timestamp: ts?.toDate?.()?.toISOString() || (typeof ts === 'string' ? ts : new Date().toISOString()),
+        source: data.source || data.origin || data.component || 'unknown',
+        metadata: data.metadata || data.data || data.details,
+        userId: data.userId || data.user_id || data.uid,
+        userEmail: data.userEmail || data.user_email || data.email,
+      };
+    }) as LogEntry[];
 
     // Get log sources for filtering
-    const sourcesSnapshot = await db.collection('adminLogs')
-      .orderBy('source')
-      .limit(100)
-      .get();
-
-    const sources = [...new Set(sourcesSnapshot.docs.map(d => d.data().source).filter(Boolean))];
+    let sources: string[] = [];
+    try {
+      const sourcesSnapshot = await db.collection('adminLogs')
+        .limit(100)
+        .get();
+      sources = [...new Set(sourcesSnapshot.docs.map(d => d.data().source || d.data().origin || d.data().component).filter(Boolean))];
+    } catch {
+      // Ignore sources query failure
+    }
 
     // Get log counts by level
     const levelCounts = {

@@ -76,21 +76,43 @@ async function handler(req: NextRequest, context: AdminContext) {
       );
     }
 
-    // Get counts
+    // Get counts - try multiple field names for compatibility
     const totalUsersSnapshot = await db.collection('users').count().get();
     const totalUsers = totalUsersSnapshot.data().count;
 
-    const chefsSnapshot = await db.collection('users')
-      .where('isChef', '==', true)
-      .count()
-      .get();
-    const totalChefs = chefsSnapshot.data().count;
+    // Count creators - try isChef, isCreator, or role === 'creator'
+    let totalChefs = 0;
+    try {
+      const chefsSnapshot = await db.collection('users')
+        .where('isChef', '==', true)
+        .count()
+        .get();
+      totalChefs = chefsSnapshot.data().count;
+    } catch {
+      try {
+        const creatorsSnapshot = await db.collection('users')
+          .where('isCreator', '==', true)
+          .count()
+          .get();
+        totalChefs = creatorsSnapshot.data().count;
+      } catch {
+        // Count from fetched users as fallback
+        totalChefs = users.filter(u => u.isChef).length;
+      }
+    }
 
-    const adminsSnapshot = await db.collection('users')
-      .where('role', '==', 'admin')
-      .count()
-      .get();
-    const totalAdmins = adminsSnapshot.data().count;
+    // Count admins
+    let totalAdmins = 0;
+    try {
+      const adminsSnapshot = await db.collection('users')
+        .where('role', '==', 'admin')
+        .count()
+        .get();
+      totalAdmins = adminsSnapshot.data().count;
+    } catch {
+      // Count from fetched users as fallback
+      totalAdmins = users.filter(u => u.role === 'admin').length;
+    }
 
     return createSuccessResponse({
       users,
