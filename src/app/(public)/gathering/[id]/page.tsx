@@ -649,7 +649,7 @@ const styles: Record<string, React.CSSProperties> = {
   heroPlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#222222',
+    backgroundColor: '#E8E8E8',
   },
   heroGradient: {
     position: 'absolute',
