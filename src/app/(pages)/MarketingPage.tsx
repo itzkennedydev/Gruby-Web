@@ -496,10 +496,10 @@ export default function MarketingPage() {
               <div className="phone-mockup-content z-10 order-1 flex w-full max-w-xl flex-shrink-0 flex-col items-start justify-center px-4 pb-[380px] sm:px-0 sm:pb-[420px] md:pb-[480px] lg:-mt-28 lg:ml-[52%] lg:pb-0 xl:ml-[54%]">
                 {/* Heading */}
                 <h2 className="mb-5 text-left text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                  Cook smarter, not harder
+                  Your AI-powered kitchen companion
                 </h2>
                 <p className="mb-8 text-left text-lg leading-relaxed text-white/60 sm:text-xl">
-                  Real grocery prices. Step-by-step guidance. Money saved on every meal.
+                  Real grocery prices. Guided cooking. Smart savings on every meal.
                 </p>
 
                 {/* Rotating Bullet Points */}
