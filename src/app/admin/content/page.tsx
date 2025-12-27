@@ -362,7 +362,7 @@ export default function ContentPage() {
                     </button>
 
                     {showActionMenu === item.id && (
-                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <button
                           onClick={() => {
                             setSelectedItem(item);
@@ -590,7 +590,7 @@ export default function ContentPage() {
       {/* Click outside to close */}
       {showActionMenu && (
         <div
-          className="fixed inset-0 z-0"
+          className="fixed inset-0 z-40"
           onClick={() => setShowActionMenu(null)}
         />
       )}

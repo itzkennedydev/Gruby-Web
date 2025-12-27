@@ -14,17 +14,9 @@ import {
   LogOut,
   Shield,
   Loader2,
-  Activity,
   Terminal,
-  ScrollText,
   FileText,
   Flag,
-  MessageSquare,
-  BarChart3,
-  ToggleLeft,
-  Bell,
-  Trash2,
-  Calendar,
 } from 'lucide-react';
 
 // Approved admin emails
@@ -37,26 +29,17 @@ interface AdminLayoutProps {
 }
 
 const navLinks = [
-  // Overview
+  // Main
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, section: 'main' },
-  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3, section: 'main' },
+  { href: '/admin/users', label: 'Users', icon: Users, section: 'main' },
   { href: '/admin/creator-applications', label: 'Applications', icon: ClipboardList, section: 'main' },
-  // Moderation
-  { href: '/admin/content', label: 'Content', icon: FileText, section: 'moderation' },
-  { href: '/admin/events', label: 'Events', icon: Calendar, section: 'moderation' },
-  { href: '/admin/reports', label: 'Reports', icon: Flag, section: 'moderation' },
-  { href: '/admin/feedback', label: 'Feedback', icon: MessageSquare, section: 'moderation' },
-  // Developer
-  { href: '/admin/monitoring', label: 'Monitoring', icon: Activity, section: 'developer' },
-  { href: '/admin/logs', label: 'Logs', icon: ScrollText, section: 'developer' },
-  { href: '/admin/database', label: 'Database', icon: Database, section: 'developer' },
-  { href: '/admin/tools', label: 'Dev Tools', icon: Terminal, section: 'developer' },
-  // Management
-  { href: '/admin/users', label: 'Users', icon: Users, section: 'management' },
-  { href: '/admin/features', label: 'Feature Flags', icon: ToggleLeft, section: 'management' },
-  { href: '/admin/notifications', label: 'Notifications', icon: Bell, section: 'management' },
-  { href: '/admin/cleanup', label: 'Data Cleanup', icon: Trash2, section: 'management' },
-  { href: '/admin/settings', label: 'Settings', icon: Settings, section: 'management' },
+  // Content
+  { href: '/admin/content', label: 'Content', icon: FileText, section: 'content' },
+  { href: '/admin/reports', label: 'Reports', icon: Flag, section: 'content' },
+  // System
+  { href: '/admin/database', label: 'Database', icon: Database, section: 'system' },
+  { href: '/admin/tools', label: 'Dev Tools', icon: Terminal, section: 'system' },
+  { href: '/admin/settings', label: 'Settings', icon: Settings, section: 'system' },
 ];
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
@@ -206,12 +189,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className="flex-1 mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="flex gap-8">
           {/* Sidebar Navigation */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
+          <aside className="hidden lg:block w-56 flex-shrink-0">
             <nav className="sticky top-24 space-y-6">
               {/* Main Section */}
               <div className="space-y-1">
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">
-                  Overview
+                  Main
                 </p>
                 {navLinks.filter(l => l.section === 'main').map((link) => {
                   const isActive = pathname === link.href ||
@@ -234,12 +217,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 })}
               </div>
 
-              {/* Moderation Section */}
+              {/* Content Section */}
               <div className="space-y-1">
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">
-                  Moderation
+                  Content
                 </p>
-                {navLinks.filter(l => l.section === 'moderation').map((link) => {
+                {navLinks.filter(l => l.section === 'content').map((link) => {
                   const isActive = pathname === link.href ||
                     (link.href !== '/admin' && pathname?.startsWith(link.href));
                   const Icon = link.icon;
@@ -260,38 +243,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 })}
               </div>
 
-              {/* Developer Section */}
+              {/* System Section */}
               <div className="space-y-1">
                 <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">
-                  Developer
+                  System
                 </p>
-                {navLinks.filter(l => l.section === 'developer').map((link) => {
-                  const isActive = pathname === link.href ||
-                    (link.href !== '/admin' && pathname?.startsWith(link.href));
-                  const Icon = link.icon;
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors ${
-                        isActive
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      {link.label}
-                    </Link>
-                  );
-                })}
-              </div>
-
-              {/* Management Section */}
-              <div className="space-y-1">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-3">
-                  Management
-                </p>
-                {navLinks.filter(l => l.section === 'management').map((link) => {
+                {navLinks.filter(l => l.section === 'system').map((link) => {
                   const isActive = pathname === link.href ||
                     (link.href !== '/admin' && pathname?.startsWith(link.href));
                   const Icon = link.icon;
@@ -332,23 +289,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           }}
           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm"
         >
-          <optgroup label="Overview">
+          <optgroup label="Main">
             {navLinks.filter(l => l.section === 'main').map((link) => (
               <option key={link.href} value={link.href}>{link.label}</option>
             ))}
           </optgroup>
-          <optgroup label="Moderation">
-            {navLinks.filter(l => l.section === 'moderation').map((link) => (
+          <optgroup label="Content">
+            {navLinks.filter(l => l.section === 'content').map((link) => (
               <option key={link.href} value={link.href}>{link.label}</option>
             ))}
           </optgroup>
-          <optgroup label="Developer">
-            {navLinks.filter(l => l.section === 'developer').map((link) => (
-              <option key={link.href} value={link.href}>{link.label}</option>
-            ))}
-          </optgroup>
-          <optgroup label="Management">
-            {navLinks.filter(l => l.section === 'management').map((link) => (
+          <optgroup label="System">
+            {navLinks.filter(l => l.section === 'system').map((link) => (
               <option key={link.href} value={link.href}>{link.label}</option>
             ))}
           </optgroup>
