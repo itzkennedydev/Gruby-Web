@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   FileText,
   Search,
@@ -70,6 +71,8 @@ export default function ContentPage() {
   const [showActionMenu, setShowActionMenu] = useState<string | null>(null);
   const [actionModal, setActionModal] = useState<{ item: ContentItem; action: string } | null>(null);
   const [reason, setReason] = useState('');
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const fetchContent = useCallback(async (append = false) => {
     if (!append) setLoading(true);
@@ -122,6 +125,7 @@ export default function ContentPage() {
         setActionModal(null);
         setReason('');
         setShowActionMenu(null);
+        setMenuPosition(null);
       }
     } catch (error) {
       console.error('Action failed:', error);
@@ -286,7 +290,7 @@ export default function ContentPage() {
       </div>
 
       {/* Content List */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-xl">
         {items.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
@@ -353,90 +357,31 @@ export default function ContentPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="relative flex-shrink-0">
+                  <div className="flex-shrink-0">
                     <button
-                      onClick={() => setShowActionMenu(showActionMenu === item.id ? null : item.id)}
+                      ref={(el) => {
+                        if (el) buttonRefs.current.set(item.id, el);
+                      }}
+                      onClick={() => {
+                        if (showActionMenu === item.id) {
+                          setShowActionMenu(null);
+                          setMenuPosition(null);
+                        } else {
+                          const button = buttonRefs.current.get(item.id);
+                          if (button) {
+                            const rect = button.getBoundingClientRect();
+                            setMenuPosition({
+                              top: rect.bottom + 4,
+                              left: rect.right - 192, // 192 = menu width (w-48)
+                            });
+                          }
+                          setShowActionMenu(item.id);
+                        }
+                      }}
                       className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       <MoreVertical className="w-4 h-4 text-gray-500" />
                     </button>
-
-                    {showActionMenu === item.id && (
-                      <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                        <button
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setShowActionMenu(null);
-                          }}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                        >
-                          <Eye className="w-4 h-4" />
-                          View Details
-                        </button>
-                        {item.moderationStatus !== 'approved' && (
-                          <button
-                            onClick={() => handleAction(item.id, 'approve')}
-                            disabled={actionLoading === item.id}
-                            className="w-full px-4 py-2 text-left text-sm text-green-600 hover:bg-gray-50 flex items-center gap-2"
-                          >
-                            <CheckCircle className="w-4 h-4" />
-                            Approve
-                          </button>
-                        )}
-                        {item.moderationStatus !== 'flagged' && (
-                          <button
-                            onClick={() => {
-                              setActionModal({ item, action: 'flag' });
-                              setShowActionMenu(null);
-                            }}
-                            className="w-full px-4 py-2 text-left text-sm text-yellow-600 hover:bg-gray-50 flex items-center gap-2"
-                          >
-                            <Flag className="w-4 h-4" />
-                            Flag
-                          </button>
-                        )}
-                        {!item.moderationStatus?.includes('featured') && (
-                          <button
-                            onClick={() => handleAction(item.id, 'feature')}
-                            disabled={actionLoading === item.id}
-                            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                          >
-                            <Award className="w-4 h-4" />
-                            Feature
-                          </button>
-                        )}
-                        {item.moderationStatus !== 'removed' && (
-                          <button
-                            onClick={() => {
-                              setActionModal({ item, action: 'remove' });
-                              setShowActionMenu(null);
-                            }}
-                            className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50 flex items-center gap-2"
-                          >
-                            <XCircle className="w-4 h-4" />
-                            Remove
-                          </button>
-                        )}
-                        {item.moderationStatus === 'removed' && (
-                          <button
-                            onClick={() => handleAction(item.id, 'restore')}
-                            disabled={actionLoading === item.id}
-                            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                          >
-                            <CheckCircle className="w-4 h-4" />
-                            Restore
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleDelete(item)}
-                          disabled={actionLoading === item.id}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50 flex items-center gap-2 border-t border-gray-100"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          Delete Permanently
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -587,12 +532,107 @@ export default function ContentPage() {
         </div>
       )}
 
-      {/* Click outside to close */}
-      {showActionMenu && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setShowActionMenu(null)}
-        />
+      {/* Portal-rendered Action Menu */}
+      {showActionMenu && menuPosition && typeof document !== 'undefined' && createPortal(
+        <>
+          {/* Click outside to close */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => {
+              setShowActionMenu(null);
+              setMenuPosition(null);
+            }}
+          />
+          {/* Menu */}
+          <div
+            className="fixed w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+            style={{ top: menuPosition.top, left: menuPosition.left }}
+          >
+            {items.find(i => i.id === showActionMenu) && (() => {
+              const item = items.find(i => i.id === showActionMenu)!;
+              return (
+                <>
+                  <button
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setShowActionMenu(null);
+                      setMenuPosition(null);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 rounded-t-lg"
+                  >
+                    <Eye className="w-4 h-4" />
+                    View Details
+                  </button>
+                  {item.moderationStatus !== 'approved' && (
+                    <button
+                      onClick={() => handleAction(item.id, 'approve')}
+                      disabled={actionLoading === item.id}
+                      className="w-full px-4 py-2 text-left text-sm text-green-600 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Approve
+                    </button>
+                  )}
+                  {item.moderationStatus !== 'flagged' && (
+                    <button
+                      onClick={() => {
+                        setActionModal({ item, action: 'flag' });
+                        setShowActionMenu(null);
+                        setMenuPosition(null);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-yellow-600 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <Flag className="w-4 h-4" />
+                      Flag
+                    </button>
+                  )}
+                  {!item.moderationStatus?.includes('featured') && (
+                    <button
+                      onClick={() => handleAction(item.id, 'feature')}
+                      disabled={actionLoading === item.id}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <Award className="w-4 h-4" />
+                      Feature
+                    </button>
+                  )}
+                  {item.moderationStatus !== 'removed' && (
+                    <button
+                      onClick={() => {
+                        setActionModal({ item, action: 'remove' });
+                        setShowActionMenu(null);
+                        setMenuPosition(null);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <XCircle className="w-4 h-4" />
+                      Remove
+                    </button>
+                  )}
+                  {item.moderationStatus === 'removed' && (
+                    <button
+                      onClick={() => handleAction(item.id, 'restore')}
+                      disabled={actionLoading === item.id}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Restore
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(item)}
+                    disabled={actionLoading === item.id}
+                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-50 flex items-center gap-2 border-t border-gray-100 rounded-b-lg"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete Permanently
+                  </button>
+                </>
+              );
+            })()}
+          </div>
+        </>,
+        document.body
       )}
     </div>
   );
