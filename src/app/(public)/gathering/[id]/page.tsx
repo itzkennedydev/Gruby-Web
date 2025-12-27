@@ -652,14 +652,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#E8E8E8',
   },
   heroGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '100px',
-    background: 'linear-gradient(to bottom, rgba(247, 247, 247, 1) 0%, rgba(247, 247, 247, 0) 100%)',
-    backdropFilter: 'blur(20px)',
-    WebkitBackdropFilter: 'blur(20px)',
+    display: 'none',
   },
   contentWrapper: {
     maxWidth: '600px',
