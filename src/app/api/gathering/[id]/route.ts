@@ -23,6 +23,16 @@ interface GatheringDoc {
   currentParticipants?: number;
   coverImageUrl?: string;
   isPrivate?: boolean;
+  safety?: {
+    ageRating?: string;
+    contentWarnings?: string[];
+    customContentWarning?: string;
+    customContentWarningEmoji?: string;
+  };
+  recipes?: Array<{
+    imageUrl?: string;
+    title?: string;
+  }>;
 }
 
 export async function GET(
@@ -84,6 +94,23 @@ export async function GET(
       }
     }
 
+    // Get a valid cover image URL
+    // Priority: coverImageUrl (if valid URL) > first recipe image > undefined
+    let coverImageUrl = data.coverImageUrl;
+
+    // Check if coverImageUrl is a local file URI (invalid for web)
+    if (coverImageUrl && (coverImageUrl.startsWith('file://') || coverImageUrl.startsWith('ph://'))) {
+      coverImageUrl = undefined; // Invalid for web display
+    }
+
+    // Fall back to first recipe image if no valid cover image
+    if (!coverImageUrl && data.recipes && data.recipes.length > 0) {
+      const recipeWithImage = data.recipes.find(r => r.imageUrl && !r.imageUrl.startsWith('file://'));
+      if (recipeWithImage) {
+        coverImageUrl = recipeWithImage.imageUrl;
+      }
+    }
+
     // Format response
     const gathering = {
       id: gatheringId,
@@ -96,8 +123,9 @@ export async function GET(
       type: data.type || 'gathering',
       maxParticipants: data.maxParticipants || 10,
       currentParticipants,
-      coverImageUrl: data.coverImageUrl,
+      coverImageUrl,
       isPrivate: data.isPrivate || false,
+      safety: data.safety,
     };
 
     return NextResponse.json(gathering);

@@ -37,7 +37,7 @@ const HIDDEN_HEADER_ROUTES = [
 ];
 
 // Routes that start with these prefixes should also be hidden
-const HIDDEN_HEADER_PREFIXES = ['/admin'];
+const HIDDEN_HEADER_PREFIXES = ['/admin', '/gathering', '/shopping-list'];
 
 const Header = () => {
   const pathname = usePathname();
