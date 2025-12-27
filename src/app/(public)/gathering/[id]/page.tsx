@@ -238,13 +238,15 @@ export default function SharedGatheringPage() {
       <div style={styles.container}>
         {/* Floating Header */}
         <header className="floating-header" style={styles.floatingHeader}>
-          <Image
-            src="/GrubyLogo.svg"
-            alt="Gruby"
-            width={90}
-            height={24}
-            priority
-          />
+          <div style={styles.logoContainer}>
+            <Image
+              src="/GrubyLogo.svg"
+              alt="Gruby"
+              width={90}
+              height={24}
+              priority
+            />
+          </div>
           <button
             onClick={handleSharePage}
             style={styles.headerShareButton}
@@ -611,6 +613,15 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     padding: '12px 20px',
     backgroundColor: 'transparent',
+  },
+  logoContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '20px',
+    padding: '10px 16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
   },
   headerShareButton: {
     width: '36px',
