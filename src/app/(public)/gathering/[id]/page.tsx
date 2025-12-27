@@ -278,9 +278,7 @@ export default function SharedGatheringPage() {
               style={styles.heroImage}
             />
           ) : (
-            <div style={styles.heroPlaceholder}>
-              <span style={styles.heroPlaceholderIcon}>{getTypeIcon(gatheringData.type)}</span>
-            </div>
+            <div style={styles.heroPlaceholder} />
           )}
           <div style={styles.heroGradient} />
         </div>
@@ -651,14 +649,7 @@ const styles: Record<string, React.CSSProperties> = {
   heroPlaceholder: {
     width: '100%',
     height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: `linear-gradient(135deg, ${BRAND_COLOR} 0%, #3a3632 100%)`,
-  },
-  heroPlaceholderIcon: {
-    fontSize: '64px',
-    opacity: 0.5,
+    backgroundColor: '#222222',
   },
   heroGradient: {
     position: 'absolute',
