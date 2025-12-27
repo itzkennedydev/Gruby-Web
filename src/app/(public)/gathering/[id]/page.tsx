@@ -639,7 +639,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     height: '280px',
     overflow: 'hidden',
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#222222',
   },
   heroImage: {
     width: '100%',
@@ -649,7 +649,7 @@ const styles: Record<string, React.CSSProperties> = {
   heroPlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#222222',
   },
   heroGradient: {
     position: 'absolute',
