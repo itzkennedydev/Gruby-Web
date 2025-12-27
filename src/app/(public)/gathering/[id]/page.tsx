@@ -616,8 +616,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   logoContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: '20px',
-    padding: '10px 16px',
+    borderRadius: '10px',
+    padding: '8px 14px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
