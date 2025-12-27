@@ -446,7 +446,7 @@ export default function SharedGatheringPage() {
             sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          background-color: #222222;
+          background-color: #F7F7F7;
         }
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -537,7 +537,7 @@ export default function SharedGatheringPage() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    backgroundColor: '#222222',
+    backgroundColor: '#F7F7F7',
   },
   loadingContainer: {
     display: 'flex',
@@ -639,7 +639,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '100%',
     height: '280px',
     overflow: 'hidden',
-    backgroundColor: '#222222',
+    backgroundColor: '#E8E8E8',
   },
   heroImage: {
     width: '100%',
@@ -649,15 +649,17 @@ const styles: Record<string, React.CSSProperties> = {
   heroPlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#222222',
+    backgroundColor: '#E8E8E8',
   },
   heroGradient: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: '120px',
-    background: 'linear-gradient(to top, #222222 0%, transparent 100%)',
+    height: '100px',
+    background: 'linear-gradient(to top, rgba(247, 247, 247, 1) 0%, rgba(247, 247, 247, 0) 100%)',
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
   },
   contentWrapper: {
     maxWidth: '600px',
