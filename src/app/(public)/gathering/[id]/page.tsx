@@ -199,36 +199,37 @@ export default function SharedGatheringPage() {
   return (
     <>
       <div style={styles.container}>
-        {/* Header with Logo */}
-        <header style={styles.header}>
-          <div style={styles.headerContent}>
-            <div style={styles.logoContainer}>
-              <Image
-                src="/GrubyLogo.svg"
-                alt="Gruby"
-                width={120}
-                height={32}
-                priority
-                style={styles.logo}
-              />
-            </div>
-            <p style={styles.sharedByText}>
-              {gatheringData.hostDisplayName} invited you to a gathering
-            </p>
-          </div>
-        </header>
-
-        {/* Hero Image */}
-        {gatheringData.coverImageUrl && (
-          <div style={styles.heroContainer}>
+        {/* Hero Image - Full width with overlaid header */}
+        <div style={styles.heroContainer}>
+          {gatheringData.coverImageUrl ? (
             <img
               src={gatheringData.coverImageUrl}
               alt={gatheringData.title}
               style={styles.heroImage}
             />
-            <div style={styles.heroOverlay} />
+          ) : (
+            <div style={styles.heroPlaceholder}>
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+          )}
+          <div style={styles.heroOverlay} />
+
+          {/* Floating Logo */}
+          <div style={styles.floatingLogo}>
+            <Image
+              src="/GrubyLogo.svg"
+              alt="Gruby"
+              width={100}
+              height={28}
+              priority
+            />
           </div>
-        )}
+        </div>
 
         {/* Gathering Info */}
         <div style={styles.content}>
@@ -437,57 +438,42 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#717171',
     lineHeight: '22px',
   },
-  header: {
-    backgroundColor: '#FFFFFF',
-    borderBottom: '1px solid #EBEBEB',
-    paddingTop: '24px',
-    paddingBottom: '20px',
-    paddingLeft: '20px',
-    paddingRight: '20px',
-  },
-  headerContent: {
-    maxWidth: '600px',
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '12px',
-  },
-  logoContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: '8px',
-  },
-  logo: {
-    height: 'auto',
-    width: 'auto',
-  },
-  sharedByText: {
-    fontSize: '15px',
-    color: '#717171',
-    margin: 0,
-    fontWeight: '500',
-    textAlign: 'center',
-  },
   heroContainer: {
     position: 'relative',
     width: '100%',
-    height: '240px',
+    height: '320px',
     overflow: 'hidden',
+    backgroundColor: '#F5F5F5',
   },
   heroImage: {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
   },
+  heroPlaceholder: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F0F0F0',
+  },
   heroOverlay: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: '80px',
-    background: 'linear-gradient(transparent, rgba(255,255,255,0.8))',
+    height: '120px',
+    background: 'linear-gradient(transparent, rgba(255,255,255,0.95))',
+  },
+  floatingLogo: {
+    position: 'absolute',
+    top: '20px',
+    left: '20px',
+    padding: '8px 12px',
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: '8px',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
   },
   content: {
     maxWidth: '600px',
