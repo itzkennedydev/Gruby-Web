@@ -653,11 +653,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   heroGradient: {
     position: 'absolute',
-    bottom: 0,
+    top: 0,
     left: 0,
     right: 0,
     height: '100px',
-    background: 'linear-gradient(to top, rgba(247, 247, 247, 1) 0%, rgba(247, 247, 247, 0) 100%)',
+    background: 'linear-gradient(to bottom, rgba(247, 247, 247, 1) 0%, rgba(247, 247, 247, 0) 100%)',
     backdropFilter: 'blur(20px)',
     WebkitBackdropFilter: 'blur(20px)',
   },
