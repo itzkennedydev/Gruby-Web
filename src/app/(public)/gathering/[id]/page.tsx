@@ -14,8 +14,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
-// Design System: Warm charcoal for primary
-const BRAND_COLOR = '#222222';
+// Design System: Warm Brown for primary (matches app)
+const BRAND_COLOR = '#504944';
 
 interface GatheringData {
   id: string;
@@ -278,9 +278,7 @@ export default function SharedGatheringPage() {
               style={styles.heroImage}
             />
           ) : (
-            <div style={styles.heroPlaceholder}>
-              <span style={styles.heroPlaceholderIcon}>{getTypeIcon(gatheringData.type)}</span>
-            </div>
+            <div style={styles.heroPlaceholder} />
           )}
           <div style={styles.heroGradient} />
         </div>
@@ -651,14 +649,7 @@ const styles: Record<string, React.CSSProperties> = {
   heroPlaceholder: {
     width: '100%',
     height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: `linear-gradient(135deg, ${BRAND_COLOR} 0%, #4a4a4a 100%)`,
-  },
-  heroPlaceholderIcon: {
-    fontSize: '64px',
-    opacity: 0.5,
+    backgroundColor: '#FFFFFF',
   },
   heroGradient: {
     position: 'absolute',
