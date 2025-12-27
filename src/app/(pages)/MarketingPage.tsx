@@ -9,18 +9,31 @@ import {
 } from "@/store/slices/betaSlice";
 import { setWaitlistModalOpen } from "@/store/slices/uiSlice";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import dynamic from "next/dynamic";
 
-// Marketing components
-import CaseStudies from "@/components/CaseStudies";
-import Features from "@/components/Features";
-import Customers from "@/components/Customers";
-import UseCases from "@/components/UseCases";
-import Templates from "@/components/Templates";
-import Comparison from "@/components/Comparison";
+// Dynamically import marketing components for code splitting
+const CaseStudies = dynamic(() => import("@/components/CaseStudies"), {
+  loading: () => <div className="h-[500px] animate-pulse bg-gray-100" />,
+});
+const Features = dynamic(() => import("@/components/Features"), {
+  loading: () => <div className="h-[800px] animate-pulse bg-gray-100" />,
+});
+const Customers = dynamic(() => import("@/components/Customers"), {
+  loading: () => <div className="h-[600px] animate-pulse bg-gray-100" />,
+});
+const UseCases = dynamic(() => import("@/components/UseCases"), {
+  loading: () => <div className="h-[700px] animate-pulse bg-gray-100" />,
+});
+const Templates = dynamic(() => import("@/components/Templates"), {
+  loading: () => <div className="h-[600px] animate-pulse bg-gray-100" />,
+});
+const Comparison = dynamic(() => import("@/components/Comparison"), {
+  loading: () => <div className="h-[500px] animate-pulse bg-gray-100" />,
+});
 
 // App slides data for phone mockup section
 const appSlides = [
@@ -209,7 +222,7 @@ export default function MarketingPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleBetaSignup = async (e: React.FormEvent) => {
+  const handleBetaSignup = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!localEmail.trim()) return;
 
@@ -249,50 +262,30 @@ export default function MarketingPage() {
     } finally {
       dispatch(setSubmitting(false));
     }
-  };
+  }, [dispatch, localEmail]);
 
-  function handleNewsletterSubmit(event: React.FormEvent) {
+  const handleNewsletterSubmit = useCallback((event: React.FormEvent) => {
     event.preventDefault();
     setFooterEmail("");
-  }
+  }, []);
+
+  const handleOpenWaitlistModal = useCallback(() => {
+    dispatch(setWaitlistModalOpen(true));
+  }, [dispatch]);
+
+  const handleScrollToFeatures = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const element = document.getElementById("features");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
 
   return (
     <>
       {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
-        * {
-          font-family:
-            "Inter",
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            sans-serif;
-        }
-
-        body {
-          color: var(--color-text);
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-          font-family:
-            "Inter",
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            sans-serif !important;
-          font-weight: 600;
-          letter-spacing: -0.02em;
-        }
-
         /* Responsive styles */
         @media (max-width: 640px) {
           .cta-form {
@@ -446,25 +439,14 @@ export default function MarketingPage() {
               <div className="relative z-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4">
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dispatch(setWaitlistModalOpen(true));
-                  }}
+                  onClick={handleOpenWaitlistModal}
                   className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-semibold text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
                   Get Early Access
                 </button>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const element = document.getElementById("features");
-                    if (element) {
-                      element.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
-                  }}
+                  onClick={handleScrollToFeatures}
                   className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white px-4 text-sm font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
                   See How It Works
