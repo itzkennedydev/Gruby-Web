@@ -446,7 +446,7 @@ export default function SharedGatheringPage() {
             sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          background-color: #F7F7F7;
+          background-color: #222222;
         }
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -537,7 +537,7 @@ export default function SharedGatheringPage() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    backgroundColor: '#F7F7F7',
+    backgroundColor: '#222222',
   },
   loadingContainer: {
     display: 'flex',
@@ -657,7 +657,7 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     height: '120px',
-    background: 'linear-gradient(to top, #F7F7F7 0%, transparent 100%)',
+    background: 'linear-gradient(to top, #222222 0%, transparent 100%)',
   },
   contentWrapper: {
     maxWidth: '600px',
