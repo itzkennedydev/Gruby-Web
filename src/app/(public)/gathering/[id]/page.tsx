@@ -285,37 +285,38 @@ export default function SharedGatheringPage() {
 
         {/* Content */}
         <div className="content-wrapper" style={styles.contentWrapper}>
-          {/* Type Badge with Content Warnings */}
-          <div style={styles.typeBadgeRow}>
-            <div style={styles.typeBadge}>
-              <span style={styles.typeBadgeIcon}>{getTypeIcon(gatheringData.type)}</span>
-              <span style={styles.typeBadgeText}>{getTypeLabel(gatheringData.type)}</span>
-            </div>
-            {gatheringData.safety?.contentWarnings && gatheringData.safety.contentWarnings.length > 0 && (
-              <div style={styles.warningsInline}>
-                {gatheringData.safety.contentWarnings.map((warning) => {
-                  const info = warning === 'custom'
-                    ? {
-                        emoji: gatheringData.safety?.customContentWarningEmoji || '⚠️',
-                        label: gatheringData.safety?.customContentWarning || 'Custom Warning'
-                      }
-                    : CONTENT_WARNING_INFO[warning] || { emoji: '⚠️', label: warning };
-                  return (
-                    <div key={warning} style={styles.warningBadgeInline}>
-                      <span style={styles.warningEmoji}>{info.emoji}</span>
-                      <span style={styles.warningLabelInline}>{info.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Title */}
-          <h1 className="title" style={styles.title}>{gatheringData.title}</h1>
-
-          {/* Host Card */}
+          {/* Main Card with Title, Tags, and Host */}
           <div className="info-card" style={styles.infoCard}>
+            {/* Title */}
+            <h1 className="title" style={styles.titleInCard}>{gatheringData.title}</h1>
+
+            {/* Type Badge with Content Warnings */}
+            <div style={styles.typeBadgeRow}>
+              <div style={styles.typeBadge}>
+                <span style={styles.typeBadgeIcon}>{getTypeIcon(gatheringData.type)}</span>
+                <span style={styles.typeBadgeText}>{getTypeLabel(gatheringData.type)}</span>
+              </div>
+              {gatheringData.safety?.contentWarnings && gatheringData.safety.contentWarnings.length > 0 && (
+                <div style={styles.warningsInline}>
+                  {gatheringData.safety.contentWarnings.map((warning) => {
+                    const info = warning === 'custom'
+                      ? {
+                          emoji: gatheringData.safety?.customContentWarningEmoji || '⚠️',
+                          label: gatheringData.safety?.customContentWarning || 'Custom Warning'
+                        }
+                      : CONTENT_WARNING_INFO[warning] || { emoji: '⚠️', label: warning };
+                    return (
+                      <div key={warning} style={styles.warningBadgeInline}>
+                        <span style={styles.warningEmoji}>{info.emoji}</span>
+                        <span style={styles.warningLabelInline}>{info.label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Host */}
             <div style={styles.hostRow}>
               <img
                 src={gatheringData.hostPhotoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(gatheringData.hostDisplayName)}&background=504944&color=fff&size=56`}
@@ -668,18 +669,19 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '8px',
     marginBottom: '16px',
+    paddingBottom: '16px',
+    borderBottom: '1px solid #F0F0F0',
   },
   typeBadge: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '6px',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F5F5F5',
     borderRadius: '20px',
     paddingLeft: '12px',
     paddingRight: '14px',
     paddingTop: '8px',
     paddingBottom: '8px',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
   },
   warningsInline: {
     display: 'flex',
@@ -717,6 +719,14 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#222222',
     margin: 0,
     marginBottom: '20px',
+    lineHeight: '34px',
+  },
+  titleInCard: {
+    fontSize: '28px',
+    fontWeight: '700',
+    color: '#222222',
+    margin: 0,
+    marginBottom: '12px',
     lineHeight: '34px',
   },
   infoCard: {
