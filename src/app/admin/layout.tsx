@@ -17,6 +17,7 @@ import {
   Terminal,
   FileText,
   Flag,
+  CalendarDays,
 } from 'lucide-react';
 
 // Approved admin emails
@@ -35,6 +36,7 @@ const navLinks = [
   { href: '/admin/creator-applications', label: 'Applications', icon: ClipboardList, section: 'main' },
   // Content
   { href: '/admin/content', label: 'Content', icon: FileText, section: 'content' },
+  { href: '/admin/gatherings', label: 'Gatherings', icon: CalendarDays, section: 'content' },
   { href: '/admin/reports', label: 'Reports', icon: Flag, section: 'content' },
   // System
   { href: '/admin/database', label: 'Database', icon: Database, section: 'system' },
