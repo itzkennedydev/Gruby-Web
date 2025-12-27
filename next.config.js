@@ -15,6 +15,19 @@ const __dirname = path.dirname(__filename);
 const config = {
   reactStrictMode: true,
 
+  // Enable modern JavaScript features
+  modularizeImports: {
+    "@mui/material": {
+      transform: "@mui/material/{{member}}",
+    },
+    "@mui/icons-material": {
+      transform: "@mui/icons-material/{{member}}",
+    },
+    "lucide-react": {
+      transform: "lucide-react/dist/esm/icons/{{kebabCase member}}",
+    },
+  },
+
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
    *
