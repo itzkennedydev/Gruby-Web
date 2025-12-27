@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Users,
   Search,
@@ -70,6 +71,8 @@ export default function UsersPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<UserProfile | null>(null);
   const [resetLinkModal, setResetLinkModal] = useState<{ user: UserProfile; link: string } | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const fetchUsers = useCallback(async (append = false) => {
     if (!append) setLoading(true);
@@ -377,75 +380,30 @@ export default function UsersPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right">
-                        <div className="relative">
-                          <button
-                            onClick={() => setShowActionMenu(showActionMenu === user.id ? null : user.id)}
-                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                          >
-                            <MoreVertical className="w-4 h-4 text-gray-500" />
-                          </button>
-
-                          {showActionMenu === user.id && (
-                            <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                              <button
-                                onClick={() => setSelectedUser(user)}
-                                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                              >
-                                <Eye className="w-4 h-4" />
-                                View Details
-                              </button>
-                              {user.role !== 'admin' && (
-                                <>
-                                  <button
-                                    onClick={() => toggleChef(user)}
-                                    disabled={actionLoading === user.id}
-                                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-                                  >
-                                    <ChefHat className="w-4 h-4" />
-                                    {user.isChef ? 'Remove Creator' : 'Make Creator'}
-                                  </button>
-                                  <button
-                                    onClick={() => toggleBan(user)}
-                                    disabled={actionLoading === user.id}
-                                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
-                                    style={{ color: user.isBanned ? '#16a34a' : '#dc2626' }}
-                                  >
-                                    {user.isBanned ? (
-                                      <>
-                                        <UserCheck className="w-4 h-4" />
-                                        Unban User
-                                      </>
-                                    ) : (
-                                      <>
-                                        <UserX className="w-4 h-4" />
-                                        Ban User
-                                      </>
-                                    )}
-                                  </button>
-                                  <div className="border-t border-gray-100 my-1" />
-                                  <button
-                                    onClick={() => sendPasswordReset(user)}
-                                    disabled={actionLoading === user.id || !user.email}
-                                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 disabled:opacity-50"
-                                  >
-                                    <KeyRound className="w-4 h-4" />
-                                    Send Password Reset
-                                  </button>
-                                  <button
-                                    onClick={() => {
-                                      setDeleteConfirm(user);
-                                      setShowActionMenu(null);
-                                    }}
-                                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                    Delete User
-                                  </button>
-                                </>
-                              )}
-                            </div>
-                          )}
-                        </div>
+                        <button
+                          ref={(el) => {
+                            if (el) buttonRefs.current.set(user.id, el);
+                          }}
+                          onClick={() => {
+                            if (showActionMenu === user.id) {
+                              setShowActionMenu(null);
+                              setMenuPosition(null);
+                            } else {
+                              const button = buttonRefs.current.get(user.id);
+                              if (button) {
+                                const rect = button.getBoundingClientRect();
+                                setMenuPosition({
+                                  top: rect.bottom + 4,
+                                  left: rect.right - 192,
+                                });
+                              }
+                              setShowActionMenu(user.id);
+                            }
+                          }}
+                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          <MoreVertical className="w-4 h-4 text-gray-500" />
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -587,12 +545,101 @@ export default function UsersPage() {
         </div>
       )}
 
-      {/* Click outside to close action menu */}
-      {showActionMenu && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setShowActionMenu(null)}
-        />
+      {/* Portal-based Action Menu */}
+      {showActionMenu && menuPosition && typeof document !== 'undefined' && createPortal(
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => {
+              setShowActionMenu(null);
+              setMenuPosition(null);
+            }}
+          />
+          <div
+            className="fixed w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+            style={{ top: menuPosition.top, left: menuPosition.left }}
+          >
+            {(() => {
+              const user = users.find(u => u.id === showActionMenu);
+              if (!user) return null;
+              return (
+                <>
+                  <button
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setShowActionMenu(null);
+                      setMenuPosition(null);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                  >
+                    <Eye className="w-4 h-4" />
+                    View Details
+                  </button>
+                  {user.role !== 'admin' && (
+                    <>
+                      <button
+                        onClick={() => {
+                          toggleChef(user);
+                          setMenuPosition(null);
+                        }}
+                        disabled={actionLoading === user.id}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                      >
+                        <ChefHat className="w-4 h-4" />
+                        {user.isChef ? 'Remove Creator' : 'Make Creator'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          toggleBan(user);
+                          setMenuPosition(null);
+                        }}
+                        disabled={actionLoading === user.id}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
+                        style={{ color: user.isBanned ? '#16a34a' : '#dc2626' }}
+                      >
+                        {user.isBanned ? (
+                          <>
+                            <UserCheck className="w-4 h-4" />
+                            Unban User
+                          </>
+                        ) : (
+                          <>
+                            <UserX className="w-4 h-4" />
+                            Ban User
+                          </>
+                        )}
+                      </button>
+                      <div className="border-t border-gray-100 my-1" />
+                      <button
+                        onClick={() => {
+                          sendPasswordReset(user);
+                          setMenuPosition(null);
+                        }}
+                        disabled={actionLoading === user.id || !user.email}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 disabled:opacity-50"
+                      >
+                        <KeyRound className="w-4 h-4" />
+                        Send Password Reset
+                      </button>
+                      <button
+                        onClick={() => {
+                          setDeleteConfirm(user);
+                          setShowActionMenu(null);
+                          setMenuPosition(null);
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete User
+                      </button>
+                    </>
+                  )}
+                </>
+              );
+            })()}
+          </div>
+        </>,
+        document.body
       )}
 
       {/* Delete Confirmation Modal */}
