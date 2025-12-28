@@ -364,7 +364,7 @@ export default function MarketingPage() {
         }
       `}</style>
 
-      <div className="flex min-h-screen flex-col bg-white">
+      <div className="flex min-h-screen flex-col">
         {/* Hero Section */}
         <div className="relative -mt-32 h-[720px] overflow-hidden pt-32 sm:h-[550px] md:h-[650px] lg:h-[750px]">
           {/* Background Image */}
@@ -455,6 +455,10 @@ export default function MarketingPage() {
             </div>
           </div>
         </div>
+
+        {/* White section with rounded top corners */}
+        {/* Using nested radius principle: inner_radius = outer_radius - gap */}
+        <div className="relative z-10 -mt-4 rounded-t-[1rem] bg-white sm:-mt-6 sm:rounded-t-[1.5rem] md:-mt-8 md:rounded-t-[2rem]">
 
         {/* App Preview Section - Phone mockup with content */}
         <section className="pb-12 pt-12 sm:pb-16 sm:pt-16 md:pb-20 md:pt-20 lg:pb-28 lg:pt-28">
@@ -632,6 +636,9 @@ export default function MarketingPage() {
         />
 
         {/* Footer */}
+        </div>
+        {/* End of white rounded section */}
+
         <footer className="border-t border-[#e5e5e5] bg-white">
           <div className="mx-auto max-w-[1920px] px-4 py-12 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-5">
