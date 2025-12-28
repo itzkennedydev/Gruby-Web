@@ -58,10 +58,10 @@ const appSlides = [
     ],
   },
   {
-    title: "Track your wins",
+    title: "Know what you have",
     description:
-      "Every home-cooked meal saves money. Watch your savings grow daily.",
-    features: ["Savings dashboard", "Cooking streaks", "Achievement badges"],
+      "Smart pantry tracking means no more duplicate purchases or forgotten ingredients.",
+    features: ["Auto-track ingredients", "Low-stock alerts", "Reduce food waste"],
   },
 ];
 
@@ -481,7 +481,7 @@ export default function MarketingPage() {
                   Your AI-powered kitchen companion
                 </h2>
                 <p className="mb-8 text-left text-lg leading-relaxed text-white/60 sm:text-xl">
-                  Real grocery prices. Guided cooking. Smart savings on every meal.
+                  See real grocery prices before you shop. Cook with AI-guided steps. Save money on every single meal you make.
                 </p>
 
                 {/* Rotating Bullet Points */}

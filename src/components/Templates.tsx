@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, memo } from "react";
 
@@ -10,56 +9,64 @@ const recipes = [
     category: "Under 30 mins",
     image:
       "https://images.pexels.com/photos/6210747/pexels-photo-6210747.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 4.12,
+    savings: 8.50,
   },
   {
     title: "Sheet Pan Salmon",
     category: "Healthy",
     image:
       "https://images.pexels.com/photos/3763847/pexels-photo-3763847.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 5.89,
+    savings: 12.00,
   },
   {
     title: "Viral Baked Feta Pasta",
     category: "TikTok Trending",
     image:
       "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 2.75,
+    savings: 9.25,
   },
   {
     title: "Korean Beef Bowls",
     category: "Budget-Friendly",
     image:
       "https://images.pexels.com/photos/5409015/pexels-photo-5409015.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 3.40,
+    savings: 11.60,
   },
   {
     title: "One-Pot Chicken Alfredo",
     category: "Kid-Friendly",
     image:
       "https://images.pexels.com/photos/11220209/pexels-photo-11220209.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 3.25,
+    savings: 7.75,
   },
   {
     title: "Mediterranean Bowls",
     category: "Meal Prep",
     image:
       "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 4.50,
+    savings: 6.50,
   },
   {
     title: "Homemade Ramen",
     category: "Comfort Food",
     image:
       "https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 2.95,
+    savings: 14.05,
   },
   {
     title: "Avocado Toast 5 Ways",
     category: "Breakfast",
     image:
       "https://images.pexels.com/photos/1351238/pexels-photo-1351238.jpeg?auto=compress&cs=tinysrgb&w=800",
-    href: "#download",
+    pricePerServing: 1.85,
+    savings: 5.15,
   },
 ];
 
@@ -144,34 +151,45 @@ const RecipeCard = memo(function RecipeCard({ recipe }: { recipe: (typeof recipe
         >
           {recipe.title}
         </h5>
-        {/* Button */}
-        <Link
-          href={recipe.href}
+        {/* Price and Savings */}
+        <div
           style={{
-            display: "inline-flex",
-            alignSelf: "flex-start",
+            display: "flex",
             alignItems: "center",
-            gap: "8px",
-            padding: "12px 20px",
-            backgroundColor: "rgb(255, 255, 255)",
-            borderRadius: "13px",
-            boxShadow:
-              "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 2px 8px 0px rgba(0, 0, 0, 0.04)",
-            textDecoration: "none",
+            gap: "12px",
           }}
         >
-          <p
+          <div
             style={{
-              fontWeight: 500,
-              fontSize: "clamp(0.875rem, 0.8rem + 0.375vw, 1rem)",
-              letterSpacing: "-0.01em",
-              lineHeight: "24px",
-              color: "rgb(0, 0, 0)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2px",
             }}
           >
-            View Recipe
-          </p>
-        </Link>
+            <p
+              style={{
+                fontWeight: 600,
+                fontSize: "clamp(1.125rem, 1rem + 0.5vw, 1.25rem)",
+                letterSpacing: "-0.02em",
+                lineHeight: "1.2",
+                color: "rgb(255, 255, 255)",
+              }}
+            >
+              ${recipe.pricePerServing.toFixed(2)}/serving
+            </p>
+            <p
+              style={{
+                fontWeight: 500,
+                fontSize: "clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)",
+                letterSpacing: "-0.01em",
+                lineHeight: "1.4",
+                color: "rgb(74, 222, 128)",
+              }}
+            >
+              Save ${recipe.savings.toFixed(2)} vs takeout
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -274,7 +292,7 @@ export default function Templates() {
             textAlign: "center",
           }}
         >
-          Curated from TikTok, YouTube, and top food creators
+          From viral videos to your kitchen in seconds
         </h5>
       </div>
 

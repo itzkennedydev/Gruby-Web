@@ -23,6 +23,8 @@ import {
 // Approved admin emails
 const APPROVED_ADMIN_EMAILS = [
   'itskennedy.dev@gmail.com',
+  'kennedy@gruby.app',
+  'Kennedy@gruby.app',
 ];
 
 interface AdminLayoutProps {

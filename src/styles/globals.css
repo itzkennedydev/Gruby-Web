@@ -564,6 +564,12 @@ section:not(:first-child) {
   contain-intrinsic-size: auto 500px;
 }
 
+/* Exclude phone mockup section from containment to allow phone image overflow */
+section:has(.phone-mockup-section) {
+  content-visibility: visible;
+  contain: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
