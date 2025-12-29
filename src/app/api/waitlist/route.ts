@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Pool } from "pg";
+import { getDb } from "@/lib/firebase-admin";
 import { sendWaitlistConfirmation, sendAdminNotification } from "@/lib/email";
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is required");
-}
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+import { FieldValue } from "firebase-admin/firestore";
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,64 +29,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const client = await pool.connect();
-    console.log("✅ Database connected");
-
-    // Ensure name column exists (migration)
-    try {
-      await client.query(`
-        DO $$ 
-        BEGIN
-          IF NOT EXISTS (
-            SELECT 1 FROM information_schema.columns 
-            WHERE table_name='waitlist' AND column_name='name'
-          ) THEN
-            ALTER TABLE waitlist ADD COLUMN name text;
-          END IF;
-        END $$;
-      `);
-      console.log("✅ Name column check completed");
-    } catch (migrationError) {
-      console.warn("⚠️ Migration check warning:", migrationError);
-      // Continue anyway - column might already exist
-    }
+    const db = getDb();
+    const waitlistRef = db.collection("waitlist");
+    const normalizedEmail = email.toLowerCase();
 
     // Check if email already exists
-    const existingResult = await client.query(
-      "SELECT id FROM waitlist WHERE email = $1",
-      [email.toLowerCase()],
-    );
+    const existingQuery = await waitlistRef
+      .where("email", "==", normalizedEmail)
+      .limit(1)
+      .get();
 
-    if (existingResult.rows.length > 0) {
-      client.release();
+    if (!existingQuery.empty) {
+      const existingDoc = existingQuery.docs[0];
+      const existingData = existingDoc.data();
       return NextResponse.json(
-        { error: "This email is already on the waitlist" },
+        {
+          error: "This email is already on the waitlist",
+          position: existingData.position || 0
+        },
         { status: 409 },
       );
     }
 
-    // Insert new waitlist entry
-    const insertResult = await client.query(
-      "INSERT INTO waitlist (email, name) VALUES ($1, $2) RETURNING *",
-      [email.toLowerCase(), trimmedName],
-    );
+    // Get current waitlist count for position
+    const countSnapshot = await waitlistRef.count().get();
+    const position = countSnapshot.data().count + 1;
 
-    // Get the official position (count of all entries created at or before this one)
-    const positionResult = await client.query(
-      `SELECT COUNT(*)::int as position 
-       FROM waitlist 
-       WHERE created_at <= (SELECT created_at FROM waitlist WHERE email = $1)`,
-      [email.toLowerCase()],
-    );
+    // Create new waitlist entry
+    const newEntry = {
+      email: normalizedEmail,
+      name: trimmedName,
+      position: position,
+      source: "web",
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    };
 
-    const position = positionResult.rows[0]?.position || 0;
-
-    client.release();
-    console.log("✅ Waitlist entry created:", insertResult.rows[0]);
+    const docRef = await waitlistRef.add(newEntry);
+    console.log("✅ Waitlist entry created with ID:", docRef.id);
     console.log("✅ Position:", position);
 
     // Send confirmation email to user
-    const userEmailResult = await sendWaitlistConfirmation(email.toLowerCase(), trimmedName);
+    const userEmailResult = await sendWaitlistConfirmation(normalizedEmail, trimmedName);
     if (!userEmailResult.success) {
       console.error("❌ Failed to send user email:", userEmailResult.error);
     } else {
@@ -101,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send notification email to admin
-    const adminEmailResult = await sendAdminNotification(email.toLowerCase(), trimmedName);
+    const adminEmailResult = await sendAdminNotification(normalizedEmail, trimmedName);
     if (!adminEmailResult.success) {
       console.error("❌ Failed to send admin email:", adminEmailResult.error);
     } else {
@@ -112,7 +89,11 @@ export async function POST(request: NextRequest) {
       {
         message:
           "Successfully joined the waitlist! Check your email for confirmation.",
-        data: insertResult.rows[0],
+        data: {
+          id: docRef.id,
+          email: normalizedEmail,
+          name: trimmedName,
+        },
         position: position,
       },
       { status: 201 },
