@@ -793,10 +793,9 @@ section:has(.phone-mockup-section) {
 
 /* Use Cases Section - Mobile Responsive */
 @media (max-width: 1023px) {
-  /* Reduce section padding on mobile but add massive bottom padding to prevent overlap */
   .use-cases-section {
-    padding: 48px 16px 120px 16px !important;
-    margin-bottom: 40px !important;
+    padding: 48px 16px !important;
+    margin-bottom: 0 !important;
     position: relative !important;
   }
 
@@ -839,6 +838,7 @@ section:has(.phone-mockup-section) {
   .use-cases-grid > div:last-child {
     flex-direction: column !important;
     gap: 16px !important;
+    height: auto !important;
   }
 
   /* Cards in the right column */
@@ -854,13 +854,11 @@ section:has(.phone-mockup-section) {
   }
 }
 
-/* Templates Section - Add massive top padding on mobile to prevent overlap */
+/* Templates Section - Mobile styles */
 @media (max-width: 1023px) {
   .templates-section {
-    padding-top: 100px !important;
-    margin-top: 40px !important;
-    position: relative !important;
-    z-index: 2 !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 }
 

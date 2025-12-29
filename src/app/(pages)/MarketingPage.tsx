@@ -302,30 +302,7 @@ export default function MarketingPage() {
           }
         }
 
-        @media (max-width: 1024px) {
-          .use-cases-header {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-          }
-          .use-cases-subtext {
-            align-items: flex-start !important;
-          }
-          .use-cases-subtext h5 {
-            text-align: left !important;
-          }
-          .use-cases-grid {
-            flex-direction: column !important;
-            height: auto !important;
-          }
-          .use-cases-grid > div:last-child {
-            flex-direction: row !important;
-          }
-        }
-
         @media (max-width: 768px) {
-          .use-cases-grid > div:last-child {
-            flex-direction: column !important;
-          }
           .case-studies-grid {
             flex-direction: column !important;
           }

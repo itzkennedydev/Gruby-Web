@@ -121,6 +121,7 @@ export default function UseCases() {
       >
         {/* Busy Professionals Card */}
         <div
+          className="use-case-card"
           style={{
             flex: "1 0 0",
             borderRadius: "16px",
@@ -196,6 +197,7 @@ export default function UseCases() {
 
         {/* Budget-Conscious Card */}
         <div
+          className="use-case-card"
           style={{
             flex: "1 0 0",
             borderRadius: "16px",
@@ -280,6 +282,7 @@ export default function UseCases() {
         >
           {/* Families Card */}
           <div
+            className="use-case-card"
             style={{
               flex: "1 0 0",
               borderRadius: "16px",
@@ -351,6 +354,7 @@ export default function UseCases() {
 
           {/* Beginners Card */}
           <div
+            className="use-case-card"
             style={{
               flex: "1 0 0",
               borderRadius: "16px",
