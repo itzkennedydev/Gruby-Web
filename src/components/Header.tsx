@@ -188,7 +188,10 @@ const Header = () => {
                 width={120}
                 height={28}
                 className="w-auto"
-                style={{ height: "clamp(1.5rem, 2vw, 1.75rem)" }}
+                style={{
+                  height: "clamp(1.5rem, 2vw, 1.75rem)",
+                  filter: "brightness(0) saturate(100%) invert(27%) sepia(8%) saturate(1089%) hue-rotate(334deg) brightness(95%) contrast(88%)",
+                }}
                 priority
               />
             </Link>
