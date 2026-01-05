@@ -19,6 +19,7 @@ interface DocsLayoutProps {
 }
 
 const defaultNavLinks: NavLink[] = [
+  { href: '/support', label: 'Support' },
   { href: '/faq', label: 'Help Center' },
   { href: '/privacy', label: 'Privacy Policy' },
   { href: '/terms', label: 'Terms of Service' },

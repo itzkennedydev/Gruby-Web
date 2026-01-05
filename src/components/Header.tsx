@@ -18,6 +18,7 @@ import { WaitlistModal } from "@/components/WaitlistModal";
 
 // Routes where header should be hidden
 const HIDDEN_HEADER_ROUTES = [
+  '/support',
   '/faq',
   '/privacy',
   '/terms',
