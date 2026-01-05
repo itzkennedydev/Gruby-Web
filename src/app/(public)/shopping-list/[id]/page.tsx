@@ -14,8 +14,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
-// Design System: Warm charcoal for primary
-const BRAND_COLOR = '#222222';
+// Design System: Brand Red for primary
+const BRAND_COLOR = '#ff1e00';
 
 interface ShoppingListItem {
   name: string;
@@ -133,21 +133,7 @@ export default function SharedShoppingListPage() {
     return sortedGroups;
   };
 
-  const getCategoryIcon = (category: string) => {
-    const icons: Record<string, string> = {
-      'Produce': '🥬',
-      'Dairy & Eggs': '🥛',
-      'Meat & Seafood': '🥩',
-      'Bakery': '🍞',
-      'Pantry': '🫙',
-      'Frozen': '🧊',
-      'Beverages': '🥤',
-      'Snacks': '🍿',
-      'Other': '📦',
-    };
-    return icons[category] || '📦';
-  };
-
+  
   const handleImportToApp = () => {
     if (!listData) return;
 
@@ -332,7 +318,6 @@ export default function SharedShoppingListPage() {
           {Object.entries(categoryGroups).map(([category, items]) => (
             <div key={category} className="category-card" style={styles.categoryCard}>
               <div style={styles.categoryHeader}>
-                <span style={styles.categoryIcon}>{getCategoryIcon(category)}</span>
                 <span style={styles.categoryTitle}>{category}</span>
                 <span style={styles.categoryCount}>{items.length}</span>
               </div>
@@ -346,9 +331,6 @@ export default function SharedShoppingListPage() {
                       borderBottom: index === items.length - 1 ? 'none' : '1px solid #F5F5F5',
                     }}
                   >
-                    <div style={styles.itemCheckbox}>
-                      <div style={styles.checkbox} />
-                    </div>
                     <div style={styles.itemContent}>
                       <p style={styles.itemName}>{item.name}</p>
                       <p style={styles.itemQuantity}>
@@ -702,13 +684,10 @@ const styles: Record<string, React.CSSProperties> = {
   categoryHeader: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
+    justifyContent: 'space-between',
     padding: '16px 20px',
     backgroundColor: '#FAFAFA',
     borderBottom: '1px solid #F0F0F0',
-  },
-  categoryIcon: {
-    fontSize: '18px',
   },
   categoryTitle: {
     fontSize: '15px',
@@ -735,16 +714,6 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     padding: '16px 20px',
     gap: '12px',
-  },
-  itemCheckbox: {
-    flexShrink: 0,
-  },
-  checkbox: {
-    width: '22px',
-    height: '22px',
-    borderRadius: '6px',
-    border: '2px solid #DDDDDD',
-    backgroundColor: '#FFFFFF',
   },
   itemContent: {
     flex: 1,
