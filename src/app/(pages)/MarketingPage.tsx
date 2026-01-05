@@ -352,7 +352,7 @@ export default function MarketingPage() {
               style={{
                 backgroundImage: "url(/HeroImage2.jpg)",
                 backgroundSize: "cover",
-                backgroundPosition: "center -100px",
+                backgroundPosition: "center center",
               }}
             />
             {/* Desktop Image */}
