@@ -210,7 +210,7 @@ export default function Customers() {
                 }}
               >
                 <Image
-                  src="/savings-cooking-1.jpg"
+                  src="/savings-cooking-1.webp"
                   alt="Home cooking savings"
                   fill
                   sizes="284px"
@@ -421,7 +421,7 @@ export default function Customers() {
                 }}
               >
                 <Image
-                  src="/savings-cooking-2.jpg"
+                  src="/savings-cooking-2.webp"
                   alt="Home cooking"
                   fill
                   sizes="284px"
@@ -455,7 +455,7 @@ export default function Customers() {
                 }}
               >
                 <Image
-                  src="/savings-cooking-3.jpg"
+                  src="/savings-cooking-3.webp"
                   alt="Cooking at home"
                   fill
                   sizes="284px"

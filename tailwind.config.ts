@@ -4,7 +4,7 @@ import type { Config } from "tailwindcss";
  * Gruby Design System v2.0 - Tailwind Configuration
  *
  * SIMPLIFIED COLOR PALETTE:
- * - PRIMARY (#504944): Primary Brown - Buttons, key interactive elements
+ * - PRIMARY (#ff1e00): Brand Red - Buttons, key interactive elements
  * - CHARCOAL (#222222): Text, icons, borders
  * - SURFACE: White (#FFFFFF) / Warm Parchment (#FAF9F6) - Backgrounds
  * - BORDER (#D9D9D6): Wolf Gray - Borders, dividers
@@ -160,7 +160,7 @@ const config: Config = {
 
         // PRIMITIVE COLORS (direct hex for edge cases)
         primitive: {
-          "primary-brown": "#504944",
+          "primary-brown": "#ff1e00",
           charcoal: "#222222",
           white: "#FFFFFF",
           parchment: "#FAF9F6",

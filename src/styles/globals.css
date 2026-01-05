@@ -146,7 +146,7 @@ body {
 
     /* PRIMITIVE COLORS */
     --color-charcoal: #222222;
-    --color-primary-brown: #504944;
+    --color-primary-brown: #ff1e00;
     --color-white: #ffffff;
     --color-warm-parchment: #faf9f6;
     --color-wolf-gray: #d9d9d6;
@@ -178,11 +178,11 @@ body {
     --color-border-subtle: rgba(217, 217, 214, 0.5);
     --color-border-strong: var(--color-charcoal);
 
-    /* SEMANTIC - PRIMARY (Primary Brown - Buttons & Key Elements) */
+    /* SEMANTIC - PRIMARY (Brand Red - Buttons & Key Elements) */
     --color-primary: var(--color-primary-brown);
     --color-primary-foreground: var(--color-white);
-    --color-primary-hover: #403a36;
-    --color-primary-active: #302b28;
+    --color-primary-hover: #e61b00;
+    --color-primary-active: #cc1800;
 
     /* SEMANTIC - SECONDARY */
     --color-secondary: var(--color-white);

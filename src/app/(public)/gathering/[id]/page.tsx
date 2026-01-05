@@ -14,8 +14,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
-// Design System: Warm Brown for primary (matches app)
-const BRAND_COLOR = '#504944';
+// Design System: Brand Red for primary (matches app)
+const BRAND_COLOR = '#ff1e00';
 
 interface GatheringData {
   id: string;
@@ -319,7 +319,7 @@ export default function SharedGatheringPage() {
             {/* Host */}
             <div style={styles.hostRow}>
               <img
-                src={gatheringData.hostPhotoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(gatheringData.hostDisplayName)}&background=504944&color=fff&size=56`}
+                src={gatheringData.hostPhotoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(gatheringData.hostDisplayName)}&background=ff1e00&color=fff&size=56`}
                 alt={gatheringData.hostDisplayName}
                 className="host-avatar"
                 style={styles.hostAvatar}

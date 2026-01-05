@@ -8,8 +8,8 @@
 
 import Image from 'next/image';
 
-// Design System v2.0: Charcoal for primary, Olive for support/accents
-const BRAND_COLOR = '#222222'; // Primary - infrastructure color
+// Design System v2.0: Brand Red for primary
+const BRAND_COLOR = '#ff1e00'; // Primary - brand color
 const APP_STORE_URL = 'https://apps.apple.com/app/gruby/id6755449783';
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.grubyapp.android';
 

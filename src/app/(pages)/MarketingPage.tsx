@@ -626,10 +626,6 @@ export default function MarketingPage() {
                   width={100}
                   height={36}
                   className="mb-4 transition-opacity hover:opacity-80"
-                  style={{
-                    filter:
-                      "brightness(0) saturate(100%) invert(27%) sepia(8%) saturate(1089%) hue-rotate(334deg) brightness(95%) contrast(88%)",
-                  }}
                 />
                 <p className="text-sm leading-relaxed text-[#717171]">
                   Cook smarter. Save more. Eat better.
