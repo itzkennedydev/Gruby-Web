@@ -179,7 +179,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           />
           <link
             rel="preload"
-            href="/Mobile phone.png"
+            href="/GrubyMobile.webp"
             as="image"
             fetchPriority="high"
           />
