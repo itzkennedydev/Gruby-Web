@@ -173,7 +173,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           />
           <link
             rel="preload"
-            href="/HeroImage.jpg"
+            href="/HeroImage2.jpg"
             as="image"
             fetchPriority="high"
           />

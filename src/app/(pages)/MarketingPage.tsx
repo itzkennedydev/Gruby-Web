@@ -350,14 +350,14 @@ export default function MarketingPage() {
             <div
               className="absolute inset-0 sm:hidden"
               style={{
-                backgroundImage: "url(/HeroMobileNew.JPG)",
+                backgroundImage: "url(/HeroImage2.jpg)",
                 backgroundSize: "cover",
                 backgroundPosition: "center -100px",
               }}
             />
             {/* Desktop Image */}
             <Image
-              src="/GrubyHeroDesktop.webp"
+              src="/HeroImage2.jpg"
               alt="Woman cooking homemade burgers in kitchen"
               fill
               priority
