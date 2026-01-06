@@ -5,8 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-export function Footer() {
+interface FooterProps {
+  variant?: "default" | "docs";
+}
+
+export function Footer({ variant = "default" }: FooterProps) {
   const [footerEmail, setFooterEmail] = useState("");
+  const isDocs = variant === "docs";
 
   function handleNewsletterSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -32,7 +37,7 @@ export function Footer() {
         >
           <div className="col-span-1 sm:col-span-2 md:col-span-1">
             <Image
-              src="/GrubyLogo.svg"
+              src={isDocs ? "/GrubyLogoDark.svg" : "/GrubyLogo.svg"}
               alt="Gruby Logo"
               width={100}
               height={36}
@@ -52,7 +57,11 @@ export function Footer() {
                 href="https://apps.apple.com/app/gruby"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#ff1e00] hover:text-[#ff1e00] active:scale-[0.98]"
+                className={`inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 active:scale-[0.98] ${
+                  isDocs
+                    ? "hover:border-[#222222] hover:text-[#222222]"
+                    : "hover:border-[#ff1e00] hover:text-[#ff1e00]"
+                }`}
               >
                 <svg
                   className="h-3.5 w-3.5"
@@ -74,7 +83,11 @@ export function Footer() {
                 href="https://play.google.com/store/apps/details?id=com.gruby.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 hover:border-[#ff1e00] hover:text-[#ff1e00] active:scale-[0.98]"
+                className={`inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 active:scale-[0.98] ${
+                  isDocs
+                    ? "hover:border-[#222222] hover:text-[#222222]"
+                    : "hover:border-[#ff1e00] hover:text-[#ff1e00]"
+                }`}
               >
                 <svg
                   className="h-3.5 w-3.5"
@@ -228,12 +241,18 @@ export function Footer() {
                 value={footerEmail}
                 onChange={(e) => setFooterEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full rounded-[13px] border-0 bg-[#f5f5f7] px-3 py-2 text-xs transition-shadow focus:outline-none focus:ring-2 focus:ring-[#ff1e00] sm:px-4 sm:py-2.5 sm:text-sm md:py-3 md:text-base"
+                className={`w-full rounded-[13px] border-0 bg-[#f5f5f7] px-3 py-2 text-xs transition-shadow focus:outline-none focus:ring-2 sm:px-4 sm:py-2.5 sm:text-sm md:py-3 md:text-base ${
+                  isDocs ? "focus:ring-[#222222]" : "focus:ring-[#ff1e00]"
+                }`}
                 required
               />
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-[13px] bg-[#ff1e00] px-4 py-2 text-xs font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-[#e61b00] active:scale-[0.98] sm:py-2.5 sm:text-sm md:py-3 md:text-base"
+                className={`inline-flex w-full items-center justify-center rounded-[13px] px-4 py-2 text-xs font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:py-2.5 sm:text-sm md:py-3 md:text-base ${
+                  isDocs
+                    ? "bg-[#222222] hover:bg-[#333333]"
+                    : "bg-[#ff1e00] hover:bg-[#e61b00]"
+                }`}
               >
                 Subscribe
               </button>
