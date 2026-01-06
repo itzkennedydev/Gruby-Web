@@ -40,7 +40,7 @@ export default function GatheringsTermsPage() {
           </p>
 
           <div
-            className="mb-10 rounded-lg border-l-4 border-yellow-400 bg-yellow-50 p-6"
+            className="mb-10 rounded-lg bg-yellow-50 p-6"
             style={{ lineHeight: "1.75" }}
           >
             <p className="mb-2 font-semibold">Important Notice</p>

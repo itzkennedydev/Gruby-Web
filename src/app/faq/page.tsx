@@ -248,7 +248,7 @@ export default function FAQPage() {
               {/* Logo */}
               <Link href="/" className="flex items-center">
                 <Image
-                  src="/GrubyLogo.svg"
+                  src="/GrubyLogoDark.svg"
                   alt="Gruby Logo"
                   width={100}
                   height={24}
@@ -438,7 +438,7 @@ export default function FAQPage() {
       </div>
 
       <div className="lg:pb-0 pb-20">
-        <Footer />
+        <Footer variant="docs" />
       </div>
     </div>
   );
