@@ -120,125 +120,121 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
   return (
     <>
       <div style={styles.container}>
-        {/* Story Preview */}
-        <div style={styles.storyContainer}>
-          {/* Background blur (if image available) */}
-          {story.imageUrl && (
-            <div style={styles.backgroundBlur}>
-              <Image
-                src={story.imageUrl}
-                alt=""
-                fill
-                style={{ objectFit: 'cover', filter: 'blur(30px) brightness(0.5)' }}
-                priority
-              />
+        {/* Full-screen story background */}
+        {story.imageUrl && (
+          <div style={styles.backgroundBlur}>
+            <Image
+              src={story.imageUrl}
+              alt=""
+              fill
+              style={{ objectFit: 'cover', filter: 'blur(30px) brightness(0.5)' }}
+              priority
+            />
+          </div>
+        )}
+
+        {/* Story Media - Full screen */}
+        <div style={styles.mediaContainer}>
+          {story.videoUrl ? (
+            <video
+              src={story.videoUrl}
+              style={styles.media}
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={story.imageUrl}
+            />
+          ) : story.imageUrl ? (
+            <Image
+              src={story.imageUrl}
+              alt={story.title || 'Story'}
+              fill
+              style={{ objectFit: 'cover' }}
+              priority
+            />
+          ) : (
+            <div style={styles.noMedia}>
+              <span style={styles.noMediaText}>Story Preview</span>
             </div>
           )}
+        </div>
 
-          {/* Story Content */}
-          <div style={styles.storyContent}>
-            {/* Header - User info */}
-            <div style={styles.storyHeader}>
-              <div style={styles.userInfo}>
-                {story.userAvatarUrl ? (
-                  <Image
-                    src={story.userAvatarUrl}
-                    alt={story.userDisplayName}
-                    width={40}
-                    height={40}
-                    style={styles.avatar}
-                  />
-                ) : (
-                  <div style={styles.avatarPlaceholder}>
-                    {story.userDisplayName.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div style={styles.userDetails}>
-                  <span style={styles.displayName}>{story.userDisplayName}</span>
-                  <span style={styles.timeAgo}>{formatPostedTime()}</span>
-                </div>
-              </div>
-              <span style={styles.expiryBadge}>{timeRemaining}</span>
-            </div>
+        {/* Top gradient overlay */}
+        <div style={styles.topGradient} />
 
-            {/* Story Media */}
-            <div style={styles.mediaContainer}>
-              {story.videoUrl ? (
-                <video
-                  src={story.videoUrl}
-                  style={styles.media}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster={story.imageUrl}
-                />
-              ) : story.imageUrl ? (
-                <Image
-                  src={story.imageUrl}
-                  alt={story.title || 'Story'}
-                  fill
-                  style={{ objectFit: 'contain' }}
-                  priority
-                />
-              ) : (
-                <div style={styles.noMedia}>
-                  <span style={styles.noMediaText}>Story Preview</span>
-                </div>
-              )}
-            </div>
+        {/* Bottom gradient overlay */}
+        <div style={styles.bottomGradient} />
 
-            {/* Caption */}
-            {story.caption && (
-              <div style={styles.captionContainer}>
-                <p style={styles.caption}>{story.caption}</p>
+        {/* Header - User info */}
+        <div style={styles.storyHeader}>
+          <div style={styles.userInfo}>
+            {story.userAvatarUrl ? (
+              <Image
+                src={story.userAvatarUrl}
+                alt={story.userDisplayName}
+                width={44}
+                height={44}
+                style={styles.avatar}
+              />
+            ) : (
+              <div style={styles.avatarPlaceholder}>
+                {story.userDisplayName.charAt(0).toUpperCase()}
               </div>
             )}
+            <div style={styles.userDetails}>
+              <span style={styles.displayName}>{story.userDisplayName}</span>
+              <span style={styles.timeAgo}>{formatPostedTime()}</span>
+            </div>
           </div>
         </div>
 
-        {/* Action Section */}
-        <div style={styles.actionSection}>
-          <div style={styles.actionContent}>
+        {/* Caption overlay at bottom */}
+        {story.caption && (
+          <div style={styles.captionOverlay}>
+            <p style={styles.caption}>{story.caption}</p>
+          </div>
+        )}
+
+        {/* Bottom action bar */}
+        <div style={styles.bottomBar}>
+          <button
+            onClick={handleOpenApp}
+            style={styles.openAppButton}
+            disabled={isAppOpening}
+          >
             <Image
               src="/GrubyLogo.svg"
               alt="Gruby"
-              width={100}
-              height={28}
+              width={80}
+              height={24}
+              style={{ filter: 'brightness(0) invert(1)' }}
               priority
             />
+            <span style={styles.buttonText}>
+              {isAppOpening ? 'Opening...' : 'Open in Gruby'}
+            </span>
+          </button>
 
-            <p style={styles.actionText}>
-              View the full story and interact with {story.userDisplayName} on Gruby
-            </p>
-
+          {showFallback && (
             <button
-              onClick={handleOpenApp}
-              style={styles.openAppButton}
-              disabled={isAppOpening}
+              onClick={handleGetApp}
+              style={styles.getAppButton}
             >
-              <span style={styles.buttonText}>
-                {isAppOpening ? 'Opening...' : 'Open in Gruby'}
-              </span>
+              <span style={styles.getAppText}>Get the Gruby App</span>
             </button>
-
-            {showFallback && (
-              <button
-                onClick={handleGetApp}
-                style={styles.getAppButton}
-              >
-                <span style={styles.getAppText}>Get the Gruby App</span>
-              </button>
-            )}
-
-            {/* Stats */}
-            <div style={styles.stats}>
-              <span style={styles.stat}>{story.views} views</span>
-              <span style={styles.statDot}>•</span>
-              <span style={styles.stat}>{story.likes} likes</span>
-            </div>
-          </div>
+          )}
         </div>
+
+        {/* Stats badge */}
+        <div style={styles.statsBadge}>
+          <span style={styles.stat}>{story.views} views</span>
+          <span style={styles.statDot}>•</span>
+          <span style={styles.stat}>{story.likes} likes</span>
+        </div>
+
+        {/* Expiry badge */}
+        <div style={styles.expiryBadge}>{timeRemaining}</div>
       </div>
 
       <style jsx global>{`
@@ -251,6 +247,7 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           background-color: #000000;
+          overflow: hidden;
         }
       `}</style>
     </>
@@ -259,16 +256,14 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    minHeight: '100vh',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: '#000000',
     display: 'flex',
     flexDirection: 'column',
-  },
-  storyContainer: {
-    position: 'relative',
-    flex: 1,
-    maxHeight: '70vh',
-    overflow: 'hidden',
   },
   backgroundBlur: {
     position: 'absolute',
@@ -278,19 +273,50 @@ const styles: Record<string, React.CSSProperties> = {
     bottom: 0,
     zIndex: 0,
   },
-  storyContent: {
-    position: 'relative',
+  mediaContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     zIndex: 1,
+  },
+  media: {
+    width: '100%',
     height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    objectFit: 'cover',
+  },
+  topGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '150px',
+    background: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)',
+    zIndex: 2,
+    pointerEvents: 'none',
+  },
+  bottomGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '250px',
+    background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+    zIndex: 2,
+    pointerEvents: 'none',
   },
   storyHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '16px 20px',
     paddingTop: 'max(16px, env(safe-area-inset-top))',
+    zIndex: 10,
   },
   userInfo: {
     display: 'flex',
@@ -302,8 +328,8 @@ const styles: Record<string, React.CSSProperties> = {
     border: '2px solid #FFFFFF',
   },
   avatarPlaceholder: {
-    width: '40px',
-    height: '40px',
+    width: '44px',
+    height: '44px',
     borderRadius: '50%',
     backgroundColor: BRAND_COLOR,
     border: '2px solid #FFFFFF',
@@ -311,7 +337,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     color: '#FFFFFF',
-    fontSize: '16px',
+    fontSize: '18px',
     fontWeight: '700',
   },
   userDetails: {
@@ -321,33 +347,110 @@ const styles: Record<string, React.CSSProperties> = {
   },
   displayName: {
     color: '#FFFFFF',
-    fontSize: '15px',
+    fontSize: '16px',
     fontWeight: '600',
+    textShadow: '0 1px 2px rgba(0,0,0,0.3)',
   },
   timeAgo: {
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: 'rgba(255, 255, 255, 0.8)',
     fontSize: '13px',
+    textShadow: '0 1px 2px rgba(0,0,0,0.3)',
   },
   expiryBadge: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    paddingTop: 'env(safe-area-inset-top)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: '#FFFFFF',
     fontSize: '12px',
     fontWeight: '500',
     padding: '6px 12px',
     borderRadius: '20px',
+    zIndex: 10,
   },
-  mediaContainer: {
-    flex: 1,
-    position: 'relative',
+  captionOverlay: {
+    position: 'absolute',
+    bottom: '180px',
+    left: 0,
+    right: 0,
+    padding: '0 20px',
+    zIndex: 10,
+  },
+  caption: {
+    color: '#FFFFFF',
+    fontSize: '15px',
+    lineHeight: '22px',
+    margin: 0,
+    textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: '20px',
+    paddingBottom: 'max(20px, env(safe-area-inset-bottom))',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '12px',
+    zIndex: 10,
+  },
+  openAppButton: {
+    width: '100%',
+    maxWidth: '320px',
+    backgroundColor: BRAND_COLOR,
+    border: 'none',
+    borderRadius: '14px',
+    padding: '14px 24px',
+    cursor: 'pointer',
+    transition: 'opacity 0.2s',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '300px',
+    gap: '10px',
   },
-  media: {
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: '16px',
+    fontWeight: '600',
+  },
+  getAppButton: {
     width: '100%',
-    height: '100%',
-    objectFit: 'contain',
+    maxWidth: '320px',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backdropFilter: 'blur(10px)',
+    border: 'none',
+    borderRadius: '14px',
+    padding: '14px 24px',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+  },
+  getAppText: {
+    color: '#FFFFFF',
+    fontSize: '16px',
+    fontWeight: '600',
+  },
+  statsBadge: {
+    position: 'absolute',
+    top: 70,
+    right: 20,
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: '6px 12px',
+    borderRadius: '20px',
+    zIndex: 10,
+  },
+  stat: {
+    color: '#FFFFFF',
+    fontSize: '12px',
+  },
+  statDot: {
+    color: 'rgba(255, 255, 255, 0.5)',
+    fontSize: '12px',
   },
   noMedia: {
     width: '100%',
@@ -360,79 +463,5 @@ const styles: Record<string, React.CSSProperties> = {
   noMediaText: {
     color: 'rgba(255, 255, 255, 0.5)',
     fontSize: '16px',
-  },
-  captionContainer: {
-    padding: '16px 20px',
-    paddingBottom: '24px',
-  },
-  caption: {
-    color: '#FFFFFF',
-    fontSize: '15px',
-    lineHeight: '22px',
-    margin: 0,
-  },
-  actionSection: {
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: '24px',
-    borderTopRightRadius: '24px',
-    padding: '32px 24px',
-    paddingBottom: 'max(32px, env(safe-area-inset-bottom))',
-  },
-  actionContent: {
-    maxWidth: '400px',
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '16px',
-  },
-  actionText: {
-    color: '#717171',
-    fontSize: '15px',
-    textAlign: 'center',
-    lineHeight: '22px',
-    margin: 0,
-  },
-  openAppButton: {
-    width: '100%',
-    backgroundColor: BRAND_COLOR,
-    border: 'none',
-    borderRadius: '12px',
-    padding: '16px 24px',
-    cursor: 'pointer',
-    transition: 'opacity 0.2s',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: '16px',
-    fontWeight: '700',
-  },
-  getAppButton: {
-    width: '100%',
-    backgroundColor: 'transparent',
-    border: `2px solid ${BRAND_COLOR}`,
-    borderRadius: '12px',
-    padding: '14px 24px',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s',
-  },
-  getAppText: {
-    color: BRAND_COLOR,
-    fontSize: '16px',
-    fontWeight: '600',
-  },
-  stats: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginTop: '8px',
-  },
-  stat: {
-    color: '#999999',
-    fontSize: '13px',
-  },
-  statDot: {
-    color: '#CCCCCC',
-    fontSize: '13px',
   },
 };
