@@ -7,12 +7,16 @@
  *
  * Works like Instagram/Snapchat story sharing - shows a preview
  * with "Open in App" functionality via Universal Links.
+ *
+ * Privacy: Stories from private accounts are not shown to web viewers.
+ * Users must follow private accounts in the app to view their stories.
  */
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/firebase-admin';
 import StoryViewer from './StoryViewer';
+import PrivateAccountView from './PrivateAccountView';
 
 interface StoryData {
   id: string;
@@ -29,11 +33,34 @@ interface StoryData {
   likes: number;
 }
 
+interface UserProfile {
+  isPublic?: boolean;
+  displayName?: string;
+  photoURL?: string;
+}
+
 interface PageProps {
   params: Promise<{
     username: string;
     storyId: string;
   }>;
+}
+
+// Fetch user profile to check privacy settings
+async function getUserProfile(userId: string): Promise<UserProfile | null> {
+  try {
+    const db = getDb();
+    const userDoc = await db.collection('users').doc(userId).get();
+
+    if (!userDoc.exists) {
+      return null;
+    }
+
+    return userDoc.data() as UserProfile;
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
 }
 
 // Fetch story data from Firebase
@@ -114,6 +141,21 @@ export default async function StoryPage({ params }: PageProps) {
 
   if (!story) {
     notFound();
+  }
+
+  // Check if user's account is private
+  const userProfile = await getUserProfile(story.userId);
+  const isPrivateAccount = userProfile?.isPublic === false;
+
+  // For private accounts, show a private account view instead of the story
+  if (isPrivateAccount) {
+    return (
+      <PrivateAccountView
+        userDisplayName={story.userDisplayName}
+        userAvatarUrl={story.userAvatarUrl}
+        storyId={storyId}
+      />
+    );
   }
 
   // Pass story data to client component
