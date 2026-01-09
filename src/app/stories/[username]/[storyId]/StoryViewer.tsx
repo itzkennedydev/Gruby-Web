@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 // Design System v2.0: Brand Red for primary
@@ -38,32 +38,25 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
   const [isAppOpening, setIsAppOpening] = useState(false);
   const [showFallback, setShowFallback] = useState(false);
 
-  // Calculate time remaining until expiry
-  const getTimeRemaining = useCallback(() => {
-    const now = Date.now();
-    const remaining = story.expiresAt - now;
-
-    if (remaining <= 0) return 'Expired';
-
-    const hours = Math.floor(remaining / (1000 * 60 * 60));
-    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-
-    if (hours > 0) {
-      return `${hours}h ${minutes}m remaining`;
-    }
-    return `${minutes}m remaining`;
-  }, [story.expiresAt]);
-
-  const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining());
-
-  // Update time remaining every minute
+  // Track story view on mount
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeRemaining(getTimeRemaining());
-    }, 60000);
+    const trackView = async () => {
+      try {
+        await fetch('/api/stories/view', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ storyId }),
+        });
+      } catch (error) {
+        // Silently fail - view tracking is not critical
+        console.error('Failed to track story view:', error);
+      }
+    };
 
-    return () => clearInterval(interval);
-  }, [getTimeRemaining]);
+    trackView();
+  }, [storyId]);
 
   // Format the posted time
   const formatPostedTime = () => {
@@ -232,9 +225,6 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
           <span style={styles.statDot}>•</span>
           <span style={styles.stat}>{story.likes} likes</span>
         </div>
-
-        {/* Expiry badge */}
-        <div style={styles.expiryBadge}>{timeRemaining}</div>
       </div>
 
       <style jsx global>{`
@@ -355,19 +345,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: '13px',
     textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-  },
-  expiryBadge: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    paddingTop: 'env(safe-area-inset-top)',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    color: '#FFFFFF',
-    fontSize: '12px',
-    fontWeight: '500',
-    padding: '6px 12px',
-    borderRadius: '20px',
-    zIndex: 10,
   },
   captionOverlay: {
     position: 'absolute',
