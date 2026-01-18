@@ -54,7 +54,7 @@ export function Footer({ variant = "default" }: FooterProps) {
             {/* App Store Download Links */}
             <div className="mt-3 flex flex-row gap-2">
               <a
-                href="https://apps.apple.com/app/gruby"
+                href="https://apps.apple.com/in/app/gruby/id6755449783"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 active:scale-[0.98] ${
@@ -76,32 +76,6 @@ export function Footer({ variant = "default" }: FooterProps) {
                   </span>
                   <span className="text-[10px] font-semibold leading-tight">
                     App Store
-                  </span>
-                </div>
-              </a>
-              <a
-                href="https://play.google.com/store/apps/details?id=com.gruby.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-1.5 rounded border border-[#D9D9D6] bg-white px-2.5 py-1.5 text-[#717171] no-underline transition-all duration-200 active:scale-[0.98] ${
-                  isDocs
-                    ? "hover:border-[#222222] hover:text-[#222222]"
-                    : "hover:border-[#ff1e00] hover:text-[#ff1e00]"
-                }`}
-              >
-                <svg
-                  className="h-3.5 w-3.5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.19,14.5L15.12,12.42L17.19,10.33L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
-                </svg>
-                <div className="flex flex-col items-start">
-                  <span className="text-[8px] leading-tight opacity-60">
-                    Get it on
-                  </span>
-                  <span className="text-[10px] font-semibold leading-tight">
-                    Google Play
                   </span>
                 </div>
               </a>

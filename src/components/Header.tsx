@@ -197,15 +197,17 @@ const Header = () => {
             </Link>
 
             {/* CTA Button */}
-            <Button
-              onClick={handleOpenWaitlistModal}
-              className="font-semibold"
+            <a
+              href="https://apps.apple.com/in/app/gruby/id6755449783"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-button bg-ds-primary text-ds-primary-fg hover:bg-ds-primary-hover shadow-button h-10 px-4 py-2 font-semibold transition-all duration-200 active:scale-press-button"
               style={{
                 fontSize: "clamp(0.875rem, 1vw, 0.9375rem)",
               }}
             >
-              Get Notified
-            </Button>
+              Download App
+            </a>
           </div>
         </div>
       </div>

@@ -111,11 +111,11 @@ export default function SharedGatheringPage() {
       const isAndroid = /Android/.test(navigator.userAgent);
 
       if (isIOS) {
-        window.location.href = 'https://apps.apple.com/app/gruby';
+        window.location.href = 'https://apps.apple.com/in/app/gruby/id6755449783';
       } else if (isAndroid) {
-        window.location.href = 'https://play.google.com/store/apps/details?id=com.gruby.app';
+        alert('Gruby for Android is coming soon! Currently available on iOS.');
       } else {
-        alert('Please download the Gruby app to join this gathering.');
+        alert('Please download the Gruby app on iOS to join this gathering.');
       }
     }, 500);
   };

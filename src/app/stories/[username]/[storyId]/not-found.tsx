@@ -10,8 +10,7 @@ import Image from 'next/image';
 
 // Design System v2.0: Brand Red for primary
 const BRAND_COLOR = '#ff1e00'; // Primary - brand color
-const APP_STORE_URL = 'https://apps.apple.com/app/gruby/id6755449783';
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.grubyapp.android';
+const APP_STORE_URL = 'https://apps.apple.com/in/app/gruby/id6755449783';
 
 export default function StoryNotFound() {
   const handleGetApp = () => {
@@ -21,7 +20,7 @@ export default function StoryNotFound() {
     if (isIOS) {
       window.location.href = APP_STORE_URL;
     } else if (isAndroid) {
-      window.location.href = PLAY_STORE_URL;
+      alert('Gruby for Android is coming soon! Currently available on iOS.');
     } else {
       window.open(APP_STORE_URL, '_blank');
     }

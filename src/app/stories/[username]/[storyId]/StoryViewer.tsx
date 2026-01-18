@@ -12,8 +12,7 @@ import Image from 'next/image';
 
 // Design System v2.0: Brand Red for primary
 const BRAND_COLOR = '#ff1e00'; // Primary - brand color
-const APP_STORE_URL = 'https://apps.apple.com/app/gruby/id6755449783';
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.grubyapp.android';
+const APP_STORE_URL = 'https://apps.apple.com/in/app/gruby/id6755449783';
 
 interface StoryViewerProps {
   story: {
@@ -103,7 +102,7 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
     if (isIOS) {
       window.location.href = APP_STORE_URL;
     } else if (isAndroid) {
-      window.location.href = PLAY_STORE_URL;
+      alert('Gruby for Android is coming soon! Currently available on iOS.');
     } else {
       // Desktop - show both options or default to iOS
       window.open(APP_STORE_URL, '_blank');
@@ -176,7 +175,14 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
               </div>
             )}
             <div style={styles.userDetails}>
-              <span style={styles.displayName}>{story.userDisplayName}</span>
+              <div style={styles.nameAndStats}>
+                <span style={styles.displayName}>{story.userDisplayName}</span>
+                <span style={styles.inlineStats}>
+                  <span style={styles.inlineStat}>{story.views} views</span>
+                  <span style={styles.statDot}>•</span>
+                  <span style={styles.inlineStat}>{story.likes} likes</span>
+                </span>
+              </div>
               <span style={styles.timeAgo}>{formatPostedTime()}</span>
             </div>
           </div>
@@ -219,12 +225,6 @@ export default function StoryViewer({ story, username, storyId }: StoryViewerPro
           )}
         </div>
 
-        {/* Stats badge */}
-        <div style={styles.statsBadge}>
-          <span style={styles.stat}>{story.views} views</span>
-          <span style={styles.statDot}>•</span>
-          <span style={styles.stat}>{story.likes} likes</span>
-        </div>
       </div>
 
       <style jsx global>{`
@@ -333,7 +333,13 @@ const styles: Record<string, React.CSSProperties> = {
   userDetails: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2px',
+    gap: '4px',
+  },
+  nameAndStats: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    flexWrap: 'wrap',
   },
   displayName: {
     color: '#FFFFFF',
@@ -341,8 +347,18 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: '600',
     textShadow: '0 1px 2px rgba(0,0,0,0.3)',
   },
+  inlineStats: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+  },
+  inlineStat: {
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontSize: '13px',
+    textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+  },
   timeAgo: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255, 255, 255, 0.7)',
     fontSize: '13px',
     textShadow: '0 1px 2px rgba(0,0,0,0.3)',
   },
@@ -409,25 +425,9 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '16px',
     fontWeight: '600',
   },
-  statsBadge: {
-    position: 'absolute',
-    top: 70,
-    right: 20,
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: '6px 12px',
-    borderRadius: '20px',
-    zIndex: 10,
-  },
-  stat: {
-    color: '#FFFFFF',
-    fontSize: '12px',
-  },
   statDot: {
     color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: '12px',
+    fontSize: '13px',
   },
   noMedia: {
     width: '100%',
