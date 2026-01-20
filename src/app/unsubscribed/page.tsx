@@ -33,7 +33,7 @@ function UnsubscribedContent() {
           </div>
           <Link
             href="/"
-            className="inline-flex items-center rounded-[13px] bg-[var(--gruby-primary)] px-4 py-3 font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
+            className="inline-flex items-center rounded-full bg-[var(--gruby-primary)] px-4 py-3 font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
           >
             Return to Home
           </Link>

@@ -88,7 +88,7 @@ export function WaitlistModal({
                 onChange={(e) => setLocalName(e.target.value)}
                 placeholder="Your name"
                 disabled={isSubmitting}
-                className="w-full px-5 py-4 rounded-[13px] bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e]
+                className="w-full px-5 py-4 rounded-full bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e]
                            focus:outline-none focus:ring-2 focus:ring-[#222222] focus:border-[#222222]
                            transition-all duration-200 text-base shadow-sm"
               />
@@ -106,7 +106,7 @@ export function WaitlistModal({
                 placeholder="you@example.com"
                 required
                 disabled={isSubmitting}
-                className="w-full px-5 py-4 rounded-[13px] bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e]
+                className="w-full px-5 py-4 rounded-full bg-white border border-gray-300 text-[#222222] placeholder-[#9e9e9e]
                            focus:outline-none focus:ring-2 focus:ring-[#222222] focus:border-[#222222]
                            transition-all duration-200 text-base shadow-sm"
               />

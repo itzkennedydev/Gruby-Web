@@ -126,7 +126,7 @@ function CTASection() {
           href="https://apps.apple.com/in/app/gruby/id6755449783"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-3 rounded-[13px] bg-white px-6 py-4 text-base font-semibold text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
+          className="inline-flex items-center justify-center gap-3 rounded-full bg-white px-6 py-4 text-base font-semibold text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-gray-100 active:scale-[0.98]"
         >
           <svg
             className="h-6 w-6"
@@ -304,14 +304,14 @@ export default function MarketingPage() {
                   href="https://apps.apple.com/in/app/gruby/id6755449783"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-[44px] items-center justify-center rounded-[13px] bg-white px-4 text-sm font-semibold text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                  className="inline-flex h-[44px] items-center justify-center rounded-full bg-white px-4 text-sm font-semibold text-[#1a1a1a] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:bg-white/90 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
                   Download the App
                 </a>
                 <button
                   type="button"
                   onClick={handleScrollToFeatures}
-                  className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-[13px] border-2 border-white px-4 text-sm font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
+                  className="hero-outline-button inline-flex h-[44px] items-center justify-center rounded-full border-2 border-white px-4 text-sm font-semibold text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 active:scale-[0.98] sm:h-[48px] sm:text-base"
                 >
                   See How It Works
                 </button>
@@ -401,7 +401,7 @@ export default function MarketingPage() {
                     href="https://apps.apple.com/in/app/gruby/id6755449783"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-4 text-black transition-colors duration-200 hover:bg-gray-100 sm:h-14 sm:w-auto sm:px-6"
+                    className="inline-flex h-12 w-full items-center justify-center rounded-full bg-white px-4 text-black transition-colors duration-200 hover:bg-gray-100 sm:h-14 sm:w-auto sm:px-6"
                   >
                     <svg
                       className="mr-2 h-6 w-6 sm:h-7 sm:w-7"
@@ -624,12 +624,12 @@ export default function MarketingPage() {
                     value={footerEmail}
                     onChange={(e) => setFooterEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full rounded-[13px] border border-[#e5e5e5] bg-[#fafafa] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#222222]"
+                    className="w-full rounded-full border border-[#e5e5e5] bg-[#fafafa] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#222222]"
                     required
                   />
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center rounded-[13px] bg-[var(--gruby-primary)] px-4 py-3 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[var(--gruby-primary)] px-4 py-3 text-sm font-medium text-white shadow-[0px_1px_2px_0px_rgba(0,0,0,0.12),0px_2px_8px_0px_rgba(0,0,0,0.04)] transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
                   >
                     Subscribe
                   </button>

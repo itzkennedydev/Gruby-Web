@@ -276,7 +276,7 @@ body {
     --radius-none: 0px;
     --radius-sm: 8px;
     --radius-md: 12px;
-    --radius-button: 13px;
+    --radius-button: 9999px; /* Pill-shaped buttons - matches mobile app */
     --radius-card: 14px;
     --radius-lg: 16px;
     --radius-pill: 20px;
@@ -939,7 +939,7 @@ input.cta-email-input {
   flex: 1;
   height: 52px !important;
   padding: 0 20px !important;
-  border-radius: 13px;
+  border-radius: 9999px; /* Pill-shaped to match buttons */
   border: none;
   background-color: #ffffff;
   font-size: 16px !important;
