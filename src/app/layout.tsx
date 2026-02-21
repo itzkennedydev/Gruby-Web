@@ -1,6 +1,7 @@
 import React from "react";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import Script from "next/script";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -191,6 +192,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <main className="flex-1">{children}</main>
             </ReduxProvider>
           </ErrorBoundary>
+          <Script
+            defer
+            src="https://umami-nine-livid.vercel.app/script.js"
+            data-website-id="7d6577ea-d7c2-4846-8cf5-1eced66af235"
+            strategy="afterInteractive"
+          />
         </body>
       </html>
     </ClerkProvider>
