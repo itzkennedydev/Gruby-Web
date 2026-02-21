@@ -6,8 +6,6 @@ import Header from "@/components/Header";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ReduxProvider } from "@/components/ReduxProvider";
 import "@/styles/globals.css";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gruby.app"),
@@ -193,8 +191,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <main className="flex-1">{children}</main>
             </ReduxProvider>
           </ErrorBoundary>
-          <Analytics />
-          <SpeedInsights />
         </body>
       </html>
     </ClerkProvider>
